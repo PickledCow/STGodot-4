@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://but1rwxvgpnqk"]
+
+[ext_resource type="Shader" path="res://system/kits/kit_shaders/basic_bullet_shader.gdshader" id="1_yr741"]
+
+[resource]
+shader = ExtResource("1_yr741")
+shader_parameter/animation_speed = 8.0

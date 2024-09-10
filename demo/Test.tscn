@@ -1,0 +1,37 @@
+[gd_scene load_steps=9 format=3 uid="uid://18jtj8q2lok4"]
+
+[ext_resource type="Script" path="res://test.gd" id="1_1fl14"]
+[ext_resource type="Script" path="res://bullets_environment.gd" id="1_bplr8"]
+[ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
+[ext_resource type="BasicBulletKit" uid="uid://cmqs1mgfibcrk" path="res://system/kits/basic_bullet_kit.tres" id="3_8wx3n"]
+[ext_resource type="Material" uid="uid://but1rwxvgpnqk" path="res://system/kits/kit_materials/basic_bullet_material.tres" id="3_y4fif"]
+[ext_resource type="Texture2D" uid="uid://cq4ldm5wsstkr" path="res://system/kits/spritesheets/bullet.png" id="4_7fitg"]
+[ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://system/kits/basic_bullet_kit_add.tres" id="7_rsagd"]
+
+[sub_resource type="BasicBulletKit" id="BasicBulletKit_c5hca"]
+texture = ExtResource("4_7fitg")
+material = ExtResource("3_y4fif")
+texture_width = 2048.0
+active_rect = Rect2(-50, -50, 1380, 820)
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_1fl14")
+number_count = 1
+number_0 = 0
+letter_0 = null
+
+[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
+
+[node name="arts" type="Node2D" parent="."]
+script = ExtResource("2_t2ehl")
+bullet_kit = SubResource("BasicBulletKit_c5hca")
+
+[node name="BulletsEnvironment" type="Node" parent="."]
+script = ExtResource("1_bplr8")
+bullet_types_amount = 2
+bullet_type_0/bullet_kit = ExtResource("3_8wx3n")
+bullet_type_0/pool_size = 8192
+bullet_type_0/z_index = null
+bullet_type_1/bullet_kit = ExtResource("7_rsagd")
+bullet_type_1/pool_size = 1024
+bullet_type_1/z_index = null
