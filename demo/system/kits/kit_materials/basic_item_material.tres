@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cl8wpyoiqbylc"]
+
+[ext_resource type="Shader" path="res://system/kits/kit_shaders/basic_item_shader.gdshader" id="1_q2vr1"]
+
+[resource]
+shader = ExtResource("1_q2vr1")
+shader_parameter/animation_speed = 8.0

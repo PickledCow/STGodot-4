@@ -30,6 +30,7 @@ namespace godot {
 enum processMode { A1, A2, A3, B1, B2, B3 };
 // enum bounceMode { BOUNCE, WARP };
 
+// A stripped down reference to a Bullet mainly for use within Godot
 struct BulletID {
 	int cycle;
 	int set;
@@ -40,12 +41,12 @@ struct BulletID {
 };
 
 // A basic bullet class. Holds onto information about the bullet that then a BulletKit is able to act upon.
-class Bullet : public Object {
-	GDCLASS(Bullet, Object)
+// The base bullet is able to keep track of general rendering properties along with other critical behaviour
+struct Bullet {
 
     public:
     // ----------------------------------------
-    // Critical internal varaibles. Can't be modified from Godot.
+    // Critical internal varaibles.
     // ----------------------------------------
 
     // Resource ID for the bullet sprite.
@@ -54,47 +55,36 @@ class Bullet : public Object {
     int cycle = 0;
     // The index of the bullet in the pool
     int pool_index = -1;
-    // Mode of operation for which movement procedure to use
-    processMode process_mode = A1;
-
-    // ----------------------------------------
-    // Internal varaibles. Can be modified from Godot but is highly discouraged.
-    // ----------------------------------------
-
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
     // Normalised direction vector for faster computation.
     Vector2 direction = Vector2();
     // Order at which the bullet is drawn in among bullets with the same layer, lowest to highest.
     int draw_index = 0;
+    // The position of the bullet in the playfield.
+    Vector2 position = Vector2();
     // Internal flag for tracking if the bullet is currently fading
     bool fading = false;
-    // Internal Array for keeping track of bullet transforms.
-    Array patterns;
-    // Internal data that is sent to the rendering shader.
-    Color bullet_data;
-    // For use with item autocollect.
-	Node2D *magnet_target;  
-	int magnet_id;
-
-
-    // ----------------------------------------
-    // User defined variables
-    // ----------------------------------------
-
     // The center-to-edge length in in-game units to draw at,
     double scale = 16.0;
-    // Ratio of the visual sprite and collision box.
-    double hitbox_scale = 0.5;
+    // Layer at which to draw bullets in. Useful for example having larger bullets be drawn under smaller bullets by default.
+    int layer = 0;
+    // How many ticks the bullet has existed for in its current life.
+    double lifetime = 0.0;
+    // How many ticks the bullet can exist for before being deleted. By default infinite.
+    double lifespan = INFINITY;
+
+    // Internal data that is sent to the rendering shader.
+    Color bullet_data;
+
+    // Mode of operation for which movement procedure to use
+    processMode process_mode = A1;
+
     // The vertical offset of the bullet in texture pixels (positive moves sprite upwards).
     // Horizontal offset is unsupported
     double texture_offset = 0.0;
-    // Layer at which to draw bullets in. Useful for example having larger bullets be drawn under smaller bullets by default.
-    int layer = 0;
     // The color that fade effects should be shaded in. 
     Color fade_color = Color();
-    // The position of the bullet in the playfield.
-    Vector2 position = Vector2();
     // The sprite rotation offset compared to angle of travel, measured in radians.
     double rotation = 0.0;
     // Rate at which the bullet sprite should spin at, measured in radians per tick.
@@ -106,23 +96,14 @@ class Bullet : public Object {
     double fade_time = 0.0;
     // Controls if the bullet fades out when it is destroyed.
     bool fade_delete = false;
-    // Flag for if the bullet has already been grazed. TODO: Add graze time for multi graze
-    bool grazed = false;
     // If true, automatically deletes the bullet if outside the playfield bounds.
     bool auto_delete = true;
-    // How much damage the bullets should do. Mainly used for player bullets.
-    double damage = 0.0;
-    // Custom variable that can be used for elemental types for example.
-    int damage_type = 0;
-    // How many ticks the bullet has existed for in its current life.
-    double lifetime = 0.0;
-    // How many ticks the bullet can exist for before being deleted. By default infinite.
-    double lifespan = INFINITY;
     // Whether or not to render the bullet upright. Is indifferent to orientation of other bullets on the spritesheet.
     bool upright = false;
 
     // ----------------------------------------
-    // Exposed A1 movement type variables.
+    // Common movement variables
+    // Also used for A1 BasicBullet movement type variables.
     // ----------------------------------------
 
     // The angle of the bullet.
@@ -130,8 +111,33 @@ class Bullet : public Object {
     // The speed the bullet travels in units per tick.
     double speed = 0.0;
 
+    // How much damage the bullets should do. Mainly used for player bullets but also for item values.
+    double damage = 0.0;
+    // Custom variable that can be used for elemental types for example.
+    int damage_type = 0;
+};
+
+struct BasicParticle : Bullet {
+
+};
+
+
+struct CollisionBullet : Bullet {
+    // Ratio of the visual sprite and collision box.
+    double hitbox_scale = 0.5;
+
+    // Flag for if the bullet has already been grazed. TODO: Add graze time for multi graze
+    bool grazed = false;
+
+};
+
+
+struct BasicBullet : CollisionBullet {
+    // Internal Array for keeping track of bullet transforms.
+    Array patterns;
+
     // ----------------------------------------
-    // Exposed A2 movement type variables.
+    // A2 movement type variables.
     // ----------------------------------------
 
     // Speed limit for accelerating bullets in units per tick.
@@ -140,7 +146,7 @@ class Bullet : public Object {
     double accel = 0.0;
 
     // ----------------------------------------
-    // Exposed A3 movement type variables
+    // A3 movement type variables
     // ----------------------------------------
 
     // Behaviour for touching the wall
@@ -155,124 +161,19 @@ class Bullet : public Object {
     double max_wvel = 0.0;
     // Rotational acceleration in radians per tick per tick.
     double waccel = 0.0;
-    
-    // ========================================
-    //
-    //      Functions
-    //
-    // ========================================
 
-    void _init() {}
-    
-    // ----------------------------------------
-    // Criticals
-    // ----------------------------------------
-
-    RID get_item_rid();
-    void set_item_rid(RID value);
-    
-    int get_cycle();
-    void set_cycle(int value);
-    
-    int get_pool_index();
-    void set_pool_index(int value);
-    
-    int get_process_mode();
-    void set_process_mode(int value);
-
-    // ----------------------------------------
-    // Getters
-    // ----------------------------------------
-
-    Node2D* get_magnet_target();
-    int get_magnet_id();
-    Transform2D get_transform();
-    // Transform2D get_hitbox_transform();
-    Vector2 get_direction();
-    int get_draw_index();
-    bool get_fading();
-    Array get_patterns();
-    Color get_bullet_data();
-    double get_scale();
-    double get_hitbox_scale();
-    double get_texture_offset();
-    int get_layer();
-    Color get_fade_color();
-    Vector2 get_position();
-    double get_rotation();
-    double get_spin();
-    double get_fade_timer();
-    double get_fade_time();
-    bool get_fade_delete();
-    bool get_grazed();
-    bool get_auto_delete();
-    double get_damage();
-    int get_damage_type();
-    double get_lifetime();
-    double get_lifespan();
-    bool get_upright();
-    double get_angle();
-    double get_speed();
-    double get_max_speed();
-    double get_accel();
-    int get_bounce_mode();
-    int get_bounce_count();
-    int get_bounce_surfaces();
-    double get_wvel();
-    double get_max_wvel();
-    double get_waccel();
-
-    // ----------------------------------------
-    // Setters
-    // ----------------------------------------
-
-    void set_magnet_target(Node2D* value);
-    void set_magnet_id(int value);
-
-    void set_transform(Transform2D value);
-    // void set_hitbox_transform(Transform2D value);
-    void set_direction(Vector2 value);
-    void set_draw_index(int value);
-    void set_fading(bool value);
-    void set_patterns(Array value);
-    void set_bullet_data(Color value);
-
-    void set_scale(double value);
-    void set_hitbox_scale(double value);
-    void set_texture_offset(double value);
-    void set_layer(int value);
-    void set_fade_color(Color value);
-    void set_position(Vector2 value);
-    void set_rotation(double value);
-    void set_spin(double value);
-    void set_fade_timer(double value);
-    void set_fade_time(double value);
-    void set_fade_delete(bool value);
-    void set_grazed(bool value);
-    void set_auto_delete(bool value);
-    void set_damage(double value);
-    void set_damage_type(int value);
-    void set_lifetime(double value);
-    void set_lifespan(double value);
-    void set_upright(bool value);
-
-    void set_angle(double value);
-    void set_speed(double value);
-
-    void set_max_speed(double value);
-    void set_accel(double value);
-    
-    void set_bounce_mode(int value);
-    void set_bounce_count(int value);
-    void set_bounce_surfaces(int value);
-    void set_wvel(double value);
-    void set_max_wvel(double value);
-    void set_waccel(double value);
-
-    protected:
-    static void _bind_methods();
 
 };
-}
+
+struct BasicItem : CollisionBullet {
+    // Flag for if the item is currently being magneted.
+	bool magneted;
+    // Reference to the target Node2D to get position off.
+	Node2D *magnet_target;  
+
+};
+
+};
+
 
 #endif

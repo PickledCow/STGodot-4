@@ -89,7 +89,7 @@ void BulletKit::_bind_methods() {
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
             "material", 
             PROPERTY_HINT_RESOURCE_TYPE,
-            "ShaderMaterial"
+            "ShaderMaterial,CanvasItemMaterial"
         ), 
         "set_material", "get_material");
     ClassDB::bind_method(D_METHOD("get_texture_width"), &BulletKit::get_texture_width);

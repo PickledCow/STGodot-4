@@ -2,13 +2,14 @@
 
 #include "gdexample.hpp"
 
-#include "bullet.hpp"
+// #include "bullet.hpp"
 #include "bullet_kit.hpp"
 #include "bullets_interface.hpp"
 
 
-#include "kits/basic_bullet_kit.hpp"
-#include "kits/basic_item_kit.hpp"
+#include "basic_bullet_kit.hpp"
+#include "basic_item_kit.hpp"
+#include "basic_particle_kit.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -22,12 +23,13 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	}
 
 	GDREGISTER_CLASS(GDExample);
-	GDREGISTER_CLASS(Bullet);
+	// GDREGISTER_CLASS(Bullet);
 	GDREGISTER_CLASS(BulletKit);
 	GDREGISTER_CLASS(BulletsInterface);
 
 	GDREGISTER_CLASS(BasicBulletKit);
 	GDREGISTER_CLASS(BasicItemKit);
+	GDREGISTER_CLASS(BasicParticleKit);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

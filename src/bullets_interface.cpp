@@ -11,6 +11,7 @@
 // #include <Array.hpp>
 
 #include <bullets_interface.hpp>
+
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/classes/world2d.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -45,7 +46,40 @@ void BulletsInterface::_bind_methods() {
 		"graze_radius"), 
 		&BulletsInterface::collide_and_graze
 	);
+
+	ClassDB::bind_method(D_METHOD(
+		"collect_and_magnet",
+		"item_kit",
+		"target_node",
+		"position",
+		"collection_radius",
+		"magnet_radius"), 
+		&BulletsInterface::collect_and_magnet
+	);
 		
+	ClassDB::bind_method(D_METHOD(
+		"create_item",
+		"item_kit",
+		"position",
+		"speed",
+		"angle",
+		"spin",
+		"item_data"
+		), 
+		&BulletsInterface::create_item
+	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"create_particle",
+		"particle_kit",
+		"position",
+		"drift",
+		"rotation",
+		"size",
+		"color"
+		), 
+		&BulletsInterface::create_particle
+	);
 
 	ClassDB::bind_method(D_METHOD(
 		"create_shot_a1",
@@ -56,6 +90,35 @@ void BulletsInterface::_bind_methods() {
 		"bullet_data",
 		"fade"), 
 		&BulletsInterface::create_shot_a1
+	);
+
+
+	
+	ClassDB::bind_method(D_METHOD(
+		"get_position",
+		"bullet_id"), 
+		&BulletsInterface::get_position
+	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"set_position",
+		"bullet_id",
+		"position"), 
+		&BulletsInterface::set_position
+	);
+
+	
+	ClassDB::bind_method(D_METHOD(
+		"get_damage",
+		"bullet_id"), 
+		&BulletsInterface::get_damage
+	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"set_damage",
+		"bullet_id",
+		"damage"), 
+		&BulletsInterface::set_damage
 	);
 		
 }
@@ -84,24 +147,22 @@ void BulletsInterface::_physics_process(double delta) {
 	Vector2 origin = parent->get_global_position();
 	if (last_origin != origin) {
 		last_origin = origin;
-		// for (int i = 0; i < shared_areas.size(); i++) {
-		// 	PhysicsServer2D::get_singleton()->area_set_transform(shared_areas[i], Transform2D(0.0, origin));
-		// }
 	}
-
 	int bullets_variation = 0;
+
+	// Increase by golden-ration - 1 to have "maximum" "randomness"
+    // Independent from time scale to preserve this effect
+	animation_random += 0.61803398874989484820; 
+	if (animation_random >= 1.0) animation_random -= 1.0;
 
 	for(int i = 0; i < pools.size(); i++) {
 		double time_scale = pools[i].bullet_kit->time_scale;
 		bullets_variation = pools[i].pool->_process(time_scale);
 		available_bullets -= bullets_variation;
 		active_bullets += bullets_variation;
-		
+
+		pools[i].pool->animation_random = animation_random;
 	}
-	// Increase by golden-ration - 1 to have "maximum" "randomness"
-    // Independent from time scale to preserve this effect
-	animation_random += 0.61803398874989484820; 
-	if (animation_random >= 1.0) animation_random -= 1.0;
 
 }
 
@@ -114,6 +175,7 @@ void BulletsInterface::_clear_rids() {
 
 
 void BulletsInterface::mount(Node* bullets_environment) {
+	_init();
 	// UtilityFunctions::print("Starting mounting");
 	if(bullets_environment == nullptr || this->bullets_environment == bullets_environment) {
 		return;
@@ -138,7 +200,6 @@ void BulletsInterface::mount(Node* bullets_environment) {
 	kits_to_pool_index.clear();
 	
 	_clear_rids();
-	// shared_areas.clear();
 
 	available_bullets = 0;
 	active_bullets = 0;
@@ -169,7 +230,6 @@ void BulletsInterface::mount(Node* bullets_environment) {
 
 		// Register the kit/pool-index pair 
 		kits_to_pool_index[kit] = i;
-		// UtilityFunctions::print(kits_to_pool_index[kit]);
 
 
 		pool_set_available_bullets += pool_size;
@@ -349,74 +409,134 @@ Variant BulletsInterface::get_bullet_property(Variant id, String property) {
 	}
 	return Variant();
 }
-
-int BulletsInterface::collide_and_graze(Ref<BulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius) {
+Array BulletsInterface::collide_and_graze(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius) {
 	int pool_index = kits_to_pool_index[kit];
-	return pools[pool_index].pool->collide_and_graze(pos, hitbox_radius, graze_radius);
+	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
+	return pool->_collide_and_graze(pos, hitbox_radius, graze_radius);
+}
+
+Array BulletsInterface::collect_and_magnet(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
+	int pool_index = kits_to_pool_index[kit];
+	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
+	return pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius);
 }
 
 
-Variant BulletsInterface::create_shot_a1(Ref<BulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
+PackedInt64Array BulletsInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
+
 	// UtilityFunctions::print(kits_to_pool_index[kit]);
-
-	// && kits_to_pool_index.has(kit) // For some reason checking for it using .has() doesn't make this run
+	// kits_to_pool_index.has(kit) // For some reason checking for it using .has() doesn't make this run
 	// Yet, if the print funciton is uncommented out then the check suddenly passes?
-	if(available_bullets > 0) {
-		// UtilityFunctions::print("shoot1");
-		int pool_index = kits_to_pool_index[kit];
-		BulletPool* pool = pools[pool_index].pool.get();
 
-		if(pool->get_available_bullets() > 0) {
-			// UtilityFunctions::print("shoot2");
-			available_bullets -= 1;
-			active_bullets += 1;
+	int pool_index = kits_to_pool_index[kit];
+	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
 
-			// Base init
-			BulletID bullet_id = pool->obtain_bullet();
-			PackedInt64Array to_return = PackedInt64Array();
-			to_return.resize(3);
-			to_return.set(0, bullet_id.cycle);
-			to_return.set(1, bullet_id.set);
-			to_return.set(2, bullet_id.index);
+	if(pool->get_available_bullets() > 0) {
+		available_bullets -= 1;
+		active_bullets += 1;
 
-			// A1 type settings
-			Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(bullet_data[4] * Vector2(1.0, 1.0)).rotated(angle + 1.57079632679);
-			xform.set_origin(pos);
-			Transform2D hitbox_xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(bullet_data[4] * bullet_data[5] * Vector2(1.0, 1.0)).rotated(angle + 1.57079632679);
-			hitbox_xform.set_origin(pos);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "transform", xform);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_transform", hitbox_xform);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "scale", bullet_data[4]);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "direction",  Vector2(1.0, 0.0).rotated(angle));
-			pools[pool_index].pool->set_bullet_property(bullet_id, "angle", angle);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "speed", speed);
-			// pools[pool_index].pool->set_bullet_property(bullet_id, "accel", 0.0);
-			// pools[pool_index].pool->set_bullet_property(bullet_id, "max_speed", 0.0);
-			Color compressed_data = Color();
-			compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
-			compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
-			compressed_data.b = floor(bullet_data[6]);
-			compressed_data.a = floor(bullet_data[7]) + animation_random;
-			if (fade_in) {
-				compressed_data.b += 0.9999999;
-			} else {
-				pools[pool_index].pool->set_bullet_property(bullet_id, "fade_timer", -0.0000001);
-			}
-			pools[pool_index].pool->set_bullet_property(bullet_id, "texture_offset", floor(bullet_data[6]));
-			pools[pool_index].pool->set_bullet_property(bullet_id, "bullet_data", compressed_data);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "hitbox_scale", bullet_data[5]);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "spin", bullet_data[8]);
-
-			pools[pool_index].pool->set_bullet_property(bullet_id, "layer", bullet_data[9]);
-
-			Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "fade_color", fade_color);
-
-			pools[pool_index].pool->set_bullet_property(bullet_id, "damage_type", (int)bullet_data[13]);
-			pools[pool_index].pool->set_bullet_property(bullet_id, "damage", bullet_data[14]);
-			
-			return to_return;
-		}
+		// Base init
+		BulletID bullet_id = pool->_create_shot_a1(pos, speed, angle, bullet_data, fade_in);
+		PackedInt64Array to_return = invalid_id;
+		// to_return.resize(3);
+		to_return.set(0, bullet_id.cycle);
+		to_return.set(1, bullet_id.set);
+		to_return.set(2, bullet_id.index);
+		
+		return to_return;
 	}
+	
 	return invalid_id;
 }
+
+PackedInt64Array BulletsInterface::create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data) {
+	int pool_index = kits_to_pool_index[kit];
+	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
+
+	if(pool->get_available_bullets() > 0) {
+		available_bullets -= 1;
+		active_bullets += 1;
+
+		BulletID bullet_id = pool->_create_item(pos, speed, angle, spin, item_data);
+		PackedInt64Array to_return = PackedInt64Array();
+		to_return.resize(3);
+		to_return.set(0, bullet_id.cycle);
+		to_return.set(1, bullet_id.set);
+		to_return.set(2, bullet_id.index);
+
+
+		return to_return;
+	}
+
+
+
+	return invalid_id;
+
+}
+
+
+PackedInt64Array BulletsInterface::create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color) {
+	int pool_index = kits_to_pool_index[kit];
+	BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
+
+	if(pool->get_available_bullets() > 0) {
+		available_bullets -= 1;
+		active_bullets += 1;
+
+		BulletID bullet_id = pool->_create_particle(pos, drift, rotation, size, color);
+		PackedInt64Array to_return = PackedInt64Array();
+		to_return.resize(3);
+		to_return.set(0, bullet_id.cycle);
+		to_return.set(1, bullet_id.set);
+		to_return.set(2, bullet_id.index);
+
+
+		return to_return;
+	}
+
+
+
+	return invalid_id;
+
+}
+
+
+Vector2 BulletsInterface::get_position(PackedInt64Array bullet_id) {
+	// int pool_index = kits_to_pool_index[kit];
+	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
+	if (bullet_id[1] >= 0) {
+		return pools[bullet_id[1]].pool->get_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+	}
+	return Vector2();
+
+}
+
+void BulletsInterface::set_position(PackedInt64Array bullet_id, Vector2 position) {
+	// int pool_index = kits_to_pool_index[kit];
+	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
+	if (bullet_id[1] >= 0) {
+		pools[bullet_id[1]].pool->set_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), position);
+	}
+
+}
+
+
+double BulletsInterface::get_damage(PackedInt64Array bullet_id) {
+	// int pool_index = kits_to_pool_index[kit];
+	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
+	if (bullet_id[1] >= 0) {
+		return pools[bullet_id[1]].pool->get_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+	}
+	return 0.0;
+
+}
+
+void BulletsInterface::set_damage(PackedInt64Array bullet_id, double damage) {
+	// int pool_index = kits_to_pool_index[kit];
+	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
+	if (bullet_id[1] >= 0) {
+		pools[bullet_id[1]].pool->set_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage);
+	}
+
+}
+

@@ -39,6 +39,9 @@ class BulletPool {
 	int pool_size = 0;
 	int set_index = -1;
 
+    double animation_random = 0.0;
+
+
 	BulletPool();
 	virtual ~BulletPool();
 
@@ -57,11 +60,16 @@ class BulletPool {
 
 	virtual bool is_bullet_existing(int shape_index) = 0;
 
+    // Common Setters and Getters
+    virtual Vector2 get_position(BulletID bullet_id) = 0;
+    virtual void set_position(BulletID bullet_id, Vector2 position) = 0;
+    
+    virtual double get_damage(BulletID bullet_id) = 0;
+    virtual void set_damage(BulletID bullet_id, double damage) = 0;
+
 	virtual void set_bullet_property(BulletID id, String property, Variant value) = 0;
 	virtual Variant get_bullet_property(BulletID id, String property) = 0;
     
-	virtual int collide_and_graze(Vector2 pos, double hitbox_radius, double graze_radius) = 0;
-
     void do_nothing() {pool_size++;};
 
     protected:
@@ -104,10 +112,7 @@ class AbstractBulletPool : public BulletPool {
 		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) override;
 
 	virtual int _process(double delta) override;
-    
 
-    
-	virtual int collide_and_graze(Vector2 pos, double hitbox_radius, double graze_radius) override;
 
 	virtual void spawn_bullet(Dictionary properties) override;
 	virtual BulletID obtain_bullet() override;
@@ -115,6 +120,13 @@ class AbstractBulletPool : public BulletPool {
 	virtual bool is_bullet_valid(BulletID id) override;
 
 	virtual bool is_bullet_existing(int shape_index) override;
+
+    // Common Setters and Getters
+    virtual Vector2 get_position(BulletID bullet_id) override;
+    virtual void set_position(BulletID bullet_id, Vector2 position) override;
+    
+    virtual double get_damage(BulletID bullet_id) override;
+    virtual void set_damage(BulletID bullet_id, double damage) override;
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) override;
 	virtual Variant get_bullet_property(BulletID id, String property) override;
@@ -128,9 +140,6 @@ class AbstractBulletPool : public BulletPool {
 
 	virtual inline void _disable_bullet(BulletType* bullet);
 	virtual inline bool _process_bullet(BulletType* bullet, double delta);
-	// virtual inline void _process_A1(BulletType* bullet, double delta) override;
-	// virtual inline void _process_A2(BulletType* bullet, double delta) override;
-	// virtual inline void _process_A3(BulletType* bullet, double delta, double rotation_offset, Rect2 bounce_rect, Rect2 warp_rect) override;
 
 	inline void _release_bullet(int index);
 };

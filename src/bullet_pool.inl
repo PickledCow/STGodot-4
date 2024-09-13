@@ -155,24 +155,25 @@ int AbstractBulletPool<Kit, BulletType>::_process(double delta) {
 
 
 
-
+// DO NOT USE
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::spawn_bullet(Dictionary properties) {
-	if(available_bullets > 0) {
-		available_bullets -= 1;
-		active_bullets += 1;
+	return;
+	// if(available_bullets > 0) {
+	// 	available_bullets -= 1;
+	// 	active_bullets += 1;
 
-		BulletType* bullet = bullets[available_bullets];
+	// 	BulletType* bullet = bullets[available_bullets];
 
-		Array keys = properties.keys();
-		for(int i = 0; i < keys.size(); i++) {
-			bullet->set(keys[i], properties[keys[i]]);
-		}
+	// 	Array keys = properties.keys();
+	// 	for(int i = 0; i < keys.size(); i++) {
+	// 		// bullet->set(keys[i], properties[keys[i]]);
+	// 	}
 
-		rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
+	// 	rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 
-		_enable_bullet(bullet);
-	}
+	// 	_enable_bullet(bullet);
+	// }
 }
 
 template <class Kit, class BulletType>
@@ -219,7 +220,6 @@ void AbstractBulletPool<Kit, BulletType>::_release_bullet(int index) {
 	_disable_bullet(bullet);
 	bullet->cycle += 1;
 
-	// _swap(shapes_to_indices[bullet->shape_index - starting_shape_index], shapes_to_indices[bullets[available_bullets]->shape_index - starting_shape_index]);
 	_swap(bullets[index], bullets[available_bullets]);
 	_swap(bullets[index]->pool_index, bullets[available_bullets]->pool_index);
 
@@ -245,42 +245,41 @@ bool AbstractBulletPool<Kit, BulletType>::is_bullet_existing(int index) {
 }
 
 
+
 template <class Kit, class BulletType>
-int AbstractBulletPool<Kit, BulletType>::collide_and_graze(Vector2 pos, double hitbox_radius, double graze_radius) {
-	int graze_count = 0;
-
-	double hitbox_radius_squared = hitbox_radius * hitbox_radius;
-	double graze_radius_squared = graze_radius * graze_radius;
-
-	for (int i = pool_size - 1; i >= available_bullets; i--) {
-		BulletType* bullet = bullets[i];
-
-		double b = bullet->scale * bullet->hitbox_scale;
-		double b2 = b * b;
-
-	 	double dist_sq = (bullet->position - pos).length_squared();
-		
-		if (bullet->fade_timer <= 0.0 && dist_sq <= graze_radius_squared + 2.0 * graze_radius * b + b2) {
-			if (!bullets[i]->grazed) {
-				bullets[i]->grazed = true;
-				graze_count++;
-			}
-
-			if (dist_sq <= hitbox_radius_squared + 2.0 * hitbox_radius * b + b2) {
-				bullets[i]->lifespan = -INFINITY;
-				// _release_bullet(i);
-				// amount_variation -= 1;
-				// i += 1;
-				// continue;
-			}
-		}
+Vector2 AbstractBulletPool<Kit, BulletType>::get_position(BulletID bullet_id) {
+	if (is_bullet_valid(bullet_id)) {
+		return bullets[bullet_id.index]->position;
 	}
-	return graze_count;
+	return Vector2();
+}
+
+template <class Kit, class BulletType>
+void AbstractBulletPool<Kit, BulletType>::set_position(BulletID bullet_id, Vector2 position) {
+	if (is_bullet_valid(bullet_id)) {
+		bullets[bullet_id.index]->position = position;
+		bullets[bullet_id.index]->transform.set_origin(position);
+	}
 }
 
 
+template <class Kit, class BulletType>
+double AbstractBulletPool<Kit, BulletType>::get_damage(BulletID bullet_id) {
+	if (is_bullet_valid(bullet_id)) {
+		return bullets[bullet_id.index]->damage;
+	}
+	return 0.0;
+}
 
-// TODO
+template <class Kit, class BulletType>
+void AbstractBulletPool<Kit, BulletType>::set_damage(BulletID bullet_id, double damage) {
+	if (is_bullet_valid(bullet_id)) {
+		bullets[bullet_id.index]->damage = damage;
+	}
+}
+
+
+// DO NOT USE
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::set_bullet_property(BulletID id, String property, Variant value) {
 	
@@ -288,85 +287,85 @@ void AbstractBulletPool<Kit, BulletType>::set_bullet_property(BulletID id, Strin
 	// UtilityFunctions::print(id.index);
 	// UtilityFunctions::print(bullets[id.index]->cycle);
 
-
-	if(is_bullet_valid(id)) {
-		// int bullet_index = shapes_to_indices[id.index - starting_shape_index];
+	if(false && is_bullet_valid(id)) {
+		// // int bullet_index = shapes_to_indices[id.index - starting_shape_index];
+		// // bullets[bullet_index]->set(property, value);
+		// int bullet_index = id.index;
 		// bullets[bullet_index]->set(property, value);
-		int bullet_index = id.index;
-		bullets[bullet_index]->set(property, value);
 
-		// Additional operations
+		// // Additional operations
 
-		switch (property.hash()) { // find a better way to do this 
-			case (596893057): { // transform
-				BulletType* bullet = bullets[bullet_index];
-				rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
-				Transform2D xform = bullet->transform;
-				Vector2 origin = xform.get_origin();
-				bullets[bullet_index]->set("position", origin);
-				break;
-			}
-			case (1290762938): { // position
-				BulletType* bullet = bullets[bullet_index];
-				Transform2D xform = get_bullet_property(id, "transform");
-				xform.set_origin((Vector2)value);
-				set_bullet_property(id, "transform", xform);
-				break;
-			}
-			case (657950997): { // rotation
-				BulletType* bullet = bullets[bullet_index];
-				Transform2D xform = get_bullet_property(id, "transform");
-				Vector2 origin = xform.get_origin();
-				xform = xform.rotated(bullet->angle - xform.get_rotation() + 1.57079632679f + (double)value);
-				xform.set_origin(origin);
-				set_bullet_property(id, "transform", xform);
-				break;
-			}
-			case (253255468): { // angle
-				BulletType* bullet = bullets[bullet_index];
-				Transform2D xform = get_bullet_property(id, "transform");
-				Vector2 origin = xform.get_origin();
-				xform = xform.rotated((double)value - xform.get_rotation() + 1.57079632679f + bullet->rotation);
-				xform.set_origin(origin);
-				set_bullet_property(id, "transform", xform);
-				set_bullet_property(id, "direction", Vector2(1.0, 0.0).rotated((double)value));
-				break;
-			}
-			case (373355782): { // bullet_data
-				BulletType* bullet = bullets[bullet_index];
-				Color color = bullet->bullet_data;
-				rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
-				break;
-			}
-			case (265852802): { // layer
-				BulletType* bullet = bullets[bullet_index];
-				rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
-				break;
-			}
-			case (274200205): { // scale
-				BulletType* bullet = bullets[bullet_index];
-				Transform2D xform = get_bullet_property(id, "transform");
-				Vector2 origin = xform.get_origin();
-				xform = xform.scaled((bullet->scale / xform.get_scale().x) * Vector2(1.0, 1.0));
-				xform.set_origin(origin);
-				set_bullet_property(id, "transform", xform);
-				break;
-			}
-			default:
-				break;
-		}
+		// switch (property.hash()) { // find a better way to do this 
+		// 	case (596893057): { // transform
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
+		// 		Transform2D xform = bullet->transform;
+		// 		Vector2 origin = xform.get_origin();
+		// 		bullets[bullet_index]->set("position", origin);
+		// 		break;
+		// 	}
+		// 	case (1290762938): { // position
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		Transform2D xform = get_bullet_property(id, "transform");
+		// 		xform.set_origin((Vector2)value);
+		// 		set_bullet_property(id, "transform", xform);
+		// 		break;
+		// 	}
+		// 	case (657950997): { // rotation
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		Transform2D xform = get_bullet_property(id, "transform");
+		// 		Vector2 origin = xform.get_origin();
+		// 		xform = xform.rotated(bullet->angle - xform.get_rotation() + 1.57079632679f + (double)value);
+		// 		xform.set_origin(origin);
+		// 		set_bullet_property(id, "transform", xform);
+		// 		break;
+		// 	}
+		// 	case (253255468): { // angle
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		Transform2D xform = get_bullet_property(id, "transform");
+		// 		Vector2 origin = xform.get_origin();
+		// 		xform = xform.rotated((double)value - xform.get_rotation() + 1.57079632679f + bullet->rotation);
+		// 		xform.set_origin(origin);
+		// 		set_bullet_property(id, "transform", xform);
+		// 		set_bullet_property(id, "direction", Vector2(1.0, 0.0).rotated((double)value));
+		// 		break;
+		// 	}
+		// 	case (373355782): { // bullet_data
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		Color color = bullet->bullet_data;
+		// 		rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
+		// 		break;
+		// 	}
+		// 	case (265852802): { // layer
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
+		// 		break;
+		// 	}
+		// 	case (274200205): { // scale
+		// 		BulletType* bullet = bullets[bullet_index];
+		// 		Transform2D xform = get_bullet_property(id, "transform");
+		// 		Vector2 origin = xform.get_origin();
+		// 		xform = xform.scaled((bullet->scale / xform.get_scale().x) * Vector2(1.0, 1.0));
+		// 		xform.set_origin(origin);
+		// 		set_bullet_property(id, "transform", xform);
+		// 		break;
+		// 	}
+		// 	default:
+		// 		break;
+		// }
 	}
 }
 
-// TODO
+// DO NOT USE
 template <class Kit, class BulletType>
 Variant AbstractBulletPool<Kit, BulletType>::get_bullet_property(BulletID id, String property) {
-	if(is_bullet_valid(id)) {
-		int bullet_index = id.index;
+	return 0;
+	// if(is_bullet_valid(id)) {
+	// 	int bullet_index = id.index;
 
-		return bullets[bullet_index]->get(property);
-	}
-	return Variant();
+	// 	return bullets[bullet_index]->get(property);
+	// }
+	// return Variant();
 }
 
 
