@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://test.gd" id="1_1fl14"]
 [ext_resource type="Script" path="res://bullets_environment.gd" id="1_bplr8"]
 [ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
-[ext_resource type="BasicBulletKit" uid="uid://cmqs1mgfibcrk" path="res://system/kits/basic_bullet_kit.tres" id="3_8wx3n"]
+[ext_resource type="BasicBulletKit" uid="uid://dksxupmydxoe3" path="res://system/kits/basic_bullet_kit.tres" id="3_6ylpx"]
+[ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://system/kits/basic_bullet_kit_add.tres" id="4_m5ij2"]
+[ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://system/kits/basic_item_kit.tres" id="5_uusdv"]
 [ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="6_f1n2p"]
-[ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://system/kits/item_text_kit.tres" id="6_i0id4"]
-[ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://system/kits/basic_bullet_kit_add.tres" id="7_rsagd"]
-[ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://system/kits/basic_item_kit.tres" id="8_354dk"]
-[ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://system/kits/graze_particle_kit.tres" id="8_coq1a"]
+[ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://system/kits/graze_particle_kit.tres" id="6_jk67u"]
+[ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://system/kits/item_text_kit.tres" id="7_tvyfl"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_1fl14")
@@ -19,30 +19,30 @@ letter_0 = null
 [node name="BulletsEnvironment" type="Node" parent="."]
 script = ExtResource("1_bplr8")
 bullet_types_amount = 5
-bullet_type_0/bullet_kit = ExtResource("3_8wx3n")
+bullet_type_0/bullet_kit = ExtResource("3_6ylpx")
 bullet_type_0/pool_size = 24576
 bullet_type_0/z_index = 10
-bullet_type_1/bullet_kit = ExtResource("7_rsagd")
+bullet_type_1/bullet_kit = ExtResource("4_m5ij2")
 bullet_type_1/pool_size = 1024
 bullet_type_1/z_index = null
-bullet_type_2/bullet_kit = ExtResource("8_354dk")
+bullet_type_2/bullet_kit = ExtResource("5_uusdv")
 bullet_type_2/pool_size = 1024
 bullet_type_2/z_index = 5
-bullet_type_3/bullet_kit = ExtResource("8_coq1a")
+bullet_type_3/bullet_kit = ExtResource("6_jk67u")
 bullet_type_3/pool_size = 2048
 bullet_type_3/z_index = 6
-bullet_type_4/bullet_kit = ExtResource("6_i0id4")
+bullet_type_4/bullet_kit = ExtResource("7_tvyfl")
 bullet_type_4/pool_size = 1024
-bullet_type_4/z_index = null
+bullet_type_4/z_index = 6
 
 [node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
 
 [node name="arts" type="Node2D" parent="."]
 script = ExtResource("2_t2ehl")
-bullet_kit = ExtResource("3_8wx3n")
-item_kit = ExtResource("8_354dk")
-graze_kit = ExtResource("8_coq1a")
-item_text_kit = ExtResource("6_i0id4")
+bullet_kit = ExtResource("3_6ylpx")
+item_kit = ExtResource("5_uusdv")
+graze_kit = ExtResource("6_jk67u")
+item_text_kit = ExtResource("7_tvyfl")
 
 [node name="Sprite2D" type="Sprite2D" parent="arts"]
 scale = Vector2(0.5, 0.5)

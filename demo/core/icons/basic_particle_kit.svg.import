@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bo7ym4wlbkspd"
-path="res://.godot/imported/BasicBulletKit.svg-cb1b9e826d046a2cc17b5f8ef45f2cd0.ctex"
+uid="uid://dmwhg5ik4vts3"
+path="res://.godot/imported/basic_particle_kit.svg-6187c109e511921692a1b94fd8af828d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://system/kits/kit_icons/BasicBulletKit.svg"
-dest_files=["res://.godot/imported/BasicBulletKit.svg-cb1b9e826d046a2cc17b5f8ef45f2cd0.ctex"]
+source_file="res://core/icons/basic_particle_kit.svg"
+dest_files=["res://.godot/imported/basic_particle_kit.svg-6187c109e511921692a1b94fd8af828d.ctex"]
 
 [params]
 

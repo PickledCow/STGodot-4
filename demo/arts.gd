@@ -55,7 +55,7 @@ func _physics_process(_delta):
 	t += 1
 	if false:
 		var shoot_pos = Vector2(1280, 720) * 0.5
-		for i in 5: # 90
+		for i in 50: # 90
 			#var ang = pos.angle_to_point(shoot_pos) + randf_range(-0.1, 0.1) + PI
 			var ang := t * 0.01  + randf_range(-0.3, 0.3) + PI
 			#var ang = randf()*TAU
@@ -63,12 +63,12 @@ func _physics_process(_delta):
 			if id[0] == -1:
 				break
 	else:
-		if t % 20 == 0:
+		if t % 2 == 3:
 			Bullets.create_item(item_kit, Vector2(randf_range(0, 1280), -100), 0.0, randf()*TAU, 0.0, item_data)
 			#Bullets.set_damage()
-			
-		if t % 5 == 0:
-			Bullets.create_item(item_kit, Vector2(1280 * 0.5, 720 * 0.25), 20.0, randf()*TAU, 60.0, item_data)
+		
+		for i in 1:
+			Bullets.create_item(item_kit, Vector2(1280 * 0.5, 720 * 0.25), randf_range(2.0, 20.0), randf()*TAU, 60.0, item_data)
 	#print(Bullets.get_total_active_bullets())
 		
 	var new_pos := get_global_mouse_position()
@@ -87,6 +87,7 @@ func _physics_process(_delta):
 		var bullet_pos : Vector2 = Bullets.get_position(bullet_id)
 		
 		var drift : Vector2 = (pos - bullet_pos).normalized() * 2.0 + Vector2(randf_range(3.0, 6.0), 0.0).rotated(randf()*TAU)
+		#var drift : Vector2 = (pos - bullet_pos).normalized() * 10.0
 		#var drift : Vector2 = Vector2(randf_range(0.2, 0.5), 0.0).rotated((randf()*TAU))
 		
 		var color : Color = Color.WHITE
@@ -94,14 +95,28 @@ func _physics_process(_delta):
 		
 		Bullets.create_particle(graze_kit, pos, drift, randf()*TAU, 16.0, color)
 	
+	if pos.y < 200:
+		Bullets.collect_all(item_kit, self);
+	
 	for i in items.size():
 		var item_id : PackedInt64Array = items[i]
-		var value : float = 10000.0
-		var color : Color = Color(value, 0, 0, 0);
+		
+		var y1 := 1.0
+		var y2 := 0.5
+		var x1 := 300.0
+		var x2 := 600
+		var m := (y2-y1) / (x2-x1)
+		
+		var max_value := 1000.0
+		var value : float = max_value if Bullets.get_is_auto_collected(item_id) \
+									  else max_value * clamp(m * (pos.y - x1) + y1, 0.5, 1.0)
+		
+		
+		var color : Color = Color(floor(value) * 10, 0, 1 if value == max_value else 0, 0);
 		
 		var item_pos : Vector2 = Bullets.get_position(item_id)
 		
-		Bullets.create_particle(item_text_kit, item_pos, Vector2(0, -0.1), 0.0, 16, color)
+		Bullets.create_particle(item_text_kit, item_pos, Vector2(0, -0.5), 0.0, 16, color)
 		
 	
 	if t % 60 == 0:

@@ -41,6 +41,7 @@ class BulletPool {
 
     double animation_random = 0.0;
 
+    int* persistent_index;
 
 	BulletPool();
 	virtual ~BulletPool();
@@ -48,6 +49,9 @@ class BulletPool {
 	virtual void _init(CanvasItem* canvas_parent, 
 		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) = 0;
 	
+	virtual void _custom_init(CanvasItem* canvas_parent, 
+		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) = 0;
+
 	int get_available_bullets();
 	int get_active_bullets();
 
@@ -111,6 +115,9 @@ class AbstractBulletPool : public BulletPool {
 	virtual void _init(CanvasItem* canvas_parent, 
 		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) override;
 
+	virtual void _custom_init(CanvasItem* canvas_parent, 
+		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) override;
+
 	virtual int _process(double delta) override;
 
 
@@ -134,7 +141,7 @@ class AbstractBulletPool : public BulletPool {
     protected:
 	Ref<Kit> kit;
 	BulletType** bullets = nullptr;
-
+    
 	virtual inline void _init_bullet(BulletType* bullet);
 	virtual inline void _enable_bullet(BulletType* bullet);
 

@@ -1,6 +1,5 @@
-[gd_resource type="BasicParticleKit" load_steps=4 format=3 uid="uid://dfiwvm0gne8om"]
+[gd_resource type="BasicParticleKit" load_steps=3 format=3 uid="uid://dfiwvm0gne8om"]
 
-[ext_resource type="Script" path="res://system/kits/kit_icon_scripts/particle_kit.gd" id="1_7mr15"]
 [ext_resource type="Material" uid="uid://l74xuddwgjr8" path="res://system/kits/kit_materials/graze_particle_material.tres" id="1_l2xt5"]
 [ext_resource type="Texture2D" uid="uid://cqybtdl8gjta7" path="res://system/kits/spritesheets/graze.png" id="2_jn7a7"]
 
@@ -8,4 +7,3 @@
 texture = ExtResource("2_jn7a7")
 material = ExtResource("1_l2xt5")
 fade_time = 15.0
-script = ExtResource("1_7mr15")

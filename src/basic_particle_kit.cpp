@@ -40,7 +40,7 @@ BulletID BasicParticlePool::_create_particle(Vector2 pos, Vector2 drift, double 
     rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullet->draw_index);
     rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
 
-    return BulletID(bullet->cycle, set_index, bullet->pool_index);
+    return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
 
 }
 

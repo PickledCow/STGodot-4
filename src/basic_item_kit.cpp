@@ -44,9 +44,28 @@ void BasicItemKit::set_magnet_strength(double value) {
 }
 
 
+    
+void BasicItemPool::_custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
+    Ref<BasicItemKit> item_kit = (Ref<BasicItemKit>)kit;
+	active_rect = item_kit->active_rect;
+	bounce_rect = item_kit->bounce_rect;
+	warp_rect = item_kit->warp_rect;
+}
+
+
 std::unique_ptr<BulletPool> BasicItemKit::_create_pool() {						
 	return std::unique_ptr<BulletPool> (new BasicItemPool());					
 }
+
+bool BasicItemPool::_get_is_auto_collected(BulletID bullet_id) {
+	int index = persistent_index[bullet_id.index];
+	if (is_bullet_valid(bullet_id)) {
+		return bullets[index]->is_auto_collected;
+	}
+	return false;
+}
+
+
 
 Array BasicItemPool::_collect_and_magnet(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
     Array collected_items = Array();
@@ -63,9 +82,9 @@ Array BasicItemPool::_collect_and_magnet(Vector2 pos, Node2D* target, double col
 	 	double dist_sq = (bullet->position - pos).length_squared();
 		
 		if (dist_sq <= collect_radius_squared + 2.0 * magnet_radius * b + b2) {
-			if (!bullets[i]->grazed) {
-				bullet->grazed = true;
-				bullet->magneted = true;
+			if (!bullets[i]->is_grazed) {
+				bullet->is_grazed = true;
+				bullet->is_magneted = true;
 				bullet->magnet_target = target;
 			}
 
@@ -75,7 +94,7 @@ Array BasicItemPool::_collect_and_magnet(Vector2 pos, Node2D* target, double col
                 bullet_id.resize(3);
                 bullet_id.set(0, bullet->cycle);
                 bullet_id.set(1, set_index);
-                bullet_id.set(2, bullet->pool_index);
+                bullet_id.set(2, bullet->persistent_pool_index);
                 collected_items.append(bullet_id);
 			}
 		}
@@ -130,14 +149,15 @@ BulletID BasicItemPool::_create_item(Vector2 pos, double speed, double angle, do
     rendering_server->canvas_item_set_modulate(bullet->item_rid, compressed_data);
 
 
-    return BulletID(bullet->cycle, set_index, bullet->pool_index);
+    return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
 }
 
 void BasicItemPool::_enable_bullet(BasicItem* bullet) {
     // Reset some bullet variables that are not set by the create_bullet functions
-    bullet->grazed = false;
+    bullet->is_grazed = false;
+    bullet->is_magneted = false;
+    bullet->is_auto_collected = false;
     bullet->fading = false;
-    bullet->magneted = false;
     bullet->layer = 0;
     bullet->lifetime = 0.0;
     bullet->lifespan = INFINITY;
@@ -154,6 +174,16 @@ void BasicItemPool::_enable_bullet(BasicItem* bullet) {
         texture_rid);
 }
 
+
+void BasicItemPool::_collect_all(Node2D* target) {
+    for (int i = pool_size - 1; i >= available_bullets; i--) {
+		BasicItem* bullet = (BasicItem*)bullets[i];
+        bullet->is_grazed = true;
+        bullet->is_magneted = true;
+        bullet->is_auto_collected = true;
+        bullet->magnet_target = target;
+    }
+}
 
 bool BasicItemPool::_process_bullet(BasicItem* bullet, double delta) {
     Vector2 last_pos = bullet->position;
@@ -173,7 +203,7 @@ bool BasicItemPool::_process_bullet(BasicItem* bullet, double delta) {
         xform.set_origin(bullet->position);
         bullet->transform = xform;
 
-    } else if (bullet->magneted) {
+    } else if (bullet->is_magneted) {
         if (bullet->fade_timer) {
             bullet->fade_timer = 0.0;
             bullet->transform = bullet->transform.rotated(-bullet->transform.get_rotation());
@@ -217,3 +247,5 @@ bool BasicItemPool::_process_bullet(BasicItem* bullet, double delta) {
     // Return false if the bullet should not be deleted yet.
     return false;
 }
+
+

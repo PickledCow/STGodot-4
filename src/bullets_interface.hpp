@@ -101,7 +101,9 @@ public:
 	// New stuff
 
 	Array collide_and_graze(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
+
 	Array collect_and_magnet(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
+	void collect_all(Ref<BasicItemKit> kit, Node2D* target);
 
 	PackedInt64Array create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
 	PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
@@ -120,7 +122,7 @@ public:
 	double get_damage(PackedInt64Array bullet_id);
 	void set_damage(PackedInt64Array bullet_id, double damage);
 
-
+	bool get_is_auto_collected(PackedInt64Array bullet_id);
 	// void set_bullet_properties(Variant id, Dictionary properties);
 	// void set_bullet_properties_bulk(Array bullets, Dictionary properties);
 

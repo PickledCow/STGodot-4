@@ -1,7 +1,7 @@
 #ifndef BASIC_BULLET_KIT_H
 #define BASIC_BULLET_KIT_H
 
-#include <bullet_kit.hpp>
+#include <collision_bullet_kit.hpp>
 
 #include <godot_cpp/classes/physics_server2d.hpp>
 #include <godot_cpp/classes/rendering_server.hpp>
@@ -15,6 +15,8 @@ class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 
 	// void _init_bullet(Bullet* bullet); Use default implementation.
     public:
+    
+	void _custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin);
 
 	void _enable_bullet(BasicBullet* bullet);
 	// void _disable_bullet(Bullet* bullet); Use default implementation.
@@ -34,8 +36,8 @@ class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 
 
 // Bullet kit definition.
-class BasicBulletKit : public BulletKit {
-	GDCLASS(BasicBulletKit, BulletKit)
+class BasicBulletKit : public CollisionBulletKit {
+	GDCLASS(BasicBulletKit, CollisionBulletKit)
     public:
 	std::unique_ptr<BulletPool> _create_pool() override;
 	// BULLET_KIT(BasicBulletPool)

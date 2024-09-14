@@ -55,6 +55,8 @@ struct Bullet {
     int cycle = 0;
     // The index of the bullet in the pool
     int pool_index = -1;
+    // The initial index of the bullet in the pool
+    int persistent_pool_index = -1;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
     // Normalised direction vector for faster computation.
@@ -127,7 +129,7 @@ struct CollisionBullet : Bullet {
     double hitbox_scale = 0.5;
 
     // Flag for if the bullet has already been grazed. TODO: Add graze time for multi graze
-    bool grazed = false;
+    bool is_grazed = false;
 
 };
 
@@ -167,7 +169,9 @@ struct BasicBullet : CollisionBullet {
 
 struct BasicItem : CollisionBullet {
     // Flag for if the item is currently being magneted.
-	bool magneted;
+	bool is_magneted;
+    // Flag for if the item was autocollected
+	bool is_auto_collected;
     // Reference to the target Node2D to get position off.
 	Node2D *magnet_target;  
 

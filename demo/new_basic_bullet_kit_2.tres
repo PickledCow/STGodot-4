@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cq4ldm5wsstkr" path="res://system/kits/spritesheets/bullet.png" id="2_bycpu"]
 
 [resource]
+active_rect = Rect2(-50, -50, 1380, 820)
 texture = ExtResource("2_bycpu")
 material = ExtResource("1_gt4wq")
 texture_width = 2048.0
-active_rect = Rect2(-50, -50, 1380, 820)

@@ -1,5 +1,5 @@
 @tool
-@icon("res://core/icons/BulletsEnvironment.svg")
+@icon("res://core/icons/bullets_environment.svg")
 extends Node
 class_name BulletsEnvironment
 

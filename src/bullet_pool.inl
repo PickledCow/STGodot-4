@@ -87,7 +87,7 @@ AbstractBulletPool<Kit, BulletType>::~AbstractBulletPool() {
 
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::_init(CanvasItem* canvas_parent, 
-		int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
+	int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
 	
 	// Check if collisions are enabled and if layer or mask are != 0, 
 	// otherwise the bullets would not collide with anything anyways.
@@ -110,6 +110,11 @@ void AbstractBulletPool<Kit, BulletType>::_init(CanvasItem* canvas_parent,
 
 	Transform2D xform = Transform2D(0.0, origin);
 
+	// Create the persistent index
+	persistent_index = new int[pool_size];
+
+
+	// Initialise each bullet
 	for(int i = 0; i < pool_size; i++) {
 		BulletType* bullet = memnew(BulletType());
 		
@@ -118,23 +123,37 @@ void AbstractBulletPool<Kit, BulletType>::_init(CanvasItem* canvas_parent,
 		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_item);
 		rendering_server->canvas_item_set_material(bullet->item_rid, kit->material->get_rid());
 
-
-		Color color = Color(1.0, 1.0, 1.0, 0.0);
-		rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
+		// There's no need to do this as it's always overwritten.
+		// Color color = Color(1.0, 1.0, 1.0, 0.0);
+		// rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
 
 		bullet->pool_index = i;
+		bullet->persistent_pool_index = i;
+		
+		persistent_index[i] = i;
 
 		_init_bullet(bullet);
-
     }
+	
+    rotation_offset = kit->rotation_offset;
+
+	_custom_init(canvas_parent, set_index, kit, pool_size, z_index, origin);
+}
+
+
+
+template <class Kit, class BulletType>
+void AbstractBulletPool<Kit, BulletType>::_custom_init(CanvasItem* canvas_parent, 
+	int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
 }
 
 template <class Kit, class BulletType>
 int AbstractBulletPool<Kit, BulletType>::_process(double delta) {
-	active_rect = kit->active_rect;
-	bounce_rect = kit->bounce_rect;
-	warp_rect = kit->warp_rect;
-    rotation_offset = kit->rotation_offset;
+	// // prob should move this to init...
+	// active_rect = kit->active_rect;
+	// bounce_rect = kit->bounce_rect;
+	// warp_rect = kit->warp_rect;
+    // rotation_offset = kit->rotation_offset;
 
 	int amount_variation = 0;
 
@@ -184,13 +203,16 @@ BulletID AbstractBulletPool<Kit, BulletType>::obtain_bullet() {
 
 		BulletType* bullet = bullets[available_bullets];
 
-		rendering_server->canvas_item_set_draw_index(bullet->item_rid, (draw_index++));
+		rendering_server->canvas_item_set_draw_index(bullet->item_rid, (draw_index));
 		bullet->draw_index = draw_index++;
 		if (draw_index > 16777215) draw_index = 0; // 2^24
 		
 		_enable_bullet(bullet);
 
-		return BulletID(bullet->cycle, set_index, bullet->pool_index);
+		// bullet->pool_index = available_bullets;
+		// persistent_index[bullet->persistent_pool_index] = bullet->pool_index;
+
+		return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
 	}
 	return BulletID(-1, -1, -1);
 }
@@ -215,13 +237,19 @@ bool AbstractBulletPool<Kit, BulletType>::release_bullet(BulletID id) {
 
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::_release_bullet(int index) {
+	// int true_index = persistent_index[index];
+
 	BulletType* bullet = bullets[index];
 
 	_disable_bullet(bullet);
 	bullet->cycle += 1;
 
+	// Swap the now deleted bullet and the lowest active bullet 
 	_swap(bullets[index], bullets[available_bullets]);
 	_swap(bullets[index]->pool_index, bullets[available_bullets]->pool_index);
+	// After the swap, update the persistent indices
+	persistent_index[bullets[index]->persistent_pool_index] = bullets[index]->pool_index;
+	persistent_index[bullets[available_bullets]->persistent_pool_index] = bullets[available_bullets]->pool_index;
 
 	available_bullets += 1;
 	active_bullets -= 1;
@@ -229,8 +257,9 @@ void AbstractBulletPool<Kit, BulletType>::_release_bullet(int index) {
 
 template <class Kit, class BulletType>
 bool AbstractBulletPool<Kit, BulletType>::is_bullet_valid(BulletID id) {
-	if (id.index >= 0) { //  && id.index < available_bullets
-		return bullets[id.index]->cycle == id.cycle;
+	int index = persistent_index[id.index];
+	if (index >= 0) { //  && id.index < available_bullets
+		return bullets[index]->cycle == id.cycle;
 	}
 	return false;
 }
@@ -244,37 +273,39 @@ bool AbstractBulletPool<Kit, BulletType>::is_bullet_existing(int index) {
 	return false;
 }
 
-
-
 template <class Kit, class BulletType>
 Vector2 AbstractBulletPool<Kit, BulletType>::get_position(BulletID bullet_id) {
+	int index = persistent_index[bullet_id.index];
 	if (is_bullet_valid(bullet_id)) {
-		return bullets[bullet_id.index]->position;
+		return bullets[index]->position;
 	}
 	return Vector2();
 }
 
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::set_position(BulletID bullet_id, Vector2 position) {
+	int index = persistent_index[bullet_id.index];
 	if (is_bullet_valid(bullet_id)) {
-		bullets[bullet_id.index]->position = position;
-		bullets[bullet_id.index]->transform.set_origin(position);
+		bullets[index]->position = position;
+		bullets[index]->transform.set_origin(position);
 	}
 }
 
 
 template <class Kit, class BulletType>
 double AbstractBulletPool<Kit, BulletType>::get_damage(BulletID bullet_id) {
+	int index = persistent_index[bullet_id.index];
 	if (is_bullet_valid(bullet_id)) {
-		return bullets[bullet_id.index]->damage;
+		return bullets[index]->damage;
 	}
 	return 0.0;
 }
 
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::set_damage(BulletID bullet_id, double damage) {
+	int index = persistent_index[bullet_id.index];
 	if (is_bullet_valid(bullet_id)) {
-		bullets[bullet_id.index]->damage = damage;
+		bullets[index]->damage = damage;
 	}
 }
 

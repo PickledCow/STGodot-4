@@ -31,7 +31,7 @@ float get_digit_value(float number, float digit) {
 void fragment() {
 	float digits = floor(log10(modulate.r+1.0))+1.0; // Find how many digits are in the number using log10, with +1 being for floating point imprecision compensation
 	float digit = floor((1.0 - UV.x) * digits); // Given our current UV, figure out which digit we are on
-	
+
 	vec2 uv = vec2(get_digit_value(modulate.r, digit) * 0.1, 0.0) + vec2(0.1 * mod(UV.x * digits, one), 1.0 * UV.y); // Find what part of the texture to use
 	vec4 tex = texture(TEXTURE, uv); // Read from the texture given our coordinates
 	COLOR = tex;

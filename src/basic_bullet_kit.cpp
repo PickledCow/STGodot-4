@@ -11,6 +11,14 @@ std::unique_ptr<BulletPool> BasicBulletKit::_create_pool() {
 	return std::unique_ptr<BulletPool> (new BasicBulletPool());					
 }
 
+    
+void BasicBulletPool::_custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
+    Ref<BasicBulletKit> bullet_kit = (Ref<BasicBulletKit>)kit;
+	active_rect = bullet_kit->active_rect;
+	bounce_rect = bullet_kit->bounce_rect;
+	warp_rect = bullet_kit->warp_rect;
+}
+
 
 BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
     available_bullets -= 1;
@@ -67,7 +75,7 @@ BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angl
     
     
 
-    return BulletID(bullet->cycle, set_index, bullet->pool_index);
+    return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
 	
 }
 
@@ -96,10 +104,10 @@ Array BasicBulletPool::_collide_and_graze(Vector2 pos, double hitbox_radius, dou
             bullet_id.resize(3);
             bullet_id.set(0, bullets[i]->cycle);
             bullet_id.set(1, set_index);
-            bullet_id.set(2, bullets[i]->pool_index);
+            bullet_id.set(2, bullets[i]->persistent_pool_index);
 
-			if (!bullets[i]->grazed) {
-				bullets[i]->grazed = true;
+			if (!bullets[i]->is_grazed) {
+				bullets[i]->is_grazed = true;
                 ((Array)collisions_and_graze[1]).append(bullet_id);
 			}
 
@@ -117,7 +125,7 @@ void BasicBulletPool::_enable_bullet(BasicBullet* bullet) {
     // Reset some bullet variables that are not set by the create_bullet functions
     bullet->auto_delete = true;
     // bullet->process_mode = A1;
-    bullet->grazed = false;
+    bullet->is_grazed = false;
     bullet->layer = 0;
     bullet->lifetime = 0.0;
     bullet->lifespan = INFINITY;

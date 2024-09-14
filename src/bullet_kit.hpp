@@ -31,21 +31,7 @@
 
 #include <godot_cpp/classes/shape2d.hpp>
 #include <godot_cpp/classes/texture2d.hpp>
-#include <godot_cpp/classes/material.hpp>
-// #define BULLET_KIT(BulletPoolType)							\
-// std::unique_ptr<BulletPool> _create_pool() override;
-
-// #define BULLET_KIT_REGISTRATION(BulletKitType, BulletType)											\
-// register_property<BulletKitType, String>("bullet_class_name",										\
-// 	&BulletKitType::_property_setter, &BulletKitType::_property_getter, #BulletType,			\
-// 	GODOT_METHOD_RPC_MODE_DISABLED, GODOT_PROPERTY_USAGE_NOEDITOR);
-
-// #define BULLET_KIT_IMPLEMENTATION(BulletKitType, BulletsPoolType)					\
-// std::unique_ptr<BulletPool> BulletKitType::_create_pool() {						\
-// 	return std::unique_ptr<BulletPool>(new BulletPoolType());						\
-// }																										
-
-
+#include <godot_cpp/classes/material.hpp>																								
 
 namespace godot {
 
@@ -76,12 +62,12 @@ class BulletKit : public Resource {
 	// // Which layer(s) bullets from this kit are of. In most cases only one should be active.
 	// int collision_layer = 0;
 	
-	// Controls where the bullets can live, if a bullet exits this rect, it will be removed.
-	Rect2 active_rect = Rect2();
-	// The box for where the bullets bounce off of.
-	Rect2 bounce_rect = Rect2();
-	// The box for where the bullets warp to the other side of the screen.
-	Rect2 warp_rect = Rect2();
+	// // Controls where the bullets can live, if a bullet exits this rect, it will be removed.
+	// Rect2 active_rect = Rect2();
+	// // The box for where the bullets bounce off of.
+	// Rect2 bounce_rect = Rect2();
+	// // The box for where the bullets warp to the other side of the screen.
+	// Rect2 warp_rect = Rect2();
 	// The scale at which physics operates at for this kit. Useful for slowdown effect.
 	double time_scale = 1.0;
 
@@ -95,10 +81,6 @@ class BulletKit : public Resource {
 	double get_texture_width();
 	bool get_facing_up();
 	double get_fade_time();
-	int get_collision_layer();
-	Rect2 get_active_rect();
-	Rect2 get_bounce_rect();
-	Rect2 get_warp_rect();
 	double get_time_scale();
     
 	void set_texture(Ref<Texture2D> value);
@@ -106,10 +88,7 @@ class BulletKit : public Resource {
 	void set_texture_width(double value);
 	void set_facing_up(bool value);
 	void set_fade_time(double value);
-	void set_collision_layer(int value);
-	void set_active_rect(Rect2 value);
-	void set_bounce_rect(Rect2 value);
-	void set_warp_rect(Rect2 value);
+	
 	void set_time_scale(double value);
 
 	
@@ -118,9 +97,9 @@ class BulletKit : public Resource {
 
     protected:
     static void _bind_methods();
-
-
 };
+
+
 }
 
 

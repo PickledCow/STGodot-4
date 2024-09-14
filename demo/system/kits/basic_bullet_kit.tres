@@ -1,14 +1,10 @@
-[gd_resource type="BasicBulletKit" load_steps=4 format=3 uid="uid://cmqs1mgfibcrk"]
+[gd_resource type="BasicBulletKit" load_steps=3 format=3 uid="uid://dksxupmydxoe3"]
 
 [ext_resource type="Material" uid="uid://but1rwxvgpnqk" path="res://system/kits/kit_materials/basic_bullet_material.tres" id="1_owr1i"]
-[ext_resource type="Script" path="res://system/kits/kit_icon_scripts/bullet_kit.gd" id="2_3sl4q"]
 [ext_resource type="Texture2D" uid="uid://cq4ldm5wsstkr" path="res://system/kits/spritesheets/bullet.png" id="2_i7ksx"]
 
 [resource]
+active_rect = Rect2(-50, -50, 1380, 820)
 texture = ExtResource("2_i7ksx")
 material = ExtResource("1_owr1i")
 texture_width = 2048.0
-active_rect = Rect2(-128, -128, 1536, 976)
-bounce_rect = Rect2(0, 0, 1280, 720)
-warp_rect = Rect2(-64, -64, 1408, 848)
-script = ExtResource("2_3sl4q")

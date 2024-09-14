@@ -58,6 +58,13 @@ void BulletsInterface::_bind_methods() {
 	);
 		
 	ClassDB::bind_method(D_METHOD(
+		"collect_all",
+		"item_kit",
+		"target_node"), 
+		&BulletsInterface::collect_all
+	);
+		
+	ClassDB::bind_method(D_METHOD(
 		"create_item",
 		"item_kit",
 		"position",
@@ -91,18 +98,16 @@ void BulletsInterface::_bind_methods() {
 		"fade"), 
 		&BulletsInterface::create_shot_a1
 	);
-
-
 	
 	ClassDB::bind_method(D_METHOD(
 		"get_position",
-		"bullet_id"), 
+		"id"), 
 		&BulletsInterface::get_position
 	);
 	
 	ClassDB::bind_method(D_METHOD(
 		"set_position",
-		"bullet_id",
+		"id",
 		"position"), 
 		&BulletsInterface::set_position
 	);
@@ -110,17 +115,23 @@ void BulletsInterface::_bind_methods() {
 	
 	ClassDB::bind_method(D_METHOD(
 		"get_damage",
-		"bullet_id"), 
+		"id"), 
 		&BulletsInterface::get_damage
 	);
 	
 	ClassDB::bind_method(D_METHOD(
 		"set_damage",
-		"bullet_id",
+		"id",
 		"damage"), 
 		&BulletsInterface::set_damage
 	);
 		
+		
+	ClassDB::bind_method(D_METHOD(
+		"get_is_auto_collected",
+		"item_id"), 
+		&BulletsInterface::get_is_auto_collected
+	);
 }
 
 BulletsInterface::BulletsInterface() { }
@@ -217,11 +228,11 @@ void BulletsInterface::mount(Node* bullets_environment) {
 		pools[i].size = pool_size;
 		pools[i].z_index = z_index;
 
-		// Initialise visuals
+		// Initialise 
 		int pool_set_available_bullets = 0;
 		pools[i].pool->_init(
 			(CanvasItem*)bullets_environment->get_parent(), 
-			pool_set_available_bullets,
+			i,
 			kit, 
 			pool_size, 
 			z_index, 
@@ -261,6 +272,7 @@ Node* BulletsInterface::get_bullets_environment() {
 	return bullets_environment;
 }
 
+// DO NOT USE
 bool BulletsInterface::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
 	if(available_bullets > 0 && kits_to_pool_index.has(kit)) {
 		PackedInt64Array pool_index = kits_to_pool_index[kit].operator PackedInt64Array();
@@ -421,6 +433,11 @@ Array BulletsInterface::collect_and_magnet(Ref<BasicItemKit> kit, Vector2 pos, N
 	return pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius);
 }
 
+void BulletsInterface::collect_all(Ref<BasicItemKit> kit, Node2D* target) {
+	int pool_index = kits_to_pool_index[kit];
+	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
+	pool->_collect_all(target);
+}
 
 PackedInt64Array BulletsInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
 
@@ -490,11 +507,8 @@ PackedInt64Array BulletsInterface::create_particle(Ref<BasicParticleKit> kit, Ve
 		to_return.set(1, bullet_id.set);
 		to_return.set(2, bullet_id.index);
 
-
 		return to_return;
 	}
-
-
 
 	return invalid_id;
 
@@ -502,8 +516,6 @@ PackedInt64Array BulletsInterface::create_particle(Ref<BasicParticleKit> kit, Ve
 
 
 Vector2 BulletsInterface::get_position(PackedInt64Array bullet_id) {
-	// int pool_index = kits_to_pool_index[kit];
-	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
 	if (bullet_id[1] >= 0) {
 		return pools[bullet_id[1]].pool->get_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
 	}
@@ -512,8 +524,6 @@ Vector2 BulletsInterface::get_position(PackedInt64Array bullet_id) {
 }
 
 void BulletsInterface::set_position(PackedInt64Array bullet_id, Vector2 position) {
-	// int pool_index = kits_to_pool_index[kit];
-	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
 	if (bullet_id[1] >= 0) {
 		pools[bullet_id[1]].pool->set_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), position);
 	}
@@ -522,8 +532,6 @@ void BulletsInterface::set_position(PackedInt64Array bullet_id, Vector2 position
 
 
 double BulletsInterface::get_damage(PackedInt64Array bullet_id) {
-	// int pool_index = kits_to_pool_index[kit];
-	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
 	if (bullet_id[1] >= 0) {
 		return pools[bullet_id[1]].pool->get_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
 	}
@@ -532,11 +540,17 @@ double BulletsInterface::get_damage(PackedInt64Array bullet_id) {
 }
 
 void BulletsInterface::set_damage(PackedInt64Array bullet_id, double damage) {
-	// int pool_index = kits_to_pool_index[kit];
-	// BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
 	if (bullet_id[1] >= 0) {
 		pools[bullet_id[1]].pool->set_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage);
 	}
 
 }
 
+
+bool BulletsInterface::get_is_auto_collected(PackedInt64Array bullet_id) {
+	BasicItemPool* pool = (BasicItemPool*)pools[bullet_id[1]].pool.get();
+	if (bullet_id[1] >= 0) {
+		return pool->_get_is_auto_collected(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+	}
+	return false;
+}

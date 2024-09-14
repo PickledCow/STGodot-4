@@ -4,6 +4,7 @@ import sys
 
 env = SConscript("godot-cpp/SConstruct")
 
+
 # For reference:
 # - CCFLAGS are compilation flags shared between C and C++
 # - CFLAGS are for C-specific compilation flags
@@ -18,14 +19,14 @@ sources = Glob("src/*.cpp")
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "demo/bin/libgdexample.{}.{}.framework/libgdexample.{}.{}".format(
+        "demo/bin/libstgodot.{}.{}.framework/libstgodot.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        "demo/bin/libgdexample{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo/bin/libstgodot{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 

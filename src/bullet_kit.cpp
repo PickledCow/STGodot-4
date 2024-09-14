@@ -22,18 +22,6 @@ double BulletKit::get_fade_time() {
     return fade_time;
 }
 
-Rect2 BulletKit::get_active_rect() {
-    return active_rect;
-}
-
-Rect2 BulletKit::get_bounce_rect() {
-    return bounce_rect;
-}
-
-Rect2 BulletKit::get_warp_rect() {
-    return warp_rect;
-}
-
 double BulletKit::get_time_scale() {
     return time_scale;
 }
@@ -57,22 +45,9 @@ void BulletKit::set_fade_time(double value) {
     fade_time = value;
 }
 
-void BulletKit::set_active_rect(Rect2 value) {
-    active_rect = value;
-}
-
-void BulletKit::set_bounce_rect(Rect2 value) {
-    bounce_rect = value;
-}
-
-void BulletKit::set_warp_rect(Rect2 value) {
-    warp_rect = value;
-}
-
 void BulletKit::set_time_scale(double value) {
     time_scale = value;
 }
-
 
 void BulletKit::_bind_methods() {
     
@@ -101,15 +76,6 @@ void BulletKit::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_fade_time"), &BulletKit::get_fade_time);
     ClassDB::bind_method(D_METHOD("set_fade_time", "p_fade_time"), &BulletKit::set_fade_time);
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "fade_time"), "set_fade_time", "get_fade_time");
-    ClassDB::bind_method(D_METHOD("get_active_rect"), &BulletKit::get_active_rect);
-    ClassDB::bind_method(D_METHOD("set_active_rect", "p_active_rect"), &BulletKit::set_active_rect);
-    ADD_PROPERTY(PropertyInfo(Variant::RECT2, "active_rect"), "set_active_rect", "get_active_rect");
-    ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BulletKit::get_bounce_rect);
-    ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce_rect"), &BulletKit::set_bounce_rect);
-    ADD_PROPERTY(PropertyInfo(Variant::RECT2, "bounce_rect"), "set_bounce_rect", "get_bounce_rect");
-    ClassDB::bind_method(D_METHOD("get_warp_rect"), &BulletKit::get_warp_rect);
-    ClassDB::bind_method(D_METHOD("set_warp_rect", "p_warp_rect"), &BulletKit::set_warp_rect);
-    ADD_PROPERTY(PropertyInfo(Variant::RECT2, "warp_rect"), "set_warp_rect", "get_warp_rect");
     ClassDB::bind_method(D_METHOD("get_time_scale"), &BulletKit::get_time_scale);
     ClassDB::bind_method(D_METHOD("set_time_scale", "p_time_scale"), &BulletKit::set_time_scale);
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, 
@@ -118,11 +84,4 @@ void BulletKit::_bind_methods() {
             "0,2,0.001,or_greater"
         ),
         "set_time_scale", "get_time_scale");
-    
-
-
-    // ClassDB::bind_method(D_METHOD("get_amplitude"), &GDExample::get_amplitude);
-	// ClassDB::bind_method(D_METHOD("set_amplitude", "p_amplitude"), &GDExample::set_amplitude);
-	// ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "amplitude"), "set_amplitude", "get_amplitude");
-
 }

@@ -1,7 +1,7 @@
 #ifndef BASIC_ITEM_KIT_H
 #define BASIC_ITEM_KIT_H
 
-#include <bullet_kit.hpp>
+#include <collision_bullet_kit.hpp>
 
 #include <godot_cpp/classes/physics_server2d.hpp>
 #include <godot_cpp/classes/rendering_server.hpp>
@@ -15,6 +15,8 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 
 	// void _init_bullet(Bullet* bullet); Use default implementation.
     public:
+    
+	void _custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin);
 
 	void _enable_bullet(BasicItem* bullet);
 	// void _disable_bullet(Bullet* bullet); Use default implementation.
@@ -23,6 +25,9 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 	Array _collect_and_magnet(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
     BulletID _create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
     
+    void _collect_all(Node2D* target);
+
+    bool _get_is_auto_collected(BulletID bullet_id);
 
 
     // void _init_shot_A1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
@@ -31,8 +36,8 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 
 
 // Bullet kit definition.
-class BasicItemKit : public BulletKit {
-	GDCLASS(BasicItemKit, BulletKit)
+class BasicItemKit : public CollisionBulletKit {
+	GDCLASS(BasicItemKit, CollisionBulletKit)
     public:
 	// Vector of what directions items naturally fall at. 
 	Vector2 gravity = Vector2();
