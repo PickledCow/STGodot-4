@@ -138,6 +138,7 @@ void BasicBulletPool::_enable_bullet(BasicBullet* bullet) {
     // bullet->bounce_count = 0;
     // bullet->bounce_surfaces = 0b1100;
     bullet->patterns.clear();
+    bullet->custom_data.clear();
     Rect2 texture_rect = Rect2(-0.5, -0.5, 1.0, 1.0);
     RID texture_rid = kit->texture->get_rid();
     

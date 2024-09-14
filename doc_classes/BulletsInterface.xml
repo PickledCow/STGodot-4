@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="BulletsInterface" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="collect_all">
+			<return type="void" />
+			<param index="0" name="item_kit" type="BasicItemKit" />
+			<param index="1" name="target_node" type="Node2D" />
+			<description>
+				Haaaa
+			</description>
+		</method>
+		<method name="collect_and_magnet">
+			<return type="Array" />
+			<param index="0" name="item_kit" type="BasicItemKit" />
+			<param index="1" name="target_node" type="Vector2" />
+			<param index="2" name="position" type="Node2D" />
+			<param index="3" name="collection_radius" type="float" />
+			<param index="4" name="magnet_radius" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="collide_and_graze">
+			<return type="Array" />
+			<param index="0" name="bullet_kit" type="BasicBulletKit" />
+			<param index="1" name="position" type="Vector2" />
+			<param index="2" name="hitbox_radius" type="float" />
+			<param index="3" name="graze_radius" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="create_item">
+			<return type="PackedInt64Array" />
+			<param index="0" name="item_kit" type="BasicItemKit" />
+			<param index="1" name="position" type="Vector2" />
+			<param index="2" name="speed" type="float" />
+			<param index="3" name="angle" type="float" />
+			<param index="4" name="spin" type="float" />
+			<param index="5" name="item_data" type="PackedFloat64Array" />
+			<description>
+			</description>
+		</method>
+		<method name="create_particle">
+			<return type="PackedInt64Array" />
+			<param index="0" name="particle_kit" type="BasicParticleKit" />
+			<param index="1" name="position" type="Vector2" />
+			<param index="2" name="drift" type="Vector2" />
+			<param index="3" name="rotation" type="float" />
+			<param index="4" name="size" type="float" />
+			<param index="5" name="color" type="Color" />
+			<description>
+			</description>
+		</method>
+		<method name="create_shot_a1">
+			<return type="PackedInt64Array" />
+			<param index="0" name="bullet_kit" type="BasicBulletKit" />
+			<param index="1" name="position" type="Vector2" />
+			<param index="2" name="speed" type="float" />
+			<param index="3" name="angle" type="float" />
+			<param index="4" name="bullet_data" type="PackedFloat64Array" />
+			<param index="5" name="fade" type="bool" />
+			<description>
+			</description>
+		</method>
+		<method name="get_bullets_environment">
+			<return type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="get_damage">
+			<return type="float" />
+			<param index="0" name="id" type="PackedInt64Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_is_auto_collected">
+			<return type="bool" />
+			<param index="0" name="item_id" type="PackedInt64Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_position">
+			<return type="Vector2" />
+			<param index="0" name="id" type="PackedInt64Array" />
+			<description>
+			</description>
+		</method>
+		<method name="get_total_active_bullets">
+			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="mount">
+			<return type="void" />
+			<param index="0" name="bullets_environment" type="Node" />
+			<description>
+			</description>
+		</method>
+		<method name="set_damage">
+			<return type="void" />
+			<param index="0" name="id" type="PackedInt64Array" />
+			<param index="1" name="damage" type="float" />
+			<description>
+			</description>
+		</method>
+		<method name="set_position">
+			<return type="void" />
+			<param index="0" name="id" type="PackedInt64Array" />
+			<param index="1" name="position" type="Vector2" />
+			<description>
+			</description>
+		</method>
+		<method name="unmount">
+			<return type="void" />
+			<param index="0" name="_unnamed_arg0" type="Node" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>

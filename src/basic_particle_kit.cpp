@@ -50,6 +50,7 @@ void BasicParticlePool::_enable_bullet(BasicParticle* bullet) {
     bullet->layer = 0;
     bullet->lifetime = 0.0;
     bullet->lifespan = kit->fade_time;
+    bullet->custom_data.clear();
 
     Rect2 texture_rect = Rect2(-0.5, -0.5, 1.0, 1.0);
     RID texture_rid = kit->texture->get_rid();

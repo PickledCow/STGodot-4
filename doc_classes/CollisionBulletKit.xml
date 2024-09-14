@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CollisionBulletKit" inherits="BulletKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<members>
+		<member name="active_rect" type="Rect2" setter="set_active_rect" getter="get_active_rect" default="Rect2(0, 0, 0, 0)">
+		</member>
+		<member name="bounce_rect" type="Rect2" setter="set_bounce_rect" getter="get_bounce_rect" default="Rect2(0, 0, 0, 0)">
+		</member>
+		<member name="warp_rect" type="Rect2" setter="set_warp_rect" getter="get_warp_rect" default="Rect2(0, 0, 0, 0)">
+		</member>
+	</members>
+</class>

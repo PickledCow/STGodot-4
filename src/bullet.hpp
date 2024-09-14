@@ -2,23 +2,23 @@
 // 
 // Copyright (c) 2021 Samuele Zolfanelli, 2024 Pickled Cow
 // 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
+// Permission is hereby granted, free of charge, to any person obtaining a copy 
+// of this software and associated documentation files (the "Software"), to 
+// deal in the Software without restriction, including without limitation the 
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or 
+// sell copies of the Software, and to permit persons to whom the Software is 
 // furnished to do so, subject to the following conditions:
 // 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be included in 
+// all copies or substantial portions of the Software.
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
 
 #ifndef BULLET_H
 #define BULLET_H
@@ -27,10 +27,12 @@
 
 namespace godot {
 
+// Mode of process for BasicBullet. Higher number classes also run the process
+// of lower types. A types act with angles and B types act with x-y velocities.
 enum processMode { A1, A2, A3, B1, B2, B3 };
 // enum bounceMode { BOUNCE, WARP };
 
-// A stripped down reference to a Bullet mainly for use within Godot
+// A stripped down reference to a Bullet mainly for use within Godot.
 struct BulletID {
 	int cycle;
 	int set;
@@ -40,8 +42,10 @@ struct BulletID {
 		cycle(cycle), set(set), index(index) {}
 };
 
-// A basic bullet class. Holds onto information about the bullet that then a BulletKit is able to act upon.
-// The base bullet is able to keep track of general rendering properties along with other critical behaviour
+// A basic bullet struct. Holds onto information about the bullet that then a 
+// corresponding BulletKit is able to act upon.
+// The base bullet is able to keep track of general rendering properties along 
+// with other critical behaviour.
 struct Bullet {
 
     public:
@@ -53,9 +57,9 @@ struct Bullet {
     RID item_rid;
     // The reuse count of the bullet. Used to check if the bullet has despawned and is being recycled.
     int cycle = 0;
-    // The index of the bullet in the pool
+    // The index of the bullet in the pool. This value changes as its position in the pool is shuffled around.
     int pool_index = -1;
-    // The initial index of the bullet in the pool
+    // The initial index of the bullet in the pool. This value does not change if the bullet changes positions in the pool.
     int persistent_pool_index = -1;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
@@ -83,9 +87,9 @@ struct Bullet {
     processMode process_mode = A1;
 
     // The vertical offset of the bullet in texture pixels (positive moves sprite upwards).
-    // Horizontal offset is unsupported
+    // Horizontal offset is unsupported and should be aligned within the spritesheet as there is no space left in the shader data structure.
     double texture_offset = 0.0;
-    // The color that fade effects should be shaded in. 
+    // Variable for holding color data. Intended to be used for creating bullet clear effects but can be used in other ways.
     Color fade_color = Color();
     // The sprite rotation offset compared to angle of travel, measured in radians.
     double rotation = 0.0;
@@ -93,19 +97,17 @@ struct Bullet {
     double spin = 0.0;
     // How many ticks left of fade animation the bullet has left to complete.
     double fade_timer = 0.0;
-    // How many frames of fade animation the bullet has in total. 
-    // This variable and the one above can be both modified to have custom fade in time for individual bullets.
+    // How many frames of fade animation the bullet has in total.
     double fade_time = 0.0;
     // Controls if the bullet fades out when it is destroyed.
     bool fade_delete = false;
     // If true, automatically deletes the bullet if outside the playfield bounds.
     bool auto_delete = true;
-    // Whether or not to render the bullet upright. Is indifferent to orientation of other bullets on the spritesheet.
-    bool upright = false;
+    // Whether or not to render the bullet upright. Also disables kit rotation settings.
+    bool is_upright = false;
 
     // ----------------------------------------
     // Common movement variables
-    // Also used for A1 BasicBullet movement type variables.
     // ----------------------------------------
 
     // The angle of the bullet.
@@ -117,13 +119,16 @@ struct Bullet {
     double damage = 0.0;
     // Custom variable that can be used for elemental types for example.
     int damage_type = 0;
+
+    // Additional custom data if the bullet needs to hold further information.
+    Variant custom_data;
 };
 
 struct BasicParticle : Bullet {
 
 };
 
-
+// Abstract struct that bullets with collision inherit from
 struct CollisionBullet : Bullet {
     // Ratio of the visual sprite and collision box.
     double hitbox_scale = 0.5;
@@ -133,7 +138,7 @@ struct CollisionBullet : Bullet {
 
 };
 
-
+// Basic bullet for general purpose use
 struct BasicBullet : CollisionBullet {
     // Internal Array for keeping track of bullet transforms.
     Array patterns;
@@ -167,6 +172,7 @@ struct BasicBullet : CollisionBullet {
 
 };
 
+// 
 struct BasicItem : CollisionBullet {
     // Flag for if the item is currently being magneted.
 	bool is_magneted;

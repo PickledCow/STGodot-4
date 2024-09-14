@@ -35,8 +35,6 @@ bullet_type_4/bullet_kit = ExtResource("7_tvyfl")
 bullet_type_4/pool_size = 1024
 bullet_type_4/z_index = 6
 
-[node name="MultiMeshInstance2D" type="MultiMeshInstance2D" parent="."]
-
 [node name="arts" type="Node2D" parent="."]
 script = ExtResource("2_t2ehl")
 bullet_kit = ExtResource("3_6ylpx")

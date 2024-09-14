@@ -1,33 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BulletKit" inherits="Resource" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
-	[b]this text will be shown as bold[/b]
 	</brief_description>
 	<description>
-	[b]this text will be shown as bold[/b]
 	</description>
 	<tutorials>
 	</tutorials>
 	<members>
-		<member name="active_rect" type="Rect2" setter="set_active_rect" getter="get_active_rect" default="Rect2(0, 0, 0, 0)">
-		</member>
-		<member name="bounce_rect" type="Rect2" setter="set_bounce_rect" getter="get_bounce_rect" default="Rect2(0, 0, 0, 0)">
-		</member>
-		<member name="collision_layer" type="int" setter="set_collision_layer" getter="get_collision_layer" default="0">
-		</member>
-		<member name="collision_shape" type="Shape2D" setter="set_collision_shape" getter="get_collision_shape">
-		</member>
-		<member name="collisions_enabled" type="bool" setter="set_collisions_enabled" getter="get_collisions_enabled" default="true">
+		<member name="facing_up" type="bool" setter="set_facing_up" getter="get_facing_up" default="true">
 		</member>
 		<member name="fade_time" type="float" setter="set_fade_time" getter="get_fade_time" default="8.0">
 		</member>
 		<member name="material" type="Material" setter="set_material" getter="get_material">
 		</member>
+		<member name="texture" type="Texture2D" setter="set_texture" getter="get_texture">
+		</member>
 		<member name="texture_width" type="float" setter="set_texture_width" getter="get_texture_width" default="0.0">
 		</member>
 		<member name="time_scale" type="float" setter="set_time_scale" getter="get_time_scale" default="1.0">
-		</member>
-		<member name="warp_rect" type="Rect2" setter="set_warp_rect" getter="get_warp_rect" default="Rect2(0, 0, 0, 0)">
 		</member>
 	</members>
 </class>
