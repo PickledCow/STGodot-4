@@ -7,6 +7,9 @@ extends Node2D
 
 var data: PackedFloat64Array
 
+var red_butterfly: PackedFloat64Array
+var blue_butterfly: PackedFloat64Array
+
 var item_data: PackedFloat64Array
 
 var t := 0
@@ -32,6 +35,44 @@ func _ready():
 	data[12] = 1.0
 	data[13] = 0				# damage type
 	data[14] = 0				# damage amount
+	
+	red_butterfly = PackedFloat64Array()
+	red_butterfly.resize(15)
+	red_butterfly[0] = 128 * 9			# source x (integer) # (16+8*(c/4))
+	red_butterfly[1] = 128 * 2			# source y (integer) # (24+2*(c%4))
+	red_butterfly[2] = 128				# source width (integer)
+	red_butterfly[3] = 128				# source height (integer)
+	red_butterfly[4] = 64.0				# bullet size [0, inf)
+	red_butterfly[5] = 0.1 	# hitbox ratio [0, 1]
+	red_butterfly[6] = 0					# Sprite offset y (integer)
+	red_butterfly[7] = 1					# anim frame, 1 for no animation (integer)
+	red_butterfly[8] = 0					# spin
+	red_butterfly[9] = 3 # layer
+	red_butterfly[10] = 1.0	# rgb
+	red_butterfly[11] = 0.0
+	red_butterfly[12] = 0.0
+	red_butterfly[13] = 0				# damage type
+	red_butterfly[14] = 0				# damage amount
+
+	blue_butterfly = PackedFloat64Array()
+	blue_butterfly.resize(15)
+	blue_butterfly[0] = 128 * 11			# source x (integer) # (16+8*(c/4))
+	blue_butterfly[1] = 128 * 2			# source y (integer) # (24+2*(c%4))
+	blue_butterfly[2] = 128				# source width (integer)
+	blue_butterfly[3] = 128				# source height (integer)
+	blue_butterfly[4] = 64.0				# bullet size [0, inf)
+	blue_butterfly[5] = 0.1 	# hitbox ratio [0, 1]
+	blue_butterfly[6] = 0					# Sprite offset y (integer)
+	blue_butterfly[7] = 1					# anim frame, 1 for no animation (integer)
+	blue_butterfly[8] = 0					# spin
+	blue_butterfly[9] = 3 # layer
+	blue_butterfly[10] = 0.0	# rgb
+	blue_butterfly[11] = 0.0
+	blue_butterfly[12] = 1.0
+	blue_butterfly[13] = 0				# damage type
+	blue_butterfly[14] = 0				# damage amount
+
+
 
 	item_data.resize(11)
 	item_data[0] = 128 * 6.5			# source x (integer) # (16+8*(c/4))
@@ -51,11 +92,15 @@ func _process(_delta):
 	pass	
 
 func _physics_process(_delta):
-	
-	t += 1
 	if false:
-		var shoot_pos = Vector2(1280, 720) * 0.5
-		for i in 50: # 90
+		var shoot_pos = Vector2(1280, 720*0.5) * 0.5
+		if t % 120 == 0:
+			for i in 120:
+				var s := randf_range(2.0, 8.0)
+				Bullets.create_shot_a2(bullet_kit, shoot_pos, s, randf()*TAU, -s / 120.0, 0.0, red_butterfly, true)
+		
+		
+		for i in 0: # 90
 			#var ang = pos.angle_to_point(shoot_pos) + randf_range(-0.1, 0.1) + PI
 			var ang := t * 0.01  + randf_range(-0.3, 0.3) + PI
 			#var ang = randf()*TAU
@@ -74,10 +119,12 @@ func _physics_process(_delta):
 	var new_pos := get_global_mouse_position()
 	if new_pos:
 		pos = new_pos
-	var r = 24
-	var r2 = 64
+	var r = 32
+	var r2 = r * 2
 	
 	position = pos
+	
+	BulletsInterface
 	
 	var collisions = Bullets.collide_and_graze(bullet_kit, pos, r, r2)
 	var items = Bullets.collect_and_magnet(item_kit, pos, self, 1.0, 256)
@@ -96,7 +143,7 @@ func _physics_process(_delta):
 		Bullets.create_particle(graze_kit, pos, drift, randf()*TAU, 16.0, color)
 	
 	if pos.y < 200:
-		Bullets.collect_all(item_kit, self);
+		Bullets.magnet_all(item_kit, self);
 	
 	for i in items.size():
 		var item_id : PackedInt64Array = items[i]
@@ -123,3 +170,7 @@ func _physics_process(_delta):
 		pass
 		print("Bullets: ", Bullets.get_total_active_bullets(), "; FPS: ", Engine.get_frames_per_second())
 		print("Collisions: ", collisions[0].size(), "; Grazes: ", collisions[1].size())
+
+	t += 1
+	
+	

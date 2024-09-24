@@ -32,6 +32,9 @@ class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 
     BulletID _create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
 
+    BulletID _create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
+
+
 };
 
 

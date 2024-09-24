@@ -176,7 +176,7 @@ void BasicItemPool::_enable_bullet(BasicItem* bullet) {
 }
 
 
-void BasicItemPool::_collect_all(Node2D* target) {
+void BasicItemPool::_magnet_all(Node2D* target) {
     for (int i = pool_size - 1; i >= available_bullets; i--) {
 		BasicItem* bullet = (BasicItem*)bullets[i];
         bullet->is_grazed = true;

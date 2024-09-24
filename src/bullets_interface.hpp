@@ -66,6 +66,9 @@ public:
 	BulletsInterface();
 	~BulletsInterface();
 
+	int get_NO_CHANGE();
+	void set_NO_CHANGE(float value);
+
 	void _init();
 
 	// void _ready();
@@ -103,10 +106,11 @@ public:
 	Array collide_and_graze(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
 
 	Array collect_and_magnet(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
-	void collect_all(Ref<BasicItemKit> kit, Node2D* target);
+	void magnet_all(Ref<BasicItemKit> kit, Node2D* target);
 
 	PackedInt64Array create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
 	PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
+
 
 	PackedInt64Array create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
 	
@@ -116,8 +120,64 @@ public:
 	// Variant create_pattern_a2(Ref<BasicBulletKit> kit, int mode, Vector2 pos, double r1, double r2, double speed1, double speed2, double angle, int density, int stack, double spread, PackedFloat64Array bullet_data, bool fade_in);
 
 
+	// Bullet
+
 	Vector2 get_position(PackedInt64Array bullet_id);
 	void set_position(PackedInt64Array bullet_id, Vector2 position);
+
+	double get_speed(PackedInt64Array bullet_id);
+	void set_speed(PackedInt64Array bullet_id, double speed);
+
+	double get_angle(PackedInt64Array bullet_id);
+	void set_angle(PackedInt64Array bullet_id, double angle);
+	
+	PackedFloat64Array get_bullet_data(PackedInt64Array bullet_id);
+	void set_bullet_data(PackedInt64Array bullet_id, PackedFloat64Array bullet_data);
+
+	// Collision Bullets
+	
+    double get_hitbox_scale(PackedInt64Array bullet_id);
+    void set_hitbox_scale(PackedInt64Array bullet_id, double hitbox_scale);
+
+    bool get_is_grazed(PackedInt64Array bullet_id);
+    void set_is_grazed(PackedInt64Array bullet_id, bool is_grazed);
+
+	// BasicBullets A2
+
+	double get_accel(PackedInt64Array bullet_id);
+	void set_accel(PackedInt64Array bullet_id, double accel);
+
+	
+	double get_max_speed(PackedInt64Array bullet_id);
+	void set_max_speed(PackedInt64Array bullet_id, double max_speed);
+
+	// BasicBullets A3
+	
+    int get_bounce_mode(PackedInt64Array bullet_id);
+    void set_bounce_mode(PackedInt64Array bullet_id, int bounce_mode);
+
+    int get_bounce_count(PackedInt64Array bullet_id);
+    void set_bounce_count(PackedInt64Array bullet_id, int bounce_count);
+
+    int get_bounce_surfaces(PackedInt64Array bullet_id);
+    void set_bounce_surfaces(PackedInt64Array bullet_id, int bounce_surfaces);
+
+    double get_wvel(PackedInt64Array bullet_id);
+    void set_wvel(PackedInt64Array bullet_id, double wvel);
+
+    double get_waccel(PackedInt64Array bullet_id);
+    void set_waccel(PackedInt64Array bullet_id, double waccel);
+
+    double get_max_wvel(PackedInt64Array bullet_id);
+    void set_max_wvel(PackedInt64Array bullet_id, double max_wvel);
+
+
+
+	// double get_(PackedInt64Array bullet_id);
+	// void set_(PackedInt64Array bullet_id, double );
+
+
+
 
 	double get_damage(PackedInt64Array bullet_id);
 	void set_damage(PackedInt64Array bullet_id, double damage);

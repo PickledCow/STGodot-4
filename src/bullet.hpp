@@ -31,6 +31,9 @@ namespace godot {
 // of lower types. A types act with angles and B types act with x-y velocities.
 enum processMode { A1, A2, A3, B1, B2, B3 };
 // enum bounceMode { BOUNCE, WARP };
+enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
+
+const int NO_CHANGE = -256*256*256;
 
 // A stripped down reference to a Bullet mainly for use within Godot.
 struct BulletID {
@@ -50,11 +53,13 @@ struct Bullet {
 
     public:
     // ----------------------------------------
-    // Critical internal varaibles.
+    // Critical internal varaibles.  No setter/getter is provided for these.
     // ----------------------------------------
 
     // Resource ID for the bullet sprite.
     RID item_rid;
+    // Order at which the bullet is drawn in among bullets with the same layer, lowest to highest.
+    int draw_index = 0;
     // The reuse count of the bullet. Used to check if the bullet has despawned and is being recycled.
     int cycle = 0;
     // The index of the bullet in the pool. This value changes as its position in the pool is shuffled around.
@@ -63,14 +68,17 @@ struct Bullet {
     int persistent_pool_index = -1;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
+    // Flag for tracking if the bullet is currently fading.
+    bool fading = false;
+
+    // ----------------------------------------
+    // Regular variables. These can be freely set.
+    // ----------------------------------------
+    
     // Normalised direction vector for faster computation.
     Vector2 direction = Vector2();
-    // Order at which the bullet is drawn in among bullets with the same layer, lowest to highest.
-    int draw_index = 0;
     // The position of the bullet in the playfield.
     Vector2 position = Vector2();
-    // Internal flag for tracking if the bullet is currently fading
-    bool fading = false;
     // The center-to-edge length in in-game units to draw at,
     double scale = 16.0;
     // Layer at which to draw bullets in. Useful for example having larger bullets be drawn under smaller bullets by default.
@@ -82,9 +90,6 @@ struct Bullet {
 
     // Internal data that is sent to the rendering shader.
     Color bullet_data;
-
-    // Mode of operation for which movement procedure to use
-    processMode process_mode = A1;
 
     // The vertical offset of the bullet in texture pixels (positive moves sprite upwards).
     // Horizontal offset is unsupported and should be aligned within the spritesheet as there is no space left in the shader data structure.
@@ -140,8 +145,11 @@ struct CollisionBullet : Bullet {
 
 // Basic bullet for general purpose use
 struct BasicBullet : CollisionBullet {
+    // Mode of operation for which movement procedure to use
+    processMode process_mode = A1;
+
     // Internal Array for keeping track of bullet transforms.
-    Array patterns;
+    Array transforms;
 
     // ----------------------------------------
     // A2 movement type variables.
@@ -153,7 +161,8 @@ struct BasicBullet : CollisionBullet {
     double accel = 0.0;
 
     // ----------------------------------------
-    // A3 movement type variables
+    // A3 movement type variables. These are set through external functions and
+    // does not have a corresponding create_shot_Ax function.
     // ----------------------------------------
 
     // Behaviour for touching the wall
@@ -164,10 +173,10 @@ struct BasicBullet : CollisionBullet {
     int bounce_surfaces = 0; 
     // Rotation speed in radians per tick.
     double wvel = 0.0;
-    // Rotation speed limit for gradual rotating bullets in radians per tick.
-    double max_wvel = 0.0;
     // Rotational acceleration in radians per tick per tick.
     double waccel = 0.0;
+    // Rotation speed limit for gradual rotating bullets in radians per tick.
+    double max_wvel = 0.0;
 
 
 };
@@ -184,6 +193,5 @@ struct BasicItem : CollisionBullet {
 };
 
 };
-
 
 #endif

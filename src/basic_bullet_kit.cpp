@@ -71,12 +71,65 @@ BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angl
             
     Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
     bullet->fade_color = fade_color;
-        
     
-    
-
     return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
-	
+}
+
+BulletID BasicBulletPool::_create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in) {
+    available_bullets -= 1;
+    active_bullets += 1;
+
+    BasicBullet* bullet = (BasicBullet*)bullets[available_bullets];
+
+    RID rid = bullet->item_rid;
+
+    rendering_server->canvas_item_set_draw_index(rid, (draw_index++));
+    bullet->draw_index = draw_index++;
+    if (draw_index > 16777215) draw_index = 0; // 2^24
+    
+    _enable_bullet(bullet);
+
+    bullet->process_mode = A2;
+
+    // A1 type settings
+    Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(bullet_data[4] * Vector2(1.0, 1.0)).rotated(angle + 1.57079632679);
+    xform.set_origin(pos);
+    bullet->transform = xform;
+    bullet->position = pos;
+    bullet->scale = bullet_data[4];
+    bullet->angle = angle;
+    bullet->accel = accel;
+    bullet->max_speed = max_speed;
+    bullet->direction = Vector2(1.0, 0.0).rotated(angle);
+
+    rendering_server->canvas_item_set_transform(rid, xform);
+
+    Color compressed_data = Color();
+    compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
+    compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+    compressed_data.b = floor(bullet_data[6]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
+    compressed_data.a = floor(bullet_data[7]) + animation_random;
+
+    if (fade_in) {
+        compressed_data.b += 0.9999999;
+    } else {
+        bullet->fade_timer = -0.000000000001;
+    }
+
+    bullet->speed = speed;
+
+    bullet->texture_offset = floor(bullet_data[6]);
+    bullet->bullet_data = compressed_data;
+    rendering_server->canvas_item_set_modulate(rid, compressed_data);
+    bullet->hitbox_scale = bullet_data[5];
+    bullet->spin = bullet_data[8];
+    bullet->layer = bullet_data[9];
+    rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullet->draw_index);
+            
+    Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
+    bullet->fade_color = fade_color;
+    
+    return BulletID(bullet->cycle, set_index, bullet->persistent_pool_index);
 }
 
 Array BasicBulletPool::_collide_and_graze(Vector2 pos, double hitbox_radius, double graze_radius) {
@@ -137,7 +190,7 @@ void BasicBulletPool::_enable_bullet(BasicBullet* bullet) {
     bullet->fading = false;
     // bullet->bounce_count = 0;
     // bullet->bounce_surfaces = 0b1100;
-    bullet->patterns.clear();
+    bullet->transforms.clear();
     bullet->custom_data.clear();
     Rect2 texture_rect = Rect2(-0.5, -0.5, 1.0, 1.0);
     RID texture_rid = kit->texture->get_rid();
@@ -207,48 +260,48 @@ bool BasicBulletPool::_process_bullet(BasicBullet* bullet, double delta) {
 
 
     // Iterate over existing transformations
-    bool pattern_applied = false;
+    bool transform_applied = false;
     int j = 0;
-    for (int i = 0; i < bullet->patterns.size(); i++) {
-        Array pattern = bullet->patterns[i]; // trigger, type, time, properties
+    for (int i = 0; i < bullet->transforms.size(); i++) {
+        Array xform = bullet->transforms[i]; // trigger, type, time, properties
         bool should_apply = false;
-        int trigger = pattern[0];
+        int trigger = xform[0];
         
         // Check if the conditions are met
         switch (trigger) {
             case 0: // Time
-                pattern[2] = (double)pattern[2] - delta;
-                if ((double)pattern[2] <= 0.0) {
+                xform[2] = (double)xform[2] - delta;
+                if ((double)xform[2] <= 0.0) {
                     should_apply = true;
-                    pattern_applied = true;
-                    pattern[2] = 0.0;
+                    transform_applied = true;
+                    xform[2] = 0.0;
                 } else {
-                    bullet->patterns[j] = pattern;
+                    bullet->transforms[j] = xform;
                     j++;
                 }
                 break;
             case 1: // Bounce
-                pattern[2] = (int)pattern[2] - bounce_count;
-                if ((int)pattern[2] <= 0) {
+                xform[2] = (int)xform[2] - bounce_count;
+                if ((int)xform[2] <= 0) {
                     should_apply = true;
-                    pattern_applied = true;
-                    pattern[2] = 0;
+                    transform_applied = true;
+                    xform[2] = 0;
                 } else {
-                    bullet->patterns[j] = pattern;
+                    bullet->transforms[j] = xform;
                     j++;
                 }
                 break;
         }
 
         if (should_apply) {
-            
+            // TODO
         }
     }
 
     // Update position and other data if a transformation has been made
-    if (pattern_applied) {
+    if (transform_applied) {
         
-        bullet->patterns.resize(j);
+        bullet->transforms.resize(j);
 
         bullet->direction = Vector2(1.0, 0.0).rotated(bullet->angle);
         //bullet->transform.set_rotation(bullet->angle);

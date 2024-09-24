@@ -25,7 +25,7 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 	Array _collect_and_magnet(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
     BulletID _create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
     
-    void _collect_all(Node2D* target);
+    void _magnet_all(Node2D* target);
 
     bool _get_is_auto_collected(BulletID bullet_id);
 

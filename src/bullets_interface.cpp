@@ -18,15 +18,22 @@
 
 using namespace godot;
 
+int BulletsInterface::get_NO_CHANGE() {
+	return NO_CHANGE;
+}
+
+void BulletsInterface::set_NO_CHANGE(float value) {
+	// Constant
+}
+
+
 void BulletsInterface::_bind_methods() {
-    // ClassDB::bind_method(D_METHOD("get_bullets_environment"), &BulletsInterface::get_bullets_environment);
-    // ClassDB::bind_method(D_METHOD("set_bullets_environment", "p_bullets_environment"), &BulletsInterface::mount);
-    // ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-	// 	"bullets_environment",
-	// 	PROPERTY_HINT_NODE_TYPE,
-	// 	"Node"
-	// ),
-	// "set_bullets_environment", "get_bullets_environment");
+    ClassDB::bind_method(D_METHOD("get_NO_CHANGE"), &BulletsInterface::get_NO_CHANGE);
+    ClassDB::bind_method(D_METHOD("set_NO_CHANGE", "p_NO_CHANGE"), &BulletsInterface::set_NO_CHANGE);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, 
+		"NO_CHANGE"
+	),
+	"set_NO_CHANGE", "get_NO_CHANGE");
 
 
 	ClassDB::bind_method(D_METHOD("mount", "bullets_environment"), &BulletsInterface::mount);
@@ -58,10 +65,10 @@ void BulletsInterface::_bind_methods() {
 	);
 		
 	ClassDB::bind_method(D_METHOD(
-		"collect_all",
+		"magnet_all",
 		"item_kit",
 		"target_node"), 
-		&BulletsInterface::collect_all
+		&BulletsInterface::magnet_all
 	);
 		
 	ClassDB::bind_method(D_METHOD(
@@ -97,6 +104,19 @@ void BulletsInterface::_bind_methods() {
 		"bullet_data",
 		"fade"), 
 		&BulletsInterface::create_shot_a1
+	);
+
+	ClassDB::bind_method(D_METHOD(
+		"create_shot_a2",
+		"bullet_kit",
+		"position",
+		"speed",
+		"angle",
+		"accel",
+		"max_speed",
+		"bullet_data",
+		"fade"), 
+		&BulletsInterface::create_shot_a2
 	);
 	
 	ClassDB::bind_method(D_METHOD(
@@ -433,18 +453,13 @@ Array BulletsInterface::collect_and_magnet(Ref<BasicItemKit> kit, Vector2 pos, N
 	return pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius);
 }
 
-void BulletsInterface::collect_all(Ref<BasicItemKit> kit, Node2D* target) {
+void BulletsInterface::magnet_all(Ref<BasicItemKit> kit, Node2D* target) {
 	int pool_index = kits_to_pool_index[kit];
 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
-	pool->_collect_all(target);
+	pool->_magnet_all(target);
 }
 
 PackedInt64Array BulletsInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
-
-	// UtilityFunctions::print(kits_to_pool_index[kit]);
-	// kits_to_pool_index.has(kit) // For some reason checking for it using .has() doesn't make this run
-	// Yet, if the print funciton is uncommented out then the check suddenly passes?
-
 	int pool_index = kits_to_pool_index[kit];
 	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
 
@@ -454,6 +469,28 @@ PackedInt64Array BulletsInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vecto
 
 		// Base init
 		BulletID bullet_id = pool->_create_shot_a1(pos, speed, angle, bullet_data, fade_in);
+		PackedInt64Array to_return = invalid_id;
+		// to_return.resize(3);
+		to_return.set(0, bullet_id.cycle);
+		to_return.set(1, bullet_id.set);
+		to_return.set(2, bullet_id.index);
+		
+		return to_return;
+	}
+	
+	return invalid_id;
+}
+
+PackedInt64Array BulletsInterface::create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in) {
+	int pool_index = kits_to_pool_index[kit];
+	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
+
+	if(pool->get_available_bullets() > 0) {
+		available_bullets -= 1;
+		active_bullets += 1;
+
+		// Base init
+		BulletID bullet_id = pool->_create_shot_a2(pos, speed, angle, accel, max_speed, bullet_data, fade_in);
 		PackedInt64Array to_return = invalid_id;
 		// to_return.resize(3);
 		to_return.set(0, bullet_id.cycle);

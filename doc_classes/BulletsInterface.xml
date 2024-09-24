@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BulletsInterface" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		Show up please.
 	</brief_description>
 	<description>
 	</description>
 	<tutorials>
 	</tutorials>
 	<methods>
-		<method name="collect_all">
-			<return type="void" />
-			<param index="0" name="item_kit" type="BasicItemKit" />
-			<param index="1" name="target_node" type="Node2D" />
-			<description>
-				Haaaa
-			</description>
-		</method>
 		<method name="collect_and_magnet">
 			<return type="Array" />
 			<param index="0" name="item_kit" type="BasicItemKit" />
@@ -23,6 +16,7 @@
 			<param index="3" name="collection_radius" type="float" />
 			<param index="4" name="magnet_radius" type="float" />
 			<description>
+				Marks items that are touched or grazed as collected or magneted.
 			</description>
 		</method>
 		<method name="collide_and_graze">
@@ -67,6 +61,19 @@
 			<description>
 			</description>
 		</method>
+		<method name="create_shot_a2">
+			<return type="PackedInt64Array" />
+			<param index="0" name="bullet_kit" type="BasicBulletKit" />
+			<param index="1" name="position" type="Vector2" />
+			<param index="2" name="speed" type="float" />
+			<param index="3" name="angle" type="float" />
+			<param index="4" name="accel" type="float" />
+			<param index="5" name="max_speed" type="float" />
+			<param index="6" name="bullet_data" type="PackedFloat64Array" />
+			<param index="7" name="fade" type="bool" />
+			<description>
+			</description>
+		</method>
 		<method name="get_bullets_environment">
 			<return type="Node" />
 			<description>
@@ -92,6 +99,13 @@
 		</method>
 		<method name="get_total_active_bullets">
 			<return type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="magnet_all">
+			<return type="void" />
+			<param index="0" name="item_kit" type="BasicItemKit" />
+			<param index="1" name="target_node" type="Node2D" />
 			<description>
 			</description>
 		</method>
@@ -122,4 +136,9 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="NO_CHANGE" type="int" setter="set_NO_CHANGE" getter="get_NO_CHANGE" default="-16777216">
+			Value for bullet transform functions to tell the BulletsInterface to not modify this parameter.
+		</member>
+	</members>
 </class>
