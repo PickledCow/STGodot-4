@@ -39,12 +39,8 @@ class CollisionBulletKit : public BulletKit {
 	Rect2 warp_rect = Rect2();
 
 	Rect2 get_active_rect();
-	Rect2 get_bounce_rect();
-	Rect2 get_warp_rect();
 
 	void set_active_rect(Rect2 value);
-	void set_bounce_rect(Rect2 value);
-	void set_warp_rect(Rect2 value);
 
     protected:
     static void _bind_methods();

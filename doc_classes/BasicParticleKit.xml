@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BasicParticleKit" inherits="BulletKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for basic particles.
 	</brief_description>
 	<description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for basic particles. BasicParticleKits are a super basic implementation of [BulletKits](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for use in collisionless, short-lived bullets. Example use-cases are for graze-particles and item collection text.
 	</description>
 	<tutorials>
 	</tutorials>

@@ -45,6 +45,11 @@ class BasicBulletKit : public CollisionBulletKit {
 	std::unique_ptr<BulletPool> _create_pool() override;
 	// BULLET_KIT(BasicBulletPool)
 
+	Rect2 get_bounce_rect();
+	Rect2 get_warp_rect();
+	void set_bounce_rect(Rect2 value);
+	void set_warp_rect(Rect2 value);
+    
     static void _bind_methods();
 };
 

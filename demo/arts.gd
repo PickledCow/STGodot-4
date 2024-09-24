@@ -172,5 +172,6 @@ func _physics_process(_delta):
 		print("Collisions: ", collisions[0].size(), "; Grazes: ", collisions[1].size())
 
 	t += 1
+	BulletsInterface
 	
 	

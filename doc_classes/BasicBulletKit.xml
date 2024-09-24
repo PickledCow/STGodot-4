@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BasicBulletKit" inherits="CollisionBulletKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for general purpose bullets.
 	</brief_description>
 	<description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for general purpose bullets. BasicBulletKits can be used for both enemy bullets and player bullets. BasicBulletKits give access to standard bullet collision detection and more advanced bullet behaviour.
 	</description>
 	<tutorials>
 	</tutorials>
+	<members>
+		<member name="bounce_rect" type="Rect2" setter="set_bounce_rect" getter="get_bounce_rect" default="Rect2(0, 0, 0, 0)">
+			The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) at which bullets bounce off if set to do so. &#xA;The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) should generally be the exact size of the visible playfield.
+		</member>
+		<member name="warp_rect" type="Rect2" setter="set_warp_rect" getter="get_warp_rect" default="Rect2(0, 0, 0, 0)">
+			The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) at which bullets wrap around to the other side if set to do so.&#xA;The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) should generally be slightly bigger than the visible playfield but no larger than `[active_rect](https://github.com/PickledCow/STGodot-4/wiki/BasicBulletKit#rect2-active_rect)` or bullets may be deleted before getting the chance to wrap around.
+		</member>
+	</members>
 </class>

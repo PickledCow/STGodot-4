@@ -5,7 +5,15 @@
 using namespace godot;
 
 
-void BasicBulletKit::_bind_methods() {};
+void BasicBulletKit::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BasicBulletKit::get_bounce_rect);
+    ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce_rect"), &BasicBulletKit::set_bounce_rect);
+    ADD_PROPERTY(PropertyInfo(Variant::RECT2, "bounce_rect"), "set_bounce_rect", "get_bounce_rect");
+    ClassDB::bind_method(D_METHOD("get_warp_rect"), &BasicBulletKit::get_warp_rect);
+    ClassDB::bind_method(D_METHOD("set_warp_rect", "p_warp_rect"), &BasicBulletKit::set_warp_rect);
+    ADD_PROPERTY(PropertyInfo(Variant::RECT2, "warp_rect"), "set_warp_rect", "get_warp_rect");
+
+};
 
 std::unique_ptr<BulletPool> BasicBulletKit::_create_pool() {						
 	return std::unique_ptr<BulletPool> (new BasicBulletPool());					
@@ -18,6 +26,22 @@ void BasicBulletPool::_custom_init(CanvasItem* canvas_parent, int set_index, Ref
 	bounce_rect = bullet_kit->bounce_rect;
 	warp_rect = bullet_kit->warp_rect;
 }
+
+Rect2 BasicBulletKit::get_bounce_rect() {
+    return bounce_rect;
+}
+
+Rect2 BasicBulletKit::get_warp_rect() {
+    return warp_rect;
+}
+void BasicBulletKit::set_bounce_rect(Rect2 value) {
+    bounce_rect = value;
+}
+
+void BasicBulletKit::set_warp_rect(Rect2 value) {
+    warp_rect = value;
+}
+
 
 
 BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {

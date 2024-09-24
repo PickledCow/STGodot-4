@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BulletsInterface" inherits="Node2D" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
-		Show up please.
+		An interface between Godot and the STGodot GDExtension module.
 	</brief_description>
 	<description>
+		An interface between Godot and the STGodot GDExtension module. BulletsInterface exposes methods for creating, manipulating, and interacting with bullets.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -16,7 +17,7 @@
 			<param index="3" name="collection_radius" type="float" />
 			<param index="4" name="magnet_radius" type="float" />
 			<description>
-				Marks items that are touched or grazed as collected or magneted.
+Marks items within the collection_radius as collected and marks items within the magnet_radius as "magnetised" to the given target node.&#xA;The list of the two are returned in an [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) in the structure `[ [List of collected items], [List of magnetised items] ]`&#xA;Magnetised bullets move directly towards the target node each tick.
 			</description>
 		</method>
 		<method name="collide_and_graze">
@@ -26,6 +27,7 @@
 			<param index="2" name="hitbox_radius" type="float" />
 			<param index="3" name="graze_radius" type="float" />
 			<description>
+Marks bullets within the hitbox_radius as collided and marks bullets within the graze_radius as grazed.&#xA;The list of the two are returned in an Array in the structure `[ [List of collided bullets], [List of grazed bullets] ]`
 			</description>
 		</method>
 		<method name="create_item">
@@ -37,6 +39,7 @@
 			<param index="4" name="spin" type="float" />
 			<param index="5" name="item_data" type="PackedFloat64Array" />
 			<description>
+Creates an item according to the provided specifications.&#xA;Only accepts [BasicItemKits](https://github.com/PickledCow/STGodot-4/wiki/BasicItemKit).
 			</description>
 		</method>
 		<method name="create_particle">
@@ -48,6 +51,7 @@
 			<param index="4" name="size" type="float" />
 			<param index="5" name="color" type="Color" />
 			<description>
+				Creates a particle according to the provided specifications.
 			</description>
 		</method>
 		<method name="create_shot_a1">
@@ -59,6 +63,8 @@
 			<param index="4" name="bullet_data" type="PackedFloat64Array" />
 			<param index="5" name="fade" type="bool" />
 			<description>
+Creates a bullet according to the provided specifications.&#xA;`A1` type bullets are the most basic with barebones functionality. Automatically converts to higher types if properties of those types are set.&#xA;Only accepts [BasicBulletKits](https://github.com/PickledCow/STGodot-4/wiki/BasicBulletKit).
+
 			</description>
 		</method>
 		<method name="create_shot_a2">
@@ -72,34 +78,40 @@
 			<param index="6" name="bullet_data" type="PackedFloat64Array" />
 			<param index="7" name="fade" type="bool" />
 			<description>
+Creates a bullet according to the provided specifications.&#xA;`A2` type bullets add onto `A1` type bullets some additional common functionality. Automatically converts to higher types if properties of those types are set.&#xA;Only accepts [BasicBulletKits](https://github.com/PickledCow/STGodot-4/wiki/BasicBulletKit).
 			</description>
 		</method>
 		<method name="get_bullets_environment">
 			<return type="Node" />
 			<description>
+Returns the current active BulletsEnvironment Node.
 			</description>
 		</method>
 		<method name="get_damage">
 			<return type="float" />
 			<param index="0" name="id" type="PackedInt64Array" />
 			<description>
+Returns the `damage` property of the bullet. &#xA;Accepts any type of bullet.
 			</description>
 		</method>
 		<method name="get_is_auto_collected">
 			<return type="bool" />
 			<param index="0" name="item_id" type="PackedInt64Array" />
 			<description>
+				Returns the `auto_collected` property of the item. &#xA;Only accepts bullets from [BasicItemKits](https://github.com/PickledCow/STGodot-4/wiki/BasicItemKit).
 			</description>
 		</method>
 		<method name="get_position">
 			<return type="Vector2" />
 			<param index="0" name="id" type="PackedInt64Array" />
 			<description>
+Returns the `position` property of the bullet. &#xA;Accepts any type of bullet.
 			</description>
 		</method>
 		<method name="get_total_active_bullets">
 			<return type="int" />
 			<description>
+Returns the total number of bullets on-screen across all kits.
 			</description>
 		</method>
 		<method name="magnet_all">
@@ -107,12 +119,14 @@
 			<param index="0" name="item_kit" type="BasicItemKit" />
 			<param index="1" name="target_node" type="Node2D" />
 			<description>
+Marks all currently active items as "magneted" to the provided target node.&#xA;Only accepts [BasicItemKits](https://github.com/PickledCow/STGodot-4/wiki/BasicItemKit).
 			</description>
 		</method>
 		<method name="mount">
 			<return type="void" />
 			<param index="0" name="bullets_environment" type="Node" />
 			<description>
+Sets the given BulletsEnvironment as the current active one.
 			</description>
 		</method>
 		<method name="set_damage">
@@ -120,6 +134,7 @@
 			<param index="0" name="id" type="PackedInt64Array" />
 			<param index="1" name="damage" type="float" />
 			<description>
+Sets the `damage` property of the bullet to the provided value.&#xA;Accepts any type of bullet.
 			</description>
 		</method>
 		<method name="set_position">
@@ -127,12 +142,14 @@
 			<param index="0" name="id" type="PackedInt64Array" />
 			<param index="1" name="position" type="Vector2" />
 			<description>
+Sets the `damage` property of the bullet to the provided value.&#xA;Accepts any type of bullet.
 			</description>
 		</method>
 		<method name="unmount">
 			<return type="void" />
 			<param index="0" name="_unnamed_arg0" type="Node" />
 			<description>
+Cleans up the [BulletKits](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) and BulletPools of the provided BulletsEnvironment.
 			</description>
 		</method>
 	</methods>

@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="BasicItemKit" inherits="CollisionBulletKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for general purpose items.
 	</brief_description>
 	<description>
+		A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for general purpose items. BasicItemKits add parameters for common behaviour of items such as their fall speed and speed at which items move towards the player when collected.
 	</description>
 	<tutorials>
 	</tutorials>
 	<members>
 		<member name="damp" type="float" setter="set_damp" getter="get_damp" default="0.95">
+			How much the initial speed of the item decreases per tick.
 		</member>
 		<member name="gravity" type="Vector2" setter="set_gravity" getter="get_gravity" default="Vector2(0, 0)">
+			Velocity vector of the item's movement after the scatter animation in pixels per tick.
 		</member>
 		<member name="magnet_strength" type="float" setter="set_magnet_strength" getter="get_magnet_strength" default="10.0">
+			The speed at which items move towards the player when collected in pixels per tick.
 		</member>
 	</members>
 </class>

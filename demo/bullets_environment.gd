@@ -8,7 +8,6 @@ extends Node
 ## and any further detail.
 
 #  "icons/icon_bullets_environment.svg
-
 ## Flag for if this BulletEnvironments is the current one to be used in the tree.
 ## Generally you should try to only ever have one BuletsEnvironment in the tree at once.
 @export var current: bool = true

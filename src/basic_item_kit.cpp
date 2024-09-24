@@ -48,8 +48,6 @@ void BasicItemKit::set_magnet_strength(double value) {
 void BasicItemPool::_custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin) {
     Ref<BasicItemKit> item_kit = (Ref<BasicItemKit>)kit;
 	active_rect = item_kit->active_rect;
-	bounce_rect = item_kit->bounce_rect;
-	warp_rect = item_kit->warp_rect;
 }
 
 

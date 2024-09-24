@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CollisionBulletKit" inherits="BulletKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		Abstract base class for defining shared properties of bullets with collision in a bullet pool.
 	</brief_description>
 	<description>
+		CollisionBulletKits extend off [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) adding on playfield data.
 	</description>
 	<tutorials>
 	</tutorials>
 	<members>
 		<member name="active_rect" type="Rect2" setter="set_active_rect" getter="get_active_rect" default="Rect2(0, 0, 0, 0)">
-		</member>
-		<member name="bounce_rect" type="Rect2" setter="set_bounce_rect" getter="get_bounce_rect" default="Rect2(0, 0, 0, 0)">
-		</member>
-		<member name="warp_rect" type="Rect2" setter="set_warp_rect" getter="get_warp_rect" default="Rect2(0, 0, 0, 0)">
+The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) at which bullets can exist in. If a bullet leaves this space and is set to be automatically deleted (which is by default), the bullet will be marked for removal and be deleted the following frame.&#xA;The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) should generally be slightly bigger than the visible playfield to not have bullets vanish while still partially visible.
 		</member>
 	</members>
 </class>
