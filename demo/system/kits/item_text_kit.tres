@@ -1,9 +1,0 @@
-[gd_resource type="BasicParticleKit" load_steps=3 format=3 uid="uid://dkckapwdij337"]
-
-[ext_resource type="Material" uid="uid://cd6o6jebgslmr" path="res://system/kits/kit_materials/item_text_material.tres" id="1_gaeap"]
-[ext_resource type="Texture2D" uid="uid://byc5ew2agolyd" path="res://system/kits/spritesheets/itemtext.png" id="2_pcu47"]
-
-[resource]
-texture = ExtResource("2_pcu47")
-material = ExtResource("1_gaeap")
-fade_time = 30.0

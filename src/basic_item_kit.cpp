@@ -134,8 +134,8 @@ BulletID BasicItemPool::_create_item(Vector2 pos, double speed, double angle, do
     bullet->spin = spin;
     
     Color compressed_data = Color();
-    compressed_data.r = item_data[1] + item_data[0] / kit->texture_width;
-    compressed_data.g = item_data[3] + item_data[2] / kit->texture_width;
+    compressed_data.r = item_data[1] + item_data[0] / texture_width;
+    compressed_data.g = item_data[3] + item_data[2] / texture_width;
     compressed_data.b = 0.0;
     compressed_data.a = floor(item_data[7]) + animation_random;
 

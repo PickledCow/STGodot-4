@@ -1,0 +1,10 @@
+[gd_resource type="BasicBulletKit" load_steps=3 format=3 uid="uid://dg1sgnh6cy27e"]
+
+[ext_resource type="Material" uid="uid://but1rwxvgpnqk" path="res://kits/kit_materials/basic_bullet_material.tres" id="1_gus5w"]
+[ext_resource type="Texture2D" uid="uid://2eqfm6ltorwy" path="res://kits/spritesheets/player_bullets.png" id="2_nm8te"]
+
+[resource]
+affiliation = 0
+active_rect = Rect2(-64, -64, 1408, 848)
+texture = ExtResource("2_nm8te")
+material = ExtResource("1_gus5w")

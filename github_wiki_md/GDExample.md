@@ -1,4 +1,5 @@
 ### **Inherits:** [Sprite2D](https://docs.godotengine.org/en/stable/classes/class_sprite2d.html)
+### **Inherited By: **
 ## Description
 ## Properties
 |Type|Name|Default Value|

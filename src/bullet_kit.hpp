@@ -35,12 +35,21 @@
 
 namespace godot {
 
+enum KIT_TYPE {
+	KIT_TYPE_UNIMPLEMENTED,
+	KIT_TYPE_PARTICLE,
+	KIT_TYPE_BULLET,
+	KIT_TYPE_ITEM
+};
+
 class BulletPool; 
 
 class BulletKit : public Resource {
 	GDCLASS(BulletKit, Resource)
 
     public:
+
+	KIT_TYPE kit_type = KIT_TYPE_UNIMPLEMENTED;
 
 	// Internal only
 	double rotation_offset = Math_PI * 0.5;		
@@ -53,8 +62,8 @@ class BulletKit : public Resource {
 	Ref<Texture2D> texture;
 	// The material used to render each bullet.
 	Ref<Material> material;
-    // Width of the texture sheet in pixels.
-	double texture_width = 0.0;
+    // // Width of the texture sheet in pixels.
+	// double texture_width = 0.0;
 	// Flag for if the bullets face upwards (true) or right (false)
 	bool facing_up = true;
 	// Time it takes for bullets and items to fully fade in
@@ -76,16 +85,17 @@ class BulletKit : public Resource {
 	// void _property_setter(String value) {}
 	// String _property_getter() { return ""; }
 
+
 	Ref<Texture2D> get_texture();
 	Ref<Material> get_material();
-	double get_texture_width();
+	// double get_texture_width();
 	bool get_facing_up();
 	double get_fade_time();
 	double get_time_scale();
     
 	void set_texture(Ref<Texture2D> value);
 	void set_material(Ref<Material> value);
-	void set_texture_width(double value);
+	// void set_texture_width(double value);
 	void set_facing_up(bool value);
 	void set_fade_time(double value);
 	
@@ -101,6 +111,7 @@ class BulletKit : public Resource {
 
 
 }
+
 
 
 #endif

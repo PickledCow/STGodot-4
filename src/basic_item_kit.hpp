@@ -39,6 +39,9 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 class BasicItemKit : public CollisionBulletKit {
 	GDCLASS(BasicItemKit, CollisionBulletKit)
     public:
+
+	BasicItemKit() { kit_type = KIT_TYPE_ITEM; }
+
 	// Vector of what directions items naturally fall at. 
 	Vector2 gravity = Vector2();
 	double damp = 0.95;

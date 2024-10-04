@@ -1,4 +1,5 @@
 ### **Inherits:** [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) < [Resource](https://docs.godotengine.org/en/stable/classes/class_resource.html)
+### **Inherited By: **
 **A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for basic particles.**
 ## Description
 A [BulletKit](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for basic particles. BasicParticleKits are a super basic implementation of [BulletKits](https://github.com/PickledCow/STGodot-4/wiki/BulletKit) for use in collisionless, short-lived bullets. Example use-cases are for graze-particles and item collection text.
@@ -25,4 +26,4 @@ The spritesheet that bullets in this kit use.
 The width of the spritesheet. Make sure to set this value or else you will not be able to see any bullets.
 ### [`float`](https://docs.godotengine.org/en/stable/classes/class_float.html) `time_scale`
 The speed multiplier at which the BulletKit operates at. For example, if set to `2.0` the bullets will move twice as fast.
-This value is independent between kits so if you want all kits to have the same time scale you must set it for all kits.
+			This value is independent between kits so if you want all kits to have the same time scale you must set it for all kits.

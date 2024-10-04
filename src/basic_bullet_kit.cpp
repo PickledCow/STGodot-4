@@ -6,6 +6,18 @@ using namespace godot;
 
 
 void BasicBulletKit::_bind_methods() {
+    BIND_ENUM_CONSTANT(PLAYER);
+    BIND_ENUM_CONSTANT(ENEMY);
+
+    ClassDB::bind_method(D_METHOD("get_affiliation"), &BasicBulletKit::get_affiliation);
+    ClassDB::bind_method(D_METHOD("set_affiliation", "p_affiliation"), &BasicBulletKit::set_affiliation);
+    ADD_PROPERTY(PropertyInfo(
+        Variant::INT, 
+        "affiliation",
+        PROPERTY_HINT_ENUM,
+        "PLAYER,ENEMY"
+    ), "set_affiliation", "get_affiliation");
+
     ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BasicBulletKit::get_bounce_rect);
     ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce_rect"), &BasicBulletKit::set_bounce_rect);
     ADD_PROPERTY(PropertyInfo(Variant::RECT2, "bounce_rect"), "set_bounce_rect", "get_bounce_rect");
@@ -26,6 +38,16 @@ void BasicBulletPool::_custom_init(CanvasItem* canvas_parent, int set_index, Ref
 	bounce_rect = bullet_kit->bounce_rect;
 	warp_rect = bullet_kit->warp_rect;
 }
+
+
+BasicBulletKit::AFFILIATION BasicBulletKit::get_affiliation() {
+    return affiliation;
+}
+
+void BasicBulletKit::set_affiliation(AFFILIATION value) {
+    affiliation = value;
+}
+
 
 Rect2 BasicBulletKit::get_bounce_rect() {
     return bounce_rect;
@@ -72,8 +94,8 @@ BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angl
     rendering_server->canvas_item_set_transform(rid, xform);
 
     Color compressed_data = Color();
-    compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
-    compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+    compressed_data.r = bullet_data[1] + bullet_data[0] / texture_width;
+    compressed_data.g = bullet_data[3] + bullet_data[2] / texture_width;
     compressed_data.b = floor(bullet_data[6]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
     compressed_data.a = floor(bullet_data[7]) + animation_random;
 
@@ -129,8 +151,8 @@ BulletID BasicBulletPool::_create_shot_a2(Vector2 pos, double speed, double angl
     rendering_server->canvas_item_set_transform(rid, xform);
 
     Color compressed_data = Color();
-    compressed_data.r = bullet_data[1] + bullet_data[0] / kit->texture_width;
-    compressed_data.g = bullet_data[3] + bullet_data[2] / kit->texture_width;
+    compressed_data.r = bullet_data[1] + bullet_data[0] / texture_width;
+    compressed_data.g = bullet_data[3] + bullet_data[2] / texture_width;
     compressed_data.b = floor(bullet_data[6]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
     compressed_data.a = floor(bullet_data[7]) + animation_random;
 

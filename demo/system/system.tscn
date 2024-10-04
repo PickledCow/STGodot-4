@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b835gvy8qvhoc"]
+
+[ext_resource type="Script" path="res://system/system.gd" id="1_77xdw"]
+[ext_resource type="Script" path="res://system/bullet_constructor.gd" id="2_ookq8"]
+
+[node name="System" type="Node"]
+script = ExtResource("1_77xdw")
+
+[node name="BulletConstructor" type="Node" parent="."]
+script = ExtResource("2_ookq8")

@@ -1,22 +1,20 @@
 [gd_scene load_steps=10 format=3 uid="uid://18jtj8q2lok4"]
 
-[ext_resource type="Script" path="res://test.gd" id="1_1fl14"]
-[ext_resource type="Script" path="res://bullets_environment.gd" id="1_bplr8"]
+[ext_resource type="Script" path="res://core/bullet_environment.gd" id="1_bplr8"]
 [ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
-[ext_resource type="BasicBulletKit" uid="uid://dksxupmydxoe3" path="res://system/kits/basic_bullet_kit.tres" id="3_6ylpx"]
-[ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://system/kits/basic_bullet_kit_add.tres" id="4_m5ij2"]
-[ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://system/kits/basic_item_kit.tres" id="5_uusdv"]
+[ext_resource type="BasicBulletKit" uid="uid://dksxupmydxoe3" path="res://kits/basic_bullet_kit.tres" id="3_6ylpx"]
+[ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://kits/basic_bullet_kit_add.tres" id="4_m5ij2"]
+[ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://kits/basic_item_kit.tres" id="5_uusdv"]
 [ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="6_f1n2p"]
-[ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://system/kits/graze_particle_kit.tres" id="6_jk67u"]
-[ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://system/kits/item_text_kit.tres" id="7_tvyfl"]
+[ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://kits/graze_particle_kit.tres" id="6_jk67u"]
+[ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://kits/item_text_kit.tres" id="7_tvyfl"]
+[ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://players/default/player.tscn" id="9_5p7c2"]
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_1fl14")
-number_count = 1
-number_0 = 0
-letter_0 = null
 
-[node name="BulletsEnvironment" type="Node" parent="."]
+[node name="root" type="Node2D" parent="."]
+
+[node name="BulletEnvironment" type="Node" parent="root"]
 script = ExtResource("1_bplr8")
 bullet_types_amount = 5
 bullet_type_0/bullet_kit = ExtResource("3_6ylpx")
@@ -35,13 +33,17 @@ bullet_type_4/bullet_kit = ExtResource("7_tvyfl")
 bullet_type_4/pool_size = 1024
 bullet_type_4/z_index = 6
 
-[node name="arts" type="Node2D" parent="."]
+[node name="arts" type="Node2D" parent="root"]
 script = ExtResource("2_t2ehl")
 bullet_kit = ExtResource("3_6ylpx")
 item_kit = ExtResource("5_uusdv")
 graze_kit = ExtResource("6_jk67u")
 item_text_kit = ExtResource("7_tvyfl")
 
-[node name="Sprite2D" type="Sprite2D" parent="arts"]
+[node name="Sprite2D" type="Sprite2D" parent="root/arts"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_f1n2p")
+
+[node name="Player" parent="root" instance=ExtResource("9_5p7c2")]
+position = Vector2(571, 425)
+shooter_manager_path = NodePath("")

@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://c87ndgxn2vij"]
+
+[ext_resource type="Script" path="res://system/sfx.gd" id="1_hs46b"]
+[ext_resource type="AudioStream" uid="uid://dlcclmrp7y24m" path="res://system/sfx/death.wav" id="2_pg0su"]
+[ext_resource type="AudioStream" uid="uid://cb3jvun5xq487" path="res://system/sfx/graze.wav" id="3_ut8fh"]
+[ext_resource type="AudioStream" uid="uid://djunfne3guq0v" path="res://system/sfx/item.wav" id="4_jk043"]
+[ext_resource type="AudioStream" uid="uid://bupl5g7nvn276" path="res://system/sfx/shoot1.wav" id="5_fycwg"]
+[ext_resource type="Script" path="res://system/audio_test.gd" id="6_b0r30"]
+
+[node name="SFX" type="Node2D"]
+position = Vector2(722, 519)
+script = ExtResource("1_hs46b")
+sfx_count = 4
+sfx_0/name = &"death"
+sfx_0/stream = ExtResource("2_pg0su")
+sfx_0/volume = -10.0
+sfx_1/name = &"graze"
+sfx_1/stream = ExtResource("3_ut8fh")
+sfx_1/volume = 0.0
+sfx_2/name = &"shoot1"
+sfx_2/stream = ExtResource("5_fycwg")
+sfx_2/volume = -5.0
+sfx_3/name = &"item"
+sfx_3/stream = ExtResource("4_jk043")
+sfx_3/volume = 0.0
+
+[node name="AudioTest" type="AudioStreamPlayer" parent="."]
+script = ExtResource("6_b0r30")
+
+[connection signal="finished" from="AudioTest" to="AudioTest" method="_on_finished"]

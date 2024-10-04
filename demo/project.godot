@@ -18,7 +18,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Bullets="*res://core/bullets_interface.tscn"
+Bullets="*res://core/bullet_interface.tscn"
+System="*res://system/system.tscn"
+SFX="*res://system/sfx.tscn"
+GameInput="*res://core/game_input.tscn"
 
 [display]
 

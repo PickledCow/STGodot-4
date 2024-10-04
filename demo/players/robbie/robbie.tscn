@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d05sqsf5463jg"]
+
+[ext_resource type="Script" path="res://players/robbie/robbie.gd" id="1_jgkr5"]
+
+[node name="Robbie" type="Sprite2D"]
+script = ExtResource("1_jgkr5")

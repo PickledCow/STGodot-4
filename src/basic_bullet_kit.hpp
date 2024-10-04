@@ -42,9 +42,20 @@ class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 class BasicBulletKit : public CollisionBulletKit {
 	GDCLASS(BasicBulletKit, CollisionBulletKit)
     public:
-	std::unique_ptr<BulletPool> _create_pool() override;
-	// BULLET_KIT(BasicBulletPool)
 
+	BasicBulletKit() { kit_type = KIT_TYPE_BULLET; }
+
+	enum AFFILIATION {
+		PLAYER,
+		ENEMY 
+	};
+
+	AFFILIATION affiliation = ENEMY;
+	
+	AFFILIATION get_affiliation();
+	void set_affiliation(AFFILIATION value);
+
+	std::unique_ptr<BulletPool> _create_pool() override;
 	Rect2 get_bounce_rect();
 	Rect2 get_warp_rect();
 	void set_bounce_rect(Rect2 value);
@@ -60,5 +71,6 @@ class BasicBulletKit : public CollisionBulletKit {
 
 }
 
+VARIANT_ENUM_CAST(BasicBulletKit::AFFILIATION);
 
 #endif

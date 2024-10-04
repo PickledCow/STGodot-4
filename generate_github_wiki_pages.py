@@ -134,11 +134,23 @@ def get_inheritance(class_list: list, class_list_index: dict, class_name: str, f
         return f'[{class_name}]({godot_wiki_root + class_name.lower()}.html)'
     
 
+def get_children(class_list_index: dict, class_name: str) -> str:
+    return_text = ", "
+    if class_name in class_list_index:
+        return_text = return_text[:-2]
+        for child_name in children_list[class_name]:
+            return_text += f'[{child_name}]({wiki_root + child_name}), '
+    
+    return return_text
+    
+
 
 if __name__ == "__main__":
 
     class_list = []
     class_list_index = {}
+
+    children_list = {}
 
     file_names = []
     
@@ -153,10 +165,19 @@ if __name__ == "__main__":
 
         class_list.append(o)
         class_list_index[o["class"]["@name"]] = i
+        children_list[o["class"]["@name"]] = []
 
         i += 1
 
         f.close()
+    
+    # Fill list of children
+    for o in class_list:
+        class_name = o["class"]["@name"]
+        parent_name = o["class"]["@inherits"]
+
+        if parent_name in children_list:
+            children_list[parent_name].append(class_name)
     
     # Now generate the md files
     
@@ -166,6 +187,13 @@ if __name__ == "__main__":
 
         class_name = o["class"]["@name"]
         text = f'### **Inherits:** {get_inheritance(class_list, class_list_index, class_name, True)}\n'
+
+        children_text = get_children(class_list_index, class_name)[:-2]
+
+
+        text += f'### **Inherited By: {children_text}**\n'
+
+        
 
         class_brief_description = o["class"]["brief_description"]
         class_description = o["class"]["description"]

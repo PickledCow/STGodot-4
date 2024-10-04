@@ -10,7 +10,8 @@
 	</tutorials>
 	<members>
 		<member name="active_rect" type="Rect2" setter="set_active_rect" getter="get_active_rect" default="Rect2(0, 0, 0, 0)">
-The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) at which bullets can exist in. If a bullet leaves this space and is set to be automatically deleted (which is by default), the bullet will be marked for removal and be deleted the following frame.&#xA;The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) should generally be slightly bigger than the visible playfield to not have bullets vanish while still partially visible.
+			The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) at which bullets can exist in. If a bullet leaves this space and is set to be automatically deleted (which is by default), the bullet will be marked for removal and be deleted the following frame.
+The [Rect2](https://docs.godotengine.org/en/stable/classes/class_rect2.html) should generally be slightly bigger than the visible playfield to not have bullets vanish while still partially visible.
 		</member>
 	</members>
 </class>

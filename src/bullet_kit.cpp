@@ -10,9 +10,9 @@ Ref<Material> BulletKit::get_material() {
     return material;
 }
 
-double BulletKit::get_texture_width() {
-    return texture_width;
-}
+// double BulletKit::get_texture_width() {
+//     return texture_width;
+// }
 
 bool BulletKit::get_facing_up() {
     return facing_up;
@@ -33,9 +33,9 @@ void BulletKit::set_material(Ref<Material> value) {
     material = value;
 }
 
-void BulletKit::set_texture_width(double value) {
-    texture_width = value;
-}
+// void BulletKit::set_texture_width(double value) {
+//     texture_width = value;
+// }
 
 void BulletKit::set_facing_up(bool value) {
     facing_up = value;
@@ -67,9 +67,9 @@ void BulletKit::_bind_methods() {
             "ShaderMaterial,CanvasItemMaterial"
         ), 
         "set_material", "get_material");
-    ClassDB::bind_method(D_METHOD("get_texture_width"), &BulletKit::get_texture_width);
-    ClassDB::bind_method(D_METHOD("set_texture_width", "p_texture_width"), &BulletKit::set_texture_width);
-    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "texture_width"), "set_texture_width", "get_texture_width");
+    // ClassDB::bind_method(D_METHOD("get_texture_width"), &BulletKit::get_texture_width);
+    // ClassDB::bind_method(D_METHOD("set_texture_width", "p_texture_width"), &BulletKit::set_texture_width);
+    // ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "texture_width"), "set_texture_width", "get_texture_width");
     ClassDB::bind_method(D_METHOD("get_facing_up"), &BulletKit::get_facing_up);
     ClassDB::bind_method(D_METHOD("set_facing_up", "p_facing_up"), &BulletKit::set_facing_up);
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "facing_up"), "set_facing_up", "get_facing_up");

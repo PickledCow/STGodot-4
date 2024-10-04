@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://lhreon44rlnf"]
+
+[ext_resource type="Script" path="res://core/game_input.gd" id="1_607ls"]
+
+[node name="GameInput" type="Node"]
+script = ExtResource("1_607ls")

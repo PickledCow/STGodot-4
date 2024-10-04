@@ -4,7 +4,7 @@
 
 // #include "bullet.hpp"
 #include "bullet_kit.hpp"
-#include "bullets_interface.hpp"
+#include "bullet_interface.hpp"
 
 #include "collision_bullet_kit.hpp"
 
@@ -27,7 +27,7 @@ void initialize_stgodot_module(ModuleInitializationLevel p_level) {
 	// GDREGISTER_CLASS(Bullet);
 	GDREGISTER_ABSTRACT_CLASS(BulletKit);
 	GDREGISTER_ABSTRACT_CLASS(CollisionBulletKit);
-	GDREGISTER_CLASS(BulletsInterface);
+	GDREGISTER_CLASS(BulletInterface);
 
 	GDREGISTER_CLASS(BasicBulletKit);
 	GDREGISTER_CLASS(BasicItemKit);

@@ -39,6 +39,8 @@ class BulletPool {
 	int pool_size = 0;
 	int set_index = -1;
 
+	double texture_width = 0.0;
+
     double animation_random = 0.0;
 
     int* persistent_index;

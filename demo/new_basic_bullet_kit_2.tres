@@ -1,7 +1,7 @@
 [gd_resource type="BasicBulletKit" load_steps=3 format=3 uid="uid://hsegmwqdx6fa"]
 
-[ext_resource type="Material" uid="uid://but1rwxvgpnqk" path="res://system/kits/kit_materials/basic_bullet_material.tres" id="1_gt4wq"]
-[ext_resource type="Texture2D" uid="uid://cq4ldm5wsstkr" path="res://system/kits/spritesheets/bullet.png" id="2_bycpu"]
+[ext_resource type="Material" uid="uid://but1rwxvgpnqk" path="res://kits/kit_materials/basic_bullet_material.tres" id="1_gt4wq"]
+[ext_resource type="Texture2D" uid="uid://cq4ldm5wsstkr" path="res://kits/spritesheets/bullet.png" id="2_bycpu"]
 
 [resource]
 active_rect = Rect2(-50, -50, 1380, 820)

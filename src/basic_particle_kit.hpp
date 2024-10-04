@@ -29,6 +29,8 @@ class BasicParticleKit : public BulletKit {
 	GDCLASS(BasicParticleKit, BulletKit)
     public:
 
+	BasicParticleKit() { kit_type = KIT_TYPE_PARTICLE; }
+	
 	std::unique_ptr<BulletPool> _create_pool() override;
 
 

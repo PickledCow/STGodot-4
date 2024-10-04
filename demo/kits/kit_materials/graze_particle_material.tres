@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://l74xuddwgjr8"]
+
+[ext_resource type="Shader" path="res://kits/kit_shaders/graze_particle_shader.gdshader" id="1_h3ksl"]
+
+[resource]
+shader = ExtResource("1_h3ksl")
