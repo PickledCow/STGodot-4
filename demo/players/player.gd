@@ -5,9 +5,23 @@ class_name Player
 ## 
 ## The base Player class. Handles basic functions with movement, collisions,
 ## life management, and basic sprite rendering. [br][br]
-## Shooting should be handled by a child ShooterManager with a refernce to the node.
+## Shooting should be handled by a child [ShooterManager] with the Player holding
+## a [NodePath] to the node
+## @experimental
 
-# Hey! These are folders you can collapse if you want a cleaner view of the rest of the code!
+# =============================================================================
+#  ┏━━┓  ┏━━┓   ┏━━━━━━━┓   ┏━━┓  ┏━━┓  ┏━━┓
+#  ┃  ┃  ┃  ┃   ┃  ┏━━━━┛   ┃  ┃  ┃  ┃  ┃  ┃
+#  ┃  ┗━━┛  ┃   ┃  ┗━━━┓    ┃  ┗━━┛  ┃  ┃  ┃
+#  ┃  ┏━━┓  ┃   ┃  ┏━━━┛    ┗━━┓  ┏━━┛  ┗━━┛
+#  ┃  ┃  ┃  ┃   ┃  ┗━━━━┓      ┃  ┃     ┏━━┓
+#  ┗━━┛  ┗━━┛   ┗━━━━━━━┛      ┗━━┛     ┗━━┛
+#
+# You can collapse these regions to make the code significantly easier to read.
+# Seriously, this script is pretty long and messy.
+# =============================================================================
+
+
 #region Enums
 
 ## Style of input handling.
@@ -85,7 +99,8 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 
 #region Export Variables
 
-@export_node_path("ShooterManager") var shooter_manager_path : NodePath
+@export_node_path("ShooterManager") var shooter_manager_path : NodePath = NodePath()
+@export_node_path() var arst : NodePath = NodePath()
 
 @export_group("Vitality")
 ## Default starting lives. Game over occurs when you die with 0 lives.
@@ -272,11 +287,13 @@ func movement(time_scale) -> void:
 			if GameInput.is_action_just_pressed( H_PRIORITY_INPUT_NAMES[ horizontal_input_priority ] ):
 				current_horizontal_input_priority = horizontal_input_priority
 			elif GameInput.is_action_just_pressed( H_PRIORITY_INPUT_NAMES[ 1 - horizontal_input_priority ] ):
+				@warning_ignore("int_as_enum_without_cast")
 				current_horizontal_input_priority = 1 - horizontal_input_priority
 				
 			if GameInput.is_action_just_pressed( V_PRIORITY_INPUT_NAMES[ vertical_input_priority ] ):
 				current_vertical_input_priority = vertical_input_priority
 			elif GameInput.is_action_just_pressed( V_PRIORITY_INPUT_NAMES[ 1 - vertical_input_priority ] ):
+				@warning_ignore("int_as_enum_without_cast")
 				current_vertical_input_priority = 1 - vertical_input_priority
 				
 			if (GameInput.is_action_pressed( H_PRIORITY_INPUT_NAMES[ horizontal_input_priority ] ) 
@@ -372,21 +389,16 @@ func _update_hframes():
 
 #region Overrides
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
-		
-	shooter_manager = get_node(shooter_manager_path)
+	if shooter_manager_path:
+		shooter_manager = get_node(shooter_manager_path)
+	else:
+		print("Shooter Manager Path failed, using first child instead.")
+		shooter_manager = get_child(0)
 
 func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-		
 	animation(delta)
 
-func _physics_process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-		
+func _physics_process(_delta: float) -> void:
 	var time_scale := Engine.time_scale
 	movement(time_scale)
 	collision()

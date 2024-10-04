@@ -4,6 +4,7 @@ class_name GameSystem
 ## STGodot environment.
 ##
 ## arshtaoit
+## @experimental
 
 @onready var bullet_constructor := $BulletConstructor
 

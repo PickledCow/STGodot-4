@@ -1,11 +1,13 @@
 @tool
 extends Node2D
 class_name SFXPlayer
+## An abstraction layer for easily playing sound effects at a global scope.
 
 ## The volume is attenuated over distance with this as an exponent. By default
 ## there is no attenuation and only panning.
 @export_exp_easing("attenuation") var attenuation := 0.0
 ## The AudioBus for the SFX to play through.
+@warning_ignore("enum_variable_without_default") # Can't find a better way...
 @export var sfx_bus: AudioBus
 
 var sfx_name_list := [] as Array[StringName]
@@ -88,9 +90,10 @@ func _validate_property(property: Dictionary):
 
 func _test_volume(index: int):
 	if Engine.is_editor_hint():
-		audio_test_node.stream = audio_stream_list[index]
-		audio_test_node.volume_db = audio_volume_list[index]
-		audio_test_node.play()
+		if audio_test_node:
+			audio_test_node.stream = audio_stream_list[index]
+			audio_test_node.volume_db = audio_volume_list[index]
+			audio_test_node.play()
 
 
 func _get(property: StringName) -> Variant:

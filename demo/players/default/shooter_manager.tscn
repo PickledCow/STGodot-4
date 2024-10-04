@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://baadrovpq85ya"]
+
+[ext_resource type="Script" path="res://players/shooter_manager.gd" id="1_oxfqk"]
+[ext_resource type="Texture2D" uid="uid://2eqfm6ltorwy" path="res://kits/spritesheets/player_bullets.png" id="1_p8yj2"]
+[ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="2_0dg7f"]
+
+[node name="ShooterManager" type="Sprite2D"]
+scale = Vector2(1.84617, 1.84617)
+texture = ExtResource("1_p8yj2")
+offset = Vector2(0, 24)
+region_enabled = true
+region_rect = Rect2(128, 0, 128, 128)
+script = ExtResource("1_oxfqk")
+bullet_kits = Array[BasicBulletKit]([ExtResource("2_0dg7f")])
+sprite_count = 2
+Sprites/sprite_0/kit_index = 0
+Sprites/sprite_0/source_rect = Rect2i(128, 0, 128, 128)
+Sprites/sprite_0/bullet_size = 236.31
+Sprites/sprite_0/hitbox_ratio = 0.12
+Sprites/sprite_0/sprite_offset = 24.0
+Sprites/sprite_0/animation_frames = 0.0
+Sprites/sprite_0/spin = 0.0
+Sprites/sprite_0/layer = 0.0
+Sprites/sprite_0/clear_color = Color(2.79158e-06, 0.644388, 0.820836, 1)
+Sprites/sprite_1/kit_index = 0
+Sprites/sprite_1/source_rect = Rect2i(0, 128, 64, 64)
+Sprites/sprite_1/bullet_size = 109.86
+Sprites/sprite_1/hitbox_ratio = 0.22
+Sprites/sprite_1/sprite_offset = 0.0
+Sprites/sprite_1/animation_frames = 0.0
+Sprites/sprite_1/spin = 0.0
+Sprites/sprite_1/layer = 0.0
+Sprites/sprite_1/clear_color = Color(0.387508, 0.62206, 1, 1)

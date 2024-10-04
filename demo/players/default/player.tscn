@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dww4gq24fvl8n"]
+[gd_scene load_steps=4 format=3 uid="uid://dww4gq24fvl8n"]
 
 [ext_resource type="Texture2D" uid="uid://cmfsu5yv2h1rc" path="res://players/sprites/player.png" id="1_eqwl6"]
 [ext_resource type="Script" path="res://players/player.gd" id="1_m7gp6"]
-[ext_resource type="Script" path="res://players/shooter_manager.gd" id="3_yrmth"]
-[ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="4_jfk4q"]
+[ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://players/default/shooter_manager.tscn" id="3_7dfjt"]
 
 [node name="Player" type="Sprite2D"]
 scale = Vector2(0.5, 0.5)
@@ -13,8 +12,13 @@ vframes = 2
 region_rect = Rect2(0, 0, 512, 384)
 script = ExtResource("1_m7gp6")
 shooter_manager_path = NodePath("ShooterManager")
+arst = NodePath(".")
 
-[node name="ShooterManager" type="Sprite2D" parent="."]
-position = Vector2(144, -166)
-script = ExtResource("3_yrmth")
-bullet_kits = Array[BasicBulletKit]([ExtResource("4_jfk4q")])
+[node name="ShooterManager" parent="." instance=ExtResource("3_7dfjt")]
+position = Vector2(118, -28)
+scale = Vector2(1, 1)
+offset = Vector2(0, 0)
+region_rect = Rect2(0, 128, 64, 64)
+Sprites/sprite_0/hitbox_ratio = 0.1
+Sprites/sprite_1/bullet_size = 64.0
+Sprites/sprite_1/hitbox_ratio = 0.55

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=11 format=3 uid="uid://18jtj8q2lok4"]
 
 [ext_resource type="Script" path="res://core/bullet_environment.gd" id="1_bplr8"]
 [ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
@@ -7,6 +7,7 @@
 [ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://kits/basic_item_kit.tres" id="5_uusdv"]
 [ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="6_f1n2p"]
 [ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://kits/graze_particle_kit.tres" id="6_jk67u"]
+[ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="7_sxpve"]
 [ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://kits/item_text_kit.tres" id="7_tvyfl"]
 [ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://players/default/player.tscn" id="9_5p7c2"]
 
@@ -16,7 +17,7 @@
 
 [node name="BulletEnvironment" type="Node" parent="root"]
 script = ExtResource("1_bplr8")
-bullet_types_amount = 5
+bullet_types_amount = 6
 bullet_type_0/bullet_kit = ExtResource("3_6ylpx")
 bullet_type_0/pool_size = 24576
 bullet_type_0/z_index = 10
@@ -32,6 +33,9 @@ bullet_type_3/z_index = 6
 bullet_type_4/bullet_kit = ExtResource("7_tvyfl")
 bullet_type_4/pool_size = 1024
 bullet_type_4/z_index = 6
+bullet_type_5/bullet_kit = ExtResource("7_sxpve")
+bullet_type_5/pool_size = 256
+bullet_type_5/z_index = null
 
 [node name="arts" type="Node2D" parent="root"]
 script = ExtResource("2_t2ehl")

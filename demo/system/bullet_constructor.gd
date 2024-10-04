@@ -149,6 +149,7 @@ func generate_bullet_data() -> void:
 			var data := PackedFloat64Array()
 			data.resize(15)
 			data[0] = tiny_offsets[i - BULLET_TYPE.POPCORN].x + 32 * (j % 8) # source x (integer)
+			@warning_ignore("integer_division")
 			data[1] = tiny_offsets[i - BULLET_TYPE.POPCORN].y + 32 * (j / 8) # source y (integer)
 			data[2] = 32				# source width (integer)
 			data[3] = 32				# source height (integer)
@@ -300,6 +301,7 @@ func generate_bullet_data() -> void:
 	# Divine Spirit
 	#{GREY, RED, PURPLE, BLUE, CYAN, GREEN, YELLOW, WHITE, ORANGE, RED_D, PURPLE_D, BLUE_D, CYAN_D, GREEN_D, YELLOW_D, GREY_D}
 # warning-ignore:unused_variable
+	@warning_ignore("unused_variable")
 	var divine_offsets := [ Vector2(0, 1536), Vector2(256, 1536), Vector2(256 * 2, 1536), Vector2(256 * 3, 1536),
 							Vector2(0, 1536 + 256), Vector2(256, 1536 + 256), Vector2(0, 1536 + 256), 
 	]
@@ -309,6 +311,7 @@ func generate_bullet_data() -> void:
 			var data := PackedFloat64Array()
 			data.resize(15)
 			data[0] = 256 * (j % 4) 		# source x (integer)
+			@warning_ignore("integer_division")
 			data[1] = 1536 + 256 * (j / 4) 	# source y (integer)
 			data[2] = 256				# source width (integer)
 			data[3] = 256				# source height (integer)
