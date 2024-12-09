@@ -30,7 +30,7 @@ namespace godot {
 // Mode of process for BasicBullet. Higher number classes also run the process
 // of lower types. A types act with angles and B types act with x-y velocities.
 enum processMode { A1, A2, A3, B1, B2, B3 };
-// enum bounceMode { BOUNCE, WARP };
+enum bounceMode { BOUNCE, WARP };
 enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
 const int NO_CHANGE = -256*256*256;

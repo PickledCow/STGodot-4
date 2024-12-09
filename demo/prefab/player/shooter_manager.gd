@@ -18,8 +18,29 @@ class_name ShooterManager
 # Seriously, this script is pretty long and messy.
 # =============================================================================
 
+## Documenting an inner class.
+## 
+## Ger
+## @experimental
 class Shooter:
-	pass
+	## Uh
+	var fire_rate = 3
+	var start_delay = 0
+	var fire_timer = 0
+	
+	var damage = 10
+	var offset = Vector2(0,0)
+	var angle = -PI/2
+	var speed = 50
+	var accel = 0
+	var max_speed = 0
+	var homing_strength = 0.0
+	
+	var sprite
+	var kit
+	var option = 0
+	var sfx
+	
 
 
 #region Export Variables
@@ -51,6 +72,8 @@ var kit_index_list := [] as Array[int]
 
 var spin := 0.0
 var hitbox_radius := 0.0
+
+var focus_shooters : Array[Shooter] = []
 
 #endregion
 

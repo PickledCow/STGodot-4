@@ -74,14 +74,14 @@ func _ready():
 
 
 
-	item_data = System.get_item_data(0)
+	item_data = System.get_item_data(6)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass	
 
 func _physics_process(_delta):
-	if true:
+	if false:
 		var shoot_pos = Vector2(1280, 720*0.5) * 0.5
 		if t % 120 == 120:
 			for i in 120:
@@ -113,7 +113,7 @@ func _physics_process(_delta):
 		#print(get_viewport_rect().size)
 		#print("Bullets: ", Bullets.get_total_active_bullets(), "; FPS: ", Engine.get_frames_per_second())
 		#print("Collisions: ", collisions[0].size(), "; Grazes: ", collisions[1].size())
-
+	
 	t += 1
 	
 	

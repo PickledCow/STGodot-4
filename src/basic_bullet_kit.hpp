@@ -13,7 +13,6 @@ class BasicBulletKit;
 // Bullet pool definition.
 class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 
-	// void _init_bullet(Bullet* bullet); Use default implementation.
     public:
     
 	void _custom_init(CanvasItem* canvas_parent, int set_index, Ref<BulletKit> kit, int pool_size, int z_index, Vector2 origin);
@@ -24,6 +23,8 @@ class BasicBulletPool : public AbstractBulletPool<BasicBulletKit, BasicBullet> {
 
     void _process_a1(BasicBullet* bullet, double delta);
     void _process_a2(BasicBullet* bullet, double delta);
+
+	// Handles bouncing on edges of the wall, returning the new bounce count.
     int _process_a3_before(BasicBullet* bullet, double delta);
     int _process_a3_after(BasicBullet* bullet, double delta);
 
@@ -62,11 +63,7 @@ class BasicBulletKit : public CollisionBulletKit {
 	void set_warp_rect(Rect2 value);
     
     static void _bind_methods();
-};
-
-// std::unique_ptr<BulletPool> BasicBulletKit::_create_pool() {						
-// 	return std::unique_ptr<BulletPool> (new BasicBulletKit());						
-// }																										
+};																								
 			
 
 }

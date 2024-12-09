@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1ohynj7bm3d7"
-path="res://.godot/imported/focus.png-637b7c496106276720cfea5db663546e.ctex"
+uid="uid://cmfsu5yv2h1rc"
+path="res://.godot/imported/player.png-df549e2c2039428c98de42903f888a86.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://players/sprites/focus.png"
-dest_files=["res://.godot/imported/focus.png-637b7c496106276720cfea5db663546e.ctex"]
+source_file="res://prefab/player/sprites/player.png"
+dest_files=["res://.godot/imported/player.png-df549e2c2039428c98de42903f888a86.ctex"]
 
 [params]
 

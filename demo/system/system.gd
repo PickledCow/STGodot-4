@@ -6,9 +6,48 @@ class_name GameSystem
 ## arshtaoit
 ## @experimental
 
-@onready var bullet_constructor := $BulletConstructor
+enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, CLEAR, SIZE }
+
+@onready var bullet_constructor : BulletConstructor = $BulletConstructor
+
+##
+
+var player : Player
+
 
 var playfield_size := Vector2(1280, 720)
+
+
+
+## Current graze count.
+var graze := 0
+## Current value of the point item.
+var piv := 1000
+## Current game score
+var score := 0
+
+#region Registration Functions
+
+func register_player(node: Player) -> void:
+	player = node
+
+#endregion
+
+#region Update  Functions
+
+func increase_graze(amount: int) -> void:
+	graze += amount
+
+func collect_piv_items(count: int) -> void:
+	piv += count
+
+func collect_point_items(count: int) -> void:
+	score += count * piv
+
+#endregion
+
+
+#region Query  Functions
 
 func get_bullet_data(type: int, color: int) -> PackedFloat64Array:
 	return bullet_constructor.get_bullet_data(type, color)
@@ -16,3 +55,4 @@ func get_bullet_data(type: int, color: int) -> PackedFloat64Array:
 func get_item_data(type: int) -> PackedFloat64Array:
 	return bullet_constructor.get_item_data(type)
 	
+#endregion

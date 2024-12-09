@@ -72,6 +72,10 @@ class BulletPool {
     
     virtual double get_damage(BulletID bullet_id) = 0;
     virtual void set_damage(BulletID bullet_id, double damage) = 0;
+	
+    virtual int get_damage_type(BulletID bullet_id) = 0;
+    virtual void set_damage_type(BulletID bullet_id, int damage_type) = 0;
+	
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) = 0;
 	virtual Variant get_bullet_property(BulletID id, String property) = 0;
@@ -136,6 +140,9 @@ class AbstractBulletPool : public BulletPool {
     
     virtual double get_damage(BulletID bullet_id) override;
     virtual void set_damage(BulletID bullet_id, double damage) override;
+	
+    virtual int get_damage_type(BulletID bullet_id) override;
+    virtual void set_damage_type(BulletID bullet_id, int damage_type) override;
 
 	virtual void set_bullet_property(BulletID id, String property, Variant value) override;
 	virtual Variant get_bullet_property(BulletID id, String property) override;

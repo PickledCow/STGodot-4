@@ -29,9 +29,6 @@ class BasicItemPool : public AbstractBulletPool<BasicItemKit, BasicItem> {
 
     bool _get_is_auto_collected(BulletID bullet_id);
 
-
-    // void _init_shot_A1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
-
 };
 
 
@@ -48,7 +45,6 @@ class BasicItemKit : public CollisionBulletKit {
     double magnet_strength = 10.0;
 
 	std::unique_ptr<BulletPool> _create_pool() override;
-	// BULLET_KIT(BasicItemPool)
 
     Vector2 get_gravity();
 	double get_damp();

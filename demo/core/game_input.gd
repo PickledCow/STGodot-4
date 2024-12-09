@@ -1,5 +1,5 @@
 extends Node
-class_name GameInputManager
+class_name GameInputHandler
 ## Translates either live player input or replay input to be used by the player.
 ## Also removes issues with is_action_just_pressed/released with pauses.
 ##

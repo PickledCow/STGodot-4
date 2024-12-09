@@ -1,19 +1,6 @@
 #ifndef BULLETINTERFACE_H
 #define BULLETINTERFACE_H
 
-// #include <Godot.hpp>
-// #include <Node2D.hpp>
-// #include <AtlasTexture.hpp>
-// #include <Material.hpp>
-// #include <Color.hpp>
-// // #include <PackedFloat64Array.hpp>
-// #include <Rect2.hpp>
-// #include <Array.hpp>
-// #include <RegEx.hpp>
-
-// #include <vector>
-// #include <memory>
-
 #include <bullet_kit.hpp>
 #include <basic_bullet_kit.hpp>
 #include <basic_item_kit.hpp>
@@ -57,8 +44,8 @@ private:
 	Node2D* parent;
 	Vector2 last_origin;
 
-	// Array shared_areas;
 	PackedInt64Array invalid_id;
+	Array invalid_collide_and_graze_array;
 
 	// double that makes it so bullets fired on different frames aren't syncronised
 	double animation_random = 0.0;
@@ -172,6 +159,19 @@ public:
 	Vector2 get_position(PackedInt64Array bullet_id);
 	void set_position(PackedInt64Array bullet_id, Vector2 position);
 
+
+
+	double get_damage(PackedInt64Array bullet_id);
+	void set_damage(PackedInt64Array bullet_id, double damage);
+	
+	int get_damage_type(PackedInt64Array bullet_id);
+	void set_damage_type(PackedInt64Array bullet_id, int damage_type);
+
+
+	// Item
+
+	// Unimplemented
+
 	double get_speed(PackedInt64Array bullet_id);
 	void set_speed(PackedInt64Array bullet_id, double speed);
 
@@ -226,8 +226,6 @@ public:
 
 
 
-	double get_damage(PackedInt64Array bullet_id);
-	void set_damage(PackedInt64Array bullet_id, double damage);
 
 	bool get_is_auto_collected(PackedInt64Array bullet_id);
 	// void set_bullet_properties(Variant id, Dictionary properties);

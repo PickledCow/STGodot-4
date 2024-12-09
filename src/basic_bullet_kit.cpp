@@ -100,9 +100,9 @@ BulletID BasicBulletPool::_create_shot_a1(Vector2 pos, double speed, double angl
     compressed_data.a = floor(bullet_data[7]) + animation_random;
 
     if (fade_in) {
-        compressed_data.b += 0.9999999;
+        compressed_data.b += (1.0 - DBL_EPSILON);
     } else {
-        bullet->fade_timer = -0.000000000001;
+        bullet->fade_timer = -DBL_EPSILON;
     }
 
     bullet->speed = speed;
@@ -305,7 +305,7 @@ bool BasicBulletPool::_process_bullet(BasicBullet* bullet, double delta) {
     }
 
 
-    // Iterate over existing transformations
+    // Iterate over existing transformations, TODO
     bool transform_applied = false;
     int j = 0;
     for (int i = 0; i < bullet->transforms.size(); i++) {
@@ -403,15 +403,16 @@ int BasicBulletPool::_process_a3_after(BasicBullet* bullet, double delta) {
 	bool vertical_bounced = false;
 	bool horizontal_bounced = false;
 
-    // Bullet bounce
+    // Bullet bounce/warp handling 
+    // Vertical edges
     if (bullet->bounce_count > 0) {
-        // Top
+        // Top 
         if (((bullet->bounce_surfaces & 0b0001) == 0b0001) && bullet->position.y < bounce_rect.position.y) {
             vertical_bounced = true;
             if (bounce_mode == 0) bullet->position.y = bounce_rect.position.y + (bounce_rect.position.y - bullet->position.y);
             else bullet->position.y += bounce_rect.size.y;
         }
-        // Bottom
+        // Bottom 
         else if (((bullet->bounce_surfaces & 0b0010) == 0b0010) && (bullet->position.y > (bounce_rect.position.y + bounce_rect.size.y))) {
             vertical_bounced = true;
             if (bounce_mode == 0) bullet->position.y = bounce_rect.position.y + bounce_rect.size.y + (bounce_rect.position.y + bounce_rect.size.y - bullet->position.y);
@@ -425,9 +426,9 @@ int BasicBulletPool::_process_a3_after(BasicBullet* bullet, double delta) {
                 bullet->direction.y *= -1.0;
                 bullet->transform = bullet->transform.rotated(bullet->angle * 2.0);
             }
-            // bullet->transform.set_origin(bullet->position);
         }
     }
+    // Horizontal edges
     if (bullet->bounce_count > 0) {
         // Left
         if (((bullet->bounce_surfaces & 0b0100) == 0b0100) && bullet->position.x < bounce_rect.position.x) {
@@ -454,7 +455,6 @@ int BasicBulletPool::_process_a3_after(BasicBullet* bullet, double delta) {
 
 	if (vertical_bounced || horizontal_bounced) {
 		bullet->transform.set_origin(bullet->position);
-		// bullet->hitbox_transform.set_origin(bullet->position);
 	}
 
     return bounce_count;

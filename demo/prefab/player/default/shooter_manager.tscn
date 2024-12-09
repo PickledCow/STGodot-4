@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://baadrovpq85ya"]
 
-[ext_resource type="Script" path="res://players/shooter_manager.gd" id="1_oxfqk"]
+[ext_resource type="Script" path="res://prefab/player/shooter_manager.gd" id="1_oxfqk"]
 [ext_resource type="Texture2D" uid="uid://2eqfm6ltorwy" path="res://kits/spritesheets/player_bullets.png" id="1_p8yj2"]
 [ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="2_0dg7f"]
 

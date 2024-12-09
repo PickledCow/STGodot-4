@@ -28,15 +28,8 @@ void BulletInterface::set_constant(float value) {
 
 
 void BulletInterface::_bind_methods() {
-    // ClassDB::bind_method(D_METHOD("get_NO_CHANGE"), &BulletInterface::get_NO_CHANGE);
-    // ClassDB::bind_method(D_METHOD("set_NO_CHANGE", "p_NO_CHANGE"), &BulletInterface::set_constant);
-    // ADD_PROPERTY(PropertyInfo(Variant::INT, 
-	// 	"NO_CHANGE"
-	// ),
-	// "set_NO_CHANGE", "get_NO_CHANGE");
 
 	BIND_CONSTANT(NO_CHANGE);
-
 
 	// SET ENUMS
 	{
@@ -109,8 +102,8 @@ void BulletInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD(
 		"collect_and_magnet_kit",
 		"item_kit",
-		"target_node",
 		"position",
+		"target_node",
 		"collection_radius",
 		"magnet_radius"), 
 		&BulletInterface::collect_and_magnet_kit
@@ -118,8 +111,8 @@ void BulletInterface::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD(
 		"collect_and_magnet_all",
-		"target_node",
 		"position",
+		"target_node",
 		"collection_radius",
 		"magnet_radius"), 
 		&BulletInterface::collect_and_magnet_all
@@ -212,7 +205,35 @@ void BulletInterface::_bind_methods() {
 		"damage"), 
 		&BulletInterface::set_damage
 	);
-		
+	
+	ClassDB::bind_method(D_METHOD(
+		"get_damage_type",
+		"id"), 
+		&BulletInterface::get_damage_type
+	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"set_damage_type",
+		"id",
+		"damage"), 
+		&BulletInterface::set_damage_type
+	);
+
+	// Redefinitions
+	ClassDB::bind_method(D_METHOD(
+		"get_item_type",
+		"id"), 
+		&BulletInterface::get_damage_type
+	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"set_item_type",
+		"id",
+		"damage"), 
+		&BulletInterface::set_damage_type
+	);
+
+
 		
 	ClassDB::bind_method(D_METHOD(
 		"get_is_auto_collected",
@@ -236,7 +257,12 @@ void BulletInterface::_init() {
 	invalid_id.set(0, -1);
 	invalid_id.set(1, -1);
 	invalid_id.set(2, -1);
+	
+	invalid_collide_and_graze_array = Array();
+	invalid_collide_and_graze_array.append(Array());
+	invalid_collide_and_graze_array.append(Array());
 }
+
 void BulletInterface::_physics_process(double delta) {
 	if(Engine::get_singleton()->is_editor_hint() || bullets_environment == nullptr) {
 		return;
@@ -392,6 +418,7 @@ bool BulletInterface::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
 	return false;
 }
 
+
 Variant BulletInterface::obtain_bullet(Ref<BulletKit> kit) {
 	if(available_bullets > 0 && kits_to_pool_index.has(kit)) {
 		int pool_index = kits_to_pool_index[kit];
@@ -526,12 +553,7 @@ Variant BulletInterface::get_bullet_property(Variant id, String property) {
 }
 
 Array BulletInterface::collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius) {
-	if (kit->kit_type != KIT_TYPE_BULLET) {
-		Array invalid_array = Array();
-		invalid_array.append(Array());
-		invalid_array.append(Array());
-		return invalid_array;
-	}
+
 	int pool_index = kits_to_pool_index[kit];
 	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
 	return pool->_collide_and_graze(pos, hitbox_radius, graze_radius);
@@ -563,7 +585,6 @@ Array BulletInterface::collide_and_graze_enemy(Vector2 pos, double hitbox_radius
 }
 
 Array BulletInterface::collect_and_magnet_kit(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
-	if (kit->kit_type != KIT_TYPE_ITEM) return Array();
 	int pool_index = kits_to_pool_index[kit];
 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
 	return pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius);
@@ -581,7 +602,6 @@ Array BulletInterface::collect_and_magnet_all(Vector2 pos, Node2D* target, doubl
 }
 
 void BulletInterface::magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target) {
-	if (kit->kit_type != KIT_TYPE_ITEM) return;
 	int pool_index = kits_to_pool_index[kit];
 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
 	pool->_magnet_all(target);
@@ -596,6 +616,7 @@ void BulletInterface::magnet_all(Node2D* target) {
 }
 
 PackedInt64Array BulletInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
+	
 	int pool_index = kits_to_pool_index[kit];
 	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
 
@@ -618,6 +639,7 @@ PackedInt64Array BulletInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector
 }
 
 PackedInt64Array BulletInterface::create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in) {
+	
 	int pool_index = kits_to_pool_index[kit];
 	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
 
@@ -666,6 +688,8 @@ PackedInt64Array BulletInterface::create_item(Ref<BasicItemKit> kit, Vector2 pos
 
 
 PackedInt64Array BulletInterface::create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color) {
+
+
 	int pool_index = kits_to_pool_index[kit];
 	BasicParticlePool* pool = (BasicParticlePool*)pools[pool_index].pool.get();
 
@@ -715,6 +739,21 @@ double BulletInterface::get_damage(PackedInt64Array bullet_id) {
 void BulletInterface::set_damage(PackedInt64Array bullet_id, double damage) {
 	if (bullet_id[1] >= 0) {
 		pools[bullet_id[1]].pool->set_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage);
+	}
+
+}
+
+int BulletInterface::get_damage_type(PackedInt64Array bullet_id) {
+	if (bullet_id[1] >= 0) {
+		return pools[bullet_id[1]].pool->get_damage_type(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+	}
+	return 0.0;
+
+}
+
+void BulletInterface::set_damage_type(PackedInt64Array bullet_id, int damage_type) {
+	if (bullet_id[1] >= 0) {
+		pools[bullet_id[1]].pool->set_damage_type(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage_type);
 	}
 
 }

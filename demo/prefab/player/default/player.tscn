@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dww4gq24fvl8n"]
 
-[ext_resource type="Texture2D" uid="uid://cmfsu5yv2h1rc" path="res://players/sprites/player.png" id="1_eqwl6"]
-[ext_resource type="Script" path="res://players/player.gd" id="1_m7gp6"]
-[ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://players/default/shooter_manager.tscn" id="3_7dfjt"]
+[ext_resource type="Texture2D" uid="uid://cmfsu5yv2h1rc" path="res://prefab/player/sprites/player.png" id="1_eqwl6"]
+[ext_resource type="Script" path="res://prefab/player/player.gd" id="1_m7gp6"]
+[ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://prefab/player/default/shooter_manager.tscn" id="3_7dfjt"]
 
 [node name="Player" type="Sprite2D"]
 scale = Vector2(0.5, 0.5)
@@ -12,7 +12,13 @@ vframes = 2
 region_rect = Rect2(0, 0, 512, 384)
 script = ExtResource("1_m7gp6")
 shooter_manager_path = NodePath("ShooterManager")
-arst = NodePath(".")
+min_power = 100
+max_power = 400
+starting_power = 100
+decimal_power_subdivision = 100
+large_power_item_value = 100
+power_loss_on_death = 50
+magnet_while_unfocused = false
 
 [node name="ShooterManager" parent="." instance=ExtResource("3_7dfjt")]
 position = Vector2(118, -28)

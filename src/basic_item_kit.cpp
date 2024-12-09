@@ -142,6 +142,9 @@ BulletID BasicItemPool::_create_item(Vector2 pos, double speed, double angle, do
     bullet->bullet_data = compressed_data;
     bullet->hitbox_scale = item_data[5];
 
+    bullet->damage_type = item_data[9];
+    bullet->damage = item_data[10];
+
     bullet->layer = item_data[8];
     rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullet->draw_index);
     rendering_server->canvas_item_set_modulate(bullet->item_rid, compressed_data);

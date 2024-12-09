@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=12 format=3 uid="uid://18jtj8q2lok4"]
 
 [ext_resource type="Script" path="res://core/bullet_environment.gd" id="1_bplr8"]
 [ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
@@ -9,9 +9,10 @@
 [ext_resource type="BasicParticleKit" uid="uid://dfiwvm0gne8om" path="res://kits/graze_particle_kit.tres" id="6_jk67u"]
 [ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="7_sxpve"]
 [ext_resource type="BasicParticleKit" uid="uid://dkckapwdij337" path="res://kits/item_text_kit.tres" id="7_tvyfl"]
-[ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://players/default/player.tscn" id="9_5p7c2"]
+[ext_resource type="PackedScene" uid="uid://dq8vf06ltkop6" path="res://prefab/player/player_loader.tscn" id="8_30nhk"]
+[ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://prefab/player/default/player.tscn" id="9_5p7c2"]
 
-[node name="Node2D" type="Node2D"]
+[node name="scene" type="Node2D"]
 
 [node name="root" type="Node2D" parent="."]
 
@@ -37,6 +38,9 @@ bullet_type_5/bullet_kit = ExtResource("7_sxpve")
 bullet_type_5/pool_size = 256
 bullet_type_5/z_index = null
 
+[node name="PlayerLoader" parent="root" instance=ExtResource("8_30nhk")]
+players = Array[PackedScene]([ExtResource("9_5p7c2")])
+
 [node name="arts" type="Node2D" parent="root"]
 script = ExtResource("2_t2ehl")
 bullet_kit = ExtResource("3_6ylpx")
@@ -47,7 +51,3 @@ item_text_kit = ExtResource("7_tvyfl")
 [node name="Sprite2D" type="Sprite2D" parent="root/arts"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_f1n2p")
-
-[node name="Player" parent="root" instance=ExtResource("9_5p7c2")]
-position = Vector2(571, 425)
-shooter_manager_path = NodePath("")

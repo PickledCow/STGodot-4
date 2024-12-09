@@ -310,6 +310,25 @@ void AbstractBulletPool<Kit, BulletType>::set_damage(BulletID bullet_id, double 
 }
 
 
+template <class Kit, class BulletType>
+int AbstractBulletPool<Kit, BulletType>::get_damage_type(BulletID bullet_id) {
+	int index = persistent_index[bullet_id.index];
+	if (is_bullet_valid(bullet_id)) {
+		return bullets[index]->damage_type;
+	}
+	return 0.0;
+}
+
+template <class Kit, class BulletType>
+void AbstractBulletPool<Kit, BulletType>::set_damage_type(BulletID bullet_id, int damage_type) {
+	int index = persistent_index[bullet_id.index];
+	if (is_bullet_valid(bullet_id)) {
+		bullets[index]->damage_type = damage_type;
+	}
+}
+
+
+
 // DO NOT USE
 template <class Kit, class BulletType>
 void AbstractBulletPool<Kit, BulletType>::set_bullet_property(BulletID id, String property, Variant value) {
