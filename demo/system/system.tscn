@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b835gvy8qvhoc"]
 
-[ext_resource type="Script" path="res://system/system.gd" id="1_77xdw"]
-[ext_resource type="Script" path="res://system/bullet_constructor.gd" id="2_ookq8"]
+[ext_resource type="Script" uid="uid://daxo3ibx57ft8" path="res://system/system.gd" id="1_77xdw"]
+[ext_resource type="Script" uid="uid://bfsis1urj2sao" path="res://system/bullet_constructor.gd" id="2_ookq8"]
 
 [node name="System" type="Node"]
 script = ExtResource("1_77xdw")

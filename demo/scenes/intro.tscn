@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://fp7xre5bgll2"]
+
+[ext_resource type="AudioStream" uid="uid://cm8aylps0fq3b" path="res://bgm/ultra_intro.ogg" id="1_e11wr"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_e11wr")

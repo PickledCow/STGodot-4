@@ -81,7 +81,7 @@ func _process(_delta):
 	pass	
 
 func _physics_process(_delta):
-	if false:
+	if true:
 		var shoot_pos = Vector2(1280, 720*0.5) * 0.5
 		if t % 120 == 120:
 			for i in 120:

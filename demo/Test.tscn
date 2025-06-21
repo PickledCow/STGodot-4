@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://18jtj8q2lok4"]
 
-[ext_resource type="Script" path="res://core/bullet_environment.gd" id="1_bplr8"]
-[ext_resource type="Script" path="res://arts.gd" id="2_t2ehl"]
+[ext_resource type="Script" uid="uid://gskusaok7ac" path="res://core/bullet_environment.gd" id="1_bplr8"]
+[ext_resource type="Script" uid="uid://q5xnt15chloy" path="res://arts.gd" id="2_t2ehl"]
 [ext_resource type="BasicBulletKit" uid="uid://dksxupmydxoe3" path="res://kits/basic_bullet_kit.tres" id="3_6ylpx"]
 [ext_resource type="BasicBulletKit" uid="uid://di140se3vjut2" path="res://kits/basic_bullet_kit_add.tres" id="4_m5ij2"]
 [ext_resource type="BasicItemKit" uid="uid://dmeipxvl83x6b" path="res://kits/basic_item_kit.tres" id="5_uusdv"]
@@ -48,6 +48,6 @@ item_kit = ExtResource("5_uusdv")
 graze_kit = ExtResource("6_jk67u")
 item_text_kit = ExtResource("7_tvyfl")
 
-[node name="Sprite2D" type="Sprite2D" parent="root/arts"]
+[node name="Sprite2D" type="GDExample" parent="root/arts"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_f1n2p")

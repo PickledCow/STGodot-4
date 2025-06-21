@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dww4gq24fvl8n"]
 
 [ext_resource type="Texture2D" uid="uid://cmfsu5yv2h1rc" path="res://prefab/player/sprites/player.png" id="1_eqwl6"]
-[ext_resource type="Script" path="res://prefab/player/player.gd" id="1_m7gp6"]
+[ext_resource type="Script" uid="uid://b68vyanic5tkv" path="res://prefab/player/player.gd" id="1_m7gp6"]
 [ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://prefab/player/default/shooter_manager.tscn" id="3_7dfjt"]
 
 [node name="Player" type="Sprite2D"]
