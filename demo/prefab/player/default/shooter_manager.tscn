@@ -1,17 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://baadrovpq85ya"]
+[gd_scene load_steps=3 format=3 uid="uid://baadrovpq85ya"]
 
 [ext_resource type="Script" uid="uid://dokkx3sctgvt4" path="res://prefab/player/shooter_manager.gd" id="1_oxfqk"]
-[ext_resource type="Texture2D" uid="uid://2eqfm6ltorwy" path="res://kits/spritesheets/player_bullets.png" id="1_p8yj2"]
-[ext_resource type="BasicBulletKit" uid="uid://dg1sgnh6cy27e" path="res://kits/default_player_bullet_kit.tres" id="2_0dg7f"]
+
+[sub_resource type="Resource" id="Resource_bd2j8"]
+metadata/__load_path__ = "res://kits/default_player_bullet_kit.tres"
 
 [node name="ShooterManager" type="Sprite2D"]
 scale = Vector2(1.84617, 1.84617)
-texture = ExtResource("1_p8yj2")
 offset = Vector2(0, 24)
 region_enabled = true
 region_rect = Rect2(128, 0, 128, 128)
 script = ExtResource("1_oxfqk")
-bullet_kits = Array[BasicBulletKit]([ExtResource("2_0dg7f")])
+bullet_kits = [SubResource("Resource_bd2j8")]
 sprite_count = 2
 Sprites/sprite_0/kit_index = 0
 Sprites/sprite_0/source_rect = Rect2i(128, 0, 128, 128)

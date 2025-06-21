@@ -1,10 +1,5 @@
 extends Node2D
 
-@export var bullet_kit : BasicBulletKit
-@export var item_kit : BasicItemKit
-@export var graze_kit : BasicParticleKit
-@export var item_text_kit : BasicParticleKit
-
 var data: PackedFloat64Array
 
 var red_butterfly: PackedFloat64Array
@@ -86,7 +81,7 @@ func _physics_process(_delta):
 		if t % 120 == 120:
 			for i in 120:
 				var s := randf_range(2.0, 8.0)
-				Bullets.create_shot_a2(bullet_kit, shoot_pos, s, randf()*TAU, -s / 120.0, 0.0, red_butterfly, true)
+				#Bullets.create_shot_a2(bullet_kit, shoot_pos, s, randf()*TAU, -s / 120.0, 0.0, red_butterfly, true)
 		
 		
 		if t % 20 == 0:
@@ -95,17 +90,18 @@ func _physics_process(_delta):
 				#var ang = pos.angle_to_point(shoot_pos) + randf_range(-0.1, 0.1) + PI
 				var ang := t * 0.01  + randf_range(-0.3, 0.3) + PI
 				#var ang = randf()*TAU
-				var id : PackedInt64Array = Bullets.create_shot_a1(bullet_kit, shoot_pos, randf_range(.33, 8.0), ang, data, true)
+				var id : PackedInt64Array = Bullets.create_bullet_a1(shoot_pos, randf_range(.33, 8.0), ang, data, true)
 				if id[0] == -1:
 					break
 	else:
-		if t % 2 == 3:
-			Bullets.create_item(item_kit, Vector2(randf_range(0, 1280), -100), 0.0, randf()*TAU, 0.0, item_data)
-			#Bullets.set_damage()
-		
-		for i in 1:
-			Bullets.create_item(item_kit, Vector2(1280 * 0.5, 720 * 0.25), randf_range(2.0, 20.0), randf()*TAU, 60.0, item_data)
-	#print(Bullets.get_total_active_bullets())
+		pass
+		#if t % 2 == 3:
+			#Bullets.create_item(item_kit, Vector2(randf_range(0, 1280), -100), 0.0, randf()*TAU, 0.0, item_data)
+			##Bullets.set_damage()
+		#
+		#for i in 1:
+			#Bullets.create_item(item_kit, Vector2(1280 * 0.5, 720 * 0.25), randf_range(2.0, 20.0), randf()*TAU, 60.0, item_data)
+	##print(Bullets.get_total_active_bullets())
 		
 	
 	if t % 60 == 0:

@@ -37,7 +37,6 @@ class Shooter:
 	var homing_strength = 0.0
 	
 	var sprite
-	var kit
 	var option = 0
 	var sfx
 	
@@ -46,7 +45,6 @@ class Shooter:
 #region Export Variables
 ## Shows/hides 
 @export var preview_bullet := false
-@export var bullet_kits : Array[BasicBulletKit]
 
 @export_group("Sprites")
 @export_range(0, 32, 1) var sprite_count : int = 0:

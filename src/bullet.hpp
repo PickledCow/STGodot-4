@@ -1,6 +1,6 @@
 // MIT License
 // 
-// Copyright (c) 2021 Samuele Zolfanelli, 2024 Pickled Cow
+// Copyright (c) 2021 Samuele Zolfanelli, 2025 Pickled Cow
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy 
 // of this software and associated documentation files (the "Software"), to 
@@ -33,6 +33,8 @@ enum processMode { A1, A2, A3, B1, B2, B3 };
 enum bounceMode { BOUNCE, WARP };
 enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
+enum pools { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL };
+
 const int NO_CHANGE = -256*256*256;
 
 // A stripped down reference to a Bullet mainly for use within Godot.
@@ -49,7 +51,7 @@ struct BulletID {
 // corresponding BulletKit is able to act upon.
 // The base bullet is able to keep track of general rendering properties along 
 // with other critical behaviour.
-struct Bullet {
+struct AbstractBullet {
 
     public:
     // ----------------------------------------
@@ -63,13 +65,15 @@ struct Bullet {
     // The reuse count of the bullet. Used to check if the bullet has despawned and is being recycled.
     int cycle = 0;
     // The index of the bullet in the pool. This value changes as its position in the pool is shuffled around.
-    int pool_index = -1;
+    int pool_index = 0;
     // The initial index of the bullet in the pool. This value does not change if the bullet changes positions in the pool.
-    int persistent_pool_index = -1;
+    int persistent_index = -1;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
     // Flag for tracking if the bullet is currently fading.
     bool fading = false;
+    // Flag for if using the additive material variant to skip changing materials if no need
+    bool additive = false;
 
     // ----------------------------------------
     // Regular variables. These can be freely set.
@@ -129,12 +133,12 @@ struct Bullet {
     Variant custom_data;
 };
 
-struct BasicParticle : Bullet {
+struct Particle : AbstractBullet {
 
 };
 
 // Abstract struct that bullets with collision inherit from
-struct CollisionBullet : Bullet {
+struct CollisionBullet : AbstractBullet {
     // Ratio of the visual sprite and collision box.
     double hitbox_scale = 0.5;
 
@@ -144,7 +148,7 @@ struct CollisionBullet : Bullet {
 };
 
 // Basic bullet for general purpose use
-struct BasicBullet : CollisionBullet {
+struct Bullet : CollisionBullet {
     // Mode of operation for which movement procedure to use
     processMode process_mode = A1;
 
@@ -182,7 +186,7 @@ struct BasicBullet : CollisionBullet {
 };
 
 // 
-struct BasicItem : CollisionBullet {
+struct Item : CollisionBullet {
     // Flag for if the item is currently being magneted.
 	bool is_magneted;
     // Flag for if the item was autocollected

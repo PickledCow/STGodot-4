@@ -1,0 +1,3 @@
+C:/Users/joon/Documents/Projects/Godot/STGodot-4/build/CMakeFiles/godot-cpp.dir
+C:/Users/joon/Documents/Projects/Godot/STGodot-4/build/CMakeFiles/edit_cache.dir
+C:/Users/joon/Documents/Projects/Godot/STGodot-4/build/CMakeFiles/rebuild_cache.dir

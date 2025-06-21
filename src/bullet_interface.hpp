@@ -1,12 +1,17 @@
 #ifndef BULLETINTERFACE_H
 #define BULLETINTERFACE_H
 
-#include <bullet_kit.hpp>
-#include <basic_bullet_kit.hpp>
-#include <basic_item_kit.hpp>
-#include <basic_particle_kit.hpp>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
-// #include "bullets_pool.h"
+#include <bullet.hpp>
+
+#include <godot_cpp/classes/rendering_server.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/classes/shape2d.hpp>
+#include <godot_cpp/classes/texture2d.hpp>
+#include <godot_cpp/classes/material.hpp>		
+#include <godot_cpp/classes/node2d.hpp>
 
 using namespace godot;
 
@@ -15,31 +20,74 @@ class BulletInterface : public Node2D {
 	GDCLASS(BulletInterface, Node2D)
 	
 private:
-
-	// An internal reference to a pool-kit pair
-	struct PoolKit {
-		std::unique_ptr<BulletPool> pool;
-		Ref<BulletKit> bullet_kit;
-		int size;
-		int z_index;
-	};
-
-	//
-	std::vector<PoolKit> pools;
-
-	// Maps each BulletKit to the corresponding PoolKit index.
-	Dictionary kits_to_pool_index;
-
-	// Indices of the kits for the different types of kits.
-	Array enemy_bullet_kit_indices;
-	Array player_bullet_kit_indices;
-	Array item_kit_indices;
-
-	Node* bullets_environment = nullptr;
-
+	// Enemy bullets
 	int available_bullets = 0;
 	int active_bullets = 0;
 	int total_bullets = 0;
+	int* persistent_bullet_index;
+	int bullets_z_index = 10;
+	int bullets_draw_index = 0;
+	Ref<Texture2D> bullets_texture;
+	Ref<Material> bullets_material;
+	Ref<Material> bullets_material_add;
+	double bullet_rotation_offset = M_PI_2;
+
+	// Player shots
+	int available_shots = 0;
+	int active_shots = 0;
+	int total_shots = 0;
+	int* persistent_shot_index;
+	int shots_z_index = 10;
+	int shots_draw_index = 0;
+	Ref<Texture2D> shots_texture;
+	Ref<Material> shots_material;
+	Ref<Material> shots_material_add;
+	double shot_rotation_offset = 0.0;
+
+	// Items
+	int available_items = 0;
+	int active_items = 0;
+	int total_items = 0;
+	int* persistent_item_index;
+	int items_z_index = 5;
+	int items_draw_index = 0;
+	Ref<Texture2D> items_texture;
+	Ref<Material> items_material;
+	Ref<Material> items_material_add;
+	double item_rotation_offset = 0.0;
+
+	// Particles
+	int available_particles = 0;
+	int active_particles = 0;
+	int total_particles = 0;
+	int* persistent_particle_index;
+	int particles_z_index = 6;
+	int particles_draw_index = 0;
+	Ref<Texture2D> particles_texture;
+	Ref<Material> particles_material;
+	Ref<Material> particles_material_add;
+	double particle_rotation_offset = 0.0;
+
+	// Helper unchangings
+	double bullets_texture_width;
+	RID bullets_texture_rid;
+	double shots_texture_width;
+	RID shots_texture_rid;
+	double items_texture_width;
+	RID items_texture_rid;
+	double particles_texture_width;
+	RID particles_texture_rid;
+
+	// Pools. The pools are accessed in reverse.
+	Bullet** bullet_pool;
+	Bullet** shot_pool;
+	Item** item_pool;
+	Particle** particle_pool;
+
+	// Field variables
+	Rect2 bounce_rect;
+	Rect2 active_rect;
+	double time_scale = 1.0;
 
 	Node2D* parent;
 	Vector2 last_origin;
@@ -47,10 +95,43 @@ private:
 	PackedInt64Array invalid_id;
 	Array invalid_collide_and_graze_array;
 
-	// double that makes it so bullets fired on different frames aren't syncronised
+	// Double that makes it so bullets fired on different frames aren't syncronised
 	double animation_random = 0.0;
 
+	// Helper singleton references
+	RenderingServer* rendering_server;
+	RID canvas_parent;
+
 	void _clear_rids();
+
+	void _init_bullets();
+	void _init_shots();
+	void _init_items();
+	void _init_particles();
+
+	bool _process_bullet(Bullet* bullet, double delta);
+	bool _process_item(Item* item, double delta);
+	bool _process_particle(Particle* particle, double delta);
+	
+	void _process_bullet_a1(Bullet* bullet, double delta);
+	void _process_bullet_a2(Bullet* bullet, double delta);
+	int _process_bullet_a3_before(Bullet* bullet, double delta);
+	int _process_bullet_a3_after(Bullet* bullet, double delta);
+
+	void _release_bullet(int index);
+	void _release_shot(int index);
+	void _release_item(int index);
+	void _release_particle(int index);
+
+	
+	template<typename T>
+	void _swap(T &a, T &b) {
+		T t = a;
+		a = b;
+		b = t;
+	}
+
+
 
 public:
 	static void _bind_methods();
@@ -62,6 +143,57 @@ public:
 
 	int get_NO_CHANGE();
 
+	int get_total_bullets();
+	void set_total_bullets(int bullets);
+
+	int get_total_shots();
+	void set_total_shots(int shots);
+	
+	int get_total_items();
+	void set_total_items(int items);
+	
+	int get_total_particles();
+	void set_total_particles(int particles);
+
+	int get_bullets_z_index();
+	void set_bullets_z_index(int index);
+	
+	int get_shots_z_index();
+	void set_shots_z_index(int index);
+	
+	int get_items_z_index();
+	void set_items_z_index(int index);
+	
+	int get_particles_z_index();
+	void set_particles_z_index(int index);
+	
+	Ref<Texture2D> get_bullets_texture();
+	void set_bullets_texture(Ref<Texture2D> texture);
+	Ref<Material> get_bullets_material();
+	void set_bullets_material(Ref<Material> material);
+	Ref<Material> get_bullets_material_add();
+	void set_bullets_material_add(Ref<Material> material);
+	
+	Ref<Texture2D> get_shots_texture();
+	void set_shots_texture(Ref<Texture2D> texture);
+	Ref<Material> get_shots_material();
+	void set_shots_material(Ref<Material> material);
+	Ref<Material> get_shots_material_add();
+	void set_shots_material_add(Ref<Material> material);
+	
+	Ref<Texture2D> get_items_texture();
+	void set_items_texture(Ref<Texture2D> texture);
+	Ref<Material> get_items_material();
+	void set_items_material(Ref<Material> material);
+	Ref<Material> get_items_material_add();
+	void set_items_material_add(Ref<Material> material);
+	
+	Ref<Texture2D> get_particles_texture();
+	void set_particles_texture(Ref<Texture2D> texture);
+	Ref<Material> get_particles_material();
+	void set_particles_material(Ref<Material> material);
+	Ref<Material> get_particles_material_add();
+	void set_particles_material_add(Ref<Material> material);
 
 	
 	enum BULLET_DATA_STRUCTURE {
@@ -99,56 +231,50 @@ public:
 	// VERY BAD COPY PASTE BUT I CAN'T GET IT TO WORK OTHERWISE BECAUSE I'M BAD
 	enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
-	
 	void _init();
 
 	// void _ready();
 
-	void _physics_process(double delta);
+	void _process(double delta);
 
-	void mount(Node* bullets_environment);
-	void unmount(Node* bullets_environment);
-	Node* get_bullets_environment();
-	// void set_bullets_environment(Node* bullets_environment);
+	// bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);
+	// Variant obtain_bullet(Ref<BulletKit> kit);
+	// bool release_bullet(Variant id);
 
-	bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);
-	Variant obtain_bullet(Ref<BulletKit> kit);
-	bool release_bullet(Variant id);
+	// bool is_bullet_valid(Variant id);
+	// bool is_kit_valid(Ref<BulletKit> kit);
 
-	bool is_bullet_valid(Variant id);
-	bool is_kit_valid(Ref<BulletKit> kit);
+	// int get_available_bullets(Ref<BulletKit> kit);
+	// int get_active_bullets(Ref<BulletKit> kit);
+	// int get_pool_size(Ref<BulletKit> kit);
+	// int get_z_index(Ref<BulletKit> kit);
 
-	int get_available_bullets(Ref<BulletKit> kit);
-	int get_active_bullets(Ref<BulletKit> kit);
-	int get_pool_size(Ref<BulletKit> kit);
-	int get_z_index(Ref<BulletKit> kit);
+	// int get_total_available_bullets();
+	// int get_total_active_bullets();
 
-	int get_total_available_bullets();
-	int get_total_active_bullets();
+	// bool is_bullet_existing(RID area_rid, int shape_index);
+	// Ref<BulletKit> get_kit_from_bullet(Variant id);
 
-	bool is_bullet_existing(RID area_rid, int shape_index);
-	Ref<BulletKit> get_kit_from_bullet(Variant id);
-
-	void set_bullet_property(Variant id, String property, Variant value);
-	Variant get_bullet_property(Variant id, String property);
+	// void set_bullet_property(Variant id, String property, Variant value);
+	// Variant get_bullet_property(Variant id, String property);
 
 
-	Array collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
-	Array collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius);
-	Array collide_and_graze_enemy(Vector2 pos, double hitbox_radius, double graze_radius);
+	// Array collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
+	// Array collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius);
+	// Array collide_and_graze_enemy(Vector2 pos, double hitbox_radius, double graze_radius);
 
-	Array collect_and_magnet_kit(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
-	Array collect_and_magnet_all(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
-	void magnet_all(Node2D* target);
-	void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
+	// Array collect_and_magnet_kit(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
+	// Array collect_and_magnet_all(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
+	// void magnet_all(Node2D* target);
+	// void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
 
-	PackedInt64Array create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in);
-	PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
+	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
+	// PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
 
 
-	PackedInt64Array create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
+	// PackedInt64Array create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
 	
-    PackedInt64Array create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color);
+    // PackedInt64Array create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color);
 
 	// Variant create_pattern_a1(Ref<BasicBulletKit> kit, int mode, Vector2 pos, double r1, double speed1, double angle, int density, double spread, PackedFloat64Array bullet_data, bool fade_in);
 	// Variant create_pattern_a2(Ref<BasicBulletKit> kit, int mode, Vector2 pos, double r1, double r2, double speed1, double speed2, double angle, int density, int stack, double spread, PackedFloat64Array bullet_data, bool fade_in);
