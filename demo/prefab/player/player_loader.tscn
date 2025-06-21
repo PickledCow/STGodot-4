@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dq8vf06ltkop6"]
 
-[ext_resource type="Script" path="res://prefab/player/player_loader.gd" id="1_5x4ll"]
+[ext_resource type="Script" uid="uid://b62rhm4hr7hyj" path="res://prefab/player/player_loader.gd" id="1_5x4ll"]
 
 [node name="PlayerLoader" type="Node"]
 script = ExtResource("1_5x4ll")
