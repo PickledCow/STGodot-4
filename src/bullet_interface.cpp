@@ -593,8 +593,8 @@ BulletInterface::~BulletInterface() {
 }
 
 void BulletInterface::init(Node2D* root) {
-
 	rendering_server = RenderingServer::get_singleton();
+	canvas_parent = root->get_canvas_item();
 
 	available_bullets = total_bullets;
 	active_bullets = 0;
@@ -618,7 +618,6 @@ void BulletInterface::init(Node2D* root) {
 	persistent_item_index = new int[total_items];
 	persistent_particle_index = new int[total_particles];
 
-	RID canvas_parent = root->get_canvas_item();
 
 	bullets_texture_rid = bullets_texture->get_rid();
 	shots_texture_rid = shots_texture->get_rid();
@@ -660,7 +659,7 @@ void BulletInterface::_init_bullets() {
 
 		bullet_pool[i] = bullet;
 		bullet->item_rid = rendering_server->canvas_item_create();
-		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_item);
+		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_parent);
 		rendering_server->canvas_item_set_material(bullet->item_rid, bullets_material->get_rid());
 
 		bullet->pool_index = i;
@@ -746,14 +745,10 @@ void BulletInterface::_init_particles() {
 	}
 }
 
-
 void BulletInterface::_process(double delta) {
 	if (Engine::get_singleton()->is_editor_hint()) {
 		return;
 	}
-	
-	// godot::UtilityFunctions::print(total_bullets);
-	// godot::UtilityFunctions::print(available_bullets);
 	
 	if (last_origin != origin) {
 		last_origin = origin;
@@ -770,13 +765,13 @@ void BulletInterface::_process(double delta) {
 	for (int i = total_bullets - 1; i >= available_bullets; --i) {
 		Bullet* bullet = bullet_pool[i];
 		if (_process_bullet(bullet, time_scale)) {
-			godot::UtilityFunctions::print(bullet->position);
-			godot::UtilityFunctions::print("Bullet Deleted");
 			_release_bullet(i);
 			i += 1;
 			continue;
 		}
+		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_parent);
 		rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
+
 	}
 	
 	for (int i = total_shots - 1; i >= available_shots; --i) {
@@ -830,36 +825,23 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
     if (bullet->fade_timer) {
         bullet->fade_timer -= delta;
 
-        if (!bullet->fading) {
-            if (bullet->fade_timer < 0.0) {
+        if (bullet->fading) {
+            if (bullet->fade_timer <= 0.0) {
+				bullet->fading = false;
                 bullet->fade_timer = 0.0;
                 bullet->bullet_data.b = bullet->texture_offset;
                 rendering_server->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
             } else {
-                Color color = bullet->bullet_data;
-                color.b = bullet->texture_offset + bullet->fade_timer / bullet->fade_time;
-                rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
+                bullet->bullet_data.b = bullet->texture_offset + (bullet->fade_timer / bullet->fade_time - DBL_EPSILON);
+                rendering_server->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
+				
             }
-        } else {
-            if (bullet->fade_timer <= 0.0) {
-                bullet->fade_timer = 0.0;
-            }
-            Color color = bullet->bullet_data;
-            color.b = -(bullet->texture_offset + 1.0 - bullet->fade_timer / bullet->fade_time);
-            rendering_server->canvas_item_set_modulate(bullet->item_rid, color);
         }
     }
 
     // Auto delete conditions, outside bounds or lifespan depleted
     if((!active_rect.has_point(bullet->position) && bullet->auto_delete) || bullet->lifetime >= bullet->lifespan) {
-        // If it should be deleted now 
-        if (!bullet->fade_delete || (bullet->fade_timer <= 0.0 && bullet->fading)) {
-            return true;
-        } else if (!bullet->fading) {
-            // Start fading and disable collision
-            bullet->fading = true;
-            bullet->fade_timer = bullet->fade_time;
-        }
+		return true;
     }
 
 
@@ -912,7 +894,6 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
         bullet->transform.set_origin(bullet->position);
         rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
     }
-
 
     // Bullet is still alive, increase its lifetime.
     bullet->lifetime += delta;
@@ -1031,9 +1012,7 @@ bool BulletInterface::_process_particle(Particle* particle, double delta) {
 void BulletInterface::_release_bullet(int index) {
 	Bullet* bullet = bullet_pool[index];
 
-	// Disable the bullet
 	rendering_server->canvas_item_clear(bullet->item_rid);
-
 	bullet->cycle += 1;
 
 	// Swap the now deleted bullet and the lowest active bullet 
@@ -1104,6 +1083,23 @@ void BulletInterface::_release_particle(int index) {
 	active_particles -= 1;
 }
 
+
+void BulletInterface::enable_bullet(Bullet* bullet) {
+    bullet->auto_delete = true;
+    bullet->is_grazed = false;
+    bullet->layer = 0;
+    bullet->lifetime = 0.0;
+    bullet->lifespan = INFINITY;
+    bullet->rotation = 0.0;
+    // bullet->fade_delete = false;
+    bullet->fading = true;
+    bullet->transforms.clear();
+    bullet->custom_data.clear();
+	// TODO: Add customisation
+	bullet->fade_time = 8.0;
+	bullet->fade_timer = 8.0;
+}
+
 PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow) {
 	if(available_bullets > 0) {
 		available_bullets -= 1;
@@ -1111,24 +1107,19 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 
 
 		Bullet* bullet = (Bullet*)bullet_pool[available_bullets];
-
 		RID rid = bullet->item_rid;
+		enable_bullet(bullet);
 
 		// Set layering to be above last bullet
-		rendering_server->canvas_item_set_draw_index(rid, (bullets_draw_index++));
+		rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullets_draw_index);
 		bullet->draw_index = bullets_draw_index++;
-		if (bullets_draw_index > 16777215) bullets_draw_index = 0; // 2^24
-		
-		// Enable bullet
-
-		bullet->lifetime = 0.0;
+		if (bullets_draw_index > 16777215) bullets_draw_index = 0; // 2^24 - 1
 
 		rendering_server->canvas_item_add_texture_rect(bullet->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), bullets_texture_rid);
-		if (bullet->additive != glow) {
+		if (bullet->additive != glow || true) {
 			rendering_server->canvas_item_set_material(bullet->item_rid, glow ? bullets_material_add->get_rid() : bullets_material->get_rid());
 			bullet->additive = glow;
 		}
-
 
 		// A1 type settings
 		bullet->process_mode = A1;
@@ -1142,30 +1133,33 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		bullet->direction = Vector2(1.0, 0.0).rotated(angle);
 
 		rendering_server->canvas_item_set_transform(rid, xform);
+		
+		// Misc data
 
+		bullet->hitbox_scale = bullet_data[DATA_HITBOX_RATIO];
+		bullet->spin = bullet_data[DATA_SPIN];
+		bullet->layer = bullet_data[DATA_LAYER];
+		bullet->speed = speed;
+		bullet->texture_offset = bullet_data[DATA_SPRITE_OFFSET];
 
+		// Shader data
 
 		Color compressed_data = Color();
 		compressed_data.r = bullet_data[DATA_SRC_Y] + bullet_data[DATA_SRC_X] / bullets_texture_width;
 		compressed_data.g = bullet_data[DATA_SRC_H] + bullet_data[DATA_SRC_W] / bullets_texture_width;
-		compressed_data.b = floor(bullet_data[DATA_SPRITE_OFFSET]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
-		compressed_data.a = floor(bullet_data[DATA_ANIM_FRAMES]) + animation_random;
+		compressed_data.b = bullet_data[DATA_SPRITE_OFFSET] + 0.999; 
+		compressed_data.a = bullet_data[DATA_ANIM_FRAMES] + animation_random;
 
-		bullet->fade_timer = -DBL_EPSILON;
-
-		bullet->speed = speed;
-
-		bullet->texture_offset = floor(bullet_data[DATA_SPRITE_OFFSET]);
 		bullet->bullet_data = compressed_data;
+
 		rendering_server->canvas_item_set_modulate(rid, compressed_data);
-		bullet->hitbox_scale = bullet_data[DATA_HITBOX_RATIO];
-		bullet->spin = bullet_data[DATA_SPIN];
-		bullet->layer = bullet_data[DATA_LAYER];
-		rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullet->draw_index);
-				
+
+		// Bullet clear colour
+
 		Color fade_color = Color(bullet_data[DATA_CLEAR_R], bullet_data[DATA_CLEAR_G], bullet_data[DATA_CLEAR_B]);
 		bullet->fade_color = fade_color;
 
+		// ID return
 
 		PackedInt64Array to_return = invalid_id;
 		to_return.set(0, bullet->cycle);

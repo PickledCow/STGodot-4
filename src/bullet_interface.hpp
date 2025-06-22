@@ -253,6 +253,9 @@ public:
 	// void _ready();
 
 	void _process(double delta);
+
+	void enable_bullet(Bullet* bullet);
+
 	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
 
 	// bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);

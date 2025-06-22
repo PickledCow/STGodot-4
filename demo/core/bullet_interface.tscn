@@ -7,6 +7,7 @@
 
 [node name="BulletInterface" type="BulletInterface"]
 "Max Bullets" = 1000
+"Bounce Rect" = Rect2(0, 0, 2000, 2000)
 "Activve Rect" = Rect2(0, 0, 2000, 2000)
 "Bullet Texture" = ExtResource("1_cq3ma")
 "Bullet Material" = ExtResource("2_qmjl8")
