@@ -36,13 +36,23 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Platform/Windows-windres.cmake"
   "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Platform/Windows.cmake"
   "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Platform/WindowsPaths.cmake"
+  "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/ProcessorCount.cmake"
   "CMakeFiles/3.31.6-msvc6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6-msvc6/CMakeRCCompiler.cmake"
   "CMakeFiles/3.31.6-msvc6/CMakeSystem.cmake"
   "CMakeFiles/VerifyGlobs.cmake"
   "CMakeFiles/cmake.verify_globs"
   "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/CMakeLists.txt"
-  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/GodotCompilerWarnings.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/GodotCPPModule.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/android.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/common_compiler_flags.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/emsdkHack.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/godotcpp.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/ios.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/linux.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/macos.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/web.cmake"
+  "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/cmake/windows.cmake"
   )
 
 # The corresponding makefile is:
@@ -58,5 +68,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "CMakeFiles/generate_bindings.dir/DependInfo.cmake"
   "CMakeFiles/godot-cpp.dir/DependInfo.cmake"
   )

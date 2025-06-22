@@ -86,9 +86,7 @@ func shoot():
 
 func _test_sprite(index: int):
 	var sprite_data := sprite_data_list[index]
-	var kit := bullet_kits[kit_index_list[index]]
 	
-	texture = kit.texture
 	region_enabled = true
 	region_rect = Rect2(sprite_data[0], sprite_data[1], sprite_data[2], sprite_data[3])
 	scale = Vector2(sprite_data[4] / sprite_data[2], sprite_data[4] / sprite_data[3])

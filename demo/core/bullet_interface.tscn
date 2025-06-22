@@ -1,3 +1,22 @@
-[gd_scene format=3 uid="uid://cm0tjsm7qgly1"]
+[gd_scene load_steps=4 format=3 uid="uid://d2xypy5bclc2x"]
+
+[ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="1_cq3ma"]
+[ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="2_qmjl8"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_cq3ma"]
 
 [node name="BulletInterface" type="BulletInterface"]
+"Max Bullets" = 1000
+"Activve Rect" = Rect2(0, 0, 2000, 2000)
+"Bullet Texture" = ExtResource("1_cq3ma")
+"Bullet Material" = ExtResource("2_qmjl8")
+"Bullet Material (Add)" = SubResource("CanvasItemMaterial_cq3ma")
+"Shot Texture" = ExtResource("1_cq3ma")
+"Shot Material" = SubResource("CanvasItemMaterial_cq3ma")
+"Shot Material (Add)" = SubResource("CanvasItemMaterial_cq3ma")
+"Item Texture" = ExtResource("1_cq3ma")
+"Item Material" = SubResource("CanvasItemMaterial_cq3ma")
+"Item Material (Add)" = SubResource("CanvasItemMaterial_cq3ma")
+"Particle Texture" = ExtResource("1_cq3ma")
+"Particle Material" = SubResource("CanvasItemMaterial_cq3ma")
+"Particle Material (Add)" = SubResource("CanvasItemMaterial_cq3ma")

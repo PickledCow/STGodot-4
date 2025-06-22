@@ -9,7 +9,6 @@
 // #include <Node2D.hpp>
 // #include <Transform2D.hpp>
 // #include <Array.hpp>
-#include <cstdlib>
 
 #include <bullet_interface.hpp>
 
@@ -29,8 +28,6 @@ void BulletInterface::set_constant(float value) {
 
 
 void BulletInterface::_bind_methods() {
-
-	/* #region Enums */
 
 	BIND_CONSTANT(NO_CHANGE);
 
@@ -67,11 +64,7 @@ void BulletInterface::_bind_methods() {
 	BIND_ENUM_CONSTANT(TRIGGER_BOUNCE);
 	BIND_ENUM_CONSTANT(TRIGGER_GRAZE);
 	}
-
-	/* #endregion */
 	
-	/* #region Setup Setters/Getters */
-
     ClassDB::bind_method(D_METHOD("get_total_bullets"), &BulletInterface::get_total_bullets);
 	ClassDB::bind_method(D_METHOD("set_total_bullets", "p_total_bullets"), &BulletInterface::set_total_bullets);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Bullets"), "set_total_bullets", "get_total_bullets");
@@ -87,25 +80,9 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_total_particles"), &BulletInterface::get_total_particles);
 	ClassDB::bind_method(D_METHOD("set_total_particles", "p_total_particles"), &BulletInterface::set_total_particles);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Particles"), "set_total_particles", "get_total_particles");
+
 	
-    ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BulletInterface::get_bounce_rect);
-	ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce)rect"), &BulletInterface::set_bounce_rect);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Bounce Rect"), "set_bounce_rect", "get_bounce_rect");
-	
-    ClassDB::bind_method(D_METHOD("get_active_rect"), &BulletInterface::get_active_rect);
-	ClassDB::bind_method(D_METHOD("set_active_rect", "p_active)rect"), &BulletInterface::set_active_rect);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Activve Rect"), "set_active_rect", "get_active_rect");
-	
-    ClassDB::bind_method(D_METHOD("get_time_scale"), &BulletInterface::get_time_scale);
-	ClassDB::bind_method(D_METHOD("set_time_scale", "p_time_scale)rect"), &BulletInterface::set_time_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Time Scale"), "set_time_scale", "get_time_scale");
-	
-    ClassDB::bind_method(D_METHOD("get_origin"), &BulletInterface::get_origin);
-	ClassDB::bind_method(D_METHOD("set_origin", "p_origin)rect"), &BulletInterface::set_origin);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "Origin"), "set_origin", "get_origin");
-	/* #endregion */
-	
-	/* #region Textures and Material Setters/Getters */
+// ---
     ClassDB::bind_method(D_METHOD("get_bullets_texture"), &BulletInterface::get_bullets_texture);
 	ClassDB::bind_method(D_METHOD("set_bullets_texture", "p_bullets_texture"), &BulletInterface::set_bullets_texture);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
@@ -204,17 +181,7 @@ void BulletInterface::_bind_methods() {
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_particles_material_add", "get_particles_material_add");
-
-	/* #endregion */
-
-	
-	
-
-	ClassDB::bind_method(D_METHOD(
-		"init",
-		"root"), 
-		&BulletInterface::init
-	);
+// ---
 
 	ClassDB::bind_method(D_METHOD(
 		"create_bullet_a1",
@@ -388,7 +355,6 @@ void BulletInterface::_bind_methods() {
 	// );
 }
 
-/* #region GetSetters */
 // Property getters and setters
 
 int BulletInterface::get_total_bullets() {
@@ -525,74 +491,45 @@ void BulletInterface::set_particles_material_add(Ref<Material> material) {
 	particles_material_add = material;
 }
 
-
-Rect2 BulletInterface::get_bounce_rect() {
-	return bounce_rect;
-}
-void BulletInterface::set_bounce_rect(Rect2 rect) {
-	bounce_rect = rect;
-}
-
-Rect2 BulletInterface::get_active_rect() {
-	return active_rect;
-}
-void BulletInterface::set_active_rect(Rect2 rect) {
-	active_rect = rect;
-}
-
-double BulletInterface::get_time_scale() {
-	return time_scale;
-}
-void BulletInterface::set_time_scale(double ts) {
-	time_scale = ts;
-}
-
-Vector2 BulletInterface::get_origin() {
-	return origin;
-}
-void BulletInterface::set_origin(Vector2 o) {
-	origin = o;
-}
-
-
-/* #endregion */
-
 BulletInterface::BulletInterface() { }
 
-// TODO, change to regular frees
 BulletInterface::~BulletInterface() {
-	// // Free memory
+	// _clear_rids();
+	// Free memory
 
-	// for (int i = 0; i < total_bullets; ++i) {
-	// 	rendering_server->canvas_item_clear(bullet_pool[i]->item_rid);
-	// 	memdelete(bullet_pool[i]);
-	// }
-	// for (int i = 0; i < total_shots; ++i) {
-	// 	rendering_server->canvas_item_clear(shot_pool[i]->item_rid);
-	// 	memdelete(shot_pool[i]);
-	// }
-	// for (int i = 0; i < total_items; ++i) {
-	// 	rendering_server->canvas_item_clear(item_pool[i]->item_rid);
-	// 	memdelete(item_pool[i]);
-	// }
-	// for (int i = 0; i < total_particles; ++i) {
-	// 	rendering_server->canvas_item_clear(particle_pool[i]->item_rid);
-	// 	memdelete(particle_pool[i]);
-	// }
+	for (int i = 0; i < total_bullets; ++i) {
+		rendering_server->canvas_item_clear(bullet_pool[i]->item_rid);
+		memdelete(bullet_pool[i]);
+	}
+	for (int i = 0; i < total_shots; ++i) {
+		rendering_server->canvas_item_clear(shot_pool[i]->item_rid);
+		memdelete(shot_pool[i]);
+	}
+	for (int i = 0; i < total_items; ++i) {
+		rendering_server->canvas_item_clear(item_pool[i]->item_rid);
+		memdelete(item_pool[i]);
+	}
+	for (int i = 0; i < total_particles; ++i) {
+		rendering_server->canvas_item_clear(particle_pool[i]->item_rid);
+		memdelete(particle_pool[i]);
+	}
 
-	// memfree(bullet_pool);
-	// memfree(shot_pool);
-	// memfree(item_pool);
-	// memfree(particle_pool);
+	memfree(bullet_pool);
+	memfree(shot_pool);
+	memfree(item_pool);
+	memfree(particle_pool);
 
-	// memfree(persistent_bullet_index);
-	// memfree(persistent_shot_index);
-	// memfree(persistent_item_index);
-	// memfree(persistent_particle_index);
+	memfree(persistent_bullet_index);
+	memfree(persistent_shot_index);
+	memfree(persistent_item_index);
+	memfree(persistent_particle_index);
 	
 }
 
-void BulletInterface::init(Node2D* root) {
+void BulletInterface::_init() {
+	if (Engine::get_singleton()->is_editor_hint()) {
+		return;
+	}
 
 	rendering_server = RenderingServer::get_singleton();
 
@@ -608,17 +545,17 @@ void BulletInterface::init(Node2D* root) {
 	available_particles = total_particles;
 	active_particles = 0;
 
-	bullet_pool = new Bullet*[total_bullets];
-	shot_pool = new Bullet*[total_shots];
-	item_pool = new Item*[total_items];
-	particle_pool = new Particle*[total_particles];
+	bullet_pool = (Bullet**)memalloc(sizeof(Bullet*) * total_bullets);
+	shot_pool = (Bullet**)memalloc(sizeof(Bullet*) * total_shots);
+	item_pool = (Item**)memalloc(sizeof(Item*) * total_items);
+	particle_pool = (Particle**)memalloc(sizeof(Particle*) * total_particles);
 
-	persistent_bullet_index = new int[total_bullets];
-	persistent_shot_index = new int[total_shots];
-	persistent_item_index = new int[total_items];
-	persistent_particle_index = new int[total_particles];
+	persistent_bullet_index = (int*)memalloc(sizeof(int) * total_bullets);
+	persistent_shot_index = (int*)memalloc(sizeof(int) * total_shots);
+	persistent_item_index = (int*)memalloc(sizeof(int) * total_items);
+	persistent_particle_index = (int*)memalloc(sizeof(int) * total_particles);
 
-	RID canvas_parent = root->get_canvas_item();
+	RID canvas_parent = this->get_canvas_item();
 
 	bullets_texture_rid = bullets_texture->get_rid();
 	shots_texture_rid = shots_texture->get_rid();
@@ -656,7 +593,7 @@ void BulletInterface::_init_bullets() {
 
 	// Create each bullet
 	for (int i = 0; i < total_bullets; ++i) {
-		Bullet* bullet = new Bullet();
+		Bullet* bullet = memnew(Bullet());
 
 		bullet_pool[i] = bullet;
 		bullet->item_rid = rendering_server->canvas_item_create();
@@ -681,7 +618,7 @@ void BulletInterface::_init_shots() {
 
 	// Create each bullet
 	for (int i = 0; i < total_shots; ++i) {
-		Bullet* bullet = new Bullet();
+		Bullet* bullet = memnew(Bullet());
 
 		shot_pool[i] = bullet;
 		bullet->item_rid = rendering_server->canvas_item_create();
@@ -706,7 +643,7 @@ void BulletInterface::_init_items() {
 
 	// Create each bullet
 	for (int i = 0; i < total_items; ++i) {
-		Item* item = new Item();
+		Item* item = memnew(Item());
 
 		item_pool[i] = item;
 		item->item_rid = rendering_server->canvas_item_create();
@@ -731,7 +668,7 @@ void BulletInterface::_init_particles() {
 
 	// Create each bullet
 	for (int i = 0; i < total_items; ++i) {
-		Particle* particle = new Particle();
+		Particle* particle = memnew(Particle());
 
 		particle_pool[i] = particle;
 		particle->item_rid = rendering_server->canvas_item_create();
@@ -752,9 +689,7 @@ void BulletInterface::_process(double delta) {
 		return;
 	}
 	
-	// godot::UtilityFunctions::print(total_bullets);
-	// godot::UtilityFunctions::print(available_bullets);
-	
+	Vector2 origin = parent->get_global_position();
 	if (last_origin != origin) {
 		last_origin = origin;
 	}
@@ -766,12 +701,9 @@ void BulletInterface::_process(double delta) {
 	animation_random += 0.61803398874989484820; 
 	if (animation_random >= 1.0) animation_random -= 1.0;
 
-
 	for (int i = total_bullets - 1; i >= available_bullets; --i) {
 		Bullet* bullet = bullet_pool[i];
 		if (_process_bullet(bullet, time_scale)) {
-			godot::UtilityFunctions::print(bullet->position);
-			godot::UtilityFunctions::print("Bullet Deleted");
 			_release_bullet(i);
 			i += 1;
 			continue;
@@ -819,7 +751,7 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
     if (bullet->process_mode < B1 || true) { // B type is unimplemented currently
         if (bullet->process_mode == A1) _process_bullet_a1(bullet, delta);
         else if (bullet->process_mode == A2) _process_bullet_a2(bullet, delta);
-        else bounce_count = _process_bullet_a3(bullet, delta);
+        else bounce_count = _process_bullet_a3_before(bullet, delta);
     }
     if (bullet->spin) {
         bullet->transform = bullet->transform.rotated(bullet->spin * delta);
@@ -859,6 +791,7 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
             // Start fading and disable collision
             bullet->fading = true;
             bullet->fade_timer = bullet->fade_time;
+            // PhysicsServer2D::get_singleton()->area_set_shape_disabled(shared_area, bullet->shape_index, true);
         }
     }
 
@@ -941,7 +874,7 @@ void BulletInterface::_process_bullet_a2(Bullet* bullet, double delta) {
     _process_bullet_a1(bullet, delta);
 }
 
-int BulletInterface::_process_bullet_a3(Bullet* bullet, double delta) {
+int BulletInterface::_process_bullet_a3_before(Bullet* bullet, double delta) {
     if (bullet->waccel && bullet->wvel != bullet->max_wvel) {
         bullet->wvel += bullet->waccel * delta;
         if (((bullet->wvel - bullet->max_wvel) * bullet->waccel) > 0.0) bullet->wvel = bullet->max_wvel;
@@ -1104,6 +1037,7 @@ void BulletInterface::_release_particle(int index) {
 	active_particles -= 1;
 }
 
+
 PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow) {
 	if(available_bullets > 0) {
 		available_bullets -= 1;
@@ -1114,7 +1048,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 
 		RID rid = bullet->item_rid;
 
-		// Set layering to be above last bullet
 		rendering_server->canvas_item_set_draw_index(rid, (bullets_draw_index++));
 		bullet->draw_index = bullets_draw_index++;
 		if (bullets_draw_index > 16777215) bullets_draw_index = 0; // 2^24
@@ -1123,47 +1056,46 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 
 		bullet->lifetime = 0.0;
 
-		rendering_server->canvas_item_add_texture_rect(bullet->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), bullets_texture_rid);
+		Rect2 texture_rect = Rect2(-0.5f, -0.5f, 1.0, 1.0);
+		rendering_server->canvas_item_add_texture_rect(bullet->item_rid, texture_rect, bullets_texture_rid);
 		if (bullet->additive != glow) {
 			rendering_server->canvas_item_set_material(bullet->item_rid, glow ? bullets_material_add->get_rid() : bullets_material->get_rid());
-			bullet->additive = glow;
 		}
 
+		// Back
 
-		// A1 type settings
 		bullet->process_mode = A1;
 
-		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(bullet_data[DATA_SIZE] * Vector2(1.0, 1.0)).rotated(angle + bullet_rotation_offset);
+		// A1 type settings
+		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(bullet_data[4] * Vector2(1.0, 1.0)).rotated(angle + bullet_rotation_offset);
 		xform.set_origin(pos);
 		bullet->transform = xform;
 		bullet->position = pos;
-		bullet->scale = bullet_data[DATA_SIZE];
+		bullet->scale = bullet_data[4];
 		bullet->angle = angle;
 		bullet->direction = Vector2(1.0, 0.0).rotated(angle);
 
 		rendering_server->canvas_item_set_transform(rid, xform);
 
-
-
 		Color compressed_data = Color();
-		compressed_data.r = bullet_data[DATA_SRC_Y] + bullet_data[DATA_SRC_X] / bullets_texture_width;
-		compressed_data.g = bullet_data[DATA_SRC_H] + bullet_data[DATA_SRC_W] / bullets_texture_width;
-		compressed_data.b = floor(bullet_data[DATA_SPRITE_OFFSET]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
-		compressed_data.a = floor(bullet_data[DATA_ANIM_FRAMES]) + animation_random;
+		compressed_data.r = bullet_data[1] + bullet_data[0] / bullets_texture_width;
+		compressed_data.g = bullet_data[3] + bullet_data[2] / bullets_texture_width;
+		compressed_data.b = floor(bullet_data[6]); // Flooring for safety as it *must* be an integer and user could unknowingly have it not be.
+		compressed_data.a = floor(bullet_data[7]) + animation_random;
 
 		bullet->fade_timer = -DBL_EPSILON;
 
 		bullet->speed = speed;
 
-		bullet->texture_offset = floor(bullet_data[DATA_SPRITE_OFFSET]);
+		bullet->texture_offset = floor(bullet_data[6]);
 		bullet->bullet_data = compressed_data;
 		rendering_server->canvas_item_set_modulate(rid, compressed_data);
-		bullet->hitbox_scale = bullet_data[DATA_HITBOX_RATIO];
-		bullet->spin = bullet_data[DATA_SPIN];
-		bullet->layer = bullet_data[DATA_LAYER];
+		bullet->hitbox_scale = bullet_data[5];
+		bullet->spin = bullet_data[8];
+		bullet->layer = bullet_data[9];
 		rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullet->draw_index);
 				
-		Color fade_color = Color(bullet_data[DATA_CLEAR_R], bullet_data[DATA_CLEAR_G], bullet_data[DATA_CLEAR_B]);
+		Color fade_color = Color(bullet_data[10], bullet_data[11], bullet_data[12]);
 		bullet->fade_color = fade_color;
 
 
@@ -1172,9 +1104,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		to_return.set(1, BULLETS_POOL);
 		to_return.set(2, bullet->persistent_index);
 		
-		// godot::UtilityFunctions::print(bullet->position);
-		
-
 		return to_return;
 	}
 	return invalid_id;
@@ -1547,3 +1476,4 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 // 		return pool->_get_is_auto_collected(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return false;
+// }

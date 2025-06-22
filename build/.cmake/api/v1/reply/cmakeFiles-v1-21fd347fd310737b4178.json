@@ -2,76 +2,7 @@
 	"globsDependent" : 
 	[
 		{
-			"expression" : "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/*.h**",
-			"paths" : 
-			[
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/classes/editor_plugin_registration.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/classes/ref.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/classes/wrapped.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/binder_common.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/builtin_ptrcall.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/class_db.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/defs.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/engine_ptrcall.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/error_macros.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/math.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/memory.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/method_bind.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/method_ptrcall.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/mutex_lock.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/object.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/object_id.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/property_info.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/core/type_info.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/godot.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/cowdata.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/hash_map.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/hash_set.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/hashfuncs.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/list.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/local_vector.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/pair.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/rb_map.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/rb_set.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/rid_owner.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/safe_refcount.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/search_array.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/self_list.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/sort_array.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/spin_lock.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/thread_work_pool.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/vector.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/vmap.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/templates/vset.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/aabb.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/array_helpers.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/basis.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/callable_custom.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/callable_method_pointer.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/char_string.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/char_utils.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/color.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/color_names.inc.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/plane.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/projection.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/quaternion.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/rect2.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/rect2i.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/transform2d.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/transform3d.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/typed_array.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/variant.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector2.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector2i.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector3.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector3i.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector4.hpp",
-				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include/godot_cpp/variant/vector4i.hpp"
-			],
-			"recurse" : true
-		},
-		{
-			"expression" : "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/*.c**",
+			"expression" : "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/*.cpp",
 			"paths" : 
 			[
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/classes/editor_plugin_registration.cpp",
@@ -82,6 +13,7 @@
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/core/memory.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/core/method_bind.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/core/object.cpp",
+				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/core/print_string.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/godot.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/aabb.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/basis.cpp",
@@ -98,6 +30,7 @@
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/transform2d.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/transform3d.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/variant.cpp",
+				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/variant_internal.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/vector2.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/vector2i.cpp",
 				"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/src/variant/vector3.cpp",
@@ -112,6 +45,58 @@
 	[
 		{
 			"path" : "CMakeLists.txt"
+		},
+		{
+			"path" : "cmake/godotcpp.cmake"
+		},
+		{
+			"path" : "cmake/GodotCPPModule.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPython3.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPython/Support.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"path" : "cmake/common_compiler_flags.cmake"
+		},
+		{
+			"path" : "cmake/android.cmake"
+		},
+		{
+			"path" : "cmake/ios.cmake"
+		},
+		{
+			"path" : "cmake/linux.cmake"
+		},
+		{
+			"path" : "cmake/macos.cmake"
+		},
+		{
+			"path" : "cmake/web.cmake"
+		},
+		{
+			"path" : "cmake/windows.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/ProcessorCount.cmake"
 		},
 		{
 			"isGenerated" : true,
@@ -251,27 +236,7 @@
 			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Platform/Linker/GNU.cmake"
 		},
 		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPython3.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPython/Support.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "C:/Program Files/Microsoft Visual Studio/2022/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindPackageMessage.cmake"
-		},
-		{
-			"path" : "cmake/GodotCompilerWarnings.cmake"
+			"path" : "cmake/emsdkHack.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",

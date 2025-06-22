@@ -1,1 +1,1 @@
--isystem "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include" -isystem "C:/Users/joon/Documents/Projects/Godot/STGodot-4/build/gen/include" -isystem "C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/gdextension"
+-I"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/include" -I"C:/Users/joon/Documents/Projects/Godot/STGodot-4/build/gen/include" -I"C:/Users/joon/Documents/Projects/Godot/STGodot-4/godot-cpp/gdextension"

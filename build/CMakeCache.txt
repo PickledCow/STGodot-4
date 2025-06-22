@@ -114,6 +114,10 @@ CMAKE_MODULE_LINKER_FLAGS_RELEASE:STRING=
 // RELWITHDEBINFO builds.
 CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
+//Select the MSVC runtime library for use by compilers targeting
+// the MSVC ABI.
+CMAKE_MSVC_RUNTIME_LIBRARY:STRING=MultiThreaded$<IF:$<BOOL:OFF>,DebugDLL,$<$<NOT:$<BOOL:ON>>:DLL>>
+
 //Path to a program.
 CMAKE_NM:FILEPATH=C:/msys64/ucrt64/bin/nm.exe
 
@@ -124,13 +128,28 @@ CMAKE_OBJCOPY:FILEPATH=C:/msys64/ucrt64/bin/objcopy.exe
 CMAKE_OBJDUMP:FILEPATH=C:/msys64/ucrt64/bin/objdump.exe
 
 //Value Computed by CMake
-CMAKE_PROJECT_DESCRIPTION:STATIC=
+CMAKE_PROJECT_DESCRIPTION:STATIC=C++ bindings for the Godot Engine's GDExtensions API.
 
 //Value Computed by CMake
-CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
+CMAKE_PROJECT_HOMEPAGE_URL:STATIC=https://github.com/godotengine/godot-cpp
 
 //Value Computed by CMake
 CMAKE_PROJECT_NAME:STATIC=godot-cpp
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION:STATIC=4.4
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=4
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MINOR:STATIC=4
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_PATCH:STATIC=
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=C:/msys64/ucrt64/bin/ranlib.exe
@@ -219,6 +238,59 @@ FLOAT_PRECISION:STRING=single
 
 //Generate a template version of the Node class's get_node.
 GENERATE_TEMPLATE_GET_NODE:BOOL=ON
+
+//Path to a file containing a feature build profile
+GODOTCPP_BUILD_PROFILE:PATH=
+
+//Path to a custom GDExtension API JSON file (takes precedence
+// over `GODOTCPP_GDEXTENSION_DIR`) ( /path/to/custom_api_file
+// )
+GODOTCPP_CUSTOM_API_FILE:FILEPATH=
+
+//Compile with MSVC's debug CRT (/MDd)
+GODOTCPP_DEBUG_CRT:BOOL=OFF
+
+//Developer build with dev-only debugging code (DEV_ENABLED)
+GODOTCPP_DEV_BUILD:BOOL=OFF
+
+//Force disabling exception handling code (ON|OFF)
+GODOTCPP_DISABLE_EXCEPTIONS:BOOL=ON
+
+//Enable the godot-cpp.test.<target> integration testing targets
+GODOTCPP_ENABLE_TESTING:BOOL=OFF
+
+//Path to a custom directory containing GDExtension interface header
+// and API JSON file ( /path/to/gdextension_dir )
+GODOTCPP_GDEXTENSION_DIR:PATH=gdextension
+
+//Generate a template version of the Node class's get_node. (ON|OFF)
+GODOTCPP_GENERATE_TEMPLATE_GET_NODE:BOOL=ON
+
+//Set the floating-point precision level (single|double)
+GODOTCPP_PRECISION:STRING=single
+
+//Symbols visibility on GNU platforms. Use 'auto' to apply the
+// default value. (auto|visible|hidden)
+GODOTCPP_SYMBOL_VISIBILITY:STRING=hidden
+
+//Expose headers as SYSTEM.
+GODOTCPP_SYSTEM_HEADERS:BOOL=OFF
+
+//Which target to generate. valid values are: template_debug, template_release,
+// and editor
+GODOTCPP_TARGET:STRING=template_debug
+
+//Enable threading support
+GODOTCPP_THREADS:BOOL=ON
+
+//Enable the extra accounting required to support hot reload. (ON|OFF)
+GODOTCPP_USE_HOT_RELOAD:BOOL=
+
+//Link MinGW/MSVC C++ runtime libraries statically
+GODOTCPP_USE_STATIC_CPP:BOOL=ON
+
+//Treat warnings as errors
+GODOTCPP_WARNING_AS_ERROR:BOOL=OFF
 
 //Expose headers as SYSTEM.
 GODOT_CPP_SYSTEM_HEADERS:BOOL=ON
@@ -390,6 +462,10 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Python3
 FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[C:/Program Files/Python313/python.exe][cfound components: Interpreter ][v3.13.3(3.4)]
+//STRINGS property for variable: GODOTCPP_SYMBOL_VISIBILITY
+GODOTCPP_SYMBOL_VISIBILITY-STRINGS:INTERNAL=auto;visible;hidden
+//STRINGS property for variable: GODOTCPP_TARGET
+GODOTCPP_TARGET-STRINGS:INTERNAL=template_debug;template_release;editor
 //linker supports push/pop state
 _CMAKE_CXX_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //linker supports push/pop state
@@ -403,8 +479,8 @@ _Python3_EXECUTABLE:INTERNAL=C:/Program Files/Python313/python.exe
 //Path to a program.
 _Python3_EXECUTABLE_DEBUG:INTERNAL=_Python3_EXECUTABLE_DEBUG-NOTFOUND
 //Python3 Properties
-_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;3;64;32;<none>;cp313-win_amd64;;C:\Program Files\Python313\Lib;C:\Program Files\Python313\Lib;C:\Program Files\Python313\Lib\site-packages;C:\Program Files\Python313\Lib\site-packages
-_Python3_INTERPRETER_SIGNATURE:INTERNAL=c2e1e231f353bf44ff20f7e85f307f0e
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;3;64;<none>;cp313-win_amd64.pyd;;C:\Program Files\Python313\Lib;C:\Program Files\Python313\Lib;C:\Program Files\Python313\Lib\site-packages;C:\Program Files\Python313\Lib\site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=8ac60201358625924e4d0a82fb5f8b3f
 //NumPy reason failure
 _Python3_NumPy_REASON_FAILURE:INTERNAL=
 

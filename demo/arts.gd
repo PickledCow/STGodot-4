@@ -13,6 +13,8 @@ var pos := Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Bullets.init(self)
+	
 	data = PackedFloat64Array()
 	data.resize(15)
 	data[0] = 64 * 8			# source x (integer) # (16+8*(c/4))
@@ -70,12 +72,10 @@ func _ready():
 
 
 	item_data = System.get_item_data(6)
+	
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	pass	
-
-func _physics_process(_delta):
+	
 	if true:
 		var shoot_pos = Vector2(1280, 720*0.5) * 0.5
 		if t % 120 == 120:
@@ -86,13 +86,13 @@ func _physics_process(_delta):
 		
 		if t % 20 == 0:
 			SFX.play("shoot1")
-			for i in 90: # 90
+			for i in 10: # 90
 				#var ang = pos.angle_to_point(shoot_pos) + randf_range(-0.1, 0.1) + PI
 				var ang := t * 0.01  + randf_range(-0.3, 0.3) + PI
 				#var ang = randf()*TAU
 				var id : PackedInt64Array = Bullets.create_bullet_a1(shoot_pos, randf_range(.33, 8.0), ang, data, true)
-				if id[0] == -1:
-					break
+				#if id[0] == -1:
+					#break
 	else:
 		pass
 		#if t % 2 == 3:

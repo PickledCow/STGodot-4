@@ -88,6 +88,7 @@ private:
 	Rect2 bounce_rect;
 	Rect2 active_rect;
 	double time_scale = 1.0;
+	Vector2 origin;
 
 	Node2D* parent;
 	Vector2 last_origin;
@@ -115,7 +116,7 @@ private:
 	
 	void _process_bullet_a1(Bullet* bullet, double delta);
 	void _process_bullet_a2(Bullet* bullet, double delta);
-	int _process_bullet_a3_before(Bullet* bullet, double delta);
+	int _process_bullet_a3(Bullet* bullet, double delta);
 	int _process_bullet_a3_after(Bullet* bullet, double delta);
 
 	void _release_bullet(int index);
@@ -143,6 +144,7 @@ public:
 
 	int get_NO_CHANGE();
 
+	// #region setters and getters
 	int get_total_bullets();
 	void set_total_bullets(int bullets);
 
@@ -166,7 +168,22 @@ public:
 	
 	int get_particles_z_index();
 	void set_particles_z_index(int index);
+
+	Rect2 get_bounce_rect();
+	void set_bounce_rect(Rect2 rect);
+
+	Rect2 get_active_rect();
+	void set_active_rect(Rect2 rect);
+
+	double get_time_scale();
+	void set_time_scale(double ts);
+
+	Vector2 get_origin();
+	void set_origin(Vector2 o);
+
 	
+	// #endregion
+
 	Ref<Texture2D> get_bullets_texture();
 	void set_bullets_texture(Ref<Texture2D> texture);
 	Ref<Material> get_bullets_material();
@@ -231,11 +248,12 @@ public:
 	// VERY BAD COPY PASTE BUT I CAN'T GET IT TO WORK OTHERWISE BECAUSE I'M BAD
 	enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
-	void _init();
+	void init(Node2D* root);
 
 	// void _ready();
 
 	void _process(double delta);
+	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
 
 	// bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);
 	// Variant obtain_bullet(Ref<BulletKit> kit);
@@ -268,7 +286,6 @@ public:
 	// void magnet_all(Node2D* target);
 	// void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
 
-	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
 	// PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
 
 

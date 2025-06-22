@@ -422,7 +422,8 @@ func collect_items(items: Array) -> void:
 		categorized_items.append([])
 
 	for item in items:
-		categorized_items[Bullets.get_item_type(item)].append(item)
+		pass
+		#categorized_items[Bullets.get_item_type(item)].append(item)
 	
 	process_collected_point_items(
 		categorized_items[System.ITEM_TYPE.POINT], 
@@ -672,22 +673,23 @@ func animation(delta) -> void:
 
 ## Checks collisions for bullets and items and acts accordingly,
 func collision() -> void:
-	var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
+	#var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
 	
 	if position.y < autocollect_height:
-		Bullets.magnet_all(self)
+		#Bullets.magnet_all(self)
+		pass
 	
 	var should_magnet := true if magnet_while_unfocused else is_focused
 	
-	var items : Array = Bullets.collect_and_magnet_all(position, self, item_collect_radius, item_magnet_radius if should_magnet else 0.0)
+	#var items : Array = Bullets.collect_and_magnet_all(position, self, item_collect_radius, item_magnet_radius if should_magnet else 0.0)
 	
-	collect_items(items)
+	#collect_items(item
 	
-	if len(collisions[0]) > 0:
-		SFX.play("death")
-		
-	if len(collisions[1]) > 0:
-		SFX.play("graze")
+	#if len(collisions[0]) > 0:
+		#SFX.play("death")
+		#
+	#if len(collisions[1]) > 0:
+		#SFX.play("graze")
 	
 
 ## Tells the associated [class ShooterManager] to shoot.

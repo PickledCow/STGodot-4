@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named generate_bindings
+
+# Build rule for target.
+generate_bindings: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 generate_bindings
+.PHONY : generate_bindings
+
+# fast build rule for target.
+generate_bindings/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\generate_bindings.dir\build.make CMakeFiles/generate_bindings.dir/build
+.PHONY : generate_bindings/fast
+
+#=============================================================================
 # Target rules for targets named godot-cpp
 
 # Build rule for target.
@@ -656,6 +669,30 @@ gen/src/classes/animation_node_blend_tree.s: gen/src/classes/animation_node_blen
 gen/src/classes/animation_node_blend_tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/animation_node_blend_tree.cpp.s
 .PHONY : gen/src/classes/animation_node_blend_tree.cpp.s
+
+gen/src/classes/animation_node_extension.obj: gen/src/classes/animation_node_extension.cpp.obj
+.PHONY : gen/src/classes/animation_node_extension.obj
+
+# target to build an object file
+gen/src/classes/animation_node_extension.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/animation_node_extension.cpp.obj
+.PHONY : gen/src/classes/animation_node_extension.cpp.obj
+
+gen/src/classes/animation_node_extension.i: gen/src/classes/animation_node_extension.cpp.i
+.PHONY : gen/src/classes/animation_node_extension.i
+
+# target to preprocess a source file
+gen/src/classes/animation_node_extension.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/animation_node_extension.cpp.i
+.PHONY : gen/src/classes/animation_node_extension.cpp.i
+
+gen/src/classes/animation_node_extension.s: gen/src/classes/animation_node_extension.cpp.s
+.PHONY : gen/src/classes/animation_node_extension.s
+
+# target to generate assembly for a file
+gen/src/classes/animation_node_extension.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/animation_node_extension.cpp.s
+.PHONY : gen/src/classes/animation_node_extension.cpp.s
 
 gen/src/classes/animation_node_one_shot.obj: gen/src/classes/animation_node_one_shot.cpp.obj
 .PHONY : gen/src/classes/animation_node_one_shot.obj
@@ -3633,6 +3670,30 @@ gen/src/classes/collision_shape3d.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/collision_shape3d.cpp.s
 .PHONY : gen/src/classes/collision_shape3d.cpp.s
 
+gen/src/classes/color_palette.obj: gen/src/classes/color_palette.cpp.obj
+.PHONY : gen/src/classes/color_palette.obj
+
+# target to build an object file
+gen/src/classes/color_palette.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/color_palette.cpp.obj
+.PHONY : gen/src/classes/color_palette.cpp.obj
+
+gen/src/classes/color_palette.i: gen/src/classes/color_palette.cpp.i
+.PHONY : gen/src/classes/color_palette.i
+
+# target to preprocess a source file
+gen/src/classes/color_palette.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/color_palette.cpp.i
+.PHONY : gen/src/classes/color_palette.cpp.i
+
+gen/src/classes/color_palette.s: gen/src/classes/color_palette.cpp.s
+.PHONY : gen/src/classes/color_palette.s
+
+# target to generate assembly for a file
+gen/src/classes/color_palette.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/color_palette.cpp.s
+.PHONY : gen/src/classes/color_palette.cpp.s
+
 gen/src/classes/color_picker.obj: gen/src/classes/color_picker.cpp.obj
 .PHONY : gen/src/classes/color_picker.obj
 
@@ -4905,6 +4966,30 @@ gen/src/classes/editor_command_palette.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_command_palette.cpp.s
 .PHONY : gen/src/classes/editor_command_palette.cpp.s
 
+gen/src/classes/editor_context_menu_plugin.obj: gen/src/classes/editor_context_menu_plugin.cpp.obj
+.PHONY : gen/src/classes/editor_context_menu_plugin.obj
+
+# target to build an object file
+gen/src/classes/editor_context_menu_plugin.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_context_menu_plugin.cpp.obj
+.PHONY : gen/src/classes/editor_context_menu_plugin.cpp.obj
+
+gen/src/classes/editor_context_menu_plugin.i: gen/src/classes/editor_context_menu_plugin.cpp.i
+.PHONY : gen/src/classes/editor_context_menu_plugin.i
+
+# target to preprocess a source file
+gen/src/classes/editor_context_menu_plugin.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_context_menu_plugin.cpp.i
+.PHONY : gen/src/classes/editor_context_menu_plugin.cpp.i
+
+gen/src/classes/editor_context_menu_plugin.s: gen/src/classes/editor_context_menu_plugin.cpp.s
+.PHONY : gen/src/classes/editor_context_menu_plugin.s
+
+# target to generate assembly for a file
+gen/src/classes/editor_context_menu_plugin.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_context_menu_plugin.cpp.s
+.PHONY : gen/src/classes/editor_context_menu_plugin.cpp.s
+
 gen/src/classes/editor_debugger_plugin.obj: gen/src/classes/editor_debugger_plugin.cpp.obj
 .PHONY : gen/src/classes/editor_debugger_plugin.obj
 
@@ -5000,6 +5085,30 @@ gen/src/classes/editor_export_platform_android.s: gen/src/classes/editor_export_
 gen/src/classes/editor_export_platform_android.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_platform_android.cpp.s
 .PHONY : gen/src/classes/editor_export_platform_android.cpp.s
+
+gen/src/classes/editor_export_platform_extension.obj: gen/src/classes/editor_export_platform_extension.cpp.obj
+.PHONY : gen/src/classes/editor_export_platform_extension.obj
+
+# target to build an object file
+gen/src/classes/editor_export_platform_extension.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_platform_extension.cpp.obj
+.PHONY : gen/src/classes/editor_export_platform_extension.cpp.obj
+
+gen/src/classes/editor_export_platform_extension.i: gen/src/classes/editor_export_platform_extension.cpp.i
+.PHONY : gen/src/classes/editor_export_platform_extension.i
+
+# target to preprocess a source file
+gen/src/classes/editor_export_platform_extension.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_platform_extension.cpp.i
+.PHONY : gen/src/classes/editor_export_platform_extension.cpp.i
+
+gen/src/classes/editor_export_platform_extension.s: gen/src/classes/editor_export_platform_extension.cpp.s
+.PHONY : gen/src/classes/editor_export_platform_extension.s
+
+# target to generate assembly for a file
+gen/src/classes/editor_export_platform_extension.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_platform_extension.cpp.s
+.PHONY : gen/src/classes/editor_export_platform_extension.cpp.s
 
 gen/src/classes/editor_export_platform_ios.obj: gen/src/classes/editor_export_platform_ios.cpp.obj
 .PHONY : gen/src/classes/editor_export_platform_ios.obj
@@ -5168,6 +5277,30 @@ gen/src/classes/editor_export_plugin.s: gen/src/classes/editor_export_plugin.cpp
 gen/src/classes/editor_export_plugin.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_plugin.cpp.s
 .PHONY : gen/src/classes/editor_export_plugin.cpp.s
+
+gen/src/classes/editor_export_preset.obj: gen/src/classes/editor_export_preset.cpp.obj
+.PHONY : gen/src/classes/editor_export_preset.obj
+
+# target to build an object file
+gen/src/classes/editor_export_preset.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_preset.cpp.obj
+.PHONY : gen/src/classes/editor_export_preset.cpp.obj
+
+gen/src/classes/editor_export_preset.i: gen/src/classes/editor_export_preset.cpp.i
+.PHONY : gen/src/classes/editor_export_preset.i
+
+# target to preprocess a source file
+gen/src/classes/editor_export_preset.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_preset.cpp.i
+.PHONY : gen/src/classes/editor_export_preset.cpp.i
+
+gen/src/classes/editor_export_preset.s: gen/src/classes/editor_export_preset.cpp.s
+.PHONY : gen/src/classes/editor_export_preset.s
+
+# target to generate assembly for a file
+gen/src/classes/editor_export_preset.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_export_preset.cpp.s
+.PHONY : gen/src/classes/editor_export_preset.cpp.s
 
 gen/src/classes/editor_feature_profile.obj: gen/src/classes/editor_feature_profile.cpp.obj
 .PHONY : gen/src/classes/editor_feature_profile.obj
@@ -5937,6 +6070,30 @@ gen/src/classes/editor_syntax_highlighter.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_syntax_highlighter.cpp.s
 .PHONY : gen/src/classes/editor_syntax_highlighter.cpp.s
 
+gen/src/classes/editor_toaster.obj: gen/src/classes/editor_toaster.cpp.obj
+.PHONY : gen/src/classes/editor_toaster.obj
+
+# target to build an object file
+gen/src/classes/editor_toaster.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_toaster.cpp.obj
+.PHONY : gen/src/classes/editor_toaster.cpp.obj
+
+gen/src/classes/editor_toaster.i: gen/src/classes/editor_toaster.cpp.i
+.PHONY : gen/src/classes/editor_toaster.i
+
+# target to preprocess a source file
+gen/src/classes/editor_toaster.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_toaster.cpp.i
+.PHONY : gen/src/classes/editor_toaster.cpp.i
+
+gen/src/classes/editor_toaster.s: gen/src/classes/editor_toaster.cpp.s
+.PHONY : gen/src/classes/editor_toaster.s
+
+# target to generate assembly for a file
+gen/src/classes/editor_toaster.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/editor_toaster.cpp.s
+.PHONY : gen/src/classes/editor_toaster.cpp.s
+
 gen/src/classes/editor_translation_parser_plugin.obj: gen/src/classes/editor_translation_parser_plugin.cpp.obj
 .PHONY : gen/src/classes/editor_translation_parser_plugin.obj
 
@@ -6152,6 +6309,30 @@ gen/src/classes/expression.s: gen/src/classes/expression.cpp.s
 gen/src/classes/expression.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/expression.cpp.s
 .PHONY : gen/src/classes/expression.cpp.s
+
+gen/src/classes/external_texture.obj: gen/src/classes/external_texture.cpp.obj
+.PHONY : gen/src/classes/external_texture.obj
+
+# target to build an object file
+gen/src/classes/external_texture.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/external_texture.cpp.obj
+.PHONY : gen/src/classes/external_texture.cpp.obj
+
+gen/src/classes/external_texture.i: gen/src/classes/external_texture.cpp.i
+.PHONY : gen/src/classes/external_texture.i
+
+# target to preprocess a source file
+gen/src/classes/external_texture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/external_texture.cpp.i
+.PHONY : gen/src/classes/external_texture.cpp.i
+
+gen/src/classes/external_texture.s: gen/src/classes/external_texture.cpp.s
+.PHONY : gen/src/classes/external_texture.s
+
+# target to generate assembly for a file
+gen/src/classes/external_texture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/external_texture.cpp.s
+.PHONY : gen/src/classes/external_texture.cpp.s
 
 gen/src/classes/fast_noise_lite.obj: gen/src/classes/fast_noise_lite.cpp.obj
 .PHONY : gen/src/classes/fast_noise_lite.obj
@@ -6537,6 +6718,30 @@ gen/src/classes/gd_script.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gd_script.cpp.s
 .PHONY : gen/src/classes/gd_script.cpp.s
 
+gen/src/classes/gd_script_syntax_highlighter.obj: gen/src/classes/gd_script_syntax_highlighter.cpp.obj
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.obj
+
+# target to build an object file
+gen/src/classes/gd_script_syntax_highlighter.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gd_script_syntax_highlighter.cpp.obj
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.cpp.obj
+
+gen/src/classes/gd_script_syntax_highlighter.i: gen/src/classes/gd_script_syntax_highlighter.cpp.i
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.i
+
+# target to preprocess a source file
+gen/src/classes/gd_script_syntax_highlighter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gd_script_syntax_highlighter.cpp.i
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.cpp.i
+
+gen/src/classes/gd_script_syntax_highlighter.s: gen/src/classes/gd_script_syntax_highlighter.cpp.s
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.s
+
+# target to generate assembly for a file
+gen/src/classes/gd_script_syntax_highlighter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gd_script_syntax_highlighter.cpp.s
+.PHONY : gen/src/classes/gd_script_syntax_highlighter.cpp.s
+
 gen/src/classes/generic6_dof_joint3d.obj: gen/src/classes/generic6_dof_joint3d.cpp.obj
 .PHONY : gen/src/classes/generic6_dof_joint3d.obj
 
@@ -6872,6 +7077,30 @@ gen/src/classes/gltf_node.s: gen/src/classes/gltf_node.cpp.s
 gen/src/classes/gltf_node.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gltf_node.cpp.s
 .PHONY : gen/src/classes/gltf_node.cpp.s
+
+gen/src/classes/gltf_object_model_property.obj: gen/src/classes/gltf_object_model_property.cpp.obj
+.PHONY : gen/src/classes/gltf_object_model_property.obj
+
+# target to build an object file
+gen/src/classes/gltf_object_model_property.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gltf_object_model_property.cpp.obj
+.PHONY : gen/src/classes/gltf_object_model_property.cpp.obj
+
+gen/src/classes/gltf_object_model_property.i: gen/src/classes/gltf_object_model_property.cpp.i
+.PHONY : gen/src/classes/gltf_object_model_property.i
+
+# target to preprocess a source file
+gen/src/classes/gltf_object_model_property.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gltf_object_model_property.cpp.i
+.PHONY : gen/src/classes/gltf_object_model_property.cpp.i
+
+gen/src/classes/gltf_object_model_property.s: gen/src/classes/gltf_object_model_property.cpp.s
+.PHONY : gen/src/classes/gltf_object_model_property.s
+
+# target to generate assembly for a file
+gen/src/classes/gltf_object_model_property.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/gltf_object_model_property.cpp.s
+.PHONY : gen/src/classes/gltf_object_model_property.cpp.s
 
 gen/src/classes/gltf_physics_body.obj: gen/src/classes/gltf_physics_body.cpp.obj
 .PHONY : gen/src/classes/gltf_physics_body.obj
@@ -7544,6 +7773,30 @@ gen/src/classes/grid_map.s: gen/src/classes/grid_map.cpp.s
 gen/src/classes/grid_map.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/grid_map.cpp.s
 .PHONY : gen/src/classes/grid_map.cpp.s
+
+gen/src/classes/grid_map_editor_plugin.obj: gen/src/classes/grid_map_editor_plugin.cpp.obj
+.PHONY : gen/src/classes/grid_map_editor_plugin.obj
+
+# target to build an object file
+gen/src/classes/grid_map_editor_plugin.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/grid_map_editor_plugin.cpp.obj
+.PHONY : gen/src/classes/grid_map_editor_plugin.cpp.obj
+
+gen/src/classes/grid_map_editor_plugin.i: gen/src/classes/grid_map_editor_plugin.cpp.i
+.PHONY : gen/src/classes/grid_map_editor_plugin.i
+
+# target to preprocess a source file
+gen/src/classes/grid_map_editor_plugin.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/grid_map_editor_plugin.cpp.i
+.PHONY : gen/src/classes/grid_map_editor_plugin.cpp.i
+
+gen/src/classes/grid_map_editor_plugin.s: gen/src/classes/grid_map_editor_plugin.cpp.s
+.PHONY : gen/src/classes/grid_map_editor_plugin.s
+
+# target to generate assembly for a file
+gen/src/classes/grid_map_editor_plugin.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/grid_map_editor_plugin.cpp.s
+.PHONY : gen/src/classes/grid_map_editor_plugin.cpp.s
 
 gen/src/classes/groove_joint2d.obj: gen/src/classes/groove_joint2d.cpp.obj
 .PHONY : gen/src/classes/groove_joint2d.obj
@@ -8673,6 +8926,30 @@ gen/src/classes/java_class_wrapper.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/java_class_wrapper.cpp.s
 .PHONY : gen/src/classes/java_class_wrapper.cpp.s
 
+gen/src/classes/java_object.obj: gen/src/classes/java_object.cpp.obj
+.PHONY : gen/src/classes/java_object.obj
+
+# target to build an object file
+gen/src/classes/java_object.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/java_object.cpp.obj
+.PHONY : gen/src/classes/java_object.cpp.obj
+
+gen/src/classes/java_object.i: gen/src/classes/java_object.cpp.i
+.PHONY : gen/src/classes/java_object.i
+
+# target to preprocess a source file
+gen/src/classes/java_object.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/java_object.cpp.i
+.PHONY : gen/src/classes/java_object.cpp.i
+
+gen/src/classes/java_object.s: gen/src/classes/java_object.cpp.s
+.PHONY : gen/src/classes/java_object.s
+
+# target to generate assembly for a file
+gen/src/classes/java_object.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/java_object.cpp.s
+.PHONY : gen/src/classes/java_object.cpp.s
+
 gen/src/classes/java_script_bridge.obj: gen/src/classes/java_script_bridge.cpp.obj
 .PHONY : gen/src/classes/java_script_bridge.obj
 
@@ -9224,6 +9501,30 @@ gen/src/classes/link_button.s: gen/src/classes/link_button.cpp.s
 gen/src/classes/link_button.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/link_button.cpp.s
 .PHONY : gen/src/classes/link_button.cpp.s
+
+gen/src/classes/look_at_modifier3d.obj: gen/src/classes/look_at_modifier3d.cpp.obj
+.PHONY : gen/src/classes/look_at_modifier3d.obj
+
+# target to build an object file
+gen/src/classes/look_at_modifier3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/look_at_modifier3d.cpp.obj
+.PHONY : gen/src/classes/look_at_modifier3d.cpp.obj
+
+gen/src/classes/look_at_modifier3d.i: gen/src/classes/look_at_modifier3d.cpp.i
+.PHONY : gen/src/classes/look_at_modifier3d.i
+
+# target to preprocess a source file
+gen/src/classes/look_at_modifier3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/look_at_modifier3d.cpp.i
+.PHONY : gen/src/classes/look_at_modifier3d.cpp.i
+
+gen/src/classes/look_at_modifier3d.s: gen/src/classes/look_at_modifier3d.cpp.s
+.PHONY : gen/src/classes/look_at_modifier3d.s
+
+# target to generate assembly for a file
+gen/src/classes/look_at_modifier3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/look_at_modifier3d.cpp.s
+.PHONY : gen/src/classes/look_at_modifier3d.cpp.s
 
 gen/src/classes/main_loop.obj: gen/src/classes/main_loop.cpp.obj
 .PHONY : gen/src/classes/main_loop.obj
@@ -10833,6 +11134,30 @@ gen/src/classes/open_xr_action.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_action.cpp.s
 .PHONY : gen/src/classes/open_xr_action.cpp.s
 
+gen/src/classes/open_xr_action_binding_modifier.obj: gen/src/classes/open_xr_action_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.obj
+
+# target to build an object file
+gen/src/classes/open_xr_action_binding_modifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_action_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.cpp.obj
+
+gen/src/classes/open_xr_action_binding_modifier.i: gen/src/classes/open_xr_action_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_action_binding_modifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_action_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.cpp.i
+
+gen/src/classes/open_xr_action_binding_modifier.s: gen/src/classes/open_xr_action_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_action_binding_modifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_action_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_action_binding_modifier.cpp.s
+
 gen/src/classes/open_xr_action_map.obj: gen/src/classes/open_xr_action_map.cpp.obj
 .PHONY : gen/src/classes/open_xr_action_map.obj
 
@@ -10880,6 +11205,78 @@ gen/src/classes/open_xr_action_set.s: gen/src/classes/open_xr_action_set.cpp.s
 gen/src/classes/open_xr_action_set.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_action_set.cpp.s
 .PHONY : gen/src/classes/open_xr_action_set.cpp.s
+
+gen/src/classes/open_xr_analog_threshold_modifier.obj: gen/src/classes/open_xr_analog_threshold_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.obj
+
+# target to build an object file
+gen/src/classes/open_xr_analog_threshold_modifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_analog_threshold_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.cpp.obj
+
+gen/src/classes/open_xr_analog_threshold_modifier.i: gen/src/classes/open_xr_analog_threshold_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_analog_threshold_modifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_analog_threshold_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.cpp.i
+
+gen/src/classes/open_xr_analog_threshold_modifier.s: gen/src/classes/open_xr_analog_threshold_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_analog_threshold_modifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_analog_threshold_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_analog_threshold_modifier.cpp.s
+
+gen/src/classes/open_xr_binding_modifier.obj: gen/src/classes/open_xr_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_binding_modifier.obj
+
+# target to build an object file
+gen/src/classes/open_xr_binding_modifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_binding_modifier.cpp.obj
+
+gen/src/classes/open_xr_binding_modifier.i: gen/src/classes/open_xr_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_binding_modifier.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_binding_modifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_binding_modifier.cpp.i
+
+gen/src/classes/open_xr_binding_modifier.s: gen/src/classes/open_xr_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_binding_modifier.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_binding_modifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_binding_modifier.cpp.s
+
+gen/src/classes/open_xr_binding_modifier_editor.obj: gen/src/classes/open_xr_binding_modifier_editor.cpp.obj
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.obj
+
+# target to build an object file
+gen/src/classes/open_xr_binding_modifier_editor.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier_editor.cpp.obj
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.cpp.obj
+
+gen/src/classes/open_xr_binding_modifier_editor.i: gen/src/classes/open_xr_binding_modifier_editor.cpp.i
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_binding_modifier_editor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier_editor.cpp.i
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.cpp.i
+
+gen/src/classes/open_xr_binding_modifier_editor.s: gen/src/classes/open_xr_binding_modifier_editor.cpp.s
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_binding_modifier_editor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_binding_modifier_editor.cpp.s
+.PHONY : gen/src/classes/open_xr_binding_modifier_editor.cpp.s
 
 gen/src/classes/open_xr_composition_layer.obj: gen/src/classes/open_xr_composition_layer.cpp.obj
 .PHONY : gen/src/classes/open_xr_composition_layer.obj
@@ -10977,6 +11374,30 @@ gen/src/classes/open_xr_composition_layer_quad.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_composition_layer_quad.cpp.s
 .PHONY : gen/src/classes/open_xr_composition_layer_quad.cpp.s
 
+gen/src/classes/open_xr_dpad_binding_modifier.obj: gen/src/classes/open_xr_dpad_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.obj
+
+# target to build an object file
+gen/src/classes/open_xr_dpad_binding_modifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_dpad_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.cpp.obj
+
+gen/src/classes/open_xr_dpad_binding_modifier.i: gen/src/classes/open_xr_dpad_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_dpad_binding_modifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_dpad_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.cpp.i
+
+gen/src/classes/open_xr_dpad_binding_modifier.s: gen/src/classes/open_xr_dpad_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_dpad_binding_modifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_dpad_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xr_dpad_binding_modifier.cpp.s
+
 gen/src/classes/open_xr_extension_wrapper_extension.obj: gen/src/classes/open_xr_extension_wrapper_extension.cpp.obj
 .PHONY : gen/src/classes/open_xr_extension_wrapper_extension.obj
 
@@ -11025,6 +11446,54 @@ gen/src/classes/open_xr_hand.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_hand.cpp.s
 .PHONY : gen/src/classes/open_xr_hand.cpp.s
 
+gen/src/classes/open_xr_haptic_base.obj: gen/src/classes/open_xr_haptic_base.cpp.obj
+.PHONY : gen/src/classes/open_xr_haptic_base.obj
+
+# target to build an object file
+gen/src/classes/open_xr_haptic_base.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_base.cpp.obj
+.PHONY : gen/src/classes/open_xr_haptic_base.cpp.obj
+
+gen/src/classes/open_xr_haptic_base.i: gen/src/classes/open_xr_haptic_base.cpp.i
+.PHONY : gen/src/classes/open_xr_haptic_base.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_haptic_base.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_base.cpp.i
+.PHONY : gen/src/classes/open_xr_haptic_base.cpp.i
+
+gen/src/classes/open_xr_haptic_base.s: gen/src/classes/open_xr_haptic_base.cpp.s
+.PHONY : gen/src/classes/open_xr_haptic_base.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_haptic_base.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_base.cpp.s
+.PHONY : gen/src/classes/open_xr_haptic_base.cpp.s
+
+gen/src/classes/open_xr_haptic_vibration.obj: gen/src/classes/open_xr_haptic_vibration.cpp.obj
+.PHONY : gen/src/classes/open_xr_haptic_vibration.obj
+
+# target to build an object file
+gen/src/classes/open_xr_haptic_vibration.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_vibration.cpp.obj
+.PHONY : gen/src/classes/open_xr_haptic_vibration.cpp.obj
+
+gen/src/classes/open_xr_haptic_vibration.i: gen/src/classes/open_xr_haptic_vibration.cpp.i
+.PHONY : gen/src/classes/open_xr_haptic_vibration.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_haptic_vibration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_vibration.cpp.i
+.PHONY : gen/src/classes/open_xr_haptic_vibration.cpp.i
+
+gen/src/classes/open_xr_haptic_vibration.s: gen/src/classes/open_xr_haptic_vibration.cpp.s
+.PHONY : gen/src/classes/open_xr_haptic_vibration.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_haptic_vibration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_haptic_vibration.cpp.s
+.PHONY : gen/src/classes/open_xr_haptic_vibration.cpp.s
+
 gen/src/classes/open_xr_interaction_profile.obj: gen/src/classes/open_xr_interaction_profile.cpp.obj
 .PHONY : gen/src/classes/open_xr_interaction_profile.obj
 
@@ -11048,6 +11517,54 @@ gen/src/classes/open_xr_interaction_profile.s: gen/src/classes/open_xr_interacti
 gen/src/classes/open_xr_interaction_profile.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile.cpp.s
 .PHONY : gen/src/classes/open_xr_interaction_profile.cpp.s
+
+gen/src/classes/open_xr_interaction_profile_editor.obj: gen/src/classes/open_xr_interaction_profile_editor.cpp.obj
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.obj
+
+# target to build an object file
+gen/src/classes/open_xr_interaction_profile_editor.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor.cpp.obj
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.cpp.obj
+
+gen/src/classes/open_xr_interaction_profile_editor.i: gen/src/classes/open_xr_interaction_profile_editor.cpp.i
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_interaction_profile_editor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor.cpp.i
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.cpp.i
+
+gen/src/classes/open_xr_interaction_profile_editor.s: gen/src/classes/open_xr_interaction_profile_editor.cpp.s
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_interaction_profile_editor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor.cpp.s
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor.cpp.s
+
+gen/src/classes/open_xr_interaction_profile_editor_base.obj: gen/src/classes/open_xr_interaction_profile_editor_base.cpp.obj
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.obj
+
+# target to build an object file
+gen/src/classes/open_xr_interaction_profile_editor_base.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor_base.cpp.obj
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.cpp.obj
+
+gen/src/classes/open_xr_interaction_profile_editor_base.i: gen/src/classes/open_xr_interaction_profile_editor_base.cpp.i
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_interaction_profile_editor_base.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor_base.cpp.i
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.cpp.i
+
+gen/src/classes/open_xr_interaction_profile_editor_base.s: gen/src/classes/open_xr_interaction_profile_editor_base.cpp.s
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_interaction_profile_editor_base.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interaction_profile_editor_base.cpp.s
+.PHONY : gen/src/classes/open_xr_interaction_profile_editor_base.cpp.s
 
 gen/src/classes/open_xr_interaction_profile_metadata.obj: gen/src/classes/open_xr_interaction_profile_metadata.cpp.obj
 .PHONY : gen/src/classes/open_xr_interaction_profile_metadata.obj
@@ -11097,6 +11614,30 @@ gen/src/classes/open_xr_interface.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_interface.cpp.s
 .PHONY : gen/src/classes/open_xr_interface.cpp.s
 
+gen/src/classes/open_xr_visibility_mask.obj: gen/src/classes/open_xr_visibility_mask.cpp.obj
+.PHONY : gen/src/classes/open_xr_visibility_mask.obj
+
+# target to build an object file
+gen/src/classes/open_xr_visibility_mask.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_visibility_mask.cpp.obj
+.PHONY : gen/src/classes/open_xr_visibility_mask.cpp.obj
+
+gen/src/classes/open_xr_visibility_mask.i: gen/src/classes/open_xr_visibility_mask.cpp.i
+.PHONY : gen/src/classes/open_xr_visibility_mask.i
+
+# target to preprocess a source file
+gen/src/classes/open_xr_visibility_mask.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_visibility_mask.cpp.i
+.PHONY : gen/src/classes/open_xr_visibility_mask.cpp.i
+
+gen/src/classes/open_xr_visibility_mask.s: gen/src/classes/open_xr_visibility_mask.cpp.s
+.PHONY : gen/src/classes/open_xr_visibility_mask.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xr_visibility_mask.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xr_visibility_mask.cpp.s
+.PHONY : gen/src/classes/open_xr_visibility_mask.cpp.s
+
 gen/src/classes/open_xrapi_extension.obj: gen/src/classes/open_xrapi_extension.cpp.obj
 .PHONY : gen/src/classes/open_xrapi_extension.obj
 
@@ -11144,6 +11685,30 @@ gen/src/classes/open_xrip_binding.s: gen/src/classes/open_xrip_binding.cpp.s
 gen/src/classes/open_xrip_binding.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xrip_binding.cpp.s
 .PHONY : gen/src/classes/open_xrip_binding.cpp.s
+
+gen/src/classes/open_xrip_binding_modifier.obj: gen/src/classes/open_xrip_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xrip_binding_modifier.obj
+
+# target to build an object file
+gen/src/classes/open_xrip_binding_modifier.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xrip_binding_modifier.cpp.obj
+.PHONY : gen/src/classes/open_xrip_binding_modifier.cpp.obj
+
+gen/src/classes/open_xrip_binding_modifier.i: gen/src/classes/open_xrip_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xrip_binding_modifier.i
+
+# target to preprocess a source file
+gen/src/classes/open_xrip_binding_modifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xrip_binding_modifier.cpp.i
+.PHONY : gen/src/classes/open_xrip_binding_modifier.cpp.i
+
+gen/src/classes/open_xrip_binding_modifier.s: gen/src/classes/open_xrip_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xrip_binding_modifier.s
+
+# target to generate assembly for a file
+gen/src/classes/open_xrip_binding_modifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/open_xrip_binding_modifier.cpp.s
+.PHONY : gen/src/classes/open_xrip_binding_modifier.cpp.s
 
 gen/src/classes/optimized_translation.obj: gen/src/classes/optimized_translation.cpp.obj
 .PHONY : gen/src/classes/optimized_translation.obj
@@ -14697,6 +15262,30 @@ gen/src/classes/resource_uid.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/resource_uid.cpp.s
 .PHONY : gen/src/classes/resource_uid.cpp.s
 
+gen/src/classes/retarget_modifier3d.obj: gen/src/classes/retarget_modifier3d.cpp.obj
+.PHONY : gen/src/classes/retarget_modifier3d.obj
+
+# target to build an object file
+gen/src/classes/retarget_modifier3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/retarget_modifier3d.cpp.obj
+.PHONY : gen/src/classes/retarget_modifier3d.cpp.obj
+
+gen/src/classes/retarget_modifier3d.i: gen/src/classes/retarget_modifier3d.cpp.i
+.PHONY : gen/src/classes/retarget_modifier3d.i
+
+# target to preprocess a source file
+gen/src/classes/retarget_modifier3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/retarget_modifier3d.cpp.i
+.PHONY : gen/src/classes/retarget_modifier3d.cpp.i
+
+gen/src/classes/retarget_modifier3d.s: gen/src/classes/retarget_modifier3d.cpp.s
+.PHONY : gen/src/classes/retarget_modifier3d.s
+
+# target to generate assembly for a file
+gen/src/classes/retarget_modifier3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/retarget_modifier3d.cpp.s
+.PHONY : gen/src/classes/retarget_modifier3d.cpp.s
+
 gen/src/classes/ribbon_trail_mesh.obj: gen/src/classes/ribbon_trail_mesh.cpp.obj
 .PHONY : gen/src/classes/ribbon_trail_mesh.obj
 
@@ -15368,6 +15957,30 @@ gen/src/classes/shader_include.s: gen/src/classes/shader_include.cpp.s
 gen/src/classes/shader_include.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/shader_include.cpp.s
 .PHONY : gen/src/classes/shader_include.cpp.s
+
+gen/src/classes/shader_include_db.obj: gen/src/classes/shader_include_db.cpp.obj
+.PHONY : gen/src/classes/shader_include_db.obj
+
+# target to build an object file
+gen/src/classes/shader_include_db.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/shader_include_db.cpp.obj
+.PHONY : gen/src/classes/shader_include_db.cpp.obj
+
+gen/src/classes/shader_include_db.i: gen/src/classes/shader_include_db.cpp.i
+.PHONY : gen/src/classes/shader_include_db.i
+
+# target to preprocess a source file
+gen/src/classes/shader_include_db.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/shader_include_db.cpp.i
+.PHONY : gen/src/classes/shader_include_db.cpp.i
+
+gen/src/classes/shader_include_db.s: gen/src/classes/shader_include_db.cpp.s
+.PHONY : gen/src/classes/shader_include_db.s
+
+# target to generate assembly for a file
+gen/src/classes/shader_include_db.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/shader_include_db.cpp.s
+.PHONY : gen/src/classes/shader_include_db.cpp.s
 
 gen/src/classes/shader_material.obj: gen/src/classes/shader_material.cpp.obj
 .PHONY : gen/src/classes/shader_material.obj
@@ -16185,6 +16798,126 @@ gen/src/classes/spring_arm3d.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_arm3d.cpp.s
 .PHONY : gen/src/classes/spring_arm3d.cpp.s
 
+gen/src/classes/spring_bone_collision3d.obj: gen/src/classes/spring_bone_collision3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision3d.obj
+
+# target to build an object file
+gen/src/classes/spring_bone_collision3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision3d.cpp.obj
+
+gen/src/classes/spring_bone_collision3d.i: gen/src/classes/spring_bone_collision3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision3d.i
+
+# target to preprocess a source file
+gen/src/classes/spring_bone_collision3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision3d.cpp.i
+
+gen/src/classes/spring_bone_collision3d.s: gen/src/classes/spring_bone_collision3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision3d.s
+
+# target to generate assembly for a file
+gen/src/classes/spring_bone_collision3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision3d.cpp.s
+
+gen/src/classes/spring_bone_collision_capsule3d.obj: gen/src/classes/spring_bone_collision_capsule3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.obj
+
+# target to build an object file
+gen/src/classes/spring_bone_collision_capsule3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_capsule3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.cpp.obj
+
+gen/src/classes/spring_bone_collision_capsule3d.i: gen/src/classes/spring_bone_collision_capsule3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.i
+
+# target to preprocess a source file
+gen/src/classes/spring_bone_collision_capsule3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_capsule3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.cpp.i
+
+gen/src/classes/spring_bone_collision_capsule3d.s: gen/src/classes/spring_bone_collision_capsule3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.s
+
+# target to generate assembly for a file
+gen/src/classes/spring_bone_collision_capsule3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_capsule3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_capsule3d.cpp.s
+
+gen/src/classes/spring_bone_collision_plane3d.obj: gen/src/classes/spring_bone_collision_plane3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.obj
+
+# target to build an object file
+gen/src/classes/spring_bone_collision_plane3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_plane3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.cpp.obj
+
+gen/src/classes/spring_bone_collision_plane3d.i: gen/src/classes/spring_bone_collision_plane3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.i
+
+# target to preprocess a source file
+gen/src/classes/spring_bone_collision_plane3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_plane3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.cpp.i
+
+gen/src/classes/spring_bone_collision_plane3d.s: gen/src/classes/spring_bone_collision_plane3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.s
+
+# target to generate assembly for a file
+gen/src/classes/spring_bone_collision_plane3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_plane3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_plane3d.cpp.s
+
+gen/src/classes/spring_bone_collision_sphere3d.obj: gen/src/classes/spring_bone_collision_sphere3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.obj
+
+# target to build an object file
+gen/src/classes/spring_bone_collision_sphere3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_sphere3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.cpp.obj
+
+gen/src/classes/spring_bone_collision_sphere3d.i: gen/src/classes/spring_bone_collision_sphere3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.i
+
+# target to preprocess a source file
+gen/src/classes/spring_bone_collision_sphere3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_sphere3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.cpp.i
+
+gen/src/classes/spring_bone_collision_sphere3d.s: gen/src/classes/spring_bone_collision_sphere3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.s
+
+# target to generate assembly for a file
+gen/src/classes/spring_bone_collision_sphere3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_collision_sphere3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_collision_sphere3d.cpp.s
+
+gen/src/classes/spring_bone_simulator3d.obj: gen/src/classes/spring_bone_simulator3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_simulator3d.obj
+
+# target to build an object file
+gen/src/classes/spring_bone_simulator3d.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_simulator3d.cpp.obj
+.PHONY : gen/src/classes/spring_bone_simulator3d.cpp.obj
+
+gen/src/classes/spring_bone_simulator3d.i: gen/src/classes/spring_bone_simulator3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_simulator3d.i
+
+# target to preprocess a source file
+gen/src/classes/spring_bone_simulator3d.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_simulator3d.cpp.i
+.PHONY : gen/src/classes/spring_bone_simulator3d.cpp.i
+
+gen/src/classes/spring_bone_simulator3d.s: gen/src/classes/spring_bone_simulator3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_simulator3d.s
+
+# target to generate assembly for a file
+gen/src/classes/spring_bone_simulator3d.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/spring_bone_simulator3d.cpp.s
+.PHONY : gen/src/classes/spring_bone_simulator3d.cpp.s
+
 gen/src/classes/sprite2d.obj: gen/src/classes/sprite2d.cpp.obj
 .PHONY : gen/src/classes/sprite2d.obj
 
@@ -16688,6 +17421,30 @@ gen/src/classes/sub_viewport_container.s: gen/src/classes/sub_viewport_container
 gen/src/classes/sub_viewport_container.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/sub_viewport_container.cpp.s
 .PHONY : gen/src/classes/sub_viewport_container.cpp.s
+
+gen/src/classes/subtween_tweener.obj: gen/src/classes/subtween_tweener.cpp.obj
+.PHONY : gen/src/classes/subtween_tweener.obj
+
+# target to build an object file
+gen/src/classes/subtween_tweener.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/subtween_tweener.cpp.obj
+.PHONY : gen/src/classes/subtween_tweener.cpp.obj
+
+gen/src/classes/subtween_tweener.i: gen/src/classes/subtween_tweener.cpp.i
+.PHONY : gen/src/classes/subtween_tweener.i
+
+# target to preprocess a source file
+gen/src/classes/subtween_tweener.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/subtween_tweener.cpp.i
+.PHONY : gen/src/classes/subtween_tweener.cpp.i
+
+gen/src/classes/subtween_tweener.s: gen/src/classes/subtween_tweener.cpp.s
+.PHONY : gen/src/classes/subtween_tweener.s
+
+# target to generate assembly for a file
+gen/src/classes/subtween_tweener.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/subtween_tweener.cpp.s
+.PHONY : gen/src/classes/subtween_tweener.cpp.s
 
 gen/src/classes/surface_tool.obj: gen/src/classes/surface_tool.cpp.obj
 .PHONY : gen/src/classes/surface_tool.obj
@@ -17792,6 +18549,30 @@ gen/src/classes/translation.s: gen/src/classes/translation.cpp.s
 gen/src/classes/translation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/translation.cpp.s
 .PHONY : gen/src/classes/translation.cpp.s
+
+gen/src/classes/translation_domain.obj: gen/src/classes/translation_domain.cpp.obj
+.PHONY : gen/src/classes/translation_domain.obj
+
+# target to build an object file
+gen/src/classes/translation_domain.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/translation_domain.cpp.obj
+.PHONY : gen/src/classes/translation_domain.cpp.obj
+
+gen/src/classes/translation_domain.i: gen/src/classes/translation_domain.cpp.i
+.PHONY : gen/src/classes/translation_domain.i
+
+# target to preprocess a source file
+gen/src/classes/translation_domain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/translation_domain.cpp.i
+.PHONY : gen/src/classes/translation_domain.cpp.i
+
+gen/src/classes/translation_domain.s: gen/src/classes/translation_domain.cpp.s
+.PHONY : gen/src/classes/translation_domain.s
+
+# target to generate assembly for a file
+gen/src/classes/translation_domain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/gen/src/classes/translation_domain.cpp.s
+.PHONY : gen/src/classes/translation_domain.cpp.s
 
 gen/src/classes/translation_server.obj: gen/src/classes/translation_server.cpp.obj
 .PHONY : gen/src/classes/translation_server.obj
@@ -22857,6 +23638,30 @@ src/core/object.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/core/object.cpp.s
 .PHONY : src/core/object.cpp.s
 
+src/core/print_string.obj: src/core/print_string.cpp.obj
+.PHONY : src/core/print_string.obj
+
+# target to build an object file
+src/core/print_string.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/core/print_string.cpp.obj
+.PHONY : src/core/print_string.cpp.obj
+
+src/core/print_string.i: src/core/print_string.cpp.i
+.PHONY : src/core/print_string.i
+
+# target to preprocess a source file
+src/core/print_string.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/core/print_string.cpp.i
+.PHONY : src/core/print_string.cpp.i
+
+src/core/print_string.s: src/core/print_string.cpp.s
+.PHONY : src/core/print_string.s
+
+# target to generate assembly for a file
+src/core/print_string.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/core/print_string.cpp.s
+.PHONY : src/core/print_string.cpp.s
+
 src/godot.obj: src/godot.cpp.obj
 .PHONY : src/godot.obj
 
@@ -23241,6 +24046,30 @@ src/variant/variant.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/variant/variant.cpp.s
 .PHONY : src/variant/variant.cpp.s
 
+src/variant/variant_internal.obj: src/variant/variant_internal.cpp.obj
+.PHONY : src/variant/variant_internal.obj
+
+# target to build an object file
+src/variant/variant_internal.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/variant/variant_internal.cpp.obj
+.PHONY : src/variant/variant_internal.cpp.obj
+
+src/variant/variant_internal.i: src/variant/variant_internal.cpp.i
+.PHONY : src/variant/variant_internal.i
+
+# target to preprocess a source file
+src/variant/variant_internal.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/variant/variant_internal.cpp.i
+.PHONY : src/variant/variant_internal.cpp.i
+
+src/variant/variant_internal.s: src/variant/variant_internal.cpp.s
+.PHONY : src/variant/variant_internal.s
+
+# target to generate assembly for a file
+src/variant/variant_internal.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\godot-cpp.dir\build.make CMakeFiles/godot-cpp.dir/src/variant/variant_internal.cpp.s
+.PHONY : src/variant/variant_internal.cpp.s
+
 src/variant/vector2.obj: src/variant/vector2.cpp.obj
 .PHONY : src/variant/vector2.obj
 
@@ -23393,6 +24222,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... generate_bindings
 	@echo ... godot-cpp
 	@echo ... gen/src/classes/a_star2d.obj
 	@echo ... gen/src/classes/a_star2d.i
@@ -23460,6 +24290,9 @@ help:
 	@echo ... gen/src/classes/animation_node_blend_tree.obj
 	@echo ... gen/src/classes/animation_node_blend_tree.i
 	@echo ... gen/src/classes/animation_node_blend_tree.s
+	@echo ... gen/src/classes/animation_node_extension.obj
+	@echo ... gen/src/classes/animation_node_extension.i
+	@echo ... gen/src/classes/animation_node_extension.s
 	@echo ... gen/src/classes/animation_node_one_shot.obj
 	@echo ... gen/src/classes/animation_node_one_shot.i
 	@echo ... gen/src/classes/animation_node_one_shot.s
@@ -23832,6 +24665,9 @@ help:
 	@echo ... gen/src/classes/collision_shape3d.obj
 	@echo ... gen/src/classes/collision_shape3d.i
 	@echo ... gen/src/classes/collision_shape3d.s
+	@echo ... gen/src/classes/color_palette.obj
+	@echo ... gen/src/classes/color_palette.i
+	@echo ... gen/src/classes/color_palette.s
 	@echo ... gen/src/classes/color_picker.obj
 	@echo ... gen/src/classes/color_picker.i
 	@echo ... gen/src/classes/color_picker.s
@@ -23991,6 +24827,9 @@ help:
 	@echo ... gen/src/classes/editor_command_palette.obj
 	@echo ... gen/src/classes/editor_command_palette.i
 	@echo ... gen/src/classes/editor_command_palette.s
+	@echo ... gen/src/classes/editor_context_menu_plugin.obj
+	@echo ... gen/src/classes/editor_context_menu_plugin.i
+	@echo ... gen/src/classes/editor_context_menu_plugin.s
 	@echo ... gen/src/classes/editor_debugger_plugin.obj
 	@echo ... gen/src/classes/editor_debugger_plugin.i
 	@echo ... gen/src/classes/editor_debugger_plugin.s
@@ -24003,6 +24842,9 @@ help:
 	@echo ... gen/src/classes/editor_export_platform_android.obj
 	@echo ... gen/src/classes/editor_export_platform_android.i
 	@echo ... gen/src/classes/editor_export_platform_android.s
+	@echo ... gen/src/classes/editor_export_platform_extension.obj
+	@echo ... gen/src/classes/editor_export_platform_extension.i
+	@echo ... gen/src/classes/editor_export_platform_extension.s
 	@echo ... gen/src/classes/editor_export_platform_ios.obj
 	@echo ... gen/src/classes/editor_export_platform_ios.i
 	@echo ... gen/src/classes/editor_export_platform_ios.s
@@ -24024,6 +24866,9 @@ help:
 	@echo ... gen/src/classes/editor_export_plugin.obj
 	@echo ... gen/src/classes/editor_export_plugin.i
 	@echo ... gen/src/classes/editor_export_plugin.s
+	@echo ... gen/src/classes/editor_export_preset.obj
+	@echo ... gen/src/classes/editor_export_preset.i
+	@echo ... gen/src/classes/editor_export_preset.s
 	@echo ... gen/src/classes/editor_feature_profile.obj
 	@echo ... gen/src/classes/editor_feature_profile.i
 	@echo ... gen/src/classes/editor_feature_profile.s
@@ -24120,6 +24965,9 @@ help:
 	@echo ... gen/src/classes/editor_syntax_highlighter.obj
 	@echo ... gen/src/classes/editor_syntax_highlighter.i
 	@echo ... gen/src/classes/editor_syntax_highlighter.s
+	@echo ... gen/src/classes/editor_toaster.obj
+	@echo ... gen/src/classes/editor_toaster.i
+	@echo ... gen/src/classes/editor_toaster.s
 	@echo ... gen/src/classes/editor_translation_parser_plugin.obj
 	@echo ... gen/src/classes/editor_translation_parser_plugin.i
 	@echo ... gen/src/classes/editor_translation_parser_plugin.s
@@ -24147,6 +24995,9 @@ help:
 	@echo ... gen/src/classes/expression.obj
 	@echo ... gen/src/classes/expression.i
 	@echo ... gen/src/classes/expression.s
+	@echo ... gen/src/classes/external_texture.obj
+	@echo ... gen/src/classes/external_texture.i
+	@echo ... gen/src/classes/external_texture.s
 	@echo ... gen/src/classes/fast_noise_lite.obj
 	@echo ... gen/src/classes/fast_noise_lite.i
 	@echo ... gen/src/classes/fast_noise_lite.s
@@ -24195,6 +25046,9 @@ help:
 	@echo ... gen/src/classes/gd_script.obj
 	@echo ... gen/src/classes/gd_script.i
 	@echo ... gen/src/classes/gd_script.s
+	@echo ... gen/src/classes/gd_script_syntax_highlighter.obj
+	@echo ... gen/src/classes/gd_script_syntax_highlighter.i
+	@echo ... gen/src/classes/gd_script_syntax_highlighter.s
 	@echo ... gen/src/classes/generic6_dof_joint3d.obj
 	@echo ... gen/src/classes/generic6_dof_joint3d.i
 	@echo ... gen/src/classes/generic6_dof_joint3d.s
@@ -24237,6 +25091,9 @@ help:
 	@echo ... gen/src/classes/gltf_node.obj
 	@echo ... gen/src/classes/gltf_node.i
 	@echo ... gen/src/classes/gltf_node.s
+	@echo ... gen/src/classes/gltf_object_model_property.obj
+	@echo ... gen/src/classes/gltf_object_model_property.i
+	@echo ... gen/src/classes/gltf_object_model_property.s
 	@echo ... gen/src/classes/gltf_physics_body.obj
 	@echo ... gen/src/classes/gltf_physics_body.i
 	@echo ... gen/src/classes/gltf_physics_body.s
@@ -24321,6 +25178,9 @@ help:
 	@echo ... gen/src/classes/grid_map.obj
 	@echo ... gen/src/classes/grid_map.i
 	@echo ... gen/src/classes/grid_map.s
+	@echo ... gen/src/classes/grid_map_editor_plugin.obj
+	@echo ... gen/src/classes/grid_map_editor_plugin.i
+	@echo ... gen/src/classes/grid_map_editor_plugin.s
 	@echo ... gen/src/classes/groove_joint2d.obj
 	@echo ... gen/src/classes/groove_joint2d.i
 	@echo ... gen/src/classes/groove_joint2d.s
@@ -24462,6 +25322,9 @@ help:
 	@echo ... gen/src/classes/java_class_wrapper.obj
 	@echo ... gen/src/classes/java_class_wrapper.i
 	@echo ... gen/src/classes/java_class_wrapper.s
+	@echo ... gen/src/classes/java_object.obj
+	@echo ... gen/src/classes/java_object.i
+	@echo ... gen/src/classes/java_object.s
 	@echo ... gen/src/classes/java_script_bridge.obj
 	@echo ... gen/src/classes/java_script_bridge.i
 	@echo ... gen/src/classes/java_script_bridge.s
@@ -24531,6 +25394,9 @@ help:
 	@echo ... gen/src/classes/link_button.obj
 	@echo ... gen/src/classes/link_button.i
 	@echo ... gen/src/classes/link_button.s
+	@echo ... gen/src/classes/look_at_modifier3d.obj
+	@echo ... gen/src/classes/look_at_modifier3d.i
+	@echo ... gen/src/classes/look_at_modifier3d.s
 	@echo ... gen/src/classes/main_loop.obj
 	@echo ... gen/src/classes/main_loop.i
 	@echo ... gen/src/classes/main_loop.s
@@ -24732,12 +25598,24 @@ help:
 	@echo ... gen/src/classes/open_xr_action.obj
 	@echo ... gen/src/classes/open_xr_action.i
 	@echo ... gen/src/classes/open_xr_action.s
+	@echo ... gen/src/classes/open_xr_action_binding_modifier.obj
+	@echo ... gen/src/classes/open_xr_action_binding_modifier.i
+	@echo ... gen/src/classes/open_xr_action_binding_modifier.s
 	@echo ... gen/src/classes/open_xr_action_map.obj
 	@echo ... gen/src/classes/open_xr_action_map.i
 	@echo ... gen/src/classes/open_xr_action_map.s
 	@echo ... gen/src/classes/open_xr_action_set.obj
 	@echo ... gen/src/classes/open_xr_action_set.i
 	@echo ... gen/src/classes/open_xr_action_set.s
+	@echo ... gen/src/classes/open_xr_analog_threshold_modifier.obj
+	@echo ... gen/src/classes/open_xr_analog_threshold_modifier.i
+	@echo ... gen/src/classes/open_xr_analog_threshold_modifier.s
+	@echo ... gen/src/classes/open_xr_binding_modifier.obj
+	@echo ... gen/src/classes/open_xr_binding_modifier.i
+	@echo ... gen/src/classes/open_xr_binding_modifier.s
+	@echo ... gen/src/classes/open_xr_binding_modifier_editor.obj
+	@echo ... gen/src/classes/open_xr_binding_modifier_editor.i
+	@echo ... gen/src/classes/open_xr_binding_modifier_editor.s
 	@echo ... gen/src/classes/open_xr_composition_layer.obj
 	@echo ... gen/src/classes/open_xr_composition_layer.i
 	@echo ... gen/src/classes/open_xr_composition_layer.s
@@ -24750,27 +25628,48 @@ help:
 	@echo ... gen/src/classes/open_xr_composition_layer_quad.obj
 	@echo ... gen/src/classes/open_xr_composition_layer_quad.i
 	@echo ... gen/src/classes/open_xr_composition_layer_quad.s
+	@echo ... gen/src/classes/open_xr_dpad_binding_modifier.obj
+	@echo ... gen/src/classes/open_xr_dpad_binding_modifier.i
+	@echo ... gen/src/classes/open_xr_dpad_binding_modifier.s
 	@echo ... gen/src/classes/open_xr_extension_wrapper_extension.obj
 	@echo ... gen/src/classes/open_xr_extension_wrapper_extension.i
 	@echo ... gen/src/classes/open_xr_extension_wrapper_extension.s
 	@echo ... gen/src/classes/open_xr_hand.obj
 	@echo ... gen/src/classes/open_xr_hand.i
 	@echo ... gen/src/classes/open_xr_hand.s
+	@echo ... gen/src/classes/open_xr_haptic_base.obj
+	@echo ... gen/src/classes/open_xr_haptic_base.i
+	@echo ... gen/src/classes/open_xr_haptic_base.s
+	@echo ... gen/src/classes/open_xr_haptic_vibration.obj
+	@echo ... gen/src/classes/open_xr_haptic_vibration.i
+	@echo ... gen/src/classes/open_xr_haptic_vibration.s
 	@echo ... gen/src/classes/open_xr_interaction_profile.obj
 	@echo ... gen/src/classes/open_xr_interaction_profile.i
 	@echo ... gen/src/classes/open_xr_interaction_profile.s
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor.obj
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor.i
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor.s
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor_base.obj
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor_base.i
+	@echo ... gen/src/classes/open_xr_interaction_profile_editor_base.s
 	@echo ... gen/src/classes/open_xr_interaction_profile_metadata.obj
 	@echo ... gen/src/classes/open_xr_interaction_profile_metadata.i
 	@echo ... gen/src/classes/open_xr_interaction_profile_metadata.s
 	@echo ... gen/src/classes/open_xr_interface.obj
 	@echo ... gen/src/classes/open_xr_interface.i
 	@echo ... gen/src/classes/open_xr_interface.s
+	@echo ... gen/src/classes/open_xr_visibility_mask.obj
+	@echo ... gen/src/classes/open_xr_visibility_mask.i
+	@echo ... gen/src/classes/open_xr_visibility_mask.s
 	@echo ... gen/src/classes/open_xrapi_extension.obj
 	@echo ... gen/src/classes/open_xrapi_extension.i
 	@echo ... gen/src/classes/open_xrapi_extension.s
 	@echo ... gen/src/classes/open_xrip_binding.obj
 	@echo ... gen/src/classes/open_xrip_binding.i
 	@echo ... gen/src/classes/open_xrip_binding.s
+	@echo ... gen/src/classes/open_xrip_binding_modifier.obj
+	@echo ... gen/src/classes/open_xrip_binding_modifier.i
+	@echo ... gen/src/classes/open_xrip_binding_modifier.s
 	@echo ... gen/src/classes/optimized_translation.obj
 	@echo ... gen/src/classes/optimized_translation.i
 	@echo ... gen/src/classes/optimized_translation.s
@@ -25215,6 +26114,9 @@ help:
 	@echo ... gen/src/classes/resource_uid.obj
 	@echo ... gen/src/classes/resource_uid.i
 	@echo ... gen/src/classes/resource_uid.s
+	@echo ... gen/src/classes/retarget_modifier3d.obj
+	@echo ... gen/src/classes/retarget_modifier3d.i
+	@echo ... gen/src/classes/retarget_modifier3d.s
 	@echo ... gen/src/classes/ribbon_trail_mesh.obj
 	@echo ... gen/src/classes/ribbon_trail_mesh.i
 	@echo ... gen/src/classes/ribbon_trail_mesh.s
@@ -25299,6 +26201,9 @@ help:
 	@echo ... gen/src/classes/shader_include.obj
 	@echo ... gen/src/classes/shader_include.i
 	@echo ... gen/src/classes/shader_include.s
+	@echo ... gen/src/classes/shader_include_db.obj
+	@echo ... gen/src/classes/shader_include_db.i
+	@echo ... gen/src/classes/shader_include_db.s
 	@echo ... gen/src/classes/shader_material.obj
 	@echo ... gen/src/classes/shader_material.i
 	@echo ... gen/src/classes/shader_material.s
@@ -25401,6 +26306,21 @@ help:
 	@echo ... gen/src/classes/spring_arm3d.obj
 	@echo ... gen/src/classes/spring_arm3d.i
 	@echo ... gen/src/classes/spring_arm3d.s
+	@echo ... gen/src/classes/spring_bone_collision3d.obj
+	@echo ... gen/src/classes/spring_bone_collision3d.i
+	@echo ... gen/src/classes/spring_bone_collision3d.s
+	@echo ... gen/src/classes/spring_bone_collision_capsule3d.obj
+	@echo ... gen/src/classes/spring_bone_collision_capsule3d.i
+	@echo ... gen/src/classes/spring_bone_collision_capsule3d.s
+	@echo ... gen/src/classes/spring_bone_collision_plane3d.obj
+	@echo ... gen/src/classes/spring_bone_collision_plane3d.i
+	@echo ... gen/src/classes/spring_bone_collision_plane3d.s
+	@echo ... gen/src/classes/spring_bone_collision_sphere3d.obj
+	@echo ... gen/src/classes/spring_bone_collision_sphere3d.i
+	@echo ... gen/src/classes/spring_bone_collision_sphere3d.s
+	@echo ... gen/src/classes/spring_bone_simulator3d.obj
+	@echo ... gen/src/classes/spring_bone_simulator3d.i
+	@echo ... gen/src/classes/spring_bone_simulator3d.s
 	@echo ... gen/src/classes/sprite2d.obj
 	@echo ... gen/src/classes/sprite2d.i
 	@echo ... gen/src/classes/sprite2d.s
@@ -25464,6 +26384,9 @@ help:
 	@echo ... gen/src/classes/sub_viewport_container.obj
 	@echo ... gen/src/classes/sub_viewport_container.i
 	@echo ... gen/src/classes/sub_viewport_container.s
+	@echo ... gen/src/classes/subtween_tweener.obj
+	@echo ... gen/src/classes/subtween_tweener.i
+	@echo ... gen/src/classes/subtween_tweener.s
 	@echo ... gen/src/classes/surface_tool.obj
 	@echo ... gen/src/classes/surface_tool.i
 	@echo ... gen/src/classes/surface_tool.s
@@ -25602,6 +26525,9 @@ help:
 	@echo ... gen/src/classes/translation.obj
 	@echo ... gen/src/classes/translation.i
 	@echo ... gen/src/classes/translation.s
+	@echo ... gen/src/classes/translation_domain.obj
+	@echo ... gen/src/classes/translation_domain.i
+	@echo ... gen/src/classes/translation_domain.s
 	@echo ... gen/src/classes/translation_server.obj
 	@echo ... gen/src/classes/translation_server.i
 	@echo ... gen/src/classes/translation_server.s
@@ -26235,6 +27161,9 @@ help:
 	@echo ... src/core/object.obj
 	@echo ... src/core/object.i
 	@echo ... src/core/object.s
+	@echo ... src/core/print_string.obj
+	@echo ... src/core/print_string.i
+	@echo ... src/core/print_string.s
 	@echo ... src/godot.obj
 	@echo ... src/godot.i
 	@echo ... src/godot.s
@@ -26283,6 +27212,9 @@ help:
 	@echo ... src/variant/variant.obj
 	@echo ... src/variant/variant.i
 	@echo ... src/variant/variant.s
+	@echo ... src/variant/variant_internal.obj
+	@echo ... src/variant/variant_internal.i
+	@echo ... src/variant/variant_internal.s
 	@echo ... src/variant/vector2.obj
 	@echo ... src/variant/vector2.i
 	@echo ... src/variant/vector2.s

@@ -642,6 +642,18 @@
 			"value" : ""
 		},
 		{
+			"name" : "CMAKE_MSVC_RUNTIME_LIBRARY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Select the MSVC runtime library for use by compilers targeting the MSVC ABI."
+				}
+			],
+			"type" : "STRING",
+			"value" : "MultiThreaded$<IF:$<BOOL:OFF>,DebugDLL,$<$<NOT:$<BOOL:ON>>:DLL>>"
+		},
+		{
 			"name" : "CMAKE_NM",
 			"properties" : 
 			[
@@ -723,7 +735,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : ""
+			"value" : "C++ bindings for the Godot Engine's GDExtensions API."
 		},
 		{
 			"name" : "CMAKE_PROJECT_HOMEPAGE_URL",
@@ -735,7 +747,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : ""
+			"value" : "https://github.com/godotengine/godot-cpp"
 		},
 		{
 			"name" : "CMAKE_PROJECT_NAME",
@@ -748,6 +760,66 @@
 			],
 			"type" : "STATIC",
 			"value" : "godot-cpp"
+		},
+		{
+			"name" : "CMAKE_PROJECT_VERSION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "4.4"
+		},
+		{
+			"name" : "CMAKE_PROJECT_VERSION_MAJOR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "4"
+		},
+		{
+			"name" : "CMAKE_PROJECT_VERSION_MINOR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "4"
+		},
+		{
+			"name" : "CMAKE_PROJECT_VERSION_PATCH",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : ""
+		},
+		{
+			"name" : "CMAKE_PROJECT_VERSION_TWEAK",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : ""
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1178,6 +1250,206 @@
 			"value" : "ON"
 		},
 		{
+			"name" : "GODOTCPP_BUILD_PROFILE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a file containing a feature build profile"
+				}
+			],
+			"type" : "PATH",
+			"value" : ""
+		},
+		{
+			"name" : "GODOTCPP_CUSTOM_API_FILE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a custom GDExtension API JSON file (takes precedence over `GODOTCPP_GDEXTENSION_DIR`) ( /path/to/custom_api_file )"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : ""
+		},
+		{
+			"name" : "GODOTCPP_DEBUG_CRT",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Compile with MSVC's debug CRT (/MDd)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "GODOTCPP_DEV_BUILD",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Developer build with dev-only debugging code (DEV_ENABLED)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "GODOTCPP_DISABLE_EXCEPTIONS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Force disabling exception handling code (ON|OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "GODOTCPP_ENABLE_TESTING",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable the godot-cpp.test.<target> integration testing targets"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "GODOTCPP_GDEXTENSION_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a custom directory containing GDExtension interface header and API JSON file ( /path/to/gdextension_dir )"
+				}
+			],
+			"type" : "PATH",
+			"value" : "gdextension"
+		},
+		{
+			"name" : "GODOTCPP_GENERATE_TEMPLATE_GET_NODE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Generate a template version of the Node class's get_node. (ON|OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "GODOTCPP_PRECISION",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Set the floating-point precision level (single|double)"
+				}
+			],
+			"type" : "STRING",
+			"value" : "single"
+		},
+		{
+			"name" : "GODOTCPP_SYMBOL_VISIBILITY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Symbols visibility on GNU platforms. Use 'auto' to apply the default value. (auto|visible|hidden)"
+				},
+				{
+					"name" : "STRINGS",
+					"value" : "auto;visible;hidden"
+				}
+			],
+			"type" : "STRING",
+			"value" : "hidden"
+		},
+		{
+			"name" : "GODOTCPP_SYSTEM_HEADERS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Expose headers as SYSTEM."
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
+			"name" : "GODOTCPP_TARGET",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Which target to generate. valid values are: template_debug, template_release, and editor"
+				},
+				{
+					"name" : "STRINGS",
+					"value" : "template_debug;template_release;editor"
+				}
+			],
+			"type" : "STRING",
+			"value" : "template_debug"
+		},
+		{
+			"name" : "GODOTCPP_THREADS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable threading support"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "GODOTCPP_USE_HOT_RELOAD",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Enable the extra accounting required to support hot reload. (ON|OFF)"
+				}
+			],
+			"type" : "BOOL",
+			"value" : ""
+		},
+		{
+			"name" : "GODOTCPP_USE_STATIC_CPP",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Link MinGW/MSVC C++ runtime libraries statically"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "ON"
+		},
+		{
+			"name" : "GODOTCPP_WARNING_AS_ERROR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Treat warnings as errors"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
 			"name" : "GODOT_CPP_SYSTEM_HEADERS",
 			"properties" : 
 			[
@@ -1331,7 +1603,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "Python;3;13;3;64;32;<none>;cp313-win_amd64;;C:\\Program Files\\Python313\\Lib;C:\\Program Files\\Python313\\Lib;C:\\Program Files\\Python313\\Lib\\site-packages;C:\\Program Files\\Python313\\Lib\\site-packages"
+			"value" : "Python;3;13;3;64;<none>;cp313-win_amd64.pyd;;C:\\Program Files\\Python313\\Lib;C:\\Program Files\\Python313\\Lib;C:\\Program Files\\Python313\\Lib\\site-packages;C:\\Program Files\\Python313\\Lib\\site-packages"
 		},
 		{
 			"name" : "_Python3_INTERPRETER_SIGNATURE",
@@ -1343,7 +1615,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c2e1e231f353bf44ff20f7e85f307f0e"
+			"value" : "8ac60201358625924e4d0a82fb5f8b3f"
 		},
 		{
 			"name" : "_Python3_NumPy_REASON_FAILURE",
