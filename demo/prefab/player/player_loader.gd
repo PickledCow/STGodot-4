@@ -10,8 +10,6 @@ class_name PlayerLoader
 var current_player : Player
 
 
-
-
 func instantiate_player(id: int):
 	current_player = players[id].instantiate() as Player
 	

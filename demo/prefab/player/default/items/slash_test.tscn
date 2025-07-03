@@ -1,0 +1,201 @@
+[gd_scene load_steps=14 format=3 uid="uid://0i4acoko3mcl"]
+
+[ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="1_mr5cg"]
+
+[sub_resource type="Shader" id="Shader_t6lrx"]
+code = "shader_type canvas_item;
+
+// Modified from https://godotshaders.com/shader/procedural-cyclic-slash/
+
+group_uniforms ANIMATION;
+uniform float progress : hint_range(0.0, 1.0, 0.01) = 0.0;
+// This value animates this shader when DERIVE_PROGRESS is set to 0.0
+
+uniform float derive_progress : hint_range(-1.0, 1.0, 1.0) = 0.0;
+// 0.0 Use PROGRESS (Change value in code or animation player)
+// -1.0 Use TIME (Idle Loop)
+// 1.0 use LIFETIME (Particle)
+
+uniform float ease_progress : hint_range(-1.0, 1.0, 1.0) = 0.0;
+// 0.0 No easing
+// -1.0 Ease : Expo In
+// 1.0 Ease : Expo Out
+
+uniform float time_scale : hint_range(0.0, 8.0, 0.01) = 1.0;
+uniform float anim_rot_amt : hint_range(0.0, 1.0, 0.01) = 1.0;
+// ^^^
+// The shader is setup to rotate the main image as it progresses, 
+// set this to 0 to disable that behaviour
+group_uniforms;
+
+group_uniforms SHAPE;
+uniform sampler2D base_noise : hint_default_white, filter_linear_mipmap;
+// ^^^ 
+// This is the basis of the main rough looking shape, It's width should be 
+// stretched but that's up to you.
+
+// these should be GradientTexture1Ds
+uniform sampler2D width_gradient_mask : hint_default_transparent;
+// ^^^ 
+// This clips the slashes width, use white for what you want to clip, and 
+// black for what you want to keep.
+uniform sampler2D length_gradient_mask : hint_default_transparent;
+// ^^^ 
+// This clips the slashes \"length\" and controls how it animates... uh try 
+// using a gradient that progresses 'white -> black -> white'
+uniform sampler2D highlight : source_color,hint_default_transparent;
+// ^^^ 
+// This will be overlayed ontop of the main shape, it will get masked by 
+// LENGTH_GRADIENT_MASK so it animates in sync with the main shape.
+
+uniform float zoom : hint_range(0.0, 2.0, 0.01) = 0.6; // Scales the final image, Inverted (smaller means bigger)
+uniform float rotate_all : hint_range(0.0, 360.0, 0.1) = 0.0; // Rotates the final image by x degrees
+group_uniforms;
+
+group_uniforms COLORING;
+
+// this should be a GradientTexture1D
+uniform sampler2D color_lookup : source_color,hint_default_white;
+
+varying float LIFETIME;
+varying float INDEX;
+
+vec2 polar_coordinates(vec2 uv, float zoomm) {
+	vec2 dir = uv - vec2(0.5);
+	float radius = length(dir) * 2.0;
+	float angle = atan(dir.y, dir.x) / TAU;
+	return mod(vec2(radius * zoomm, angle), 1.0);
+}
+
+vec2 rotate(vec2 uv, vec2 pivot, float angle) {
+	mat2 rotation = mat2(vec2(sin(angle), -cos(angle)),
+						vec2(cos(angle), sin(angle)));
+	uv -= pivot;
+	uv = uv * rotation;
+	uv += pivot;
+	return mod(uv, 1.0);
+}
+
+// Easing Functions Adapted From https://easings.net/
+
+float easeOutExpo(float x) {
+	return 1.0 - pow(2.0, -10.0 * x);
+}
+
+float easeInExpo(float x) {
+	return pow(2.0, 10.0 * x - 10.0);
+}
+
+//Circ
+float easeInOut(float x) {
+	float result;
+	if (x < 0.5) {result = (1.0 - sqrt(1.0 - pow(2.0 * x, 2.0))) / 2.0;}
+	else {result =(sqrt(1.0 - pow(-2.0 * x + 2.0, 2.0)) + 1.0) / 2.0;}
+	
+	
+	//if (x < 0.25) {result = (1.0 - sqrt(1.0 - pow(4.0 * x, 2.0))) / 2.0;}
+	//else if (x > 0.75) { result = (sqrt(1.0 - pow(4.0 * x - 3.0, 2.0))) / 2.0; }
+	//else { result = 0.5; }
+	
+	return result;
+}
+
+float get_progress() {
+	float p;
+	float final;
+	if (derive_progress > 0.0) {p = LIFETIME;}
+	else if (derive_progress < 0.0) {p = mod(TIME * time_scale,1.0);}
+	// You can change out what p is equal to here to tweak the idle loop behaviour
+	// abs(sin(TIME * time_scale)) [Back and Forth]
+	// mod(TIME * time_scale,1.0) [Over and Over]
+	else {p = progress;}
+	
+	if (ease_progress > 0.0) {final = easeOutExpo(p);}
+	else if (ease_progress < 0.0) {final = easeInExpo(p);}
+	else {final = p;}
+	
+	return final;
+}
+
+void fragment() {
+	// Get Values
+	float p = get_progress();
+	vec2 aUV = polar_coordinates(rotate(UV, vec2(0.5), radians(rotate_all)), zoom);
+	vec4 b = texture(base_noise, mod(aUV - vec2(0.0,p), 1.0)) * 0.8;
+	vec4 wm = texture(width_gradient_mask, aUV);
+	vec4 lm = texture(length_gradient_mask, rotate(aUV - vec2(0.0, easeInOut(p * anim_rot_amt)), vec2(0.5), PI));
+	
+	// Combine Them
+	vec4 prefinal = (b-wm) - lm;
+	vec4 albe = vec4(1.0)*(texture(color_lookup,vec2(clamp(prefinal.r * UV.x * 3.0,0.0,1.0),0.0)));
+	vec4 high = clamp(texture(highlight, aUV) - (lm), 0.0, 1.0);
+	
+	// Apply Them
+	COLOR = clamp(albe + high, 0.0, 1.0);
+	
+	
+	float start = abs(cos(p * PI));
+	float end = abs(cos(p * PI));
+	COLOR.a *= clamp(smoothstep(start, end, prefinal.r) + smoothstep(clamp(start, 0.0, 0.4), clamp(end, 0.0, 0.4), (high.r * 0.2)), 0.0, 1.0) * min(1.0, 9.0 - p * 14.0);
+}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iosnf"]
+noise_type = 0
+seed = 654
+frequency = 0.1275
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ky24u"]
+width = 128
+height = 64
+noise = SubResource("FastNoiseLite_iosnf")
+seamless = true
+
+[sub_resource type="Gradient" id="Gradient_6eg2w"]
+offsets = PackedFloat32Array(0.00746269, 0.0323383, 0.263682, 1)
+colors = PackedColorArray(0.37, 0.483203, 1, 1, 0.423667, 0.3444, 0.82, 1, 0.20426, 0.600977, 0.865455, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4m7j3"]
+gradient = SubResource("Gradient_6eg2w")
+
+[sub_resource type="Gradient" id="Gradient_jt7hv"]
+offsets = PackedFloat32Array(0.34076434, 0.37261146, 0.39171976)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_si0la"]
+gradient = SubResource("Gradient_jt7hv")
+
+[sub_resource type="Gradient" id="Gradient_ftekd"]
+offsets = PackedFloat32Array(0.121891, 0.323383, 0.659204, 0.748756)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qr13b"]
+gradient = SubResource("Gradient_ftekd")
+
+[sub_resource type="Gradient" id="Gradient_n34ns"]
+offsets = PackedFloat32Array(0.149254, 0.266169, 0.355721, 0.567164)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cnthk"]
+gradient = SubResource("Gradient_n34ns")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vdly6"]
+shader = SubResource("Shader_t6lrx")
+shader_parameter/progress = 0.749999983236
+shader_parameter/derive_progress = 0.0
+shader_parameter/ease_progress = 0.0
+shader_parameter/time_scale = 1.2499999720600001
+shader_parameter/anim_rot_amt = 0.7999999821184001
+shader_parameter/base_noise = SubResource("NoiseTexture2D_ky24u")
+shader_parameter/width_gradient_mask = SubResource("GradientTexture1D_cnthk")
+shader_parameter/length_gradient_mask = SubResource("GradientTexture1D_qr13b")
+shader_parameter/highlight = SubResource("GradientTexture1D_si0la")
+shader_parameter/zoom = 0.6
+shader_parameter/rotate_all = 99.20000147819904
+shader_parameter/color_lookup = SubResource("GradientTexture1D_4m7j3")
+
+[node name="Node2D" type="Sprite2D"]
+material = SubResource("ShaderMaterial_vdly6")
+position = Vector2(273, 142)
+scale = Vector2(512, 512)
+texture = ExtResource("1_mr5cg")

@@ -140,9 +140,7 @@ func _get(property: StringName) -> Variant:
 		elif property.get_slice("/", 2).begins_with("clear_color"):
 			var sprite_data := sprite_data_list[index]
 			return Color(sprite_data[10], sprite_data[11], sprite_data[12])
-			
-		elif property.get_slice("/", 2).begins_with("kit_index"):
-			return kit_index_list[index]
+		
 		
 	return null
 	
@@ -200,9 +198,6 @@ func _set(property: StringName, value) -> bool:
 			sprite_data_list[index][12] = color.b
 			return true
 			
-		elif property.get_slice("/", 2).begins_with("kit_index"):
-			kit_index_list[index] = value
-			return true
 	
 	return false
 
@@ -213,12 +208,6 @@ func _get_property_list():
 
 	for i in sprite_count:
 		
-		properties.append({
-			"name": "Sprites/sprite_%d/kit_index" % i,
-			"type": TYPE_INT,
-			"hint": PROPERTY_HINT_RANGE,
-			"hint_string": "0,32,1,or_greater"
-		})
 		properties.append({
 			"name": "Sprites/sprite_%d/source_rect" % i,
 			"type": TYPE_RECT2I

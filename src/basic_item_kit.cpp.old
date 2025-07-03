@@ -186,6 +186,10 @@ void BasicItemPool::_magnet_all(Node2D* target) {
         bullet->magnet_target = target;
     }
 }
+    }
+}
+    }
+}
 
 bool BasicItemPool::_process_bullet(BasicItem* bullet, double delta) {
     Vector2 last_pos = bullet->position;

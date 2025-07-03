@@ -31,6 +31,7 @@ private:
 	Ref<Material> bullets_material;
 	Ref<Material> bullets_material_add;
 	double bullet_rotation_offset = M_PI_2;
+	double bullets_fade_time = 8.0;
 
 	// Player shots
 	int available_shots = 0;
@@ -42,7 +43,8 @@ private:
 	Ref<Texture2D> shots_texture;
 	Ref<Material> shots_material;
 	Ref<Material> shots_material_add;
-	double shot_rotation_offset = 0.0;
+	double shot_rotation_offset = M_PI_2;
+	double shots_fade_time = 4.0;
 
 	// Items
 	int available_items = 0;
@@ -55,6 +57,10 @@ private:
 	Ref<Material> items_material;
 	Ref<Material> items_material_add;
 	double item_rotation_offset = 0.0;
+	double items_fade_time = 8.0;
+	Vector2 items_gravity = Vector2(0.0, 4.0);
+	double items_damp = 0.95;
+	double items_magnet_strength = 20.0;
 
 	// Particles
 	int available_particles = 0;
@@ -71,18 +77,32 @@ private:
 	// Helper unchangings
 	double bullets_texture_width;
 	RID bullets_texture_rid;
+	RID bullets_material_rid;
+	RID bullets_material_add_rid;
 	double shots_texture_width;
 	RID shots_texture_rid;
+	RID shots_material_rid;
+	RID shots_material_add_rid;
 	double items_texture_width;
 	RID items_texture_rid;
+	RID items_material_rid;
+	RID items_material_add_rid;
 	double particles_texture_width;
 	RID particles_texture_rid;
+	RID particles_material_rid;
+	RID particles_material_add_rid;
 
 	// Pools. The pools are accessed in reverse.
 	Bullet** bullet_pool;
 	Bullet** shot_pool;
 	Item** item_pool;
 	Particle** particle_pool;
+
+	// Flags for if the pools have been created
+	bool bullets_created = false;
+	bool shots_created = false;
+	bool items_created = false;
+	bool particles_created = false;
 
 	// Field variables
 	Rect2 bounce_rect;
@@ -102,6 +122,10 @@ private:
 	// Helper singleton references
 	RenderingServer* rendering_server;
 	RID canvas_parent;
+	RID bullets_canvas_item;
+	RID shots_canvas_item;
+	RID items_canvas_item;
+	RID particles_canvas_item;
 
 	void _clear_rids();
 
@@ -181,6 +205,21 @@ public:
 	Vector2 get_origin();
 	void set_origin(Vector2 o);
 
+	double get_bullets_fade_time();
+	void set_bullets_fade_time(double time);
+	
+	double get_shots_fade_time();
+	void set_shots_fade_time(double time);
+	
+	double get_items_fade_time();
+	void set_items_fade_time(double time);
+	
+	double get_bullet_rotation_offset();
+	void set_bullet_rotation_offset(double rotation);
+	
+	double get_shot_rotation_offset();
+	void set_shot_rotation_offset(double rotation);
+
 	
 	// #endregion
 
@@ -213,6 +252,14 @@ public:
 	void set_particles_material_add(Ref<Material> material);
 
 	
+	Vector2 get_items_gravity();
+	void set_items_gravity(Vector2 gravity);
+
+	double get_items_damp();
+	void set_items_damp(double damp);
+	double get_items_magnet_strength();
+	void set_items_magnet_strength(double magnet_strength);
+
 	enum BULLET_DATA_STRUCTURE {
 		DATA_SRC_X, 
 		DATA_SRC_Y, 
@@ -229,6 +276,20 @@ public:
 		DATA_CLEAR_B, 
 		DATA_DAMAGE_TYPE, 
 		DATA_DAMAGE_AMOUNT
+	};
+	
+	enum ITEM_DATA_STRUCTURE {
+		ITEM_DATA_SRC_X, 
+		ITEM_DATA_SRC_Y, 
+		ITEM_DATA_SRC_W, 
+		ITEM_DATA_SRC_H, 
+		ITEM_DATA_SIZE, 
+		ITEM_DATA_HITBOX_RATIO, 
+		ITEM_DATA_SPRITE_OFFSET, 
+		ITEM_DATA_ANIM_FRAMES, 
+		ITEM_DATA_LAYER, 
+		ITEM_DATA_DAMAGE_TYPE, 
+		ITEM_DATA_DAMAGE_AMOUNT
 	};
 
 	enum WALLS { 
@@ -255,8 +316,13 @@ public:
 	void _process(double delta);
 
 	void enable_bullet(Bullet* bullet);
+	void enable_shot(Bullet* shot);
 
+	PackedInt64Array create_bullet_a1_no_glow(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data);
 	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
+	
+	PackedInt64Array create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array shot_data, bool glow);
+	PackedInt64Array create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, double w_vel, PackedFloat64Array shot_data, bool glow);
 
 	// bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);
 	// Variant obtain_bullet(Ref<BulletKit> kit);
@@ -281,18 +347,19 @@ public:
 
 
 	// Array collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
-	// Array collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius);
+	Array collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius);
 	// Array collide_and_graze_enemy(Vector2 pos, double hitbox_radius, double graze_radius);
 
-	// Array collect_and_magnet_kit(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
+	Array collect_and_magnet_items(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
 	// Array collect_and_magnet_all(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius);
-	// void magnet_all(Node2D* target);
+	void magnet_all_items(Node2D* target);
 	// void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
 
 	// PackedInt64Array create_shot_a2(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, double accel, double max_speed, PackedFloat64Array bullet_data, bool fade_in);
 
 
-	// PackedInt64Array create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
+	PackedInt64Array create_item_no_glow(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data);
+	PackedInt64Array create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow);
 	
     // PackedInt64Array create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color);
 
@@ -402,6 +469,7 @@ public:
 
 
 VARIANT_ENUM_CAST(BulletInterface::BULLET_DATA_STRUCTURE);
+VARIANT_ENUM_CAST(BulletInterface::ITEM_DATA_STRUCTURE);
 VARIANT_ENUM_CAST(BulletInterface::WALLS);
 VARIANT_ENUM_CAST(BulletInterface::TRIGGERS);
 

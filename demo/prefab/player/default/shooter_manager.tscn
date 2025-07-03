@@ -3,13 +3,10 @@
 [ext_resource type="Script" uid="uid://dokkx3sctgvt4" path="res://prefab/player/shooter_manager.gd" id="1_oxfqk"]
 
 [node name="ShooterManager" type="Sprite2D"]
-scale = Vector2(1.84617, 1.84617)
-offset = Vector2(0, 24)
+scale = Vector2(nan, nan)
 region_enabled = true
-region_rect = Rect2(128, 0, 128, 128)
 script = ExtResource("1_oxfqk")
 sprite_count = 2
-Sprites/sprite_0/kit_index = 0
 Sprites/sprite_0/source_rect = Rect2i(0, 0, 0, 0)
 Sprites/sprite_0/bullet_size = 0.0
 Sprites/sprite_0/hitbox_ratio = 0.0
@@ -18,7 +15,6 @@ Sprites/sprite_0/animation_frames = 0.0
 Sprites/sprite_0/spin = 0.0
 Sprites/sprite_0/layer = 0.0
 Sprites/sprite_0/clear_color = Color(0, 0, 0, 1)
-Sprites/sprite_1/kit_index = 0
 Sprites/sprite_1/source_rect = Rect2i(0, 0, 0, 0)
 Sprites/sprite_1/bullet_size = 0.0
 Sprites/sprite_1/hitbox_ratio = 0.0

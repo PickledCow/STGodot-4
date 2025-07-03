@@ -1,0 +1,133 @@
+[gd_scene load_steps=7 format=3 uid="uid://c6bok6q32micx"]
+
+[ext_resource type="Script" uid="uid://mfqhkfn6cfbi" path="res://prefab/player/default/items/marisa_laser.gd" id="1_67rhy"]
+[ext_resource type="Texture2D" uid="uid://b8u02krmiwmff" path="res://prefab/player/default/items/sprites/marisa_laser.png" id="2_67rhy"]
+[ext_resource type="Shader" uid="uid://mmmpsdlcepqu" path="res://prefab/player/default/items/marisa_laser.gdshader" id="2_lqdg3"]
+[ext_resource type="Texture2D" uid="uid://kdmdvwwocq4b" path="res://prefab/player/default/items/sprites/marisa_laser_source.png" id="4_lqdg3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c2r3i"]
+shader = ExtResource("2_lqdg3")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_c2r3i"]
+blend_mode = 1
+
+[node name="MarisaLaser" type="Node2D"]
+z_index = -15
+script = ExtResource("1_67rhy")
+metadata/_custom_type_script = "uid://bhh2dnjfehciq"
+
+[node name="Lasers" type="Node2D" parent="."]
+
+[node name="Laser0" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser1" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser2" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser3" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser4" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser5" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser6" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Laser7" type="Sprite2D" parent="Lasers"]
+visible = false
+texture_repeat = 2
+material = SubResource("ShaderMaterial_c2r3i")
+scale = Vector2(3, 0.5)
+texture = ExtResource("2_67rhy")
+offset = Vector2(256, 0)
+
+[node name="Glows" type="Sprite2D" parent="."]
+
+[node name="LaserGlow0" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow1" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow2" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow3" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow4" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow5" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow6" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")
+
+[node name="LaserGlow7" type="Sprite2D" parent="Glows"]
+visible = false
+material = SubResource("CanvasItemMaterial_c2r3i")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_lqdg3")

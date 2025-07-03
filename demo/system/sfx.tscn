@@ -1,19 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://c87ndgxn2vij"]
+[gd_scene load_steps=11 format=3 uid="uid://c87ndgxn2vij"]
 
 [ext_resource type="Script" uid="uid://b7ovgjuf7m81f" path="res://system/sfx.gd" id="1_hs46b"]
 [ext_resource type="AudioStream" uid="uid://dlcclmrp7y24m" path="res://system/sfx/death.wav" id="2_pg0su"]
 [ext_resource type="AudioStream" uid="uid://cb3jvun5xq487" path="res://system/sfx/graze.wav" id="3_ut8fh"]
 [ext_resource type="AudioStream" uid="uid://djunfne3guq0v" path="res://system/sfx/item.wav" id="4_jk043"]
 [ext_resource type="AudioStream" uid="uid://bupl5g7nvn276" path="res://system/sfx/shoot1.wav" id="5_fycwg"]
+[ext_resource type="AudioStream" uid="uid://ctxf7dx833xxs" path="res://system/sfx/slash_air.wav" id="6_1p74y"]
 [ext_resource type="Script" uid="uid://dbiiqldkc6htg" path="res://system/audio_test.gd" id="6_b0r30"]
+[ext_resource type="AudioStream" uid="uid://c824hhgjdd066" path="res://system/sfx/player_shoot.wav" id="7_3um2g"]
+[ext_resource type="AudioStream" uid="uid://dhges8hhuowoy" path="res://system/sfx/player_missile.wav" id="8_tfoi7"]
+[ext_resource type="AudioStream" uid="uid://os2ej3f0f3aq" path="res://system/sfx/slash_hit.wav" id="9_tfoi7"]
 
 [node name="SFX" type="Node2D"]
-position = Vector2(722, 519)
 script = ExtResource("1_hs46b")
-sfx_count = 4
+sfx_count = 8
 sfx_0/name = &"death"
 sfx_0/stream = ExtResource("2_pg0su")
-sfx_0/volume = -10.4
+sfx_0/volume = -2.0
 sfx_1/name = &"graze"
 sfx_1/stream = ExtResource("3_ut8fh")
 sfx_1/volume = 0.0
@@ -22,7 +25,19 @@ sfx_2/stream = ExtResource("5_fycwg")
 sfx_2/volume = -5.0
 sfx_3/name = &"item"
 sfx_3/stream = ExtResource("4_jk043")
-sfx_3/volume = 0.0
+sfx_3/volume = -10.0
+sfx_4/name = &"slash_air"
+sfx_4/stream = ExtResource("6_1p74y")
+sfx_4/volume = 0.0
+sfx_5/name = &"base_shot"
+sfx_5/stream = ExtResource("7_3um2g")
+sfx_5/volume = -5.0
+sfx_6/name = &"missile"
+sfx_6/stream = ExtResource("8_tfoi7")
+sfx_6/volume = -5.0
+sfx_7/name = &"slash_hit"
+sfx_7/stream = ExtResource("9_tfoi7")
+sfx_7/volume = 0.0
 
 [node name="AudioTest" type="AudioStreamPlayer" parent="."]
 script = ExtResource("6_b0r30")

@@ -1,4 +1,4 @@
-extends Sprite2D
+extends Node2D
 class_name Player
 ## Base Player class. Has most important implementation and can be extended from
 ## with minimal changes.
@@ -274,18 +274,18 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 @export var spritesheet_format := SPRITESHEET_FORMAT.IDLE_RIGHT:
 	set(sf):
 		spritesheet_format = sf
-		set_vframes(2 if sf == SPRITESHEET_FORMAT.IDLE_RIGHT else 3)
+		$Sprite.set_vframes(2 if sf == SPRITESHEET_FORMAT.IDLE_RIGHT else 3)
 ## How many frames of animation is in one loop of the idle animation.
 @export_range(1, 16, 1, "or_greater") var idle_animation_frame_count := 4:
 	set(fc):
 		idle_animation_frame_count = fc
-		_update_hframes()
+		$Sprite._update_hframes()
 ## How many frames of animation is in one loop of the movement animation
 ## including the transition frames.
 @export_range(1, 16, 1, "or_greater") var move_animation_frame_count := 4:
 	set(fc):
 		move_animation_frame_count = fc
-		_update_hframes()
+		$Sprite._update_hframes()
 ## How many frames of turning transition animations there are in the spritesheet.
 ## Transition animations are not repeated once the animation loops. [br]
 ## Transition animations are only present in the turning animations and not in 
@@ -301,6 +301,9 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 #region On-Ready Variables
 
 var shooter_manager: ShooterManager
+
+@onready var focus_under := $Focus/FocusUnder
+@onready var focus_over := $Focus/FocusOver
 
 #endregion
 
@@ -668,37 +671,50 @@ func animation(delta) -> void:
 	else:
 		animation_frame = (animation_frame - transition_frame_count) % move_animation_frame_count + transition_frame_count
 		
-	frame = animation_frame + hframes * animation_state
+	$Sprite.frame = animation_frame + $Sprite.hframes * animation_state
+	
+	# Focus spin
+	focus_under.rotation += delta
+	focus_over.rotation -= delta
+	
+	if GameInput.is_action_just_pressed("player_focus"):
 		
+		$FocusAnimation.play("focus")
+	if GameInput.is_action_just_released("player_focus"):
+		$FocusAnimation.play_backwards("focus")
+	
 
 ## Checks collisions for bullets and items and acts accordingly,
 func collision() -> void:
-	#var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
+	var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
 	
 	if position.y < autocollect_height:
-		#Bullets.magnet_all(self)
+		Bullets.magnet_all_items(self)
 		pass
 	
 	var should_magnet := true if magnet_while_unfocused else is_focused
 	
-	#var items : Array = Bullets.collect_and_magnet_all(position, self, item_collect_radius, item_magnet_radius if should_magnet else 0.0)
+	var items : Array = Bullets.collect_and_magnet_items(position, self, item_collect_radius, item_magnet_radius if should_magnet else 0.0)
 	
-	#collect_items(item
+	if len(items) > 0:
+		SFX.play("item")
 	
-	#if len(collisions[0]) > 0:
-		#SFX.play("death")
-		#
-	#if len(collisions[1]) > 0:
-		#SFX.play("graze")
+	if len(collisions[0]) > 0:
+		SFX.play("death")
+		
+	if len(collisions[1]) > 0:
+		SFX.play("graze")
 	
 
 ## Tells the associated [class ShooterManager] to shoot.
 func shooting(time_scale: float) -> void:
-	if shooter_manager:
-		shooter_manager.shoot()
+	#if shooter_manager:
+		#shooter_manager.shoot()
+	$ItemManager.process_items(time_scale)
+		
 
 ## Performs tasks involved with the player dying.
-func dying(time_scale: float) -> void:
+func dying(_time_scale: float) -> void:
 	pass
 	
 
@@ -707,7 +723,7 @@ func dying(time_scale: float) -> void:
 #region Tool Functions
 
 func _update_hframes():
-	hframes = max(idle_animation_frame_count, move_animation_frame_count)
+	$Sprite.hframes = max(idle_animation_frame_count, move_animation_frame_count)
 
 #endregion
 
@@ -721,12 +737,9 @@ func _ready() -> void:
 	
 	RNG.randomize_seed()
 
-## All visual related routines can be run in _process 
+## Main logic goes in _process, do not use _physics_process
 func _process(delta: float) -> void:
 	animation(delta)
-
-## Everything else should be run in _physics_process
-func _physics_process(_delta: float) -> void:
 	var time_scale := Engine.time_scale
 	movement(time_scale)
 	collision()

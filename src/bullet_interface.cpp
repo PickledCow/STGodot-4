@@ -51,6 +51,19 @@ void BulletInterface::_bind_methods() {
 	BIND_ENUM_CONSTANT(DATA_CLEAR_B);
 	BIND_ENUM_CONSTANT(DATA_DAMAGE_TYPE);
 	BIND_ENUM_CONSTANT(DATA_DAMAGE_AMOUNT);
+	
+	BIND_ENUM_CONSTANT(ITEM_DATA_SRC_X); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_SRC_Y); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_SRC_W); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_SRC_H); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_SIZE); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_HITBOX_RATIO); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_SPRITE_OFFSET); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_ANIM_FRAMES); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_LAYER); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_DAMAGE_TYPE); 
+	BIND_ENUM_CONSTANT(ITEM_DATA_DAMAGE_AMOUNT);
+
 
 	BIND_ENUM_CONSTANT(WALLS_NONE);
 	BIND_ENUM_CONSTANT(WALLS_TOP);
@@ -71,45 +84,60 @@ void BulletInterface::_bind_methods() {
 	/* #endregion */
 	
 	/* #region Setup Setters/Getters */
+	
+    ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BulletInterface::get_bounce_rect);
+	ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce_rect"), &BulletInterface::set_bounce_rect);
+	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Bounce Rect"), "set_bounce_rect", "get_bounce_rect");
+	
+    ClassDB::bind_method(D_METHOD("get_active_rect"), &BulletInterface::get_active_rect);
+	ClassDB::bind_method(D_METHOD("set_active_rect", "p_active_rect"), &BulletInterface::set_active_rect);
+	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Active Rect"), "set_active_rect", "get_active_rect");
+	
+    ClassDB::bind_method(D_METHOD("get_time_scale"), &BulletInterface::get_time_scale);
+	ClassDB::bind_method(D_METHOD("set_time_scale", "p_time_scale_rect"), &BulletInterface::set_time_scale);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Field/Time Scale"), "set_time_scale", "get_time_scale");
+	
+    ClassDB::bind_method(D_METHOD("get_origin"), &BulletInterface::get_origin);
+	ClassDB::bind_method(D_METHOD("set_origin", "p_origin_rect"), &BulletInterface::set_origin);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "Field/Origin"), "set_origin", "get_origin");
+
+    ClassDB::bind_method(D_METHOD("get_bullets_z_index"), &BulletInterface::get_bullets_z_index);
+	ClassDB::bind_method(D_METHOD("set_bullets_z_index", "p_bullets_z_index"), &BulletInterface::set_bullets_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Bullets/Z Layer"), "set_bullets_z_index", "get_bullets_z_index");
+
+    ClassDB::bind_method(D_METHOD("get_shots_z_index"), &BulletInterface::get_shots_z_index);
+	ClassDB::bind_method(D_METHOD("set_shots_z_index", "p_shots_z_index"), &BulletInterface::set_shots_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Shots/Z Layer"), "set_shots_z_index", "get_shots_z_index");
+
+    ClassDB::bind_method(D_METHOD("get_items_z_index"), &BulletInterface::get_items_z_index);
+	ClassDB::bind_method(D_METHOD("set_items_z_index", "p_items_z_index"), &BulletInterface::set_items_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Items/Z Layer"), "set_items_z_index", "get_items_z_index");
+
+    ClassDB::bind_method(D_METHOD("get_particles_z_index"), &BulletInterface::get_particles_z_index);
+	ClassDB::bind_method(D_METHOD("set_particles_z_index", "p_particles_z_index"), &BulletInterface::set_particles_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Particles/Z Layer"), "set_particles_z_index", "get_particles_z_index");
 
     ClassDB::bind_method(D_METHOD("get_total_bullets"), &BulletInterface::get_total_bullets);
 	ClassDB::bind_method(D_METHOD("set_total_bullets", "p_total_bullets"), &BulletInterface::set_total_bullets);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Bullets"), "set_total_bullets", "get_total_bullets");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Bullets/Pool Size"), "set_total_bullets", "get_total_bullets");
 	
     ClassDB::bind_method(D_METHOD("get_total_shots"), &BulletInterface::get_total_shots);
 	ClassDB::bind_method(D_METHOD("set_total_shots", "p_total_shots"), &BulletInterface::set_total_shots);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Shots"), "set_total_shots", "get_total_shots");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Shots/Pool Size"), "set_total_shots", "get_total_shots");
 	
     ClassDB::bind_method(D_METHOD("get_total_items"), &BulletInterface::get_total_items);
 	ClassDB::bind_method(D_METHOD("set_total_items", "p_total_items"), &BulletInterface::set_total_items);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Items"), "set_total_items", "get_total_items");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Items/Pool Size"), "set_total_items", "get_total_items");
 	
     ClassDB::bind_method(D_METHOD("get_total_particles"), &BulletInterface::get_total_particles);
 	ClassDB::bind_method(D_METHOD("set_total_particles", "p_total_particles"), &BulletInterface::set_total_particles);
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "Max Particles"), "set_total_particles", "get_total_particles");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Particles/Pool Size"), "set_total_particles", "get_total_particles");
 	
-    ClassDB::bind_method(D_METHOD("get_bounce_rect"), &BulletInterface::get_bounce_rect);
-	ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce)rect"), &BulletInterface::set_bounce_rect);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Bounce Rect"), "set_bounce_rect", "get_bounce_rect");
-	
-    ClassDB::bind_method(D_METHOD("get_active_rect"), &BulletInterface::get_active_rect);
-	ClassDB::bind_method(D_METHOD("set_active_rect", "p_active)rect"), &BulletInterface::set_active_rect);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Activve Rect"), "set_active_rect", "get_active_rect");
-	
-    ClassDB::bind_method(D_METHOD("get_time_scale"), &BulletInterface::get_time_scale);
-	ClassDB::bind_method(D_METHOD("set_time_scale", "p_time_scale)rect"), &BulletInterface::set_time_scale);
-	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Time Scale"), "set_time_scale", "get_time_scale");
-	
-    ClassDB::bind_method(D_METHOD("get_origin"), &BulletInterface::get_origin);
-	ClassDB::bind_method(D_METHOD("set_origin", "p_origin)rect"), &BulletInterface::set_origin);
-	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "Origin"), "set_origin", "get_origin");
-	/* #endregion */
-	
-	/* #region Textures and Material Setters/Getters */
+
     ClassDB::bind_method(D_METHOD("get_bullets_texture"), &BulletInterface::get_bullets_texture);
 	ClassDB::bind_method(D_METHOD("set_bullets_texture", "p_bullets_texture"), &BulletInterface::set_bullets_texture);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Bullet Texture", 
+            "Bullets/Texture", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "Texture2D"
         ), "set_bullets_texture", "get_bullets_texture");
@@ -117,7 +145,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_bullets_material"), &BulletInterface::get_bullets_material);
 	ClassDB::bind_method(D_METHOD("set_bullets_material", "p_bullets_material"), &BulletInterface::set_bullets_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Bullet Material", 
+            "Bullets/Material", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_bullets_material", "get_bullets_material");
@@ -125,7 +153,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_bullets_material_add"), &BulletInterface::get_bullets_material_add);
 	ClassDB::bind_method(D_METHOD("set_bullets_material_add", "p_bullets_material_add"), &BulletInterface::set_bullets_material_add);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Bullet Material (Add)", 
+            "Bullets/Material (Add)", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_bullets_material_add", "get_bullets_material_add");
@@ -134,7 +162,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_shots_texture"), &BulletInterface::get_shots_texture);
 	ClassDB::bind_method(D_METHOD("set_shots_texture", "p_shots_texture"), &BulletInterface::set_shots_texture);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Shot Texture", 
+            "Shots/Texture", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "Texture2D"
         ), "set_shots_texture", "get_shots_texture");
@@ -142,7 +170,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_shots_material"), &BulletInterface::get_shots_material);
 	ClassDB::bind_method(D_METHOD("set_shots_material", "p_shots_material"), &BulletInterface::set_shots_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Shot Material", 
+            "Shots/Material", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_shots_material", "get_shots_material");
@@ -150,7 +178,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_shots_material_add"), &BulletInterface::get_shots_material_add);
 	ClassDB::bind_method(D_METHOD("set_shots_material_add", "p_shots_material_add"), &BulletInterface::set_shots_material_add);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Shot Material (Add)", 
+            "Shots/Material (Add)", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_shots_material_add", "get_shots_material_add");
@@ -159,7 +187,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_items_texture"), &BulletInterface::get_items_texture);
 	ClassDB::bind_method(D_METHOD("set_items_texture", "p_items_texture"), &BulletInterface::set_items_texture);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Item Texture", 
+            "Items/Texture", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "Texture2D"
         ), "set_items_texture", "get_items_texture");
@@ -167,7 +195,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_items_material"), &BulletInterface::get_items_material);
 	ClassDB::bind_method(D_METHOD("set_items_material", "p_items_material"), &BulletInterface::set_items_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Item Material", 
+            "Items/Material", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_items_material", "get_items_material");
@@ -175,7 +203,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_items_material_add"), &BulletInterface::get_items_material_add);
 	ClassDB::bind_method(D_METHOD("set_items_material_add", "p_items_material_add"), &BulletInterface::set_items_material_add);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Item Material (Add)", 
+            "Items/Material (Add)", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_items_material_add", "get_items_material_add");
@@ -184,7 +212,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_particles_texture"), &BulletInterface::get_particles_texture);
 	ClassDB::bind_method(D_METHOD("set_particles_texture", "p_particles_texture"), &BulletInterface::set_particles_texture);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Particle Texture", 
+            "Particles/Texture", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "Texture2D"
         ), "set_particles_texture", "get_particles_texture");
@@ -192,7 +220,7 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_particles_material"), &BulletInterface::get_particles_material);
 	ClassDB::bind_method(D_METHOD("set_particles_material", "p_particles_material"), &BulletInterface::set_particles_material);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Particle Material", 
+            "Particles/Material", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_particles_material", "get_particles_material");
@@ -200,15 +228,48 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_particles_material_add"), &BulletInterface::get_particles_material_add);
 	ClassDB::bind_method(D_METHOD("set_particles_material_add", "p_particles_material_add"), &BulletInterface::set_particles_material_add);
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
-            "Particle Material (Add)", 
+            "Particles/Material (Add)", 
             PROPERTY_HINT_RESOURCE_TYPE,
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_particles_material_add", "get_particles_material_add");
 
+	ClassDB::bind_method(D_METHOD("get_bullets_fade_time"), &BulletInterface::get_bullets_fade_time);
+	ClassDB::bind_method(D_METHOD("set_bullets_fade_time", "p_bullets_fade_time"), &BulletInterface::set_bullets_fade_time);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Bullets/Fade-in Time"), "set_bullets_fade_time", "get_bullets_fade_time");
+	
+	ClassDB::bind_method(D_METHOD("get_shots_fade_time"), &BulletInterface::get_shots_fade_time);
+	ClassDB::bind_method(D_METHOD("set_shots_fade_time", "p_shots_fade_time"), &BulletInterface::set_shots_fade_time);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Shots/Fade-in Time"), "set_shots_fade_time", "get_shots_fade_time");
+	
+	ClassDB::bind_method(D_METHOD("get_items_fade_time"), &BulletInterface::get_items_fade_time);
+	ClassDB::bind_method(D_METHOD("set_items_fade_time", "p_items_fade_time"), &BulletInterface::set_items_fade_time);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Items/Spin-in Time"), "set_items_fade_time", "get_items_fade_time");
+	
+    ClassDB::bind_method(D_METHOD("get_items_gravity"), &BulletInterface::get_items_gravity);
+	ClassDB::bind_method(D_METHOD("set_items_gravity", "p_items_gravity"), &BulletInterface::set_items_gravity);
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "Items/Gravity"), "set_items_gravity", "get_items_gravity");
+	
+    ClassDB::bind_method(D_METHOD("get_items_damp"), &BulletInterface::get_items_damp);
+	ClassDB::bind_method(D_METHOD("set_items_damp", "p_items_damp"), &BulletInterface::set_items_damp);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Items/Dampening"), "set_items_damp", "get_items_damp");
+	
+    ClassDB::bind_method(D_METHOD("get_items_magnet_strength"), &BulletInterface::get_items_magnet_strength);
+	ClassDB::bind_method(D_METHOD("set_items_magnet_strength", "p_items_magnet_strength"), &BulletInterface::set_items_magnet_strength);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Items/Magnet Strength"), "set_items_magnet_strength", "get_items_magnet_strength");
+
+	ClassDB::bind_method(D_METHOD("get_bullet_rotation_offset"), &BulletInterface::get_bullet_rotation_offset);
+	ClassDB::bind_method(D_METHOD("set_bullet_rotation_offset", "p_bullet_rotation_offset"), &BulletInterface::set_bullet_rotation_offset);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Bullets/Spritesheet Rotation Offset"), "set_bullet_rotation_offset", "get_bullet_rotation_offset");
+	
+	ClassDB::bind_method(D_METHOD("get_shot_rotation_offset"), &BulletInterface::get_shot_rotation_offset);
+	ClassDB::bind_method(D_METHOD("set_shot_rotation_offset", "p_shot_rotation_offset"), &BulletInterface::set_shot_rotation_offset);
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Shots/Spritesheet Rotation Offset"), "set_shot_rotation_offset", "get_shot_rotation_offset");
+	
+
 	/* #endregion */
 
 	
-	
+	/* #region Standard Functions */
 
 	ClassDB::bind_method(D_METHOD(
 		"init",
@@ -226,166 +287,67 @@ void BulletInterface::_bind_methods() {
 		&BulletInterface::create_bullet_a1
 	);
 
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_total_active_bullets"), &BulletInterface::get_total_active_bullets);
-	
 
-	// ClassDB::bind_method(D_METHOD(
-	// 	"collide_and_graze_kit",
-	// 	"bullet_kit",
-	// 	"position",
-	// 	"hitbox_radius",
-	// 	"graze_radius"), 
-	// 	&BulletInterface::collide_and_graze_kit
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"collide_and_graze_player",
-	// 	"position",
-	// 	"hitbox_radius",
-	// 	"graze_radius"), 
-	// 	&BulletInterface::collide_and_graze_player
-	// );
+	ClassDB::bind_method(D_METHOD(
+		"create_shot_a1",
+		"position",
+		"speed",
+		"angle",
+		"shot_data",
+		"glow"), 
+		&BulletInterface::create_shot_a1
+	);
 
-	// ClassDB::bind_method(D_METHOD(
-	// 	"collide_and_graze_enemy",
-	// 	"position",
-	// 	"hitbox_radius",
-	// 	"graze_radius"), 
-	// 	&BulletInterface::collide_and_graze_enemy
-	// );
+	ClassDB::bind_method(D_METHOD(
+		"create_shot_a2",
+		"position",
+		"speed",
+		"angle",
+		"accel",
+		"max_speed",
+		"w_vel",
+		"shot_data",
+		"glow"), 
+		&BulletInterface::create_shot_a2
+	);
 
-	// ClassDB::bind_method(D_METHOD(
-	// 	"collect_and_magnet_kit",
-	// 	"item_kit",
-	// 	"position",
-	// 	"target_node",
-	// 	"collection_radius",
-	// 	"magnet_radius"), 
-	// 	&BulletInterface::collect_and_magnet_kit
-	// );
+	ClassDB::bind_method(D_METHOD(
+		"create_item",
+		"position",
+		"speed",
+		"angle",
+		"spin",
+		"item_data",
+		"glow"), 
+		&BulletInterface::create_item
+	);
 
-	// ClassDB::bind_method(D_METHOD(
-	// 	"collect_and_magnet_all",
-	// 	"position",
-	// 	"target_node",
-	// 	"collection_radius",
-	// 	"magnet_radius"), 
-	// 	&BulletInterface::collect_and_magnet_all
-	// );
+	ClassDB::bind_method(D_METHOD(
+		"collide_and_graze_player",
+		"position",
+		"hitbox_radius",
+		"graze_radius"), 
+		&BulletInterface::collide_and_graze_player
+	);
+
+	ClassDB::bind_method(D_METHOD(
+		"collect_and_magnet_items",
+		"position",
+		"target_node",
+		"collection_radius",
+		"magnet_radius"), 
+		&BulletInterface::collect_and_magnet_items
+	);
 		
-	// ClassDB::bind_method(D_METHOD(
-	// 	"magnet_all_kit",
-	// 	"item_kit",
-	// 	"target_node"), 
-	// 	&BulletInterface::magnet_all_kit
-	// );
-
-	// ClassDB::bind_method(D_METHOD(
-	// 	"magnet_all",
-	// 	"target_node"), 
-	// 	&BulletInterface::magnet_all
-	// );
-		
-	// ClassDB::bind_method(D_METHOD(
-	// 	"create_item",
-	// 	"item_kit",
-	// 	"position",
-	// 	"speed",
-	// 	"angle",
-	// 	"spin",
-	// 	"item_data"
-	// 	), 
-	// 	&BulletInterface::create_item
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"create_particle",
-	// 	"particle_kit",
-	// 	"position",
-	// 	"drift",
-	// 	"rotation",
-	// 	"size",
-	// 	"color"
-	// 	), 
-	// 	&BulletInterface::create_particle
-	// );
-
-	// ClassDB::bind_method(D_METHOD(
-	// 	"create_shot_a2",
-	// 	"bullet_kit",
-	// 	"position",
-	// 	"speed",
-	// 	"angle",
-	// 	"accel",
-	// 	"max_speed",
-	// 	"bullet_data",
-	// 	"fade"), 
-	// 	&BulletInterface::create_shot_a2
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_position",
-	// 	"id"), 
-	// 	&BulletInterface::get_position
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"set_position",
-	// 	"id",
-	// 	"position"), 
-	// 	&BulletInterface::set_position
-	// );
+	ClassDB::bind_method(D_METHOD(
+		"magnet_all_items",
+		"target_node"), 
+		&BulletInterface::magnet_all_items
+	);
 
 	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_damage",
-	// 	"id"), 
-	// 	&BulletInterface::get_damage
-	// );
+	/* #endregion */
 	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"set_damage",
-	// 	"id",
-	// 	"damage"), 
-	// 	&BulletInterface::set_damage
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_damage_type",
-	// 	"id"), 
-	// 	&BulletInterface::get_damage_type
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"set_damage_type",
-	// 	"id",
-	// 	"damage"), 
-	// 	&BulletInterface::set_damage_type
-	// );
-
-	// // Redefinitions
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_item_type",
-	// 	"id"), 
-	// 	&BulletInterface::get_damage_type
-	// );
-	
-	// ClassDB::bind_method(D_METHOD(
-	// 	"set_item_type",
-	// 	"id",
-	// 	"damage"), 
-	// 	&BulletInterface::set_damage_type
-	// );
-
-
-		
-	// ClassDB::bind_method(D_METHOD(
-	// 	"get_is_auto_collected",
-	// 	"item_id"), 
-	// 	&BulletInterface::get_is_auto_collected
-	// );
 }
 
 /* #region GetSetters */
@@ -554,85 +516,232 @@ void BulletInterface::set_origin(Vector2 o) {
 	origin = o;
 }
 
+double BulletInterface::get_bullets_fade_time() {
+	return bullets_fade_time;	
+}
+void BulletInterface::set_bullets_fade_time(double time) {
+	bullets_fade_time = time;
+}
+
+double BulletInterface::get_shots_fade_time() {
+	return shots_fade_time;
+}
+void BulletInterface::set_shots_fade_time(double time) {
+	shots_fade_time = time;
+}
+
+double BulletInterface::get_items_fade_time() {
+	return items_fade_time;
+}
+void BulletInterface::set_items_fade_time(double time) {
+	items_fade_time = time;
+}
+
+
+Vector2 BulletInterface::get_items_gravity() {
+	return items_gravity;
+}
+void BulletInterface::set_items_gravity(Vector2 gravity) {
+	items_gravity = gravity;
+}
+
+
+double BulletInterface::get_items_damp() {
+	return items_damp;
+}
+void BulletInterface::set_items_damp(double damp) {
+	items_damp = damp;
+}
+double BulletInterface::get_items_magnet_strength() {
+	return items_magnet_strength;
+}
+void BulletInterface::set_items_magnet_strength(double magnet_strength) {
+	items_magnet_strength = magnet_strength;
+}
+
+
+double BulletInterface::get_bullet_rotation_offset() {
+	return bullet_rotation_offset;
+}
+void BulletInterface::set_bullet_rotation_offset(double rotation) {
+	bullet_rotation_offset = rotation;
+}
+
+double BulletInterface::get_shot_rotation_offset() {
+	return shot_rotation_offset;
+}
+void BulletInterface::set_shot_rotation_offset(double rotation) {
+	shot_rotation_offset = rotation;
+}
+
 
 /* #endregion */
 
 BulletInterface::BulletInterface() { }
 
-// TODO, change to regular frees
+// TODO, finish freein memory
 BulletInterface::~BulletInterface() {
-	// // Free memory
+	// Free memory
 
-	// for (int i = 0; i < total_bullets; ++i) {
-	// 	rendering_server->canvas_item_clear(bullet_pool[i]->item_rid);
-	// 	memdelete(bullet_pool[i]);
-	// }
-	// for (int i = 0; i < total_shots; ++i) {
-	// 	rendering_server->canvas_item_clear(shot_pool[i]->item_rid);
-	// 	memdelete(shot_pool[i]);
-	// }
-	// for (int i = 0; i < total_items; ++i) {
-	// 	rendering_server->canvas_item_clear(item_pool[i]->item_rid);
-	// 	memdelete(item_pool[i]);
-	// }
-	// for (int i = 0; i < total_particles; ++i) {
-	// 	rendering_server->canvas_item_clear(particle_pool[i]->item_rid);
-	// 	memdelete(particle_pool[i]);
-	// }
-
-	// memfree(bullet_pool);
-	// memfree(shot_pool);
-	// memfree(item_pool);
-	// memfree(particle_pool);
-
-	// memfree(persistent_bullet_index);
-	// memfree(persistent_shot_index);
-	// memfree(persistent_item_index);
-	// memfree(persistent_particle_index);
+	for (int i = 0; i < total_bullets; ++i) {
+		rendering_server->free_rid(bullet_pool[i]->item_rid);
+		memdelete(bullet_pool[i]);
+	}
+	for (int i = 0; i < total_shots; ++i) {
+		rendering_server->free_rid(shot_pool[i]->item_rid);
+		memdelete(shot_pool[i]);
+	}
+	for (int i = 0; i < total_items; ++i) {
+		rendering_server->free_rid(item_pool[i]->item_rid);
+		memdelete(item_pool[i]);
+	}
+	for (int i = 0; i < total_particles; ++i) {
+		rendering_server->free_rid(particle_pool[i]->item_rid);
+		memdelete(particle_pool[i]);
+	}
 	
+	// IDK why this doesn't work??
+
+	if (bullets_created) {
+		memdelete_arr(bullet_pool);
+		memdelete_arr(persistent_bullet_index);
+	}
+
+	if (shots_created) {
+		memdelete_arr(shot_pool);
+		memdelete_arr(persistent_shot_index);
+	}
+
+	if (items_created) {
+		memdelete_arr(item_pool);
+		memdelete_arr(persistent_item_index);
+	}
+
+	if (particles_created) {
+		memdelete_arr(particle_pool);
+		memdelete_arr(persistent_particle_index);
+	}
+
+	if (bullets_canvas_item.is_valid()) rendering_server->free_rid(bullets_canvas_item);
+	if (shots_canvas_item.is_valid()) rendering_server->free_rid(shots_canvas_item);
+	if (items_canvas_item.is_valid()) rendering_server->free_rid(items_canvas_item);
+	if (particles_canvas_item.is_valid()) rendering_server->free_rid(particles_canvas_item);
 }
+
+
 
 void BulletInterface::init(Node2D* root) {
 	rendering_server = RenderingServer::get_singleton();
 	canvas_parent = root->get_canvas_item();
 
-	available_bullets = total_bullets;
 	active_bullets = 0;
-
-	available_shots = total_shots;
 	active_shots = 0;
-	
-	available_items = total_items;
 	active_items = 0;
-	
-	available_particles = total_particles;
 	active_particles = 0;
 
-	bullet_pool = new Bullet*[total_bullets];
-	shot_pool = new Bullet*[total_shots];
-	item_pool = new Item*[total_items];
-	particle_pool = new Particle*[total_particles];
+	if (active_rect.size.x <= 0.0 || active_rect.size.y <= 0.0) {
+		godot::UtilityFunctions::push_warning("Active rect has one or more bounds less than or equal to zero; bullets will instantly be despawned.");
+	}
+	
+	if (bounce_rect.size.x <= 0.0 || bounce_rect.size.y <= 0.0) {
+		godot::UtilityFunctions::push_warning("Bounce rect has one or more bounds less than or equal to zero; bullets will not bounce properly.");
+	}
 
-	persistent_bullet_index = new int[total_bullets];
-	persistent_shot_index = new int[total_shots];
-	persistent_item_index = new int[total_items];
-	persistent_particle_index = new int[total_particles];
+	if (bullets_texture.is_null()) {
+		godot::UtilityFunctions::push_error("Bullet texture is missing; bullets will be disabled until fixed.");
+		total_bullets = 0;		// Remove bullets entirely
+		available_bullets = 0;
+	} else if (bullets_material.is_null() || bullets_material_add.is_null()) {
+		godot::UtilityFunctions::push_error("Bullet material is missing; bullets will be disabled until fixed.");
+		total_bullets = 0;		// Remove bullets entirely
+		available_bullets = 0;
+	} else if (total_bullets == 0) {
+		godot::UtilityFunctions::push_error("Bullet pool size is 0!");
+		available_bullets = 0;
+	} else {
+		bullets_texture_rid = bullets_texture->get_rid();
+		bullets_material_rid = bullets_material->get_rid();
+		bullets_material_add_rid = bullets_material_add->get_rid();
+		bullets_texture_width = bullets_texture->get_size().x;
+		available_bullets = total_bullets;
+		bullet_pool = memnew_arr(Bullet*, total_bullets);
+		persistent_bullet_index = memnew_arr(int, total_bullets);
+		bullets_created = true;
+		_init_bullets();
+	}
+	
+	if (shots_texture.is_null()) {
+		godot::UtilityFunctions::push_error("Shot texture is missing; shots will be disabled until fixed.");
+		total_shots = 0;		// Remove shots entirely
+		available_shots = 0;
+	} else if (shots_material.is_null() || shots_material_add.is_null()) {
+		godot::UtilityFunctions::push_error("Shot material is missing; shots will be disabled until fixed.");
+		total_shots = 0;		// Remove shots entirely
+		available_shots = 0;
+	} else if (total_shots == 0) {
+		godot::UtilityFunctions::push_error("Shot pool size is 0!");
+		available_shots = 0;
+	} else {
+		shots_texture_rid = shots_texture->get_rid();
+		shots_material_rid = shots_material->get_rid();
+		shots_material_add_rid = shots_material_add->get_rid();
+		shots_texture_width = shots_texture->get_size().x;
+		available_shots = total_shots;
+		shot_pool = memnew_arr(Bullet*, total_shots);
+		persistent_shot_index = memnew_arr(int, total_shots);
+		shots_created = true;
+		_init_shots();
+	}
 
+	if (items_texture.is_null()) {
+		godot::UtilityFunctions::push_error("Item texture is missing; items will be disabled until fixed.");
+		total_items = 0;		// Remove items entirely
+		available_items = 0;
+	} else if (items_material.is_null() || items_material_add.is_null()) {
+		godot::UtilityFunctions::push_error("Item material is missing; items will be disabled until fixed.");
+		total_items = 0;		// Remove items entirely
+		available_items = 0;
+	
+	} else if (total_items == 0) {
+		godot::UtilityFunctions::push_error("Item pool size is 0!");
+		available_items = 0;
+	} else {
+		items_texture_rid = items_texture->get_rid();
+		items_material_rid = items_material->get_rid();
+		items_material_add_rid = items_material_add->get_rid();
+		items_texture_width = items_texture->get_size().x;
+		available_items = total_items;
+		item_pool = memnew_arr(Item*, total_items);
+		persistent_item_index = memnew_arr(int, total_items);
+		items_created = true;
+		_init_items();
+	}
 
-	bullets_texture_rid = bullets_texture->get_rid();
-	shots_texture_rid = shots_texture->get_rid();
-	items_texture_rid = items_texture->get_rid();
-	particles_texture_rid = particles_texture->get_rid();
+	if (particles_texture.is_null()) {
+		godot::UtilityFunctions::push_error("Particle texture is missing; particles will be disabled until fixed.");
+		total_particles = 0;		// Remove particles entirely
+		available_particles = 0;
+	} else if (particles_material.is_null() || particles_material_add.is_null()) {
+		godot::UtilityFunctions::push_error("Particle material is missing; particles will be disabled until fixed.");
+		total_particles = 0;		// Remove particles entirely
+		available_particles = 0;
+	
+	} else if (total_particles == 0) {
+		godot::UtilityFunctions::push_error("Particle pool size is 0!");
+		available_particles = 0;
+	} else {
+		particles_texture_rid = particles_texture->get_rid();
+		particles_material_rid = particles_material->get_rid();
+		particles_material_add_rid = particles_material_add->get_rid();
+		particles_texture_width = particles_texture->get_size().x;
+		available_particles = total_particles;
+		particle_pool = memnew_arr(Particle*, total_particles);
+		persistent_particle_index = memnew_arr(int, total_particles);
+		particles_created = true;
+		_init_particles();
+	}
 
-	bullets_texture_width = bullets_texture->get_size().x;
-	shots_texture_width = shots_texture->get_size().x;
-	items_texture_width = items_texture->get_size().x;
-	particles_texture_width = particles_texture->get_size().x;
-
-	_init_bullets();
-	_init_shots();
-	_init_items();
-	_init_particles();
+	// Set invalid ids
 
 	invalid_id = PackedInt64Array();
 	invalid_id.resize(3);
@@ -646,102 +755,87 @@ void BulletInterface::init(Node2D* root) {
 }
 
 void BulletInterface::_init_bullets() {
-	RID canvas_item = rendering_server->canvas_item_create();
+	bullets_canvas_item = rendering_server->canvas_item_create();
 	
-	rendering_server->canvas_item_set_parent(canvas_item, canvas_parent);
-	rendering_server->canvas_item_set_z_index(canvas_item, bullets_z_index);
-
-	Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0));
+	rendering_server->canvas_item_set_parent(bullets_canvas_item, canvas_parent);
+	rendering_server->canvas_item_set_z_index(bullets_canvas_item, bullets_z_index);
 
 	// Create each bullet
 	for (int i = 0; i < total_bullets; ++i) {
-		Bullet* bullet = new Bullet();
+		Bullet* bullet = memnew(Bullet);
 
 		bullet_pool[i] = bullet;
 		bullet->item_rid = rendering_server->canvas_item_create();
-		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_parent);
-		rendering_server->canvas_item_set_material(bullet->item_rid, bullets_material->get_rid());
+		rendering_server->canvas_item_set_parent(bullet->item_rid, bullets_canvas_item);
+		rendering_server->canvas_item_set_material(bullet->item_rid, bullets_material_rid);
 
 		bullet->pool_index = i;
 		bullet->persistent_index = i;
 		persistent_bullet_index[i] = i;
-
-		// init the bullet
 	}
 }
 
 void BulletInterface::_init_shots() {
-	RID canvas_item = rendering_server->canvas_item_create();
+	shots_canvas_item = rendering_server->canvas_item_create();
 	
-	rendering_server->canvas_item_set_parent(canvas_item, canvas_parent);
-	rendering_server->canvas_item_set_z_index(canvas_item, shots_z_index);
-
-	Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0));
+	rendering_server->canvas_item_set_parent(shots_canvas_item, canvas_parent);
+	rendering_server->canvas_item_set_z_index(shots_canvas_item, shots_z_index);
 
 	// Create each bullet
 	for (int i = 0; i < total_shots; ++i) {
-		Bullet* bullet = new Bullet();
+		Bullet* bullet = memnew(Bullet);
 
 		shot_pool[i] = bullet;
 		bullet->item_rid = rendering_server->canvas_item_create();
-		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_item);
-		rendering_server->canvas_item_set_material(bullet->item_rid, shots_material->get_rid());
+		rendering_server->canvas_item_set_parent(bullet->item_rid, shots_canvas_item);
+		rendering_server->canvas_item_set_material(bullet->item_rid, shots_material_rid);
 
 		bullet->pool_index = i;
 		bullet->persistent_index = i;
 		persistent_shot_index[i] = i;
-
-		// init the bullet
 	}
 }
 
 void BulletInterface::_init_items() {
-	RID canvas_item = rendering_server->canvas_item_create();
+	items_canvas_item = rendering_server->canvas_item_create();
 	
-	rendering_server->canvas_item_set_parent(canvas_item, canvas_parent);
-	rendering_server->canvas_item_set_z_index(canvas_item, items_z_index);
-
-	Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0));
+	rendering_server->canvas_item_set_parent(items_canvas_item, canvas_parent);
+	rendering_server->canvas_item_set_z_index(items_canvas_item, items_z_index);
 
 	// Create each bullet
 	for (int i = 0; i < total_items; ++i) {
-		Item* item = new Item();
+		Item* item = memnew(Item);
 
 		item_pool[i] = item;
 		item->item_rid = rendering_server->canvas_item_create();
-		rendering_server->canvas_item_set_parent(item->item_rid, canvas_item);
-		rendering_server->canvas_item_set_material(item->item_rid, items_material->get_rid());
+		rendering_server->canvas_item_set_parent(item->item_rid, items_canvas_item);
+		rendering_server->canvas_item_set_material(item->item_rid, items_material_rid);
 
-		// init the item
 		item->pool_index = i;
 		item->persistent_index = i;
 		persistent_item_index[i] = i;
-
 	}
 }
 
 void BulletInterface::_init_particles() {
-	RID canvas_item = rendering_server->canvas_item_create();
+	particles_canvas_item = rendering_server->canvas_item_create();
 	
-	rendering_server->canvas_item_set_parent(canvas_item, canvas_parent);
-	rendering_server->canvas_item_set_z_index(canvas_item, particles_z_index);
-
-	Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0));
+	rendering_server->canvas_item_set_parent(particles_canvas_item, canvas_parent);
+	rendering_server->canvas_item_set_z_index(particles_canvas_item, particles_z_index);
 
 	// Create each bullet
-	for (int i = 0; i < total_items; ++i) {
-		Particle* particle = new Particle();
+	for (int i = 0; i < total_particles; ++i) {
+		Particle* particle = memnew(Particle);
 
 		particle_pool[i] = particle;
 		particle->item_rid = rendering_server->canvas_item_create();
-		rendering_server->canvas_item_set_parent(particle->item_rid, canvas_item);
-		rendering_server->canvas_item_set_material(particle->item_rid, particles_material->get_rid());
+		rendering_server->canvas_item_set_parent(particle->item_rid, particles_canvas_item);
+		rendering_server->canvas_item_set_material(particle->item_rid, particles_material_rid);
 
 		particle->pool_index = i;
 		particle->persistent_index = i;
 		persistent_particle_index[i] = i;
 
-		// init the item
 	}
 }
 
@@ -750,11 +844,13 @@ void BulletInterface::_process(double delta) {
 		return;
 	}
 	
+	if (!canvas_parent.is_valid()) {
+		return;
+	}
+
 	if (last_origin != origin) {
 		last_origin = origin;
 	}
-
-	int bullets_variation = 0;
 
 	// Increase by golden-ration - 1 to have "maximum" "randomness"
     // Independent from time scale to preserve this effect
@@ -769,7 +865,6 @@ void BulletInterface::_process(double delta) {
 			i += 1;
 			continue;
 		}
-		rendering_server->canvas_item_set_parent(bullet->item_rid, canvas_parent);
 		rendering_server->canvas_item_set_transform(bullet->item_rid, bullet->transform);
 
 	}
@@ -998,9 +1093,68 @@ int BulletInterface::_process_bullet_a3_after(Bullet* bullet, double delta) {
     return bounce_count;
 }
 
-// TODO
 bool BulletInterface::_process_item(Item* item, double delta) {
-	return false;
+	
+    Vector2 last_pos = item->position;
+    if (item->fade_timer) {
+        item->fade_timer -= delta;
+        item->position += item->speed * item->direction * delta;
+        if (delta == 1.0) {
+            item->speed *= items_damp;
+        } else {
+            item->speed *= powf(items_damp, delta);
+        }
+        Transform2D xform = item->transform.rotated(item->spin);
+        if (item->fade_timer <= 0.0) {
+            item->fade_timer = 0.0;
+            xform = xform.rotated(-xform.get_rotation());
+        }
+        xform.set_origin(item->position);
+        item->transform = xform;
+
+    } else if (item->is_magneted) {
+        if (item->fade_timer) {
+            item->fade_timer = 0.0;
+            item->transform = item->transform.rotated(-item->transform.get_rotation());
+        }
+        Node2D *node = item->magnet_target;
+
+        double angle = ((Vector2)node->get_position()).angle_to_point(item->position);
+        item->position -= Vector2(items_magnet_strength * delta, 0.0).rotated(angle);
+
+    } else {
+        item->position += items_gravity * delta;
+
+    }
+
+    // If above the top of the screen, show an arrow instead. 
+    // This is marked by setting the b channel in the item data to 1
+    if (item->position.y < bounce_rect.position.y - item->scale * 0.5) { 
+        Vector2 pos = item->position;
+        pos.y = item->scale * 0.5;
+        item->transform = item->transform.rotated(-item->transform.get_rotation());
+        item->transform.set_origin(pos);
+        Color color = item->bullet_data;
+        color.b = 1.0;
+        rendering_server->canvas_item_set_modulate(item->item_rid, color);
+
+    } else { 
+        if (last_pos.y < bounce_rect.position.y - item->scale * 0.5) {
+            Color color = item->bullet_data;
+            rendering_server->canvas_item_set_modulate(item->item_rid, color);
+        }
+        item->transform.set_origin(item->position);
+
+    }
+    
+    if(item->position.y > active_rect.get_end().y + item->scale * 0.5 || item->lifetime >= item->lifespan) {
+        return true;
+    }
+
+    // Item is still alive, increase its lifetime.
+    item->lifetime += delta;
+    // Return false if the item should not be deleted yet.
+    return false;
 }
 
 // TODO
@@ -1087,7 +1241,6 @@ void BulletInterface::_release_particle(int index) {
 void BulletInterface::enable_bullet(Bullet* bullet) {
     bullet->auto_delete = true;
     bullet->is_grazed = false;
-    bullet->layer = 0;
     bullet->lifetime = 0.0;
     bullet->lifespan = INFINITY;
     bullet->rotation = 0.0;
@@ -1096,8 +1249,27 @@ void BulletInterface::enable_bullet(Bullet* bullet) {
     bullet->transforms.clear();
     bullet->custom_data.clear();
 	// TODO: Add customisation
-	bullet->fade_time = 8.0;
-	bullet->fade_timer = 8.0;
+	bullet->fade_time = bullets_fade_time;
+	bullet->fade_timer = bullets_fade_time;
+}
+
+
+void BulletInterface::enable_shot(Bullet* shot) {
+    shot->auto_delete = true;
+    shot->is_grazed = false;
+    shot->lifetime = 0.0;
+    shot->lifespan = INFINITY;
+    shot->rotation = 0.0;
+    shot->fading = true;
+    shot->transforms.clear();
+    shot->custom_data.clear();
+	// TODO: Add customisation
+	shot->fade_time = shots_fade_time;
+	shot->fade_timer = shots_fade_time;
+}
+
+PackedInt64Array BulletInterface::create_bullet_a1_no_glow(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data) {
+	return create_bullet_a1(pos, speed, angle, bullet_data, false);
 }
 
 PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow) {
@@ -1109,6 +1281,7 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		Bullet* bullet = (Bullet*)bullet_pool[available_bullets];
 		RID rid = bullet->item_rid;
 		enable_bullet(bullet);
+		bullet->layer = bullet_data[DATA_LAYER];
 
 		// Set layering to be above last bullet
 		rendering_server->canvas_item_set_draw_index(rid, (bullet->layer << 24) + bullets_draw_index);
@@ -1116,8 +1289,8 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		if (bullets_draw_index > 16777215) bullets_draw_index = 0; // 2^24 - 1
 
 		rendering_server->canvas_item_add_texture_rect(bullet->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), bullets_texture_rid);
-		if (bullet->additive != glow || true) {
-			rendering_server->canvas_item_set_material(bullet->item_rid, glow ? bullets_material_add->get_rid() : bullets_material->get_rid());
+		if (bullet->additive != glow) {
+			rendering_server->canvas_item_set_material(bullet->item_rid, glow ? bullets_material_add_rid : bullets_material_rid);
 			bullet->additive = glow;
 		}
 
@@ -1138,7 +1311,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 
 		bullet->hitbox_scale = bullet_data[DATA_HITBOX_RATIO];
 		bullet->spin = bullet_data[DATA_SPIN];
-		bullet->layer = bullet_data[DATA_LAYER];
 		bullet->speed = speed;
 		bullet->texture_offset = bullet_data[DATA_SPRITE_OFFSET];
 
@@ -1175,7 +1347,249 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 }
 	
 
+PackedInt64Array BulletInterface::create_item_no_glow(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data) {
+	return create_item(pos, speed, angle, spin, item_data, false);
+}
 
+PackedInt64Array BulletInterface::create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow) {
+	if (available_items > 0) {
+		available_items -= 1;
+		active_items += 1;
+		
+		Item* item = (Item*)item_pool[available_items];
+		RID rid = item->item_rid;
+		item->is_grazed = false;
+		item->is_magneted = false;
+		item->is_auto_collected = false;
+		item->fading = false;
+		item->layer = 0;
+		item->lifetime = 0.0;
+		item->lifespan = INFINITY;
+		item->hitbox_scale = 1.0;
+		item->custom_data.clear();
+
+		item->fade_time = items_fade_time;
+		item->fade_timer = items_fade_time;
+
+		rendering_server->canvas_item_set_draw_index(rid, (item->layer << 24) + items_draw_index);
+		item->draw_index = items_draw_index++;
+		if (items_draw_index > 16777215) items_draw_index = 0; // 2^24 - 1
+
+		rendering_server->canvas_item_add_texture_rect(item->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), items_texture_rid);
+		if (item->additive != glow) {
+			rendering_server->canvas_item_set_material(item->item_rid, glow ? items_material_add_rid : items_material_rid);
+			item->additive = glow;
+		}
+		
+		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(item_data[4] * Vector2(1.0, 1.0));
+		if (speed != 0.0) {
+			xform = xform.rotated(Math_TAU * (float)rand() / (float)RAND_MAX);
+		} else {
+			item->fade_timer = -1.0;
+		}
+		xform.set_origin(pos);
+
+		item->transform = xform;
+		item->position = pos;
+		item->scale = item_data[ITEM_DATA_SIZE];
+		item->angle = angle;
+		item->direction = Vector2(1.0, 0.0).rotated(angle);
+
+		rendering_server->canvas_item_set_transform(rid, xform);
+
+		item->speed = speed;
+		item->spin = spin;
+		
+		Color compressed_data = Color();
+		compressed_data.r = item_data[ITEM_DATA_SRC_Y] + item_data[ITEM_DATA_SRC_X] / items_texture_width;
+		compressed_data.g = item_data[ITEM_DATA_SRC_H] + item_data[ITEM_DATA_SRC_W] / items_texture_width;
+		// compressed_data.r = int(item_data[ITEM_DATA_SRC_Y]) << 16 + item_data[ITEM_DATA_SRC_H];
+		// compressed_data.g = item_data[ITEM_DATA_SRC_X] + item_data[ITEM_DATA_SRC_W] / items_texture_width;
+		compressed_data.b = 0.0;
+		compressed_data.a = floor(item_data[ITEM_DATA_ANIM_FRAMES]) + animation_random;
+
+		item->bullet_data = compressed_data;
+		item->hitbox_scale = item_data[ITEM_DATA_HITBOX_RATIO];
+
+		item->damage_type = item_data[ITEM_DATA_DAMAGE_TYPE];
+		item->damage = item_data[ITEM_DATA_DAMAGE_AMOUNT];
+
+		item->layer = item_data[ITEM_DATA_LAYER];
+
+		rendering_server->canvas_item_set_modulate(item->item_rid, compressed_data);
+
+		PackedInt64Array to_return = PackedInt64Array();
+		to_return.resize(3);
+		to_return.set(0, item->cycle);
+		to_return.set(1, ITEMS_POOL);
+		to_return.set(2, item->persistent_index);
+
+		return to_return;
+
+	}
+
+	return invalid_id;
+}
+
+Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius) {
+	Array to_return = Array();
+	to_return.append(Array());
+	to_return.append(Array());
+	for (int i = total_bullets - 1; i >= active_bullets; --i) {
+		Bullet* bullet = bullet_pool[i];
+		
+		double b = bullet->scale * bullet->hitbox_scale;
+		double b2 = b * b;
+		double dist_sq = (bullet->position - pos).length_squared();
+
+		if (bullet->fade_timer <= 0.0 && dist_sq <= graze_radius * graze_radius + 2.0 * graze_radius * b + b2) {
+			PackedInt64Array bullet_id = PackedInt64Array();
+			bullet_id.resize(3);
+			bullet_id.set(0, bullet->cycle);
+			bullet_id.set(1, BULLETS_POOL);
+			bullet_id.set(2, bullet->persistent_index);
+
+			if (!bullet->is_grazed) {
+				bullet->is_grazed = true;
+				((Array)(to_return[1])).append(bullet_id);
+			}
+			
+			if (dist_sq < hitbox_radius * hitbox_radius + 2.0 * hitbox_radius * b + b2) {
+				bullet->lifespan = -INFINITY;
+				((Array)(to_return[0])).append(bullet_id);
+			}
+
+		}
+	}
+	return to_return;
+}
+
+Array BulletInterface::collect_and_magnet_items(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
+    Array collected_items = Array();
+
+	double collect_radius_squared = collect_radius * collect_radius;
+	double magnet_radius_squared = magnet_radius * magnet_radius;
+
+	for (int i = total_items - 1; i >= available_items; i--) {
+		Item* item = item_pool[i];
+
+		double b = item->scale * item->hitbox_scale;
+		double b2 = b * b;
+
+	 	double dist_sq = (item->position - pos).length_squared();
+		
+		if (dist_sq <= collect_radius_squared + 2.0 * magnet_radius * b + b2) {
+			if (!item->is_grazed) {
+				item->is_grazed = true;
+				item->is_magneted = true;
+				item->magnet_target = target;
+			}
+
+			if (dist_sq <= collect_radius_squared + 2.0 * collect_radius * b + b2) {
+				item->lifespan = -INFINITY;
+                PackedInt64Array bullet_id = PackedInt64Array();
+                bullet_id.resize(3);
+                bullet_id.set(0, item->cycle);
+                bullet_id.set(1, ITEMS_POOL);
+                bullet_id.set(2, item->persistent_index);
+                collected_items.append(bullet_id);
+			}
+		}
+	}
+	return collected_items;
+}
+
+void BulletInterface::magnet_all_items(Node2D* target) {
+    for (int i = total_items - 1; i >= available_items; i--) {
+		Item* item = item_pool[i];
+        item->is_grazed = true;
+        item->is_magneted = true;
+        item->is_auto_collected = true;
+        item->magnet_target = target;
+    }
+}
+
+
+PackedInt64Array BulletInterface::create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array shot_data, bool glow) {
+	if(available_shots > 0) {
+		available_shots -= 1;
+		active_shots += 1;
+
+
+		Bullet* shot = (Bullet*)shot_pool[available_shots];
+		RID rid = shot->item_rid;
+		enable_shot(shot);
+
+		shot->layer = shot_data[DATA_LAYER];
+		// Set layering to be above last bullet
+		rendering_server->canvas_item_set_draw_index(rid, (shot->layer << 24) + shots_draw_index);
+		shot->draw_index = shots_draw_index++;
+		if (shots_draw_index > 16777215) shots_draw_index = 0; // 2^24 - 1
+
+		rendering_server->canvas_item_add_texture_rect(shot->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), shots_texture_rid);
+		if (shot->additive != glow) {
+			rendering_server->canvas_item_set_material(shot->item_rid, glow ? shots_material_add_rid : shots_material_rid);
+			shot->additive = glow;
+		}
+
+		// A1 type settings
+		shot->process_mode = A1;
+
+		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(shot_data[DATA_SIZE] * Vector2(1.0, 1.0)).rotated(angle + shot_rotation_offset);
+		xform.set_origin(pos);
+		shot->transform = xform;
+		shot->position = pos;
+		shot->scale = shot_data[DATA_SIZE];
+		shot->angle = angle;
+		shot->direction = Vector2(1.0, 0.0).rotated(angle);
+
+		rendering_server->canvas_item_set_transform(rid, xform);
+		
+		// Misc data
+		shot->hitbox_scale = shot_data[DATA_HITBOX_RATIO];
+		shot->spin = shot_data[DATA_SPIN];
+		shot->speed = speed;
+		shot->texture_offset = shot_data[DATA_SPRITE_OFFSET];
+
+		// Shader data
+		Color compressed_data = Color();
+		compressed_data.r = shot_data[DATA_SRC_Y] + shot_data[DATA_SRC_X] / shots_texture_width;
+		compressed_data.g = shot_data[DATA_SRC_H] + shot_data[DATA_SRC_W] / shots_texture_width;
+		compressed_data.b = shot_data[DATA_SPRITE_OFFSET] + 0.999; 
+		compressed_data.a = shot_data[DATA_ANIM_FRAMES] + animation_random;
+
+		shot->bullet_data = compressed_data;
+
+		rendering_server->canvas_item_set_modulate(rid, compressed_data);
+
+		// Bullet clear colour
+		Color fade_color = Color(shot_data[DATA_CLEAR_R], shot_data[DATA_CLEAR_G], shot_data[DATA_CLEAR_B]);
+		shot->fade_color = fade_color;
+
+		// ID return
+		PackedInt64Array to_return = invalid_id;
+		to_return.set(0, shot->cycle);
+		to_return.set(1, SHOTS_POOL);
+		to_return.set(2, shot->persistent_index);
+		
+		return to_return;
+	}
+	return invalid_id;
+}
+
+
+PackedInt64Array BulletInterface::create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, double w_vel, PackedFloat64Array shot_data, bool glow) {
+	PackedInt64Array id = create_shot_a1(pos, speed, angle, shot_data, glow);
+	if (id == invalid_id) return invalid_id;
+
+	Bullet* shot = shot_pool[persistent_shot_index[id[2]]];
+	shot->process_mode = A2;
+	shot->accel = accel;
+	shot->max_speed = max_speed;
+	shot->wvel = w_vel;
+
+	return id;
+}
 
 // // DO NOT USE
 // bool BulletInterface::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
@@ -1328,25 +1742,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 // 	return Variant();
 // }
 
-// Array BulletInterface::collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius) {
-
-// 	int pool_index = kits_to_pool_index[kit];
-// 	BasicBulletPool* pool = (BasicBulletPool*)pools[pool_index].pool.get();
-// 	return pool->_collide_and_graze(pos, hitbox_radius, graze_radius);
-// }
-
-// Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius) {
-// 	Array to_return = Array();
-// 	to_return.append(Array());
-// 	to_return.append(Array());
-// 	for (int i = 0; i < enemy_bullet_kit_indices.size(); ++i) {
-// 		BasicBulletPool* pool = (BasicBulletPool*)pools[enemy_bullet_kit_indices[i]].pool.get();
-// 		Array result = pool->_collide_and_graze(pos, hitbox_radius, graze_radius);
-// 		((Array)to_return[0]).append_array((Array)result[0]);
-// 		((Array)to_return[1]).append_array((Array)result[1]);
-// 	}
-// 	return to_return;
-// }
 // Array BulletInterface::collide_and_graze_enemy(Vector2 pos, double hitbox_radius, double graze_radius) {
 // 	Array to_return = Array();
 // 	to_return.append(Array());
@@ -1358,37 +1753,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 // 		((Array)to_return[1]).append_array((Array)result[1]);
 // 	}
 // 	return to_return;
-// }
-
-// Array BulletInterface::collect_and_magnet_kit(Ref<BasicItemKit> kit, Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
-// 	int pool_index = kits_to_pool_index[kit];
-// 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
-// 	return pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius);
-// }
-
-// Array BulletInterface::collect_and_magnet_all(Vector2 pos, Node2D* target, double collect_radius, double magnet_radius) {
-// 	Array to_return = Array();
-
-// 	for (int i = 0; i < item_kit_indices.size(); ++i) {
-// 		BasicItemPool* pool = (BasicItemPool*)pools[item_kit_indices[i]].pool.get();
-// 		to_return.append_array((Array)pool->_collect_and_magnet(pos, target, collect_radius, magnet_radius));
-// 	}
-
-// 	return to_return;
-// }
-
-// void BulletInterface::magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target) {
-// 	int pool_index = kits_to_pool_index[kit];
-// 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
-// 	pool->_magnet_all(target);
-// }
-
-
-// void BulletInterface::magnet_all(Node2D* target) {
-// 	for (int i = 0; i < item_kit_indices.size(); ++i) {
-// 		BasicItemPool* pool = (BasicItemPool*)pools[item_kit_indices[i]].pool.get();
-// 		pool->_magnet_all(target);
-// 	}
 // }
 
 // PackedInt64Array BulletInterface::create_shot_a1(Ref<BasicBulletKit> kit, Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool fade_in) {
@@ -1437,24 +1801,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 // 	return invalid_id;
 // }
 
-// PackedInt64Array BulletInterface::create_item(Ref<BasicItemKit> kit, Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data) {
-// 	int pool_index = kits_to_pool_index[kit];
-// 	BasicItemPool* pool = (BasicItemPool*)pools[pool_index].pool.get();
-
-// 	if(pool->get_available_bullets() > 0) {
-// 		available_bullets -= 1;
-// 		active_bullets += 1;
-
-// 		BulletID bullet_id = pool->_create_item(pos, speed, angle, spin, item_data);
-// 		PackedInt64Array to_return = PackedInt64Array();
-// 		to_return.resize(3);
-// 		to_return.set(0, bullet_id.cycle);
-// 		to_return.set(1, bullet_id.set);
-// 		to_return.set(2, bullet_id.index);
-
-
-// 		return to_return;
-// 	}
 
 
 
