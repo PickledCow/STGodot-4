@@ -33,7 +33,7 @@ enum processMode { A1, A2, A3, B1, B2, B3 };
 enum bounceMode { BOUNCE, WARP };
 enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
-enum pools { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL };
+enum pools { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL };
 
 const int NO_CHANGE = -256*256*256;
 
@@ -45,6 +45,29 @@ struct BulletID {
 
 	BulletID(int cycle, int set, int index): 
 		cycle(cycle), set(set), index(index) {}
+};
+
+// A super basic struct for the enemy hitbox and damage reports.
+// Automatically tracks damage taken the current frame
+struct Enemy {
+    // The reuse count of the enemy. Used to check if the enemy has despawned and is being recycled.
+    int cycle = 0;
+    // The index of the enemy in the pool. This value changes as its position in the pool is shuffled around.
+    int pool_index = 0;
+    // The initial index of the enemy in the pool. This value does not change if the enemy changes positions in the pool.
+    int persistent_index = -1;
+
+    // Position of the enemy in the world.
+    Vector2 position = Vector2();
+    // Size of the hitbox (enemy gets hurt).
+    double hitbox_size = 16.0;
+    // Size of the hurtbox (player gets hurt).
+    double hurtbox_size = 8.0;
+    // Marked for deleting next frame.
+    bool queue_delete = false;
+
+    // The list of bullets collided with.
+    Array collided_bullets;
 };
 
 // A basic bullet struct. Holds onto information about the bullet that then a 
@@ -169,6 +192,8 @@ struct Bullet : CollisionBullet {
     // does not have a corresponding create_shot_Ax function.
     // ----------------------------------------
 
+    // Determines if the shot is marked for deletion on contact with enemy, used for piercing shots.
+    bool pierce = false;
     // Behaviour for touching the wall
     int bounce_mode = 0;
     // Number of times left for bouncing. Most usecases should keep it at 0 or 1.
@@ -182,8 +207,16 @@ struct Bullet : CollisionBullet {
     // Rotation speed limit for gradual rotating bullets in radians per tick.
     double max_wvel = 0.0;
 
-
 };
+
+// Lasers, behave similarly to bullets mostly but have different collision
+struct Laser : Bullet {
+    // How long the laser is.
+    double length;
+    // How much of the length is actually damaging.
+    double length_hitbox_scale = 0.5;
+};
+
 
 // 
 struct Item : CollisionBullet {

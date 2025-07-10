@@ -33,10 +33,10 @@ func _ready():
 	data[11] = 1
 	data[12] = 1
 	data[13] = 0				# damage type
-	data[14] = 0				# damage amount
+	data[14] = 10				# damage amount
 
 
-func upgrade_to_level(next_level: int):
+func upgrade_to_level(_next_level: int):
 	for i in get_child_count():
 		var option = get_child(i)
 		option.visible = i < level
@@ -53,6 +53,7 @@ func process_item(time_scale: float, player_position: Vector2):
 		SFX.play("missile")
 		for i in level:
 			Bullets.create_shot_a2(player_position + option_positions[level-1][i] * 1.5, 0.0, -PI * 0.5, 0.5, 12.0, 0.0, data, false)
+			
 		
 	fire_timer -= time_scale
 

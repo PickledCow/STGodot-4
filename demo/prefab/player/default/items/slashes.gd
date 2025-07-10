@@ -13,7 +13,7 @@ var slash_count := 2
 
 var slash_frames : Array[float] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-func upgrade_to_level(next_level: int):
+func upgrade_to_level(_next_level: int):
 	slash_count = (int(level + 1) / 2) * 2
 
 func process_item(time_scale: float, _player_position: Vector2):

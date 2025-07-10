@@ -43,9 +43,9 @@ void fragment() {
 [resource]
 render_priority = 0
 shader = SubResource("Shader_j4y3t")
-shader_parameter/margin = 0.1
+shader_parameter/margin = 1.0
 shader_parameter/height_factor = 2.0
 shader_parameter/time_scale = 0.5
 shader_parameter/density = 4.0
-shader_parameter/gap_duty_cycle = 0.5
+shader_parameter/gap_duty_cycle = 0.0790000037525
 shader_parameter/color = Color(1, 0, 0, 1)

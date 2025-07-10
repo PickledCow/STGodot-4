@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2xypy5bclc2x"]
+[gd_scene load_steps=10 format=3 uid="uid://d2xypy5bclc2x"]
 
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="1_cq3ma"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="2_qmjl8"]
@@ -6,15 +6,21 @@
 [ext_resource type="Texture2D" uid="uid://bjb8eyqx8mopd" path="res://system/bullets/item.png" id="3_v2tnc"]
 [ext_resource type="Material" uid="uid://ku81ykgfi06g" path="res://core/bullet-materials/item_material.tres" id="4_6n1ug"]
 [ext_resource type="Texture2D" uid="uid://c7qr0g27hhc7k" path="res://system/bullets/shot.png" id="4_myhv6"]
+[ext_resource type="Texture2D" uid="uid://dvlpx1sv3qv2o" path="res://system/bullets/lasers.png" id="7_ek4kk"]
+[ext_resource type="Material" uid="uid://cfyh5fdt3ikdo" path="res://core/bullet-materials/laser_material.tres" id="8_umuv3"]
+[ext_resource type="Material" uid="uid://1ubo4ldiefft" path="res://core/bullet-materials/laser_add_material.tres" id="9_58qg1"]
 
 [node name="BulletInterface" type="BulletInterface"]
 "Field/Bounce Rect" = Rect2(0, 0, 1000, 1000)
-"Field/Active Rect" = Rect2(0, 0, 1000, 1000)
+"Field/Active Rect" = Rect2(-128, -128, 1256, 1256)
+Field/Origin = Vector2(460, 40)
 "Shots/Z Layer" = -10
 "Bullets/Pool Size" = 20000
 "Shots/Pool Size" = 1000
 "Items/Pool Size" = 5000
 "Particles/Pool Size" = 10
+"Enemies/Pool Size" = 500
+"Lasers/Pool Size" = 1000
 Bullets/Texture = ExtResource("1_cq3ma")
 Bullets/Material = ExtResource("2_qmjl8")
 "Bullets/Material (Add)" = ExtResource("3_6n1ug")
@@ -27,5 +33,8 @@ Items/Material = ExtResource("4_6n1ug")
 Particles/Texture = ExtResource("1_cq3ma")
 Particles/Material = ExtResource("2_qmjl8")
 "Particles/Material (Add)" = ExtResource("2_qmjl8")
+Lasers/Texture = ExtResource("7_ek4kk")
+Lasers/Material = ExtResource("8_umuv3")
+"Lasers/Material (Add)" = ExtResource("9_58qg1")
 "Shots/Fade-in Time" = 1.0
-Items/Gravity = Vector2(0, 2)
+Items/Gravity = Vector2(0, 1)

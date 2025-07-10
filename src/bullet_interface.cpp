@@ -79,6 +79,10 @@ void BulletInterface::_bind_methods() {
 	BIND_ENUM_CONSTANT(TRIGGER_TIME);
 	BIND_ENUM_CONSTANT(TRIGGER_BOUNCE);
 	BIND_ENUM_CONSTANT(TRIGGER_GRAZE);
+	
+	// BIND_ENUM_CONSTANT(BULLET_ID_INDEX);
+	// BIND_ENUM_CONSTANT(BULLET_ID_POOL);
+	// BIND_ENUM_CONSTANT(BULLET_ID_CYCLE);
 	}
 
 	/* #endregion */
@@ -116,6 +120,11 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_particles_z_index"), &BulletInterface::get_particles_z_index);
 	ClassDB::bind_method(D_METHOD("set_particles_z_index", "p_particles_z_index"), &BulletInterface::set_particles_z_index);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "Particles/Z Layer"), "set_particles_z_index", "get_particles_z_index");
+	
+    ClassDB::bind_method(D_METHOD("get_lasers_z_index"), &BulletInterface::get_lasers_z_index);
+	ClassDB::bind_method(D_METHOD("set_lasers_z_index", "p_lasers_z_index"), &BulletInterface::set_lasers_z_index);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Lasers/Z Layer"), "set_lasers_z_index", "get_lasers_z_index");
+	
 
     ClassDB::bind_method(D_METHOD("get_total_bullets"), &BulletInterface::get_total_bullets);
 	ClassDB::bind_method(D_METHOD("set_total_bullets", "p_total_bullets"), &BulletInterface::set_total_bullets);
@@ -132,6 +141,14 @@ void BulletInterface::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_total_particles"), &BulletInterface::get_total_particles);
 	ClassDB::bind_method(D_METHOD("set_total_particles", "p_total_particles"), &BulletInterface::set_total_particles);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "Particles/Pool Size"), "set_total_particles", "get_total_particles");
+	
+    ClassDB::bind_method(D_METHOD("get_total_enemies"), &BulletInterface::get_total_enemies);
+	ClassDB::bind_method(D_METHOD("set_total_enemies", "p_total_enemies"), &BulletInterface::set_total_enemies);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Enemies/Pool Size"), "set_total_enemies", "get_total_enemies");
+	
+    ClassDB::bind_method(D_METHOD("get_total_lasers"), &BulletInterface::get_total_lasers);
+	ClassDB::bind_method(D_METHOD("set_total_lasers", "p_total_lasers"), &BulletInterface::set_total_lasers);
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "Lasers/Pool Size"), "set_total_lasers", "get_total_lasers");
 	
 
     ClassDB::bind_method(D_METHOD("get_bullets_texture"), &BulletInterface::get_bullets_texture);
@@ -233,6 +250,33 @@ void BulletInterface::_bind_methods() {
             "ShaderMaterial,CanvasItemMaterial"
         ), "set_particles_material_add", "get_particles_material_add");
 
+// ---
+    ClassDB::bind_method(D_METHOD("get_lasers_texture"), &BulletInterface::get_lasers_texture);
+	ClassDB::bind_method(D_METHOD("set_lasers_texture", "p_lasers_texture"), &BulletInterface::set_lasers_texture);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
+            "Lasers/Texture", 
+            PROPERTY_HINT_RESOURCE_TYPE,
+            "Texture2D"
+        ), "set_lasers_texture", "get_lasers_texture");
+	
+    ClassDB::bind_method(D_METHOD("get_lasers_material"), &BulletInterface::get_lasers_material);
+	ClassDB::bind_method(D_METHOD("set_lasers_material", "p_lasers_material"), &BulletInterface::set_lasers_material);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
+            "Lasers/Material", 
+            PROPERTY_HINT_RESOURCE_TYPE,
+            "ShaderMaterial,CanvasItemMaterial"
+        ), "set_lasers_material", "get_lasers_material");
+	
+    ClassDB::bind_method(D_METHOD("get_lasers_material_add"), &BulletInterface::get_lasers_material_add);
+	ClassDB::bind_method(D_METHOD("set_lasers_material_add", "p_lasers_material_add"), &BulletInterface::set_lasers_material_add);
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, 
+            "Lasers/Material (Add)", 
+            PROPERTY_HINT_RESOURCE_TYPE,
+            "ShaderMaterial,CanvasItemMaterial"
+        ), "set_lasers_material_add", "get_lasers_material_add");
+
+
+
 	ClassDB::bind_method(D_METHOD("get_bullets_fade_time"), &BulletInterface::get_bullets_fade_time);
 	ClassDB::bind_method(D_METHOD("set_bullets_fade_time", "p_bullets_fade_time"), &BulletInterface::set_bullets_fade_time);
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Bullets/Fade-in Time"), "set_bullets_fade_time", "get_bullets_fade_time");
@@ -265,11 +309,13 @@ void BulletInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_shot_rotation_offset", "p_shot_rotation_offset"), &BulletInterface::set_shot_rotation_offset);
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "Shots/Spritesheet Rotation Offset"), "set_shot_rotation_offset", "get_shot_rotation_offset");
 	
+	
+	
+	
 
 	/* #endregion */
-
 	
-	/* #region Standard Functions */
+	/* #region Create Functions */
 
 	ClassDB::bind_method(D_METHOD(
 		"init",
@@ -323,11 +369,114 @@ void BulletInterface::_bind_methods() {
 	);
 
 	ClassDB::bind_method(D_METHOD(
+		"create_enemy",
+		"hitbox_size",
+		"hurtbox_size"), 
+		&BulletInterface::create_enemy
+	);
+	
+	// (Vector2 pos, double angle, double length, double width, double margin, double duration, PackedFloat64Array laser_data, bool glow);
+	ClassDB::bind_method(D_METHOD(
+		"create_straight_laser",
+		"position",
+		"angle",
+		"length",
+		"width",
+		"margin",
+		"delay",
+		"duration",
+		"laser_data",
+		"glow"), 
+		&BulletInterface::create_straight_laser
+	);
+	
+	/* #endregion */
+	
+	/* #region Set/Get Property Functions */
+
+	ClassDB::bind_method(D_METHOD(
+		"get_damage",
+		"bullet_id"), 
+		&BulletInterface::get_damage
+	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_damage_type",
+		"bullet_id"), 
+		&BulletInterface::get_damage_type
+	);
+
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_lifetime",
+		"bullet_id"), 
+		&BulletInterface::get_lifetime
+	);
+	ClassDB::bind_method(D_METHOD(
+		"set_lifetime",
+		"bullet_id",
+		"lifetime"), 
+		&BulletInterface::set_lifetime
+	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_lifespan",
+		"bullet_id"), 
+		&BulletInterface::get_lifespan
+	);
+	ClassDB::bind_method(D_METHOD(
+		"set_lifespan",
+		"bullet_id",
+		"lifespan"), 
+		&BulletInterface::set_lifespan
+	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_pierce",
+		"bullet_id"), 
+		&BulletInterface::get_pierce
+	);
+	ClassDB::bind_method(D_METHOD(
+		"set_pierce",
+		"bullet_id",
+		"pierce"), 
+		&BulletInterface::set_pierce
+	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_position",
+		"bullet_id"), 
+		&BulletInterface::get_position
+	);
+	ClassDB::bind_method(D_METHOD(
+		"set_position",
+		"bullet_id",
+		"position"), 
+		&BulletInterface::set_position
+	);
+
+	ClassDB::bind_method(D_METHOD(
 		"collide_and_graze_player",
 		"position",
 		"hitbox_radius",
 		"graze_radius"), 
 		&BulletInterface::collide_and_graze_player
+	);
+	/* #endregion */
+
+	/* #region Actions */
+
+	ClassDB::bind_method(D_METHOD(
+		"clear_entity",
+		"id"), 
+		&BulletInterface::clear_entity
+	);
+
+	ClassDB::bind_method(D_METHOD(
+		"collide_enemy",
+		"position",
+		"hitbox_radius"), 
+		&BulletInterface::collide_enemy
 	);
 
 	ClassDB::bind_method(D_METHOD(
@@ -344,10 +493,16 @@ void BulletInterface::_bind_methods() {
 		"target_node"), 
 		&BulletInterface::magnet_all_items
 	);
+	
+	ClassDB::bind_method(D_METHOD(
+		"get_enemy_collisions",
+		"enemy_id"), 
+		&BulletInterface::get_enemy_collisions
+	);
+	
 
-	
 	/* #endregion */
-	
+
 }
 
 /* #region GetSetters */
@@ -382,6 +537,24 @@ void BulletInterface::set_total_particles(int particles) {
 	total_particles = particles;
 }
 
+int BulletInterface::get_total_enemies() {
+	return total_enemies;
+}
+
+void BulletInterface::set_total_enemies(int enemies) {
+	total_enemies = enemies;
+}
+
+int BulletInterface::get_total_lasers() {
+	return total_lasers;
+}
+
+void BulletInterface::set_total_lasers(int lasers) {
+	total_lasers = lasers;
+}
+
+
+
 int BulletInterface::get_bullets_z_index() {
 	return bullets_z_index;
 }
@@ -410,6 +583,14 @@ void BulletInterface::set_particles_z_index(int index) {
 	particles_z_index = index;
 }
 
+int BulletInterface::get_lasers_z_index() {
+	return lasers_z_index;
+}
+void BulletInterface::set_lasers_z_index(int index) {
+	lasers_z_index = index;
+}
+
+
 
 Ref<Texture2D> BulletInterface::get_bullets_texture() {
 	return bullets_texture;
@@ -429,6 +610,8 @@ Ref<Material> BulletInterface::get_bullets_material_add() {
 void BulletInterface::set_bullets_material_add(Ref<Material> material) {
 	bullets_material_add = material;
 }
+
+
 
 Ref<Texture2D> BulletInterface::get_shots_texture() {
 	return shots_texture;
@@ -468,6 +651,7 @@ void BulletInterface::set_items_material_add(Ref<Material> material) {
 	items_material_add = material;
 }
 
+
 Ref<Texture2D> BulletInterface::get_particles_texture() {
 	return particles_texture;
 }
@@ -485,6 +669,26 @@ Ref<Material> BulletInterface::get_particles_material_add() {
 }
 void BulletInterface::set_particles_material_add(Ref<Material> material) {
 	particles_material_add = material;
+}
+
+
+Ref<Texture2D> BulletInterface::get_lasers_texture() {
+	return lasers_texture;
+}
+void BulletInterface::set_lasers_texture(Ref<Texture2D> texture) {
+	lasers_texture = texture;
+}
+Ref<Material> BulletInterface::get_lasers_material() {
+	return lasers_material;
+}
+void BulletInterface::set_lasers_material(Ref<Material> material) {
+	lasers_material = material;
+}
+Ref<Material> BulletInterface::get_lasers_material_add() {
+	return lasers_material_add;
+}
+void BulletInterface::set_lasers_material_add(Ref<Material> material) {
+	lasers_material_add = material;
 }
 
 
@@ -537,6 +741,13 @@ void BulletInterface::set_items_fade_time(double time) {
 	items_fade_time = time;
 }
 
+double BulletInterface::get_lasers_fade_time() {
+	return lasers_fade_time;
+}
+void BulletInterface::set_lasers_fade_time(double time) {
+	lasers_fade_time = time;
+}
+
 
 Vector2 BulletInterface::get_items_gravity() {
 	return items_gravity;
@@ -579,9 +790,13 @@ void BulletInterface::set_shot_rotation_offset(double rotation) {
 
 BulletInterface::BulletInterface() { }
 
-// TODO, finish freein memory
+// TODO: fix crash when quit to selection
 BulletInterface::~BulletInterface() {
 	// Free memory
+
+	if (Engine::get_singleton()->is_editor_hint()) {
+		return;
+	}
 
 	for (int i = 0; i < total_bullets; ++i) {
 		rendering_server->free_rid(bullet_pool[i]->item_rid);
@@ -599,8 +814,9 @@ BulletInterface::~BulletInterface() {
 		rendering_server->free_rid(particle_pool[i]->item_rid);
 		memdelete(particle_pool[i]);
 	}
-	
-	// IDK why this doesn't work??
+	for (int i = 0; i < total_enemies; ++i) {
+		memdelete(enemy_pool[i]);
+	}
 
 	if (bullets_created) {
 		memdelete_arr(bullet_pool);
@@ -622,12 +838,16 @@ BulletInterface::~BulletInterface() {
 		memdelete_arr(persistent_particle_index);
 	}
 
+	if (enemies_created) {
+		memdelete_arr(enemy_pool);
+		memdelete_arr(persistent_enemy_index);
+	}
+
 	if (bullets_canvas_item.is_valid()) rendering_server->free_rid(bullets_canvas_item);
 	if (shots_canvas_item.is_valid()) rendering_server->free_rid(shots_canvas_item);
 	if (items_canvas_item.is_valid()) rendering_server->free_rid(items_canvas_item);
 	if (particles_canvas_item.is_valid()) rendering_server->free_rid(particles_canvas_item);
 }
-
 
 
 void BulletInterface::init(Node2D* root) {
@@ -638,6 +858,8 @@ void BulletInterface::init(Node2D* root) {
 	active_shots = 0;
 	active_items = 0;
 	active_particles = 0;
+	active_enemies = 0;
+	active_lasers = 0;
 
 	if (active_rect.size.x <= 0.0 || active_rect.size.y <= 0.0) {
 		godot::UtilityFunctions::push_warning("Active rect has one or more bounds less than or equal to zero; bullets will instantly be despawned.");
@@ -741,6 +963,41 @@ void BulletInterface::init(Node2D* root) {
 		_init_particles();
 	}
 
+	if (total_enemies == 0) {
+		godot::UtilityFunctions::push_error("Enemy pool size is 0!");
+		available_enemies = 0;
+	} else {
+		available_enemies = total_enemies;
+		enemy_pool = memnew_arr(Enemy*, total_enemies);
+		persistent_enemy_index = memnew_arr(int, total_enemies);
+		enemies_created = true;
+		_init_enemies();
+	}
+
+	if (lasers_texture.is_null()) {
+		godot::UtilityFunctions::push_error("Laser texture is missing; lasers will be disabled until fixed.");
+		total_lasers = 0;		// Remove bullets entirely
+		available_lasers = 0;
+	} else if (lasers_material.is_null() || lasers_material_add.is_null()) {
+		godot::UtilityFunctions::push_error("Laser material is missing; lasers will be disabled until fixed.");
+		total_lasers = 0;		// Remove bullets entirely
+		available_lasers = 0;
+	} else if (total_lasers == 0) {
+		godot::UtilityFunctions::push_error("Laser pool size is 0!");
+		available_lasers = 0;
+	} else {
+		lasers_texture_rid = lasers_texture->get_rid();
+		lasers_material_rid = lasers_material->get_rid();
+		lasers_material_add_rid = lasers_material_add->get_rid();
+		lasers_texture_width = lasers_texture->get_size().x;
+		available_lasers = total_lasers;
+		laser_pool = memnew_arr(Laser*, total_lasers);
+		persistent_laser_index = memnew_arr(int, total_lasers);
+		lasers_created = true;
+		_init_lasers();
+	}
+	
+
 	// Set invalid ids
 
 	invalid_id = PackedInt64Array();
@@ -839,6 +1096,41 @@ void BulletInterface::_init_particles() {
 	}
 }
 
+void BulletInterface::_init_enemies() {
+	// Create each enemy
+	for (int i = 0; i < total_enemies; ++i) {
+		Enemy* enemy = memnew(Enemy);
+		enemy->collided_bullets = Array();
+
+		enemy_pool[i] = enemy;
+
+		enemy->pool_index = i;
+		enemy->persistent_index = i;
+		persistent_enemy_index[i] = i;
+	}
+}
+
+void BulletInterface::_init_lasers() {
+	lasers_canvas_item = rendering_server->canvas_item_create();
+	
+	rendering_server->canvas_item_set_parent(lasers_canvas_item, canvas_parent);
+	rendering_server->canvas_item_set_z_index(lasers_canvas_item, lasers_z_index);
+
+	// Create each laser
+	for (int i = 0; i < total_lasers; ++i) {
+		Laser* laser = memnew(Laser);
+
+		laser_pool[i] = laser;
+		laser->item_rid = rendering_server->canvas_item_create();
+		rendering_server->canvas_item_set_parent(laser->item_rid, lasers_canvas_item);
+		rendering_server->canvas_item_set_material(laser->item_rid, lasers_material_rid);
+
+		laser->pool_index = i;
+		laser->persistent_index = i;
+		persistent_laser_index[i] = i;
+	}
+}
+
 void BulletInterface::_process(double delta) {
 	if (Engine::get_singleton()->is_editor_hint()) {
 		return;
@@ -899,6 +1191,26 @@ void BulletInterface::_process(double delta) {
 		rendering_server->canvas_item_set_transform(particle->item_rid, particle->transform);
 	}
 
+	for (int i = total_enemies - 1; i >= available_enemies; --i) {
+		Enemy* enemy = enemy_pool[i];
+		if (_process_enemy(enemy, time_scale)) {
+			_release_enemy(i);
+			i += 1;
+			continue;
+		}
+	}
+
+	for (int i = total_lasers - 1; i >= available_lasers; --i) {
+		Laser* laser = laser_pool[i];
+		if (_process_bullet(laser, time_scale)) {
+			_release_laser(i);
+			i += 1;
+			continue;
+		}
+		rendering_server->canvas_item_set_transform(laser->item_rid, laser->transform);
+
+	}
+	
 }
 
 bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
@@ -927,7 +1239,7 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta) {
                 bullet->bullet_data.b = bullet->texture_offset;
                 rendering_server->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
             } else {
-                bullet->bullet_data.b = bullet->texture_offset + (bullet->fade_timer / bullet->fade_time - DBL_EPSILON);
+                bullet->bullet_data.b = bullet->texture_offset + (Math::min(1.0, bullet->fade_timer / bullet->fade_time) - 0.001);
                 rendering_server->canvas_item_set_modulate(bullet->item_rid, bullet->bullet_data);
 				
             }
@@ -1160,7 +1472,34 @@ bool BulletInterface::_process_item(Item* item, double delta) {
 // TODO
 bool BulletInterface::_process_particle(Particle* particle, double delta) {
 	return false;
+}
 
+bool BulletInterface::_process_enemy(Enemy* enemy, double delta) {
+	if (enemy->queue_delete) return true;
+	
+	double hitbox_radius = enemy->hitbox_size;
+	enemy->collided_bullets.clear();
+
+	for (int i = total_shots - 1; i >= available_shots; --i) {
+		Bullet* bullet = shot_pool[i];
+		
+		double b = bullet->scale * bullet->hitbox_scale;
+		double b2 = b * b;
+		double dist_sq = (bullet->position - enemy->position).length_squared();
+
+		if (bullet->fade_timer <= 0.0 && (dist_sq < hitbox_radius * hitbox_radius + 2.0 * hitbox_radius * b + b2)) {
+			PackedInt64Array bullet_id = PackedInt64Array();
+			bullet_id.resize(3);
+			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
+			bullet_id.set(BULLET_ID_POOL, SHOTS_POOL);
+			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
+
+			if (!bullet->pierce) bullet->lifespan = -INFINITY;
+
+			enemy->collided_bullets.append(bullet_id);
+		}
+	}
+	return false;
 }
 
 void BulletInterface::_release_bullet(int index) {
@@ -1185,7 +1524,6 @@ void BulletInterface::_release_shot(int index) {
 
 	// Disable the bullet
 	rendering_server->canvas_item_clear(bullet->item_rid);
-
 	bullet->cycle += 1;
 
 	// Swap the now deleted bullet and the lowest active bullet 
@@ -1237,8 +1575,42 @@ void BulletInterface::_release_particle(int index) {
 	active_particles -= 1;
 }
 
+void BulletInterface::_release_enemy(int index) {
+	Enemy* enemy = enemy_pool[index];
+
+
+	enemy->cycle += 1;
+
+	// Swap the now deleted particle and the lowest active particle 
+	_swap(enemy_pool[index], enemy_pool[available_enemies]);
+	_swap(enemy_pool[index]->pool_index, enemy_pool[available_enemies]->pool_index);
+	// After the swap, update the persistent indices
+	persistent_enemy_index[enemy_pool[index]->persistent_index] = enemy_pool[index]->pool_index;
+	persistent_enemy_index[enemy_pool[available_enemies]->persistent_index] = enemy_pool[available_enemies]->pool_index;
+
+	available_enemies += 1;
+	active_enemies -= 1;
+}
+
+void BulletInterface::_release_laser(int index) {
+	Laser* laser = laser_pool[index];
+
+	rendering_server->canvas_item_clear(laser->item_rid);
+	laser->cycle += 1;
+
+	// Swap the now deleted laser and the lowest active laser 
+	_swap(laser_pool[index], laser_pool[available_lasers]);
+	_swap(laser_pool[index]->pool_index, laser_pool[available_lasers]->pool_index);
+	// After the swap, update the persistent indices
+	persistent_laser_index[laser_pool[index]->persistent_index] = laser_pool[index]->pool_index;
+	persistent_laser_index[laser_pool[available_lasers]->persistent_index] = laser_pool[available_lasers]->pool_index;
+
+	available_lasers += 1;
+	active_lasers -= 1;
+}
 
 void BulletInterface::enable_bullet(Bullet* bullet) {
+	bullet->pierce = false;
     bullet->auto_delete = true;
     bullet->is_grazed = false;
     bullet->lifetime = 0.0;
@@ -1253,8 +1625,8 @@ void BulletInterface::enable_bullet(Bullet* bullet) {
 	bullet->fade_timer = bullets_fade_time;
 }
 
-
 void BulletInterface::enable_shot(Bullet* shot) {
+	shot->pierce = false;
     shot->auto_delete = true;
     shot->is_grazed = false;
     shot->lifetime = 0.0;
@@ -1268,8 +1640,50 @@ void BulletInterface::enable_shot(Bullet* shot) {
 	shot->fade_timer = shots_fade_time;
 }
 
-PackedInt64Array BulletInterface::create_bullet_a1_no_glow(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data) {
-	return create_bullet_a1(pos, speed, angle, bullet_data, false);
+void BulletInterface::enable_enemy(Enemy* enemy) {
+	enemy->queue_delete = false;
+	enemy->collided_bullets.clear();
+}
+
+void BulletInterface::enable_laser(Laser* laser) {
+	laser->pierce = true;
+    laser->auto_delete = true;
+    laser->is_grazed = false;
+    laser->lifetime = 0.0;
+    laser->lifespan = INFINITY;
+    laser->rotation = 0.0;
+    laser->fading = true;
+    laser->transforms.clear();
+    laser->custom_data.clear();
+	// TODO: Add customisation
+	laser->fade_time = lasers_fade_time;
+	laser->fade_timer = lasers_fade_time;
+}
+
+// User facing functions
+
+void BulletInterface::clear_entity(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = -INFINITY;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = -INFINITY;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == ITEMS_POOL) {
+		Item* bullet = item_pool[persistent_item_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = -INFINITY;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = -INFINITY;
+		}
+	}
 }
 
 PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow) {
@@ -1314,6 +1728,11 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		bullet->speed = speed;
 		bullet->texture_offset = bullet_data[DATA_SPRITE_OFFSET];
 
+		
+		// Damage data
+		bullet->damage = bullet_data[DATA_DAMAGE_AMOUNT];
+		bullet->damage_type = int(bullet_data[DATA_DAMAGE_TYPE]);
+
 		// Shader data
 
 		Color compressed_data = Color();
@@ -1334,9 +1753,9 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 		// ID return
 
 		PackedInt64Array to_return = invalid_id;
-		to_return.set(0, bullet->cycle);
-		to_return.set(1, BULLETS_POOL);
-		to_return.set(2, bullet->persistent_index);
+		to_return.set(BULLET_ID_CYCLE, bullet->cycle);
+		to_return.set(BULLET_ID_POOL, BULLETS_POOL);
+		to_return.set(BULLET_ID_INDEX, bullet->persistent_index);
 		
 		// godot::UtilityFunctions::print(bullet->position);
 		
@@ -1346,7 +1765,6 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 	return invalid_id;
 }
 	
-
 PackedInt64Array BulletInterface::create_item_no_glow(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data) {
 	return create_item(pos, speed, angle, spin, item_data, false);
 }
@@ -1420,9 +1838,9 @@ PackedInt64Array BulletInterface::create_item(Vector2 pos, double speed, double 
 
 		PackedInt64Array to_return = PackedInt64Array();
 		to_return.resize(3);
-		to_return.set(0, item->cycle);
-		to_return.set(1, ITEMS_POOL);
-		to_return.set(2, item->persistent_index);
+		to_return.set(BULLET_ID_CYCLE, item->cycle);
+		to_return.set(BULLET_ID_POOL, ITEMS_POOL);
+		to_return.set(BULLET_ID_INDEX, item->persistent_index);
 
 		return to_return;
 
@@ -1435,7 +1853,7 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 	Array to_return = Array();
 	to_return.append(Array());
 	to_return.append(Array());
-	for (int i = total_bullets - 1; i >= active_bullets; --i) {
+	for (int i = total_bullets - 1; i >= available_bullets; --i) {
 		Bullet* bullet = bullet_pool[i];
 		
 		double b = bullet->scale * bullet->hitbox_scale;
@@ -1445,9 +1863,9 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 		if (bullet->fade_timer <= 0.0 && dist_sq <= graze_radius * graze_radius + 2.0 * graze_radius * b + b2) {
 			PackedInt64Array bullet_id = PackedInt64Array();
 			bullet_id.resize(3);
-			bullet_id.set(0, bullet->cycle);
-			bullet_id.set(1, BULLETS_POOL);
-			bullet_id.set(2, bullet->persistent_index);
+			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
+			bullet_id.set(BULLET_ID_POOL, BULLETS_POOL);
+			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
 
 			if (!bullet->is_grazed) {
 				bullet->is_grazed = true;
@@ -1455,10 +1873,36 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 			}
 			
 			if (dist_sq < hitbox_radius * hitbox_radius + 2.0 * hitbox_radius * b + b2) {
-				bullet->lifespan = -INFINITY;
+				if (!bullet->pierce) bullet->lifespan = -INFINITY;
 				((Array)(to_return[0])).append(bullet_id);
 			}
 
+		}
+	}
+	return to_return;
+}
+
+Array BulletInterface::collide_enemy(Vector2 pos, double hitbox_radius) {
+	Array to_return = Array();
+
+	for (int i = total_shots - 1; i >= available_shots; --i) {
+		Bullet* bullet = shot_pool[i];
+		
+		double b = bullet->scale * bullet->hitbox_scale;
+		double b2 = b * b;
+		double dist_sq = (bullet->position - pos).length_squared();
+
+		if (bullet->fade_timer <= 0.0) {
+			PackedInt64Array bullet_id = PackedInt64Array();
+			bullet_id.resize(3);
+			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
+			bullet_id.set(BULLET_ID_POOL, SHOTS_POOL);
+			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
+
+			if (dist_sq < hitbox_radius * hitbox_radius + 2.0 * hitbox_radius * b + b2) {
+				if (!bullet->pierce) bullet->lifespan = -INFINITY;
+				to_return.append(bullet_id);
+			}
 		}
 	}
 	return to_return;
@@ -1478,7 +1922,7 @@ Array BulletInterface::collect_and_magnet_items(Vector2 pos, Node2D* target, dou
 
 	 	double dist_sq = (item->position - pos).length_squared();
 		
-		if (dist_sq <= collect_radius_squared + 2.0 * magnet_radius * b + b2) {
+		if (dist_sq <= magnet_radius_squared + 2.0 * magnet_radius * b + b2) {
 			if (!item->is_grazed) {
 				item->is_grazed = true;
 				item->is_magneted = true;
@@ -1489,9 +1933,9 @@ Array BulletInterface::collect_and_magnet_items(Vector2 pos, Node2D* target, dou
 				item->lifespan = -INFINITY;
                 PackedInt64Array bullet_id = PackedInt64Array();
                 bullet_id.resize(3);
-                bullet_id.set(0, item->cycle);
-                bullet_id.set(1, ITEMS_POOL);
-                bullet_id.set(2, item->persistent_index);
+                bullet_id.set(BULLET_ID_CYCLE, item->cycle);
+                bullet_id.set(BULLET_ID_POOL, ITEMS_POOL);
+                bullet_id.set(BULLET_ID_INDEX, item->persistent_index);
                 collected_items.append(bullet_id);
 			}
 		}
@@ -1509,6 +1953,10 @@ void BulletInterface::magnet_all_items(Node2D* target) {
     }
 }
 
+Array BulletInterface::get_enemy_collisions(PackedInt64Array enemy_id) {
+	if (enemy_id[BULLET_ID_POOL] == ENEMIES_POOL) return enemy_pool[persistent_enemy_index[enemy_id[BULLET_ID_INDEX]]]->collided_bullets;
+	else return Array();
+}
 
 PackedInt64Array BulletInterface::create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array shot_data, bool glow) {
 	if(available_shots > 0) {
@@ -1551,6 +1999,10 @@ PackedInt64Array BulletInterface::create_shot_a1(Vector2 pos, double speed, doub
 		shot->speed = speed;
 		shot->texture_offset = shot_data[DATA_SPRITE_OFFSET];
 
+		// Damage data
+		shot->damage = shot_data[DATA_DAMAGE_AMOUNT];
+		shot->damage_type = int(shot_data[DATA_DAMAGE_TYPE]);
+
 		// Shader data
 		Color compressed_data = Color();
 		compressed_data.r = shot_data[DATA_SRC_Y] + shot_data[DATA_SRC_X] / shots_texture_width;
@@ -1568,15 +2020,14 @@ PackedInt64Array BulletInterface::create_shot_a1(Vector2 pos, double speed, doub
 
 		// ID return
 		PackedInt64Array to_return = invalid_id;
-		to_return.set(0, shot->cycle);
-		to_return.set(1, SHOTS_POOL);
-		to_return.set(2, shot->persistent_index);
+		to_return.set(BULLET_ID_CYCLE, shot->cycle);
+		to_return.set(BULLET_ID_POOL, SHOTS_POOL);
+		to_return.set(BULLET_ID_INDEX, shot->persistent_index);
 		
 		return to_return;
 	}
 	return invalid_id;
 }
-
 
 PackedInt64Array BulletInterface::create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, double w_vel, PackedFloat64Array shot_data, bool glow) {
 	PackedInt64Array id = create_shot_a1(pos, speed, angle, shot_data, glow);
@@ -1590,6 +2041,280 @@ PackedInt64Array BulletInterface::create_shot_a2(Vector2 pos, double speed, doub
 
 	return id;
 }
+
+PackedInt64Array BulletInterface::create_enemy(double hitbox_size, double hurtbox_size) {
+	if(available_enemies > 0) {
+		available_enemies -= 1;
+		active_enemies += 1;
+
+		Enemy* enemy = (Enemy*)enemy_pool[available_enemies];
+		enable_enemy(enemy);
+		enemy->hitbox_size = hitbox_size;
+		enemy->hurtbox_size = hurtbox_size;
+		
+		// ID return
+		PackedInt64Array to_return = invalid_id;
+		to_return.set(BULLET_ID_CYCLE, enemy->cycle);
+		to_return.set(BULLET_ID_POOL, ENEMIES_POOL);
+		to_return.set(BULLET_ID_INDEX, enemy->persistent_index);
+		
+		return to_return;
+
+	}
+	return invalid_id;
+}
+
+
+PackedInt64Array BulletInterface::create_straight_laser(Vector2 pos, double angle, double length, double width, double margin, double delay, double duration, PackedFloat64Array laser_data, bool glow) {
+	if(available_lasers > 0) {
+		available_lasers -= 1;
+		active_lasers += 1;
+
+
+		Laser* laser = (Laser*)laser_pool[available_lasers];
+		RID rid = laser->item_rid;
+		enable_laser(laser);
+		laser->layer = laser_data[DATA_LAYER];
+
+		laser->length = length;
+		laser->length_hitbox_scale = 1.0 - margin;
+
+		laser->lifetime = -delay;
+		laser->lifespan = duration;
+		laser->fade_timer += delay;
+
+		// Set layering to be above last laser
+		rendering_server->canvas_item_set_draw_index(rid, (laser->layer << 24) + lasers_draw_index);
+		laser->draw_index = lasers_draw_index++;
+		if (lasers_draw_index > 16777215) lasers_draw_index = 0; // 2^24 - 1
+
+		// TODO: Make this customisable
+		rendering_server->canvas_item_add_texture_rect(laser->item_rid, Rect2(-0.5, 0.0, 1.0, 1.0), lasers_texture_rid);
+		if (laser->additive != glow) {
+			rendering_server->canvas_item_set_material(laser->item_rid, glow ? lasers_material_add_rid : lasers_material_rid);
+			laser->additive = glow;
+		}
+
+		// A1 type settings
+		laser->process_mode = A1;
+
+		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(Vector2(width, length)).rotated(angle + laser_rotation_offset);
+		xform.set_origin(pos);
+		laser->transform = xform;
+		laser->position = pos;
+		laser->scale = laser_data[DATA_SIZE];
+		laser->angle = angle;
+		laser->direction = Vector2(1.0, 0.0).rotated(angle);
+
+		rendering_server->canvas_item_set_transform(rid, xform);
+		
+		// Misc data
+
+		laser->hitbox_scale = laser_data[DATA_HITBOX_RATIO];
+		// laser->spin = laser_data[DATA_SPIN];
+		// laser->texture_offset = laser_data[DATA_SPRITE_OFFSET];
+
+		
+		// Damage data
+		laser->damage = laser_data[DATA_DAMAGE_AMOUNT];
+		laser->damage_type = int(laser_data[DATA_DAMAGE_TYPE]);
+
+		// Shader data
+
+		Color compressed_data = Color();
+		compressed_data.r = laser_data[DATA_SRC_Y] + laser_data[DATA_SRC_X] / lasers_texture_width;
+		compressed_data.g = laser_data[DATA_SRC_H] + laser_data[DATA_SRC_W] / lasers_texture_width;
+		compressed_data.b = laser_data[DATA_SPRITE_OFFSET] + 0.999; 
+		compressed_data.a = laser_data[DATA_ANIM_FRAMES] + animation_random;
+
+		laser->bullet_data = compressed_data;
+
+		rendering_server->canvas_item_set_modulate(rid, compressed_data);
+
+		// Bullet clear colour
+
+		Color fade_color = Color(laser_data[DATA_CLEAR_R], laser_data[DATA_CLEAR_G], laser_data[DATA_CLEAR_B]);
+		laser->fade_color = fade_color;
+
+		// ID return
+
+		PackedInt64Array to_return = invalid_id;
+		to_return.set(BULLET_ID_CYCLE, laser->cycle);
+		to_return.set(BULLET_ID_POOL, BULLETS_POOL);
+		to_return.set(BULLET_ID_INDEX, laser->persistent_index);
+		
+		// godot::UtilityFunctions::print(laser->position);
+		
+
+		return to_return;
+	}
+	return invalid_id;
+}
+
+PackedInt64Array BulletInterface::create_loose_laser(Vector2 pos, double speed, double angle, double length, double width, double margin, PackedFloat64Array laser_data, bool glow) {
+
+	return invalid_id;
+}
+
+
+
+/* #region Bullet setters and getters */
+
+double BulletInterface::get_damage(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) return bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]]->damage;
+	else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) return shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]]->damage;
+	return 0.0;
+}
+
+int BulletInterface::get_damage_type(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) return bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]]->damage_type;
+	else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) return shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]]->damage_type;
+	return -1;
+}
+
+Vector2 BulletInterface::get_position(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) return bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]]->position;
+	else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) return shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]]->position;
+	else if (bullet_id[BULLET_ID_POOL] == ENEMIES_POOL) return enemy_pool[persistent_enemy_index[bullet_id[BULLET_ID_INDEX]]]->position;
+	return Vector2();
+}
+void BulletInterface::set_position(PackedInt64Array bullet_id, Vector2 position) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]]->position = position;
+	else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]]->position = position;
+	else if (bullet_id[BULLET_ID_POOL] == ENEMIES_POOL) enemy_pool[persistent_enemy_index[bullet_id[BULLET_ID_INDEX]]]->position = position;
+}
+
+double BulletInterface::get_lifetime(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == ITEMS_POOL) {
+		Item* bullet = item_pool[persistent_item_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifetime;
+		}
+	}
+	return -INFINITY;
+}
+
+void BulletInterface::set_lifetime(PackedInt64Array bullet_id, double lifetime) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifetime = lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifetime = lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == ITEMS_POOL) {
+		Item* bullet = item_pool[persistent_item_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifetime = lifetime;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifetime = lifetime;
+		}
+	}
+}
+
+
+double BulletInterface::get_lifespan(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == ITEMS_POOL) {
+		Item* bullet = item_pool[persistent_item_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->lifespan;
+		}
+	}
+	return -INFINITY;
+}
+
+void BulletInterface::set_lifespan(PackedInt64Array bullet_id, double lifespan) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == ITEMS_POOL) {
+		Item* bullet = item_pool[persistent_item_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = lifespan;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->lifespan = lifespan;
+		}
+	}
+}
+
+bool BulletInterface::get_pierce(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->pierce;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->pierce;
+		}
+	}
+	return false;
+}
+
+void BulletInterface::set_pierce(PackedInt64Array bullet_id, bool pierce) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->pierce = pierce;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->pierce = pierce;
+		}
+	}
+}
+
+/* #endregion */
+
+/* #region Old stuff */
 
 // // DO NOT USE
 // bool BulletInterface::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
@@ -1834,21 +2559,6 @@ PackedInt64Array BulletInterface::create_shot_a2(Vector2 pos, double speed, doub
 // }
 
 
-// Vector2 BulletInterface::get_position(PackedInt64Array bullet_id) {
-// 	if (bullet_id[1] >= 0) {
-// 		return pools[bullet_id[1]].pool->get_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
-// 	}
-// 	return Vector2();
-
-// }
-
-// void BulletInterface::set_position(PackedInt64Array bullet_id, Vector2 position) {
-// 	if (bullet_id[1] >= 0) {
-// 		pools[bullet_id[1]].pool->set_position(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), position);
-// 	}
-
-// }
-
 
 // double BulletInterface::get_damage(PackedInt64Array bullet_id) {
 // 	if (bullet_id[1] >= 0) {
@@ -1887,3 +2597,5 @@ PackedInt64Array BulletInterface::create_shot_a2(Vector2 pos, double speed, doub
 // 		return pool->_get_is_auto_collected(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return false;
+
+/* #endregion */

@@ -259,12 +259,12 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 @export_range(0, 64, 0.1, "or_greater") var graze_radius := 16.0
 ## Radius of the hitbox for collecting items in pixels.
 @export_range(0, 32, 0.1, "or_greater") var item_collect_radius := 8.0
-## Radius of the hitbox for magneting items in pixels.
-@export_range(0, 128, 0.1, "or_greater") var item_magnet_radius := 64.0
-## If enabled, the item magnet is always active instead of only during focus.
-@export var magnet_while_unfocused := true
+## Radius of the hitbox for magneting items while unfocused in pixels.
+@export_range(0, 128, 0.1, "or_greater") var unfocus_item_magnet_radius := 64.0
+## Radius of the hitbox for magneting items while focused in pixels.
+@export_range(0, 128, 0.1, "or_greater") var focus_item_magnet_radius := 64.0
 ## Height the player needs to be to autocollect
-@export_range(0, 2048, 1, "or_greater") var autocollect_height := 256.0
+@export_range(0, 2048, 1, "or_greater") var autocollect_height := 500.0
 ## Whether the player needs to be at max power to perform autocollection.
 @export var autocollect_require_full_power := false
 
@@ -692,9 +692,14 @@ func collision() -> void:
 		Bullets.magnet_all_items(self)
 		pass
 	
-	var should_magnet := true if magnet_while_unfocused else is_focused
+	#var should_magnet := true if magnet_while_unfocused else is_focused
 	
-	var items : Array = Bullets.collect_and_magnet_items(position, self, item_collect_radius, item_magnet_radius if should_magnet else 0.0)
+	var items : Array = Bullets.collect_and_magnet_items(
+		position, 
+		self, 
+		item_collect_radius, 
+		focus_item_magnet_radius if is_focused else unfocus_item_magnet_radius
+	)
 	
 	if len(items) > 0:
 		SFX.play("item")
@@ -729,6 +734,7 @@ func _update_hframes():
 
 #region Overrides
 func _ready() -> void:
+	System.register_player(self)
 	if shooter_manager_path:
 		shooter_manager = get_node(shooter_manager_path)
 	else:

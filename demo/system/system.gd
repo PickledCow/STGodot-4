@@ -15,9 +15,8 @@ enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POW
 var player : Player
 
 
-var playfield_size := Vector2(1280, 720)
-
-
+@export var playfield_size := Vector2(1000, 1000)
+@export var enemy_active_rect := Rect2(Vector2(-128, -128), Vector2(1256, 1256))
 
 ## Current graze count.
 var graze := 0
@@ -25,6 +24,9 @@ var graze := 0
 var piv := 1000
 ## Current game score
 var score := 0
+
+var time_scale := 1.0
+
 
 #region Registration Functions
 

@@ -127,6 +127,8 @@ large_power_item_value = 100
 power_loss_on_death = 50
 hitbox_radius = 1.0
 graze_radius = 64.0
+unfocus_item_magnet_radius = 128.0
+focus_item_magnet_radius = 128.0
 
 [node name="FocusAnimation" type="AnimationPlayer" parent="."]
 libraries = {

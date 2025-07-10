@@ -5,6 +5,7 @@
 
 [node name="System" type="Node"]
 script = ExtResource("1_77xdw")
+enemy_active_rect = Rect2(-128, -328, 1256, 1456)
 
 [node name="BulletConstructor" type="Node" parent="."]
 script = ExtResource("2_ookq8")
