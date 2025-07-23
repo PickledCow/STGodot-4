@@ -117,6 +117,7 @@ _data = {
 [node name="Player" type="Node2D"]
 script = ExtResource("1_m7gp6")
 shooter_manager_path = NodePath("ShooterManager")
+respawn_on_death = false
 unfocus_speed = 8.0
 focus_speed = 4.0
 min_power = 100
@@ -125,10 +126,11 @@ starting_power = 100
 decimal_power_subdivision = 100
 large_power_item_value = 100
 power_loss_on_death = 50
-hitbox_radius = 1.0
+hitbox_radius = 0.0
 graze_radius = 64.0
 unfocus_item_magnet_radius = 128.0
 focus_item_magnet_radius = 128.0
+i_frame_flash_cycle_duration = 0.5
 
 [node name="FocusAnimation" type="AnimationPlayer" parent="."]
 libraries = {
@@ -172,3 +174,7 @@ script = ExtResource("6_pvpw6")
 [node name="MarisaLaser" parent="ItemManager" instance=ExtResource("10_1okbp")]
 
 [node name="Slashes" parent="ItemManager" instance=ExtResource("8_8uj67")]
+
+[node name="HitAnim" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="HitAnim"]

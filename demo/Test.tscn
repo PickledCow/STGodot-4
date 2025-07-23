@@ -1,7 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=31 format=3 uid="uid://18jtj8q2lok4"]
 
+[ext_resource type="Texture2D" uid="uid://bg88w4djr6suk" path="res://bg/test/crystal sky.png" id="1_d1b21"]
+[ext_resource type="PackedScene" uid="uid://bn3xasvf52s6c" path="res://bg/test/testworld.tscn" id="1_s2xbw"]
+[ext_resource type="Texture2D" uid="uid://dj23justlvsi" path="res://bg/test/crystal.png" id="2_ilduj"]
 [ext_resource type="Script" uid="uid://q5xnt15chloy" path="res://arts.gd" id="2_t2ehl"]
-[ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="4_8tn2x"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="5_ivycn"]
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="6_q1uvj"]
 [ext_resource type="Script" uid="uid://2lcdr4gn4bos" path="res://fps.gd" id="7_q1uvj"]
@@ -10,6 +12,261 @@
 [ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://prefab/player/default/player.tscn" id="9_5p7c2"]
 [ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="9_c4vo5"]
 [ext_resource type="Script" uid="uid://b4ennie6h0p38" path="res://system/ui/power_bar.gd" id="9_cqdos"]
+[ext_resource type="Script" uid="uid://b3gknb1608v3o" path="res://system/vfx/screen_warp.gd" id="11_ilduj"]
+[ext_resource type="Texture2D" uid="uid://cu2lpa0ptso62" path="res://system/ui/items/hakkero.png" id="13_rc7cs"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ilduj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s2xbw"]
+
+[sub_resource type="Sky" id="Sky_ilduj"]
+sky_material = SubResource("ProceduralSkyMaterial_s2xbw")
+
+[sub_resource type="Environment" id="Environment_s2xbw"]
+background_mode = 2
+sky = SubResource("Sky_ilduj")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="World3D" id="World3D_rdfvj"]
+environment = SubResource("Environment_s2xbw")
+camera_attributes = SubResource("CameraAttributesPractical_ilduj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rc7cs"]
+
+[sub_resource type="Shader" id="Shader_s2xbw"]
+code = "shader_type canvas_item;
+
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+uniform vec2 boss_center;
+uniform float boss_force;
+uniform float boss_size;
+
+uniform vec2 player_center;
+uniform float player_force;
+uniform float player_size;
+
+uniform float thickness;
+uniform float abberation = 0.01;
+
+void fragment() {
+	float ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
+		vec3 boss_mask;
+	vec3 player_mask;
+
+	boss_mask.r = (1.0 - smoothstep(
+		boss_size - 0.1,
+		boss_size,
+		length(UV - boss_center)
+	)) * smoothstep(
+		boss_size - thickness - 0.1,
+		boss_size - 0.1,
+		length(UV - boss_center)
+	);
+
+	boss_mask.g = (1.0 - smoothstep(
+		boss_size - 0.1 - abberation, boss_size,
+		length(UV - boss_center)
+	)) * smoothstep(
+		boss_size - thickness - 0.1 - abberation,
+		boss_size - 0.1,
+		length(UV - boss_center)
+	);
+
+	boss_mask.b = (1.0 - smoothstep(
+		boss_size - 0.1 - abberation * 2.0,
+		boss_size,
+		length(UV - boss_center)
+	)) * smoothstep(
+		boss_size - thickness - 0.1 - abberation * 2.0,
+		boss_size-0.1,
+		length(UV - boss_center)
+	);
+
+	vec2 boss_dispr = normalize(UV - boss_center) * boss_force * boss_mask.r;
+	vec2 boss_dispg = normalize(UV - boss_center) * boss_force * boss_mask.g;
+	vec2 boss_dispb = normalize(UV - boss_center) * boss_force * boss_mask.b;
+
+	player_mask.r = (1.0 - smoothstep(
+		player_size - 0.1,
+		player_size,
+		length(UV - player_center)
+	)) * smoothstep(
+		player_size - thickness - 0.1,
+		player_size - 0.1,
+		length(UV - player_center)
+	);
+
+	player_mask.g = (1.0 - smoothstep(
+		player_size - 0.1 - abberation, player_size,
+		length(UV - player_center)
+	)) * smoothstep(
+		player_size - thickness - 0.1 - abberation,
+		player_size - 0.1,
+		length(UV - player_center)
+	);
+
+
+	player_mask.b = (1.0 - smoothstep(
+		player_size - 0.1 - abberation * 2.0,
+		player_size,
+		length(UV - player_center)
+	)) * smoothstep(
+		player_size - thickness - 0.1 - abberation * 2.0,
+		player_size-0.1,
+		length(UV - player_center)
+	);
+
+	vec2 player_dispr = normalize(UV - player_center) * player_force * player_mask.r;
+	vec2 player_dispg = normalize(UV - player_center) * player_force * player_mask.g;
+	vec2 player_dispb = normalize(UV - player_center) * player_force * player_mask.b;
+
+
+	COLOR.rgb = vec3(
+		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispr - player_dispr).r,
+		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispg - player_dispg).g,
+		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispb - player_dispb).b
+	);
+
+
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdfvj"]
+shader = SubResource("Shader_s2xbw")
+shader_parameter/boss_center = Vector2(0.5, 0.5)
+shader_parameter/boss_force = 0.0
+shader_parameter/boss_size = 0.0
+shader_parameter/player_center = Vector2(0.5, 0.5)
+shader_parameter/player_force = 0.0
+shader_parameter/player_size = 0.0
+shader_parameter/thickness = 0.25
+shader_parameter/abberation = 0.15000000000873115
+
+[sub_resource type="Animation" id="Animation_rdfvj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/boss_force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/boss_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_s2xbw"]
+resource_name = "warp"
+length = 1.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/boss_force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/boss_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iw7q2"]
+_data = {
+&"RESET": SubResource("Animation_rdfvj"),
+&"warp": SubResource("Animation_s2xbw")
+}
+
+[sub_resource type="Animation" id="Animation_ctmup"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/player_force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/player_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_q8vq6"]
+resource_name = "warp"
+length = 1.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/player_force")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.1999999999970896]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/player_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nm833"]
+_data = {
+&"RESET": SubResource("Animation_ctmup"),
+&"warp": SubResource("Animation_q8vq6")
+}
 
 [sub_resource type="Shader" id="Shader_vwb7u"]
 code = "shader_type canvas_item;
@@ -134,33 +391,77 @@ shader_parameter/fluid_alpha = 1.0
 [node name="root" type="Node2D" parent="."]
 position = Vector2(460, 40)
 
+[node name="BackgroundViewportContainer" type="SubViewportContainer" parent="root"]
+custom_minimum_size = Vector2(1128, 1128)
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 1064.0
+offset_bottom = 1064.0
+stretch = true
+
+[node name="BackgroundViewport" type="SubViewport" parent="root/BackgroundViewportContainer"]
+own_world_3d = true
+world_3d = SubResource("World3D_rdfvj")
+handle_input_locally = false
+anisotropic_filtering_level = 0
+oversampling = false
+size = Vector2i(1128, 1128)
+render_target_update_mode = 4
+
+[node name="Node3D" parent="root/BackgroundViewportContainer/BackgroundViewport" instance=ExtResource("1_s2xbw")]
+
 [node name="PlayerLoader" parent="root" instance=ExtResource("8_30nhk")]
 players = Array[PackedScene]([ExtResource("9_5p7c2")])
 
-[node name="arts" type="Node2D" parent="root"]
+[node name="Sprite2D" type="Sprite2D" parent="root"]
+visible = false
+z_index = -50
+material = SubResource("ShaderMaterial_rc7cs")
+position = Vector2(500, 500)
+scale = Vector2(1000, 1000)
+texture = ExtResource("9_c4vo5")
+
+[node name="testscript" type="Node2D" parent="root"]
 script = ExtResource("2_t2ehl")
 texture = ExtResource("6_q1uvj")
 mat = ExtResource("5_ivycn")
 
-[node name="GDExample" type="GDExample" parent="root/arts"]
-amplitude = 500.0
-visible = false
-texture = ExtResource("4_8tn2x")
+[node name="ScreenWarp" type="Sprite2D" parent="root"]
+z_index = 100
+material = SubResource("ShaderMaterial_rdfvj")
+scale = Vector2(1000, 1000)
+texture = ExtResource("9_c4vo5")
+centered = false
+script = ExtResource("11_ilduj")
 
-[node name="Label" type="Label" parent="."]
-z_index = 20
-offset_right = 126.0
-offset_bottom = 30.0
-scale = Vector2(3, 3)
-text = "FPS"
-script = ExtResource("7_q1uvj")
+[node name="BossWarpAnimator" type="AnimationPlayer" parent="root/ScreenWarp"]
+libraries = {
+&"": SubResource("AnimationLibrary_iw7q2")
+}
+
+[node name="PlayerWarpAnimator" type="AnimationPlayer" parent="root/ScreenWarp"]
+libraries = {
+&"": SubResource("AnimationLibrary_nm833")
+}
 
 [node name="UI" type="Control" parent="."]
+visible = false
 z_index = 50
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="UI"]
+z_index = 20
+layout_mode = 0
+offset_left = 22.0
+offset_top = 425.0
+offset_right = 148.0
+offset_bottom = 455.0
+scale = Vector2(3, 3)
+text = "FPS"
+script = ExtResource("7_q1uvj")
 
 [node name="BG" type="TextureRect" parent="UI"]
 layout_mode = 0
@@ -176,3 +477,80 @@ script = ExtResource("9_cqdos")
 material = SubResource("ShaderMaterial_cqdos")
 scale = Vector2(128, 512)
 texture = ExtResource("9_c4vo5")
+
+[node name="Shop" type="Control" parent="UI"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Darken" type="ColorRect" parent="UI/Shop"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.66700006)
+
+[node name="Container" type="BoxContainer" parent="UI/Shop"]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 32.0
+offset_right = 1460.0
+offset_bottom = 1032.0
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Shop/Container"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Items" type="VBoxContainer" parent="UI/Shop/Container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 800)
+layout_mode = 2
+
+[node name="Item0" type="HBoxContainer" parent="UI/Shop/Container/VBoxContainer/Items"]
+layout_mode = 2
+
+[node name="IconContainer" type="BoxContainer" parent="UI/Shop/Container/VBoxContainer/Items/Item0"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="UI/Shop/Container/VBoxContainer/Items/Item0/IconContainer"]
+layout_mode = 2
+texture = ExtResource("13_rc7cs")
+
+[node name="Itm0" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Items/Item0"]
+custom_minimum_size = Vector2(650, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HSeparator" type="HSeparator" parent="UI/Shop/Container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="Rerolls" type="HBoxContainer" parent="UI/Shop/Container/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Banish" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
+custom_minimum_size = Vector2(400, 128)
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
+layout_mode = 2
+
+[node name="Reroll" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
+custom_minimum_size = Vector2(400, 128)
+layout_mode = 2
+
+[node name="Node2D" type="Node2D" parent="."]
+visible = false
+
+[node name="Sky" type="Sprite2D" parent="Node2D"]
+scale = Vector2(1.128, 1.128)
+texture = ExtResource("1_d1b21")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="Node2D"]
+scale = Vector2(1.128, 1.128)
+texture = ExtResource("2_ilduj")
+centered = false

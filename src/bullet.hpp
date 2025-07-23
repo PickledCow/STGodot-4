@@ -33,7 +33,12 @@ enum processMode { A1, A2, A3, B1, B2, B3 };
 enum bounceMode { BOUNCE, WARP };
 enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
-enum pools { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL };
+enum BULLET_ID_STRUCTURE {
+    BULLET_ID_CYCLE,
+    BULLET_ID_POOL,
+    BULLET_ID_INDEX
+};
+
 
 const int NO_CHANGE = -256*256*256;
 
@@ -47,9 +52,7 @@ struct BulletID {
 		cycle(cycle), set(set), index(index) {}
 };
 
-// A super basic struct for the enemy hitbox and damage reports.
-// Automatically tracks damage taken the current frame
-struct Enemy {
+struct AbstractPoolItem {
     // The reuse count of the enemy. Used to check if the enemy has despawned and is being recycled.
     int cycle = 0;
     // The index of the enemy in the pool. This value changes as its position in the pool is shuffled around.
@@ -59,6 +62,11 @@ struct Enemy {
 
     // Position of the enemy in the world.
     Vector2 position = Vector2();
+};
+
+// A super basic struct for the enemy hitbox and damage reports.
+// Automatically tracks damage taken the current frame
+struct Enemy : AbstractPoolItem {
     // Size of the hitbox (enemy gets hurt).
     double hitbox_size = 16.0;
     // Size of the hurtbox (player gets hurt).
@@ -74,9 +82,7 @@ struct Enemy {
 // corresponding BulletKit is able to act upon.
 // The base bullet is able to keep track of general rendering properties along 
 // with other critical behaviour.
-struct AbstractBullet {
-
-    public:
+struct AbstractBullet : AbstractPoolItem {
     // ----------------------------------------
     // Critical internal varaibles.  No setter/getter is provided for these.
     // ----------------------------------------
@@ -85,12 +91,6 @@ struct AbstractBullet {
     RID item_rid;
     // Order at which the bullet is drawn in among bullets with the same layer, lowest to highest.
     int draw_index = 0;
-    // The reuse count of the bullet. Used to check if the bullet has despawned and is being recycled.
-    int cycle = 0;
-    // The index of the bullet in the pool. This value changes as its position in the pool is shuffled around.
-    int pool_index = 0;
-    // The initial index of the bullet in the pool. This value does not change if the bullet changes positions in the pool.
-    int persistent_index = -1;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
     // Flag for tracking if the bullet is currently fading.
@@ -213,10 +213,48 @@ struct Bullet : CollisionBullet {
 struct Laser : Bullet {
     // How long the laser is.
     double length;
+    // The width of the laser
+    double width;
     // How much of the length is actually damaging.
-    double length_hitbox_scale = 0.5;
+    double start_margin = 0.5;
+    double end_margin = 0.5;
+    // If the laser is flipped or not. Straight lasers have their position at the start rather than their tip.
+    bool flipped = false;
+
+    // Resource ID for the spawn sprite.
+    RID spawn_item_rid;
+    // Transfomr for the spawn sprite.
+    Transform2D spawn_transform;
 };
 
+// Curve lasers, behave too differently from regular lasers to extend off them
+struct CurveLaser: Bullet {
+    // RID of the rendered mesh
+    RID mesh_rid;
+    // Starting position for the spawn glow
+    Vector2 start_position;
+    // How long the laser is in frames
+    int length;
+    // The width of the laser
+    double width;
+    // The list of points on the laser.
+    PackedVector2Array points;
+    // // List of vertices of the laser mesh.
+    // PackedVector2Array vertices;
+    // // List of UVs of the laser mesh. If timescale is 1.0, these values do not need to change.
+    // PackedVector2Array uvs;
+    // Used to keep track of what fraction of a frame we are off to adjust moving the UVs by to compensate.
+    double timestep_fraction;
+    // The first node that has collision.
+    int collision_start_node_index;
+    // The last node that has collision, exclusive.
+    int collision_end_node_index;
+
+    // Resource ID for the spawn sprite.
+    RID spawn_item_rid;
+    // Transfomr for the spawn sprite.
+    Transform2D spawn_transform;
+};
 
 // 
 struct Item : CollisionBullet {

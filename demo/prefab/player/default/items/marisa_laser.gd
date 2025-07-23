@@ -6,7 +6,9 @@ const GLOW_WIDTH := 0.5
 var laser_fade_in_time := 6.0
 var laser_fade_in_timer := 0.0
 
+@warning_ignore("unused_parameter")
 func upgrade_to_level(next_level: int):
+	@warning_ignore("integer_division")
 	var middle = level / 2
 	var angle_dif = TAU / 24.0
 	for i in level:
@@ -45,7 +47,7 @@ func process_item(time_scale: float, _player_position: Vector2):
 		laser.scale.y = LASER_WIDTH * (1.0 - laser_fade_in_timer / laser_fade_in_time)
 		glow.scale = Vector2.ONE * GLOW_WIDTH * (1.0 - laser_fade_in_timer / laser_fade_in_time)
 		
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for i in level:
 		var glow := $Glows.get_child(i)
 		glow.rotation += 2.3999632297

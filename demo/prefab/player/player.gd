@@ -178,6 +178,8 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 ## Enables a more restrictive style of  deathbombs where the deathbomb window 
 ## does not reset until death and makes subsequent deathbombs in one life harder. 
 @export var diminishing_deathbomb_window := false
+## If we respawn or just gain i-frames on death. If false, uses respawn_i_frames for i-frames.
+@export var respawn_on_death := true
 ## How many ticks it takes to die.
 @export_range(0, 300, 1, "or_greater") var death_time := 60
 ## How many ticks to respawn before control is returned to the player.
@@ -187,7 +189,7 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 ## How much the player moves while respawning to reach [member Player.respawn_position].
 @export var respawn_travel := Vector2(0, -200)
 ## How many ticks of invulnerability the player has after respawning.
-@export_range(0, 300, 1, "or_greater") var respawn_i_frames := 180
+@export_range(0, 600, 1, "or_greater") var respawn_i_frames := 240.0
 
 @export_group("Movement")
 ## Unfocused (fast) movement speed of the player in pixels per tick.
@@ -293,7 +295,8 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 @export_range(0, 16, 1, "or_greater") var transition_frame_count := 0
 ## How long each frame of animation should last in seconds.
 @export_range(0.01, 2.0, 0.1, "or_greater") var animation_speed := 0.1
-
+## The flash cycle duration for i-frames in seconds.
+@export_range(0.1, 2, 0.1, "or_greater") var i_frame_flash_cycle_duration := 1.0
 
 @export_group("", "")
 #endregion
@@ -365,6 +368,8 @@ var animation_timer := 0.0
 var animation_frame := 0
 ## Current state of animation.
 var animation_state := ANIMATION_STATE.IDLE
+## I-frame flash timer
+var i_frame_animation_timer := 0.0
 
 #endregion
 
@@ -414,7 +419,13 @@ func update_animation_state(dir: float) -> void:
 		animation_frame = 0
 	
 func hit():
-	pass
+	if respawn_on_death:
+		pass
+	else:
+		current_i_frames = respawn_i_frames
+		i_frame_animation_timer = 0.0
+		SFX.play("death")
+		System.warp_player(position)
 
 ## Goes through the list of items we've collected and performs the appropriate
 ## actions for them. 
@@ -678,14 +689,29 @@ func animation(delta) -> void:
 	focus_over.rotation -= delta
 	
 	if GameInput.is_action_just_pressed("player_focus"):
-		
 		$FocusAnimation.play("focus")
 	if GameInput.is_action_just_released("player_focus"):
 		$FocusAnimation.play_backwards("focus")
 	
+	if current_i_frames > 0.0:
+		i_frame_animation_timer += delta
+		while i_frame_animation_timer >= i_frame_flash_cycle_duration:
+			i_frame_animation_timer -= i_frame_flash_cycle_duration
+	
+		$Sprite.modulate = Color.WHITE if i_frame_animation_timer > i_frame_flash_cycle_duration * 0.5 else Color.BLUE
+
+func reset_sprite_modulation() -> void:
+	$Sprite.modulate = Color.WHITE
+
 
 ## Checks collisions for bullets and items and acts accordingly,
-func collision() -> void:
+func collision(time_scale) -> void:
+	if current_i_frames > 0.0:
+		current_i_frames -= time_scale
+		if current_i_frames <= 0.0:
+			current_i_frames = 0.0
+			reset_sprite_modulation()
+		
 	var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
 	
 	if position.y < autocollect_height:
@@ -704,8 +730,8 @@ func collision() -> void:
 	if len(items) > 0:
 		SFX.play("item")
 	
-	if len(collisions[0]) > 0:
-		SFX.play("death")
+	if len(collisions[0]) > 0 and current_i_frames <= 0.0:
+		hit()
 		
 	if len(collisions[1]) > 0:
 		SFX.play("graze")
@@ -748,7 +774,7 @@ func _process(delta: float) -> void:
 	animation(delta)
 	var time_scale := Engine.time_scale
 	movement(time_scale)
-	collision()
+	collision(time_scale)
 	shooting(time_scale)
 	dying(time_scale)
 	

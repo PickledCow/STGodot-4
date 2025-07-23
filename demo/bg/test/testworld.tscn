@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bn3xasvf52s6c"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_0a6n8"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9358383, 0.35242972, 0, -0.35242972, 0.9358383, 0, 1.3566368, -0.72791076)
+far = 250.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.42655638, 0.213235, -0.87896556, -0.09309792, 0.97700095, 0.19183832, 0.89965683, 0, 0.4365977, 0.26472688, -0.09210181, -3.0052962)
+mesh = SubResource("PrismMesh_0a6n8")

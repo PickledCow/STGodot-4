@@ -13,6 +13,7 @@ enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POW
 ##
 
 var player : Player
+var warp_rect : WarpRect
 
 
 @export var playfield_size := Vector2(1000, 1000)
@@ -27,11 +28,13 @@ var score := 0
 
 var time_scale := 1.0
 
-
 #region Registration Functions
 
 func register_player(node: Player) -> void:
 	player = node
+
+func register_warp_rect(node: WarpRect) -> void:
+	warp_rect = node
 
 #endregion
 
@@ -49,7 +52,7 @@ func collect_point_items(count: int) -> void:
 #endregion
 
 
-#region Query  Functions
+#region Query Functions
 
 func get_bullet_data(type: int, color: int) -> PackedFloat64Array:
 	return bullet_constructor.get_bullet_data(type, color)
@@ -57,4 +60,16 @@ func get_bullet_data(type: int, color: int) -> PackedFloat64Array:
 func get_item_data(type: int) -> PackedFloat64Array:
 	return bullet_constructor.get_item_data(type)
 	
+#endregion
+
+#region Command Functions
+
+func warp_player(pos: Vector2) -> void:
+	if warp_rect:
+		warp_rect.warp_player(pos)
+	
+func warp_boss(pos: Vector2) -> void:
+	if warp_rect:
+		warp_rect.warp_boss(pos)
+
 #endregion
