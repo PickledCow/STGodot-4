@@ -56,6 +56,7 @@ func process_item(time_scale: float, player_position: Vector2):
 			
 		
 	fire_timer -= time_scale
+	#print(fire_timer)
 
 func _process(delta: float) -> void:
 	for option in get_children():

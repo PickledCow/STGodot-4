@@ -1,7 +1,6 @@
-[gd_scene load_steps=31 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=30 format=3 uid="uid://18jtj8q2lok4"]
 
 [ext_resource type="Texture2D" uid="uid://bg88w4djr6suk" path="res://bg/test/crystal sky.png" id="1_d1b21"]
-[ext_resource type="PackedScene" uid="uid://bn3xasvf52s6c" path="res://bg/test/testworld.tscn" id="1_s2xbw"]
 [ext_resource type="Texture2D" uid="uid://dj23justlvsi" path="res://bg/test/crystal.png" id="2_ilduj"]
 [ext_resource type="Script" uid="uid://q5xnt15chloy" path="res://arts.gd" id="2_t2ehl"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="5_ivycn"]
@@ -399,7 +398,7 @@ offset_right = 1064.0
 offset_bottom = 1064.0
 stretch = true
 
-[node name="BackgroundViewport" type="SubViewport" parent="root/BackgroundViewportContainer"]
+[node name="BackgroundViewport2" type="SubViewport" parent="root/BackgroundViewportContainer"]
 own_world_3d = true
 world_3d = SubResource("World3D_rdfvj")
 handle_input_locally = false
@@ -408,7 +407,18 @@ oversampling = false
 size = Vector2i(1128, 1128)
 render_target_update_mode = 4
 
-[node name="Node3D" parent="root/BackgroundViewportContainer/BackgroundViewport" instance=ExtResource("1_s2xbw")]
+[node name="Node2D" type="Node2D" parent="root/BackgroundViewportContainer/BackgroundViewport2"]
+visible = false
+
+[node name="Sky" type="Sprite2D" parent="root/BackgroundViewportContainer/BackgroundViewport2/Node2D"]
+scale = Vector2(1.128, 1.128)
+texture = ExtResource("1_d1b21")
+centered = false
+
+[node name="Floor" type="Sprite2D" parent="root/BackgroundViewportContainer/BackgroundViewport2/Node2D"]
+scale = Vector2(1.128, 1.128)
+texture = ExtResource("2_ilduj")
+centered = false
 
 [node name="PlayerLoader" parent="root" instance=ExtResource("8_30nhk")]
 players = Array[PackedScene]([ExtResource("9_5p7c2")])
@@ -445,7 +455,6 @@ libraries = {
 }
 
 [node name="UI" type="Control" parent="."]
-visible = false
 z_index = 50
 layout_mode = 3
 anchors_preset = 0
@@ -541,16 +550,3 @@ layout_mode = 2
 [node name="Reroll" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
 custom_minimum_size = Vector2(400, 128)
 layout_mode = 2
-
-[node name="Node2D" type="Node2D" parent="."]
-visible = false
-
-[node name="Sky" type="Sprite2D" parent="Node2D"]
-scale = Vector2(1.128, 1.128)
-texture = ExtResource("1_d1b21")
-centered = false
-
-[node name="Floor" type="Sprite2D" parent="Node2D"]
-scale = Vector2(1.128, 1.128)
-texture = ExtResource("2_ilduj")
-centered = false

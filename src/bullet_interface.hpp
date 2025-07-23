@@ -5,7 +5,6 @@
 #include <math.h>
 
 #include <bullet.hpp>
-#include <bullet_pool.hpp>
 
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -183,7 +182,7 @@ private:
 	void _init_lasers();
 	void _init_curve_lasers();
 
-	bool _process_bullet(Bullet* bullet, double delta, bool skip_fade);
+	bool _process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check);
 	bool _process_item(Item* item, double delta);
 	bool _process_particle(Particle* particle, double delta);
 	bool _process_enemy(Enemy* enemy, double delta);
@@ -204,6 +203,9 @@ private:
 	void _release_enemy(int index);
 	void _release_laser(int index);
 	void _release_curve_laser(int index);
+
+	// Cuts a curve laser into two 
+	void _cut_curve_laser(CurveLaser* laser, int collision_point);
 	
 	template<typename T>
 	void _swap(T &a, T &b) {

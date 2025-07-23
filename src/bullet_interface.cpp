@@ -550,14 +550,19 @@ void BulletInterface::_bind_methods() {
 		"position"), 
 		&BulletInterface::set_position
 	);
-
+	// ---
 	ClassDB::bind_method(D_METHOD(
-		"collide_and_graze_player",
-		"position",
-		"hitbox_radius",
-		"graze_radius"), 
-		&BulletInterface::collide_and_graze_player
+		"get_wvel",
+		"bullet_id"), 
+		&BulletInterface::get_wvel
 	);
+	ClassDB::bind_method(D_METHOD(
+		"set_wvel",
+		"bullet_id",
+		"wvel"), 
+		&BulletInterface::set_wvel
+	);
+
 	/* #endregion */
 
 	/* #region Actions */
@@ -566,6 +571,14 @@ void BulletInterface::_bind_methods() {
 		"clear_entity",
 		"id"), 
 		&BulletInterface::clear_entity
+	);
+
+	ClassDB::bind_method(D_METHOD(
+		"collide_and_graze_player",
+		"position",
+		"hitbox_radius",
+		"graze_radius"), 
+		&BulletInterface::collide_and_graze_player
 	);
 
 	ClassDB::bind_method(D_METHOD(
@@ -1385,7 +1398,7 @@ void BulletInterface::_process(double delta) {
 
 	for (int i = total_bullets - 1; i >= available_bullets; --i) {
 		Bullet* bullet = bullet_pool[i];
-		if (_process_bullet(bullet, time_scale, false)) {
+		if (_process_bullet(bullet, time_scale, false, false)) {
 			_release_bullet(i);
 			i += 1;
 			continue;
@@ -1396,7 +1409,7 @@ void BulletInterface::_process(double delta) {
 	
 	for (int i = total_shots - 1; i >= available_shots; --i) {
 		Bullet* shot = shot_pool[i];
-		if (_process_bullet(shot, time_scale, false)) {
+		if (_process_bullet(shot, time_scale, false, false)) {
 			_release_shot(i);
 			i += 1;
 			continue;
@@ -1457,7 +1470,7 @@ void BulletInterface::_process(double delta) {
 
 }
 
-bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fade) {
+bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check) {
 	Vector2 origin = bullet->position;
 
     int bounce_count = 0;
@@ -1476,7 +1489,7 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fa
 	if (!skip_fade) _fade_in_bullet(bullet, delta);
 
     // Auto delete conditions, outside bounds or lifespan depleted
-    if((!active_rect.has_point(bullet->position) && bullet->auto_delete) || bullet->lifetime >= bullet->lifespan) {
+    if((!active_rect.has_point(bullet->position) && bullet->auto_delete && !skip_rect_check) || bullet->lifetime >= bullet->lifespan) {
 		return true;
     }
 
@@ -1733,7 +1746,13 @@ bool BulletInterface::_process_enemy(Enemy* enemy, double delta) {
 
 bool BulletInterface::_process_laser(Laser* laser, double delta) {
 	// Mostly can use bullet logic
-	bool to_return = _process_bullet(laser, delta, false);
+	bool to_return = _process_bullet(laser, delta, false, true);
+
+	to_return = to_return || (
+		!active_rect.has_point(laser->position) &&
+		!active_rect.has_point(laser->position + laser->direction * laser->length) && 
+		laser->auto_delete
+	);
 
 	// Move laser spawn graphics
 	// Rotate glow randomly
@@ -1748,7 +1767,13 @@ bool BulletInterface::_process_laser(Laser* laser, double delta) {
 
 bool BulletInterface::_process_curve_laser(CurveLaser* laser, double delta) {
 	// Mostly can use bullet logic
-	bool to_return = _process_bullet(laser, delta, true);
+	bool to_return = _process_bullet(laser, delta, true, true);
+	// Check if both first and last points are both offscreen, or if the laser is size 0.
+	to_return = to_return || (
+		!active_rect.has_point(laser->position) &&
+		!active_rect.has_point(laser->points[laser->length-1]) &&
+		laser->auto_delete) || 
+	(laser->mesh_end_node_index <= laser->mesh_start_node_index);
 
 	if (laser->fading) {
 		laser->fade_timer -= delta;
@@ -1766,6 +1791,11 @@ bool BulletInterface::_process_curve_laser(CurveLaser* laser, double delta) {
 			rendering_server->canvas_item_clear(laser->spawn_item_rid);
 		}
 	}
+	// Update the points
+	for (int i = laser->length-1; i > 0; --i) {
+		laser->points[i] = laser->points[i-1];
+	}
+	laser->points[0] = laser->position;
 
 	// Update the vertices,
 	Vector2 normal = Vector2(0.0, laser->width * 0.5).rotated(laser->angle);
@@ -1933,6 +1963,154 @@ void BulletInterface::_release_curve_laser(int index) {
 }
 
 
+void BulletInterface::_cut_curve_laser(CurveLaser* laser, int collision_point) {
+	// Radius around the collision point to also delete
+	int margin = 4;
+
+	// Don't cut the laser if we hit it at the very front
+	if (collision_point < laser->mesh_start_node_index + margin) return;
+	if (collision_point > laser->mesh_end_node_index - margin) return;
+
+	// Create a duplicate of the first laser.
+	// We need to calculate new margins for the lasers as they're much shorter now.
+	
+	// New laser
+	// Cut Foint + Old Margin * New Length / Old Length
+	int back_laser_start_margin = collision_point + laser->collision_start_node_index * (laser->length - collision_point) / laser->length + margin;
+	// Old Margin * New Length / Old Length
+	int back_laser_end_margin = (laser->length - laser->collision_end_node_index + 1) * (laser->length - collision_point) / laser->length;;
+	PackedInt64Array new_id = create_curve_laser(
+		laser->start_position, laser->speed, laser->angle, laser->length-1, laser->width, 
+		back_laser_start_margin + 1, // +1 to adjust for integer division
+		back_laser_end_margin + 1,
+		laser->laser_data_copy,
+		laser->additive
+	);
+	
+	// TODO, check new_id is real and act properly on it
+	if (new_id == invalid_id) return;
+	
+	// Old laser
+	// Old Margin * New Length / Old Length
+	int front_laser_start_margin = laser->collision_start_node_index * collision_point / laser->length;
+	// Cut Foint + Old Margin * New Length / Old Length
+	int front_laser_end_margin = (laser->mesh_end_node_index - collision_point) / Math::min(1, laser->mesh_end_node_index - laser->mesh_start_node_index) - margin;
+	laser->collision_start_node_index = front_laser_start_margin + 1; // +1 to adjust for integer division
+	laser->collision_end_node_index = collision_point - front_laser_end_margin + 1 - margin;
+
+
+	CurveLaser* new_laser = curve_laser_pool[persistent_curve_laser_index[new_id[BULLET_ID_INDEX]]];
+	// Copy over laser specific stuff
+	new_laser->position = laser->position;
+	new_laser->points = laser->points.duplicate();
+	// Make the back laser have the start glow instead, front laser loses that now.
+	if (laser->fading) {
+		new_laser->fade_timer = laser->fade_timer;
+		laser->fade_timer = 0.0;
+	} else {
+		new_laser->fade_timer = 0.0;
+		new_laser->fading = false;
+		rendering_server->canvas_item_clear(new_laser->spawn_item_rid);
+	}
+
+
+
+	// TODO: will need to hae more data get copied over such as transforms
+	new_laser->process_mode = laser->process_mode;
+	new_laser->max_speed = laser->max_speed;
+	new_laser->accel = laser->accel;
+	new_laser->bounce_mode = laser->bounce_mode;
+	new_laser->bounce_count = laser->bounce_count;
+	new_laser->bounce_surfaces = laser->bounce_surfaces;
+	new_laser->wvel = laser->wvel;
+	new_laser->waccel = laser->waccel;
+	new_laser->max_wvel = laser->max_wvel;
+
+
+	// Update the start and end of the mesh anchors.
+	new_laser->mesh_end_node_index = laser->mesh_end_node_index;
+	new_laser->mesh_start_node_index = collision_point + margin;
+	laser->mesh_end_node_index = collision_point - margin;
+	
+
+	// Update the UVs of the texture using old ones as base.
+
+	// Get the arrays
+	Array laser_arrays = rendering_server->mesh_surface_get_arrays(laser->mesh_rid, 0);
+
+	PackedVector2Array front_laser_vertices = laser_arrays[rendering_server->ARRAY_VERTEX].duplicate(); // Reusing this directly again
+	PackedVector2Array front_laser_uvs = laser_arrays[rendering_server->ARRAY_TEX_UV].duplicate();
+	PackedVector2Array back_laser_vertices = laser_arrays[rendering_server->ARRAY_VERTEX].duplicate(); // Reusing this directly again
+	PackedVector2Array back_laser_uvs = laser_arrays[rendering_server->ARRAY_TEX_UV].duplicate();
+	
+
+	// Update UV values
+	// Front laser we only have to update values from the start node, earlier ones are already 0.0
+	double front_laser_length = Math::max(double(laser->mesh_end_node_index - laser->mesh_start_node_index - 1.0), 1.0);
+	
+	// Pad the head with 0.0s
+	for (int i = 0; i < laser->mesh_start_node_index; ++i) {
+		front_laser_uvs[2*i] = Vector2(0.0, 0.0);
+		front_laser_uvs[2*i+1] = Vector2(1.0, 0.0);
+	}
+	// Calculate body
+	for (int i = laser->mesh_start_node_index; i < laser->mesh_end_node_index; ++i) {
+		front_laser_uvs[2*i] = Vector2(0.0, double(i - laser->mesh_start_node_index) / front_laser_length);
+		front_laser_uvs[2*i+1] = Vector2(1.0, double(i - laser->mesh_start_node_index) / front_laser_length);
+	}
+	// Pad the remaining tail with 1.0s
+	for (int i = laser->mesh_end_node_index; i < laser->length; ++i) {
+		front_laser_uvs[2*i] = Vector2(0.0, 1.0);
+		front_laser_uvs[2*i+1] = Vector2(1.0, 1.0);
+	}
+
+	// Back laser we only have to update values upto the end note 
+	double back_laser_length = Math::max(double(new_laser->mesh_end_node_index - new_laser->mesh_start_node_index - 1.0), 1.0);
+	
+	// Pad the head with 0.0s
+	for (int i = 0; i < new_laser->mesh_start_node_index; ++i) {
+		back_laser_uvs[2*i] = Vector2(0.0, 0.0);
+		back_laser_uvs[2*i+1] = Vector2(1.0, 0.0);
+	}
+	// Calculate body
+	for (int i = new_laser->mesh_start_node_index; i < new_laser->mesh_end_node_index; ++i) {
+		back_laser_uvs[2*i] = Vector2(0.0, double(i - new_laser->mesh_start_node_index) / back_laser_length);
+		back_laser_uvs[2*i+1] = Vector2(1.0, double(i - new_laser->mesh_start_node_index) / back_laser_length);
+	}
+	// Pad the remaining tail with 1.0s
+	for (int i = new_laser->mesh_end_node_index; i < new_laser->length; ++i) {
+		back_laser_uvs[2*i] = Vector2(0.0, 1.0);
+		back_laser_uvs[2*i+1] = Vector2(1.0, 1.0);
+	}
+
+	// Update with new data
+	Array new_front_laser_array = Array();
+	Array new_back_laser_array = Array();
+	
+	new_front_laser_array.resize(rendering_server->ARRAY_MAX);
+	new_back_laser_array.resize(rendering_server->ARRAY_MAX);
+
+	new_front_laser_array[rendering_server->ARRAY_VERTEX] = front_laser_vertices;
+	new_front_laser_array[rendering_server->ARRAY_TEX_UV] = front_laser_uvs;
+	new_back_laser_array[rendering_server->ARRAY_VERTEX] = back_laser_vertices;
+	new_back_laser_array[rendering_server->ARRAY_TEX_UV] = back_laser_uvs;
+
+
+
+	// Remove old meshes and replace with new ones
+	rendering_server->mesh_clear(laser->mesh_rid);
+	rendering_server->mesh_add_surface_from_arrays(
+		laser->mesh_rid, rendering_server->PRIMITIVE_TRIANGLE_STRIP, new_front_laser_array,
+		Array(), Dictionary(), rendering_server->ARRAY_FLAG_USE_2D_VERTICES
+	);
+
+	rendering_server->mesh_clear(new_laser->mesh_rid);
+	rendering_server->mesh_add_surface_from_arrays(
+		new_laser->mesh_rid, rendering_server->PRIMITIVE_TRIANGLE_STRIP, new_back_laser_array,
+		Array(), Dictionary(), rendering_server->ARRAY_FLAG_USE_2D_VERTICES
+	);
+}
+
 // ---
 
 void BulletInterface::enable_bullet(Bullet* bullet) {
@@ -1996,7 +2174,6 @@ void BulletInterface::enable_curve_laser(CurveLaser* laser) {
     laser->fading = true;
     laser->transforms.clear();
     laser->custom_data.clear();
-	// Create the mesh
 
 	// TODO: Add customisation
 	laser->fade_time = lasers_fade_time;
@@ -2235,15 +2412,13 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 		}
 	}
 
-	// Lasers
+	// Lasers TODO add logic for loose lasers
 	for (int i = total_lasers - 1; i >= available_lasers; --i) {
 		Laser* laser = laser_pool[i];
 
 		// Skip if the laser hasn't spawned in yet.
 		if (laser->fade_timer > 0.0) continue;
 
-		// This algorithm gets the player position relative to the laser and then performs AABB.
-		// The laser after the operation is assumed to be at (0,0) extending right.
 
 		// Calculate how much margin to move the start and end by for collision checks.
 		// e.g. If 90% collision, 5% each side for a value of 0.05.
@@ -2251,6 +2426,9 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 		Vector2 dir = laser->direction;
 		// If we have a "loose laser", the laser is not flipped and the direction should be reversed.
 		if (!laser->flipped) dir *= -1.0;
+
+		// This algorithm gets the player position relative to the laser and then performs AABB.
+		// The laser after the operation is assumed to be at (0,0) extending right.
 
 		// Get the coordinates of the laser start and end.
 		Vector2 p1 = laser->position; //laser->position + dir * margin;
@@ -2293,6 +2471,67 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 				}
 			}
 		}
+	}
+
+	// Curve lasers
+	for (int i = total_curve_lasers - 1; i >= available_curve_lasers; --i) {
+		CurveLaser* laser = curve_laser_pool[i];
+
+		bool laser_grazed = false;
+
+		PackedInt64Array laser_id = PackedInt64Array();
+		laser_id.resize(3);
+		laser_id.set(BULLET_ID_CYCLE, laser->cycle);
+		laser_id.set(BULLET_ID_POOL, CURVE_LASERS_POOL);
+		laser_id.set(BULLET_ID_INDEX, laser->persistent_index);
+
+		// Go through each node and see if we collide with any of the segments, same algorithm as laser
+		for (int j = laser->collision_start_node_index; j < laser->collision_end_node_index; ++j) {
+			// Get the coordinates of the laser start and end.
+			Vector2 p1 = laser->points[j];
+			Vector2 p2 = laser->points[j+1];
+
+			// Get line x,y,h lenghts
+			Vector2 d = Vector2(p2.x - p1.x, p2.y - p1.y);
+			double l = d.length();
+
+			// Derive sin and cos for rotation of player position
+			double sin = d.y / l;
+			double cos = d.x / l;
+
+			// Offset position back to the origin
+			Vector2 pos_offset = pos - p1;
+			// Get the rotated position
+			Vector2 pos_rot = Vector2(
+				pos_offset.x * cos  + pos_offset.y * sin, 
+				pos_offset.x * -sin + pos_offset.y * cos
+			);
+
+			
+			if (pos_rot.x > -graze_radius && pos_rot.x < l + graze_radius) {
+				double player_distance = abs(pos_rot.y);
+				double laser_width = laser->scale * laser->hitbox_scale * 0.5;
+				// If we're close enough to graze, we can start preparing to return data.
+				if (player_distance < graze_radius + laser_width) {
+
+					if (!laser_grazed) {
+						((Array)(to_return[1])).append(laser_id);
+						laser_grazed = true;
+					}
+					
+					// For collision, reduce both check distances.
+					if (player_distance < hitbox_radius + laser_width && pos_rot.x > 0.0 && pos_rot.x < l) {
+						((Array)(to_return[0])).append(laser_id);
+						// Fancy behaviour to "cut" curve lasers.
+						_cut_curve_laser(laser, j);
+						// Break out of checking each node as we found one node we collided with and for sure grazed with.
+						break;
+					}
+				}
+			}
+
+		}
+		
 	}
 
 	return to_return;
@@ -2606,6 +2845,8 @@ PackedInt64Array BulletInterface::create_curve_laser(Vector2 pos, double speed, 
 		enable_curve_laser(laser);
 		laser->layer = laser_data[LASER_DATA_LAYER];
 
+		laser->laser_data_copy = laser_data;
+
 		// A1 type settings
 		laser->process_mode = A1;
 
@@ -2617,8 +2858,12 @@ PackedInt64Array BulletInterface::create_curve_laser(Vector2 pos, double speed, 
 
 		laser->width = width;
 		laser->length = length + 1;
+		laser->scale = width;
+		laser->hitbox_scale = laser_data[LASER_DATA_HITBOX_RATIO];
 		laser->collision_start_node_index = start_margin;
-		laser->collision_end_node_index = length - end_margin + 2;
+		laser->collision_end_node_index = laser->length - end_margin;
+		laser->mesh_start_node_index = 0;
+		laser->mesh_end_node_index = laser->length;
 
 		laser->lifespan = INFINITY;
 		laser->fade_timer = length; // Time the source glow lasts for
@@ -2660,6 +2905,7 @@ PackedInt64Array BulletInterface::create_curve_laser(Vector2 pos, double speed, 
 			Array(), Dictionary(), rendering_server->ARRAY_FLAG_USE_2D_VERTICES// + rendering_server->ARRAY_FORMAT_VERTEX + rendering_server-> ARRAY_FORMAT_TEX_UV 
 		);
 
+
 		rendering_server->canvas_item_add_mesh(rid, laser->mesh_rid, Transform2D(), Color(1.0, 1.0, 1.0, 1.0), lasers_texture_rid);
 		if (laser->additive != glow) {
 			rendering_server->canvas_item_set_material(rid, glow ? lasers_material_add_rid : lasers_material_rid);
@@ -2679,10 +2925,6 @@ PackedInt64Array BulletInterface::create_curve_laser(Vector2 pos, double speed, 
 
 		rendering_server->canvas_item_set_transform(spawn_rid, xform);
 		laser->spawn_transform = xform;
-		
-		// Misc data
-
-		laser->hitbox_scale = laser_data[LASER_DATA_HITBOX_RATIO];
 
 		// Damage data
 		laser->damage = laser_data[LASER_DATA_DAMAGE_AMOUNT];
@@ -2918,6 +3160,18 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 		}
 	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
 		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->process_mode = Math::max(A2, bullet->process_mode);
+			bullet->wvel = wvel;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == LASERS_POOL) {
+		Bullet* bullet = laser_pool[persistent_laser_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->process_mode = Math::max(A2, bullet->process_mode);
+			bullet->wvel = wvel;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == CURVE_LASERS_POOL) {
+		Bullet* bullet = curve_laser_pool[persistent_curve_laser_index[bullet_id[BULLET_ID_INDEX]]];
 		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
 			bullet->process_mode = Math::max(A2, bullet->process_mode);
 			bullet->wvel = wvel;

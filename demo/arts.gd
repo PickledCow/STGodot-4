@@ -4,6 +4,7 @@ var data: PackedFloat64Array
 var data2: PackedFloat64Array
 
 var laser_data: PackedFloat64Array
+var lightning_data: PackedFloat64Array
 
 var red_butterfly: PackedFloat64Array
 var blue_butterfly: PackedFloat64Array
@@ -43,14 +44,14 @@ func _ready():
 	
 	laser_data = PackedFloat64Array()
 	laser_data.resize(16)
-	laser_data[0] = 1024
-	laser_data[1] = 2048
-	laser_data[2] = 128
+	laser_data[0] = 64*3 
+	laser_data[1] = 2560
+	laser_data[2] = 64
 	laser_data[3] = 1024
 	laser_data[4] = 0.25
-	laser_data[5] = 4					# anim frame, 1 for no animation (integer)
+	laser_data[5] = 1					# anim frame, 1 for no animation (integer)
 	laser_data[6] = 1
-	laser_data[7] = 512 - 128
+	laser_data[7] = 128 * 2
 	laser_data[8] = 832
 	laser_data[9] = 128
 	laser_data[10] = 128
@@ -59,6 +60,25 @@ func _ready():
 	laser_data[13] = 1
 	laser_data[14] = 0				# damage type
 	laser_data[15] = 0				# damage amount
+	
+	lightning_data = PackedFloat64Array()
+	lightning_data.resize(16)
+	lightning_data[0] = 1024
+	lightning_data[1] = 2048
+	lightning_data[2] = 128
+	lightning_data[3] = 1024
+	lightning_data[4] = 0.25
+	lightning_data[5] = 4					# anim frame, 1 for no animation (integer)
+	lightning_data[6] = 1
+	lightning_data[7] = 512 - 128
+	lightning_data[8] = 832
+	lightning_data[9] = 128
+	lightning_data[10] = 128
+	lightning_data[11] = 1
+	lightning_data[12] = 1
+	lightning_data[13] = 1
+	lightning_data[14] = 0				# damage type
+	lightning_data[15] = 0				# damage amount
 
 
 
@@ -72,10 +92,13 @@ func _process(_delta):
 	if !debug_shoot:
 		return
 	if true:
-		if t % 300 == 0:
-			pass
-			Bullets.create_curve_laser(Vector2(500, 300), 5.0, PI/2, 120, 64, 16, 16, laser_data, false)
-	
+		if t == 0:
+			for i in 1:
+				@warning_ignore("integer_division")
+				var lr = ((randi()) % 2) * 2 - 1
+				var b = Bullets.create_curve_laser(Vector2(500, 300), 5.0, PI * 0.5, 60, 48, 1, 1, laser_data, true)
+				Bullets.set_wvel(b, 0.01 * lr)
+			
 	if false:
 		
 		for i in 0:

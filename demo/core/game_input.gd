@@ -59,7 +59,7 @@ func process_replay_inputs():
 func _ready():
 	register_inputs()
 
-func _physics_process(_delta):
+func _process(_delta):
 	if is_replay:
 		process_replay_inputs()
 	else:

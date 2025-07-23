@@ -190,6 +190,8 @@ const V_PRIORITY_INPUT_NAMES := [&"player_up", &"player_down"]
 @export var respawn_travel := Vector2(0, -200)
 ## How many ticks of invulnerability the player has after respawning.
 @export_range(0, 600, 1, "or_greater") var respawn_i_frames := 240.0
+## Whether to start the player with i-frames or not.
+@export var spawn_with_invulnerability := true
 
 @export_group("Movement")
 ## Unfocused (fast) movement speed of the player in pixels per tick.
@@ -341,7 +343,7 @@ var bomb_fragment_count := 0
 var death_timer := 0.0
 var respawn_timer := 0.0
 
-@onready var current_i_frames := respawn_i_frames
+var current_i_frames := 0.0
 
 #endregion
 
@@ -425,7 +427,7 @@ func hit():
 		current_i_frames = respawn_i_frames
 		i_frame_animation_timer = 0.0
 		SFX.play("death")
-		System.warp_player(position)
+		#System.warp_player(position)
 
 ## Goes through the list of items we've collected and performs the appropriate
 ## actions for them. 
@@ -712,29 +714,30 @@ func collision(time_scale) -> void:
 			current_i_frames = 0.0
 			reset_sprite_modulation()
 		
-	var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
+	if current_i_frames == 0.0:
+		var collisions = Bullets.collide_and_graze_player(position, hitbox_radius, graze_radius)
 	
-	if position.y < autocollect_height:
-		Bullets.magnet_all_items(self)
-		pass
-	
-	#var should_magnet := true if magnet_while_unfocused else is_focused
-	
-	var items : Array = Bullets.collect_and_magnet_items(
-		position, 
-		self, 
-		item_collect_radius, 
-		focus_item_magnet_radius if is_focused else unfocus_item_magnet_radius
-	)
-	
-	if len(items) > 0:
-		SFX.play("item")
-	
-	if len(collisions[0]) > 0 and current_i_frames <= 0.0:
-		hit()
+		if position.y < autocollect_height:
+			Bullets.magnet_all_items(self)
+			pass
 		
-	if len(collisions[1]) > 0:
-		SFX.play("graze")
+		#var should_magnet := true if magnet_while_unfocused else is_focused
+		
+		var items : Array = Bullets.collect_and_magnet_items(
+			position, 
+			self, 
+			item_collect_radius, 
+			focus_item_magnet_radius if is_focused else unfocus_item_magnet_radius
+		)
+		
+		if len(items) > 0:
+			SFX.play("item")
+		
+		if len(collisions[0]) > 0 and current_i_frames <= 0.0:
+			hit()
+			
+		if len(collisions[1]) > 0:
+			SFX.play("graze")
 	
 
 ## Tells the associated [class ShooterManager] to shoot.
@@ -761,6 +764,10 @@ func _update_hframes():
 #region Overrides
 func _ready() -> void:
 	System.register_player(self)
+	
+	if spawn_with_invulnerability:
+		current_i_frames = respawn_i_frames
+	
 	if shooter_manager_path:
 		shooter_manager = get_node(shooter_manager_path)
 	else:

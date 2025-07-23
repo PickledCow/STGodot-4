@@ -249,6 +249,12 @@ struct CurveLaser: Bullet {
     int collision_start_node_index;
     // The last node that has collision, exclusive.
     int collision_end_node_index;
+    // The start of the texture mesh for when the laser is cut.
+    int mesh_start_node_index;
+    // The end of the texture mesh for when the laser is cut.
+    int mesh_end_node_index;
+
+    PackedFloat64Array laser_data_copy;
 
     // Resource ID for the spawn sprite.
     RID spawn_item_rid;
