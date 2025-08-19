@@ -1,0 +1,31 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://cxln6bwtwkjdv"]
+
+[ext_resource type="Shader" uid="uid://dl8i7n3yabjnj" path="res://bg/shaders/scrolling_stairs.gdshader" id="1_5fin1"]
+[ext_resource type="Texture2D" uid="uid://b4p8jgo0ivtq1" path="res://bg/white_marble_seamless_by_hugolj_d8a94bq.jpg" id="2_hnofe"]
+[ext_resource type="Texture2D" uid="uid://bkk24vjjmpl61" path="res://bg/stairs_normal.png" id="3_84l6p"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_5fin1")
+shader_parameter/time = 0.0
+shader_parameter/time_scale = 1.0
+shader_parameter/subdiv = 40.10000000149012
+shader_parameter/plane_length = 8.00000037674012
+shader_parameter/incline = 0.80000001425
+shader_parameter/shadow_strength = 0.850000040375
+shader_parameter/albedo = Color(0.75, 0.75, 0.75, 1)
+shader_parameter/texture_albedo = ExtResource("2_hnofe")
+shader_parameter/albedo_texture_size = Vector2i(3000, 3000)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.470000022325
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.499999988824
+shader_parameter/metallic = 0.0
+shader_parameter/texture_normal = ExtResource("3_84l6p")
+shader_parameter/normal_scale = 2.0000008549999997
+shader_parameter/clearcoat = 0.999999977648
+shader_parameter/clearcoat_roughness = 0.999999977648
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)

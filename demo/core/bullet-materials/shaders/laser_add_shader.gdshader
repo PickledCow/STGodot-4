@@ -2,6 +2,7 @@ shader_type canvas_item;
 render_mode blend_add;
 // advert your eyes pls
 
+
 // speed at which the animated bullets should change sprites at
 uniform float animation_speed = 8.0;
 const float FACTOR = 2.61799387799;

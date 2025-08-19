@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsqkna2m1uf1q"]
+
+[ext_resource type="Script" uid="uid://dgqwbcgila3wk" path="res://laser/laser.gd" id="1_i7nlu"]
+
+[sub_resource type="Curve2D" id="Curve2D_208yb"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 192, 72, 56.5128, 327.385, -56.5128, -327.385, 480, 64, -76, -177.333, 76, 177.333, 152, 184, 420.923, -352.718, -420.923, 352.718, 32, 96, -167.59, -128.615, 167.59, 128.615, -296, 184, -157.846, -387.795, 157.846, 387.795, 384, -112, -674.256, 124.718, 674.256, -124.718, -184, -24, 173.436, -253.333, -173.436, 253.333, -344, -168, 836, -317.641, -836, 317.641, 32, -16, 315.692, 21.4359, -315.692, -21.4359, 32, -320, 0, 0, 0, 0, 192, 72)
+}
+point_count = 11
+
+[sub_resource type="Gradient" id="Gradient_kpfb8"]
+offsets = PackedFloat32Array(0.673759, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_208yb"]
+gradient = SubResource("Gradient_kpfb8")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(528, 344)
+curve = SubResource("Curve2D_208yb")
+script = ExtResource("1_i7nlu")
+texture = SubResource("GradientTexture2D_208yb")

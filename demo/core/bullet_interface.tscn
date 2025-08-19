@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2xypy5bclc2x"]
+[gd_scene load_steps=11 format=3 uid="uid://d2xypy5bclc2x"]
 
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="1_cq3ma"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="2_qmjl8"]
@@ -8,19 +8,20 @@
 [ext_resource type="Texture2D" uid="uid://c7qr0g27hhc7k" path="res://system/bullets/shot.png" id="4_myhv6"]
 [ext_resource type="Material" uid="uid://cfyh5fdt3ikdo" path="res://core/bullet-materials/laser_material.tres" id="8_umuv3"]
 [ext_resource type="Material" uid="uid://1ubo4ldiefft" path="res://core/bullet-materials/laser_add_material.tres" id="9_58qg1"]
+[ext_resource type="Material" uid="uid://cd0ek3sma1jnc" path="res://core/bullet-materials/curve_laser_material.tres" id="9_umuv3"]
+[ext_resource type="Material" uid="uid://bus24a3mfmi1d" path="res://core/bullet-materials/curve_laser_add_material.tres" id="10_58qg1"]
 
 [node name="BulletInterface" type="BulletInterface"]
 "Field/Bounce Rect" = Rect2(0, 0, 1000, 1000)
 "Field/Active Rect" = Rect2(-128, -128, 1256, 1256)
-Field/Origin = Vector2(460, 40)
 "Bullets/Z Layer" = 20
 "Shots/Z Layer" = 0
 "Items/Z Layer" = 10
 "Particles/Z Layer" = 5
 "Lasers/Z Layer" = 9
-"Bullets/Pool Size" = 20000
-"Shots/Pool Size" = 1000
-"Items/Pool Size" = 5000
+"Bullets/Pool Size" = 8192
+"Shots/Pool Size" = 1024
+"Items/Pool Size" = 4096
 "Particles/Pool Size" = 10
 "Enemies/Pool Size" = 500
 "Lasers/Pool Size (Regular)" = 256
@@ -40,6 +41,8 @@ Particles/Material = ExtResource("2_qmjl8")
 Lasers/Texture = ExtResource("1_cq3ma")
 Lasers/Material = ExtResource("8_umuv3")
 "Lasers/Material (Add)" = ExtResource("9_58qg1")
+"Lasers/Curve Laser Material" = ExtResource("9_umuv3")
+"Lasers/Curve Laser Material (Add)" = ExtResource("10_58qg1")
 "Lasers/Spawn Texture" = ExtResource("1_cq3ma")
 "Lasers/Spawn Material (Add)" = ExtResource("3_6n1ug")
 "Shots/Fade-in Time" = 1.0

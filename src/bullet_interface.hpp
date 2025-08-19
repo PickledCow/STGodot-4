@@ -19,7 +19,81 @@ using namespace godot;
 class BulletInterface : public Node2D {
 	GDCLASS(BulletInterface, Node2D)
 	
-private:
+public:
+
+	enum BulletDataStructure {
+		DATA_SRC_X, 
+		DATA_SRC_Y, 
+		DATA_SRC_W, 
+		DATA_SRC_H, 
+		DATA_SIZE, 
+		DATA_HITBOX_RATIO, 
+		DATA_SPRITE_OFFSET, 
+		DATA_ANIM_FRAMES, 
+		DATA_SPIN, 
+		DATA_LAYER, 
+		DATA_CLEAR_R, 
+		DATA_CLEAR_G, 
+		DATA_CLEAR_B, 
+		DATA_DAMAGE_TYPE, 
+		DATA_DAMAGE_AMOUNT
+	};
+	
+	enum ItemDataStructure {
+		ITEM_DATA_SRC_X, 
+		ITEM_DATA_SRC_Y, 
+		ITEM_DATA_SRC_W, 
+		ITEM_DATA_SRC_H, 
+		ITEM_DATA_SIZE, 
+		ITEM_DATA_HITBOX_RATIO, 
+		ITEM_DATA_SPRITE_OFFSET, 
+		ITEM_DATA_ANIM_FRAMES, 
+		ITEM_DATA_LAYER, 
+		ITEM_DATA_DAMAGE_TYPE, 
+		ITEM_DATA_DAMAGE_AMOUNT
+	};
+	
+	enum LaserDataStructure {
+		LASER_DATA_SRC_X, 
+		LASER_DATA_SRC_Y, 
+		LASER_DATA_SRC_W, 
+		LASER_DATA_SRC_H, 
+		LASER_DATA_HITBOX_RATIO, 
+		LASER_DATA_ANIM_FRAMES, 
+		LASER_DATA_LAYER, 
+		LASER_DATA_SPAWN_SRC_X,
+		LASER_DATA_SPAWN_SRC_Y,
+		LASER_DATA_SPAWN_SRC_W,
+		LASER_DATA_SPAWN_SRC_H,
+		LASER_DATA_CLEAR_R, 
+		LASER_DATA_CLEAR_G, 
+		LASER_DATA_CLEAR_B, 
+		LASER_DATA_DAMAGE_TYPE, 
+		LASER_DATA_DAMAGE_AMOUNT
+	};
+
+	enum WallSides { 
+		WALLS_NONE, 
+		WALLS_TOP, 
+		WALLS_BOTTOM, 
+		WALLS_VERTICALS, 
+		WALLS_LEFT, 
+		WALLS_RIGHT = 8, 
+		WALLS_SIDES = 12, 
+		WALLS_DOME, 
+		WALLS_CUP, 
+		WALLS_ALL 
+	};
+
+	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
+
+	enum POOLS { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL, LASERS_POOL, CURVE_LASERS_POOL };
+
+	// VERY BAD COPY PASTE BUT I CAN'T GET IT TO WORK OTHERWISE BECAUSE I'M BAD
+	// enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
+
+
+
 	// Pools. The pools are accessed in reverse.
 	Bullet** bullet_pool;
 	Bullet** shot_pool;
@@ -88,6 +162,7 @@ private:
 	Ref<Material> items_material;
 	Ref<Material> particles_material;
 	Ref<Material> lasers_material;
+	Ref<Material> curve_lasers_material;
 	// Ref<Material> laser_spawns_material; // Unused
 
 	Ref<Material> bullets_material_add;
@@ -95,7 +170,14 @@ private:
 	Ref<Material> items_material_add;
 	Ref<Material> particles_material_add;
 	Ref<Material> lasers_material_add;
+	Ref<Material> curve_lasers_material_add;
 	Ref<Material> laser_spawns_material_add;
+
+	SheetOrientation bullet_sheet_orientation = SHEET_UP;
+	SheetOrientation shot_sheet_orientation = SHEET_UP;
+	SheetOrientation item_sheet_orientation = SHEET_UP;
+	SheetOrientation particle_sheet_orientation = SHEET_UP;
+	SheetOrientation laser_sheet_orientation = SHEET_UP;
 
 	double bullet_rotation_offset = M_PI_2;
 	double shot_rotation_offset = M_PI_2;
@@ -134,6 +216,8 @@ private:
 	RID lasers_texture_rid;
 	RID lasers_material_rid;
 	RID lasers_material_add_rid;
+	RID curve_lasers_material_rid;
+	RID curve_lasers_material_add_rid;
 	double laser_spawns_texture_width;
 	RID laser_spawns_texture_rid;
 	RID laser_spawns_material_rid;
@@ -152,10 +236,8 @@ private:
 	Rect2 bounce_rect;
 	Rect2 active_rect;
 	double time_scale = 1.0;
-	Vector2 origin;
 
 	Node2D* parent;
-	Vector2 last_origin;
 
 	PackedInt64Array invalid_id;
 	Array invalid_collide_and_graze_array;
@@ -171,6 +253,10 @@ private:
 	RID items_canvas_item;
 	RID particles_canvas_item;
 	RID lasers_canvas_item;
+	RID curve_lasers_canvas_item;
+	RID curve_lasers_add_canvas_item;
+	RID curve_lasers_mesh_item;
+	RID curve_lasers_add_mesh_item;
 
 	void _clear_rids();
 
@@ -195,6 +281,7 @@ private:
 	void _process_bullet_a2(Bullet* bullet, double delta);
 	int _process_bullet_a3(Bullet* bullet, double delta);
 	int _process_bullet_a3_after(Bullet* bullet, double delta);
+	void _process_bullet_b1(Bullet* bullet, double delta);
 
 	void _release_bullet(int index);
 	void _release_shot(int index);
@@ -214,8 +301,6 @@ private:
 		b = t;
 	}
 
-
-public:
 	static void _bind_methods();
 
 	BulletInterface();
@@ -273,9 +358,6 @@ public:
 	double get_time_scale();
 	void set_time_scale(double ts);
 
-	Vector2 get_origin();
-	void set_origin(Vector2 o);
-
 	double get_bullets_fade_time();
 	void set_bullets_fade_time(double time);
 	
@@ -289,11 +371,14 @@ public:
 	void set_lasers_fade_time(double time);
 
 	
-	double get_bullet_rotation_offset();
-	void set_bullet_rotation_offset(double rotation);
+	int get_bullet_sheet_orientation();
+	void set_bullet_sheet_orientation(int orientation);
 	
-	double get_shot_rotation_offset();
-	void set_shot_rotation_offset(double rotation);
+	int get_shot_sheet_orientation();
+	void set_shot_sheet_orientation(int orientation);
+	
+	int get_laser_sheet_orientation();
+	void set_laser_sheet_orientation(int orientation);
 	/* #endregion */ 
 
 	/* #region Texture setters/getters */
@@ -332,6 +417,11 @@ public:
 	Ref<Material> get_lasers_material_add();
 	void set_lasers_material_add(Ref<Material> material);
 	
+	Ref<Material> get_curve_lasers_material();
+	void set_curve_lasers_material(Ref<Material> material);
+	Ref<Material> get_curve_lasers_material_add();
+	void set_curve_lasers_material_add(Ref<Material> material);
+	
 	Ref<Texture2D> get_laser_spawns_texture();
 	void set_laser_spawns_texture(Ref<Texture2D> texture);
 	Ref<Material> get_laser_spawns_material();
@@ -362,76 +452,6 @@ public:
 	double get_items_magnet_strength();
 	void set_items_magnet_strength(double magnet_strength);
 
-	enum BULLET_DATA_STRUCTURE {
-		DATA_SRC_X, 
-		DATA_SRC_Y, 
-		DATA_SRC_W, 
-		DATA_SRC_H, 
-		DATA_SIZE, 
-		DATA_HITBOX_RATIO, 
-		DATA_SPRITE_OFFSET, 
-		DATA_ANIM_FRAMES, 
-		DATA_SPIN, 
-		DATA_LAYER, 
-		DATA_CLEAR_R, 
-		DATA_CLEAR_G, 
-		DATA_CLEAR_B, 
-		DATA_DAMAGE_TYPE, 
-		DATA_DAMAGE_AMOUNT
-	};
-	
-	enum ITEM_DATA_STRUCTURE {
-		ITEM_DATA_SRC_X, 
-		ITEM_DATA_SRC_Y, 
-		ITEM_DATA_SRC_W, 
-		ITEM_DATA_SRC_H, 
-		ITEM_DATA_SIZE, 
-		ITEM_DATA_HITBOX_RATIO, 
-		ITEM_DATA_SPRITE_OFFSET, 
-		ITEM_DATA_ANIM_FRAMES, 
-		ITEM_DATA_LAYER, 
-		ITEM_DATA_DAMAGE_TYPE, 
-		ITEM_DATA_DAMAGE_AMOUNT
-	};
-	
-	enum LASER_DATA_STRUCTURE {
-		LASER_DATA_SRC_X, 
-		LASER_DATA_SRC_Y, 
-		LASER_DATA_SRC_W, 
-		LASER_DATA_SRC_H, 
-		LASER_DATA_HITBOX_RATIO, 
-		LASER_DATA_ANIM_FRAMES, 
-		LASER_DATA_LAYER, 
-		LASER_DATA_SPAWN_SRC_X,
-		LASER_DATA_SPAWN_SRC_Y,
-		LASER_DATA_SPAWN_SRC_W,
-		LASER_DATA_SPAWN_SRC_H,
-		LASER_DATA_CLEAR_R, 
-		LASER_DATA_CLEAR_G, 
-		LASER_DATA_CLEAR_B, 
-		LASER_DATA_DAMAGE_TYPE, 
-		LASER_DATA_DAMAGE_AMOUNT
-	};
-
-	enum WALLS { 
-		WALLS_NONE, 
-		WALLS_TOP, 
-		WALLS_BOTTOM, 
-		WALLS_VERTICALS, 
-		WALLS_LEFT, 
-		WALLS_RIGHT = 8, 
-		WALLS_SIDES = 12, 
-		WALLS_DOME, 
-		WALLS_CUP, 
-		WALLS_ALL 
-	};
-
-
-	enum POOLS { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL, LASERS_POOL, CURVE_LASERS_POOL };
-
-	// VERY BAD COPY PASTE BUT I CAN'T GET IT TO WORK OTHERWISE BECAUSE I'M BAD
-	enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
-
 	void init(Node2D* root);
 
 	// void _ready();
@@ -449,10 +469,14 @@ public:
 	PackedInt64Array create_bullet_a1(Vector2 pos, double speed, double angle, PackedFloat64Array bullet_data, bool glow);
 	PackedInt64Array create_bullet_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, double w_vel, PackedFloat64Array bullet_data, bool glow);
 	
+	PackedInt64Array create_bullet_b1(Vector2 pos, Vector2 velocity, Vector2 accel, Vector2 max_velocity, bool rotation_follows_movement, PackedFloat64Array bullet_data, bool glow);
+
 	PackedInt64Array create_shot_a1(Vector2 pos, double speed, double angle, PackedFloat64Array shot_data, bool glow);
 	PackedInt64Array create_shot_a2(Vector2 pos, double speed, double angle, double accel, double max_speed, double w_vel, PackedFloat64Array shot_data, bool glow);
 
-	PackedInt64Array create_enemy(double hitbox_size, double hurtbox_size);
+	// PackedInt64Array create_shot_b1(Vector2 pos, Vector2 velocity, Vector2 accel, Vector2 max_velocity, PackedFloat64Array bullet_data, bool glow);
+
+	PackedInt64Array create_enemy(double hitbox_size, double hurtbox_size, bool deletes_bullets);
 
 	PackedInt64Array create_straight_laser(Vector2 pos, double angle, double length, double width, double start_margin, double end_margin, double delay, double duration, PackedFloat64Array laser_data, bool glow);
 	PackedInt64Array create_loose_laser(Vector2 pos, double speed, double angle, double length, double width, double start_margin, double end_margin, PackedFloat64Array laser_data, bool glow);
@@ -486,11 +510,15 @@ public:
 	void magnet_all_items(Node2D* target);
 	// void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
 
+	Array clear_bullets(Vector2 pos, double radius);
+
 	PackedInt64Array create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow);
 	
     // PackedInt64Array create_particle(Ref<BasicParticleKit> kit, Vector2 pos, Vector2 drift, double rotation, double size, Color color);
 
 	Array get_enemy_collisions(PackedInt64Array enemy_id);
+
+	Array get_enemies_in_range(Vector2 pos, float radius);
 
 	Vector2 get_position(PackedInt64Array bullet_id);
 	void set_position(PackedInt64Array bullet_id, Vector2 position);
@@ -500,6 +528,10 @@ public:
 	
 	int get_damage_type(PackedInt64Array bullet_id);
 	void set_damage_type(PackedInt64Array bullet_id, int damage_type);
+
+	void skip_fade(PackedInt64Array bullet_id);
+
+	void deal_damage(PackedInt64Array enemy_id, float damage);
 
 	// Item
 
@@ -521,6 +553,15 @@ public:
 
     bool get_is_grazed(PackedInt64Array bullet_id);
     void set_is_grazed(PackedInt64Array bullet_id, bool is_grazed);
+
+	// General Movement
+	
+    double get_spin(PackedInt64Array bullet_id);
+    void set_spin(PackedInt64Array bullet_id, double spin);
+
+	
+    double get_rotation(PackedInt64Array bullet_id);
+    void set_rotation(PackedInt64Array bullet_id, double rotation);
 
 	// A2 Movement
 
@@ -552,6 +593,7 @@ public:
     void set_max_wvel(PackedInt64Array bullet_id, double max_wvel);
 
 
+
 	// Bullet setters and getters
 	double get_lifetime(PackedInt64Array bullet_id);
 	void set_lifetime(PackedInt64Array bullet_id, double lifetime);
@@ -561,6 +603,14 @@ public:
 	
 	bool get_pierce(PackedInt64Array bullet_id);
 	void set_pierce(PackedInt64Array bullet_id, bool pierce);
+
+
+
+	// Item setters and getters
+
+	int get_item_type(PackedInt64Array item_id);
+
+	void set_item_magnet(PackedInt64Array item_id, Node2D* target);
 
 
 	// double get_(PackedInt64Array bullet_id);
@@ -598,10 +648,11 @@ public:
 
 
 
-VARIANT_ENUM_CAST(BulletInterface::BULLET_DATA_STRUCTURE);
-VARIANT_ENUM_CAST(BulletInterface::ITEM_DATA_STRUCTURE);
-VARIANT_ENUM_CAST(BulletInterface::LASER_DATA_STRUCTURE);
-VARIANT_ENUM_CAST(BulletInterface::WALLS);
-VARIANT_ENUM_CAST(BulletInterface::TRIGGERS);
+VARIANT_ENUM_CAST(BulletInterface::BulletDataStructure);
+VARIANT_ENUM_CAST(BulletInterface::ItemDataStructure);
+VARIANT_ENUM_CAST(BulletInterface::LaserDataStructure);
+VARIANT_ENUM_CAST(BulletInterface::WallSides);
+VARIANT_ENUM_CAST(godot::TransformTriggers);
+VARIANT_ENUM_CAST(BulletInterface::SheetOrientation);
 
 #endif

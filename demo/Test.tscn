@@ -1,35 +1,39 @@
-[gd_scene load_steps=30 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=63 format=3 uid="uid://18jtj8q2lok4"]
 
-[ext_resource type="Texture2D" uid="uid://bg88w4djr6suk" path="res://bg/test/crystal sky.png" id="1_d1b21"]
-[ext_resource type="Texture2D" uid="uid://dj23justlvsi" path="res://bg/test/crystal.png" id="2_ilduj"]
+[ext_resource type="Script" uid="uid://ktr6sx7sgup5" path="res://system/root.gd" id="1_d1b21"]
+[ext_resource type="PackedScene" uid="uid://c8rj1fgn6ae4q" path="res://scenes/bg.tscn" id="1_r6p7k"]
+[ext_resource type="Texture2D" uid="uid://cilfeumas6xhe" path="res://system/ui/frame.png" id="2_iw7q2"]
 [ext_resource type="Script" uid="uid://q5xnt15chloy" path="res://arts.gd" id="2_t2ehl"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="5_ivycn"]
+[ext_resource type="Script" uid="uid://dexe7u0rk2ipi" path="res://system/boss_manager.gd" id="5_rc7cs"]
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="6_q1uvj"]
+[ext_resource type="AudioStream" uid="uid://b7sdnoonwurl5" path="res://bgm/boss_rush.ogg" id="7_ilduj"]
 [ext_resource type="Script" uid="uid://2lcdr4gn4bos" path="res://fps.gd" id="7_q1uvj"]
 [ext_resource type="PackedScene" uid="uid://dq8vf06ltkop6" path="res://prefab/player/player_loader.tscn" id="8_30nhk"]
 [ext_resource type="Texture2D" uid="uid://ce4a8eagwdg7c" path="res://system/ui/ui.png" id="8_qs82m"]
+[ext_resource type="AudioStream" uid="uid://ck6q3cmefabre" path="res://bgm/dialogue.ogg" id="8_rdfvj"]
 [ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://prefab/player/default/player.tscn" id="9_5p7c2"]
 [ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="9_c4vo5"]
-[ext_resource type="Script" uid="uid://b4ennie6h0p38" path="res://system/ui/power_bar.gd" id="9_cqdos"]
 [ext_resource type="Script" uid="uid://b3gknb1608v3o" path="res://system/vfx/screen_warp.gd" id="11_ilduj"]
-[ext_resource type="Texture2D" uid="uid://cu2lpa0ptso62" path="res://system/ui/items/hakkero.png" id="13_rc7cs"]
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ilduj"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_s2xbw"]
-
-[sub_resource type="Sky" id="Sky_ilduj"]
-sky_material = SubResource("ProceduralSkyMaterial_s2xbw")
-
-[sub_resource type="Environment" id="Environment_s2xbw"]
-background_mode = 2
-sky = SubResource("Sky_ilduj")
-ambient_light_source = 3
-ambient_light_color = Color(1, 1, 1, 1)
-
-[sub_resource type="World3D" id="World3D_rdfvj"]
-environment = SubResource("Environment_s2xbw")
-camera_attributes = SubResource("CameraAttributesPractical_ilduj")
+[ext_resource type="Script" uid="uid://qh1fl24dgpbt" path="res://system/pause_menu.gd" id="12_s2xbw"]
+[ext_resource type="Script" uid="uid://20cdp0rqp5gn" path="res://system/ui/ui.gd" id="16_egg54"]
+[ext_resource type="Texture2D" uid="uid://kduub7p52gbq" path="res://system/ui/spellglow.png" id="17_bg4i3"]
+[ext_resource type="Texture2D" uid="uid://b33ij44au36wc" path="res://system/ui/spells.png" id="17_f3qia"]
+[ext_resource type="FontFile" uid="uid://bnlac8fhkrxqe" path="res://fonts/REVUE.ttf" id="17_iw7q2"]
+[ext_resource type="Texture2D" uid="uid://cv40m3thjywhq" path="res://system/ui/logo.png" id="17_rdfvj"]
+[ext_resource type="FontFile" uid="uid://b422bvlb7wrgm" path="res://fonts/BRLNSR.TTF" id="18_xyx0r"]
+[ext_resource type="Texture2D" uid="uid://bedhsbqq7c32t" path="res://system/ui/health_under.png" id="19_nm833"]
+[ext_resource type="FontFile" uid="uid://3odse0tu2uxh" path="res://fonts/Inter-Medium.ttf" id="19_ra0u3"]
+[ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="20_evvna"]
+[ext_resource type="Texture2D" uid="uid://cufiwn0t6lad7" path="res://system/ui/health_over.png" id="20_xyx0r"]
+[ext_resource type="Texture2D" uid="uid://cbywttb6ugyda" path="res://prefab/boss/futo.png" id="21_g3si5"]
+[ext_resource type="Texture2D" uid="uid://bxw73gy6ywehj" path="res://system/ui/healthbar_prog.png" id="21_nm833"]
+[ext_resource type="Texture2D" uid="uid://1jv83bpqiiu5" path="res://prefab/boss/cirno.png" id="22_ulkak"]
+[ext_resource type="Texture2D" uid="uid://uu33luiea5bn" path="res://prefab/boss/kogasa.png" id="23_5f4kg"]
+[ext_resource type="Script" uid="uid://jrapyku8x747" path="res://system/ui/logo_sway.gd" id="23_ixknr"]
+[ext_resource type="Texture2D" uid="uid://cxmt88irmyvkw" path="res://prefab/boss/sanae.png" id="24_4lu35"]
+[ext_resource type="Texture2D" uid="uid://6mv3uhwh0pyl" path="res://prefab/boss/megumu.png" id="25_2n3dp"]
+[ext_resource type="Texture2D" uid="uid://dbwp0uwx86qvh" path="res://prefab/boss/youmu.png" id="26_0f54c"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rc7cs"]
 
@@ -267,163 +271,685 @@ _data = {
 &"warp": SubResource("Animation_q8vq6")
 }
 
-[sub_resource type="Shader" id="Shader_vwb7u"]
+[sub_resource type="Shader" id="Shader_egg54"]
 code = "shader_type canvas_item;
 
-uniform float rotation : hint_range(0.0, 360.0) = 0.0;
-uniform float fullness : hint_range(0.0, 1.0) = 0.5;
+uniform vec4 left_color : source_color;
+uniform vec4 right_color : source_color; 
 
-
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
-uniform float distortion_strength = 128.0;
-uniform float margin_distortion_strength = 64.0;
-uniform float distortion_factor = 4.0;
-uniform float margin_distortion_factor = 2.0;
-uniform float bottom_ratio : hint_range(0.0, 1.0) = 0.5;
-uniform vec3 tint : source_color = vec3(0.1);
-
-uniform float fluid_margin : hint_range(0.0, 0.5, 0.01) = 0.1;
-
-uniform vec3 fluid_color_inner : source_color = vec3(1.0, 0.3, 0.4);
-uniform vec3 fluid_color_outer : source_color = vec3(0.8, 0.15, 0.2);
-uniform vec3 fluid_color_back : source_color = vec3(1.0, 0.725, 0.75);
-uniform float fluid_gradient_strength : hint_range(1.0, 8.0, 0.1) = 3.0;
-uniform float fluid_alpha : hint_range(0.0, 1.0, 0.1) = 0.8;
-
-float curve(float lin, float dist) {
-	return sign(lin) * abs(pow(abs(lin), dist));
-}
-
-vec2 curve(vec2 lin) {
-	float l = length(lin);
-	float dir = atan(lin.y, lin.x);
-		
-	return pow(l, distortion_factor) * vec2(cos(dir), sin(dir));
-}
+uniform float progress = 0.0;
 
 void fragment() {
-	//float distortion = curve(2.0 * (UV.x - 0.5)) * SCREEN_PIXEL_SIZE.x;
-	//
-	//COLOR = texture(screen_texture, SCREEN_UV + vec2(distortion, 0.0) * distortion_strength);
-	COLOR.b = 0.0;
-	
-	vec2 uv = UV;
-	
-	// Glass refraction
-	
-	// Top Cylinder
-	if (UV.y < bottom_ratio) {
-		uv.x = curve(UV.x * 2.0 - 1.0, mix(margin_distortion_factor, distortion_factor, step(0.5 - abs(UV.x - 0.5), fluid_margin / 2.0)));
-		
-		uv.y = 0.0;
-	} else { // Bottom Sphere
-		uv.x = UV.x * 2.0 - 1.0;
-		uv.y = (UV.y - bottom_ratio) / (1.0 - bottom_ratio);
-		if (length(uv) <= 1.0) {
-			uv = curve(uv);
-		} else {
-			COLOR.a = 0.0;
-		}
+	vec4 c = COLOR;
+	if (c.a > .55) {
+		c.rgb = left_color.rgb + (right_color.rgb - left_color.rgb) * UV.x * progress;
 	}
-	
-	vec2 distortion = uv * distortion_strength * SCREEN_PIXEL_SIZE;
-	float theta = -rotation;
-	
-	COLOR.rgb = texture(screen_texture, SCREEN_UV + vec2(
-			distortion.x * cos(theta) + distortion.y * sin(theta), 
-			-distortion.x * sin(theta) + distortion.y * cos(theta)
-	)).rgb + tint;
-	
-	// Liquid
-	
-	vec3 fluid = COLOR.rgb;
-	
-	// Behind
-	
-	if (UV.y + (sin(2.0 * TIME + UV.x * 1.7) * 0.02) > 1.0 - fullness) {
-		if (0.5 - abs(UV.x - 0.5) > fluid_margin / 2.0) {
-			fluid = fluid_color_back;
-		}
-	}
-	
-	if (UV.y + (sin(2.0 * 1.414 * TIME + UV.x * 3.0) * 0.02) > 1.0 - fullness) {
-		if (UV.y < bottom_ratio) {
-			if (0.5 - abs(UV.x - 0.5) > fluid_margin / 2.0) {
-				fluid = mix(fluid_color_inner, fluid_color_outer, abs(pow(abs(UV.x * (2.0 + fluid_margin * 2.0) - 1.0 - fluid_margin), fluid_gradient_strength)));
-			}
-		} else {
-			uv.x = UV.x * (2.0 + fluid_margin * 2.0) - 1.0 - fluid_margin;
-			uv.y = (UV.y - bottom_ratio) / (1.0 - bottom_ratio) * (1.0 + fluid_margin);
-			float l = length(uv);
-			if (l < 1.0 - fluid_margin / 4.0) {
-				fluid = mix(fluid_color_inner, fluid_color_outer, abs(pow(l, fluid_gradient_strength)));
-			}
-			
-		}
-	}
-	
-	COLOR.rgb = mix(COLOR.rgb, fluid, fluid_alpha);
-	
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f3qia"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0, 0.41414165, 1, 1)
+shader_parameter/right_color = Color(0.49609375, 0.92011225, 1, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg4i3"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.33, 0.33, 0.33, 0.3764706)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ra0u3"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+corner_detail = 6
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ra0u3"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_q8vq6"]
+offsets = PackedFloat32Array(0, 0.4, 0.6, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iw7q2"]
+gradient = SubResource("Gradient_q8vq6")
+width = 256
+height = 4
+
+[sub_resource type="Animation" id="Animation_185a3"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpellName:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(70, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpellName/Text:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpellName/Text:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpellName/Text:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpellName/Underline:scale:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SpellName/Underline:scale:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SpellName/Underline:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
-"
+[sub_resource type="Animation" id="Animation_ra0u3"]
+resource_name = "spawn"
+length = 1.75
+step = 0.25
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpellName:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0),
+"points": PackedFloat32Array(950, 0, 0, 0, 0, 950, 0, 0, 0.5, -10, 70, -0.5, 2.5, 0, 0),
+"times": PackedFloat32Array(0, 1, 1.75)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpellName/Text:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, 0, 0.167, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpellName/Text:scale:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, 0, 0.167, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpellName/Text:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpellName/Underline:scale:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0.5, 1)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SpellName/Underline:scale:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0.5, 1)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SpellName/Underline:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cqdos"]
-shader = SubResource("Shader_vwb7u")
-shader_parameter/rotation = 0.0
-shader_parameter/fullness = 0.8850000420375
-shader_parameter/distortion_strength = 128.0
-shader_parameter/margin_distortion_strength = 64.0
-shader_parameter/distortion_factor = 8.0
-shader_parameter/margin_distortion_factor = 2.0
-shader_parameter/bottom_ratio = 0.8750000415625
-shader_parameter/tint = Color(0.13641357, 0.17238379, 0.234375, 1)
-shader_parameter/fluid_margin = 0.1999999955296
-shader_parameter/fluid_color_inner = Color(1, 0.2109375, 0.2109375, 1)
-shader_parameter/fluid_color_outer = Color(0.609375, 0.06427001, 0.06427001, 1)
-shader_parameter/fluid_color_back = Color(1, 0.61960787, 0.61960787, 1)
-shader_parameter/fluid_gradient_strength = 3.0000000298024
-shader_parameter/fluid_alpha = 1.0
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_180o4"]
+_data = {
+&"RESET": SubResource("Animation_185a3"),
+&"spawn": SubResource("Animation_ra0u3")
+}
 
-[node name="scene" type="Node2D"]
+[sub_resource type="Animation" id="Animation_evvna"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(51, 343)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Enemy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(200, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Player:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Enemy:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 7750)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
-[node name="root" type="Node2D" parent="."]
-position = Vector2(460, 40)
+[sub_resource type="Animation" id="Animation_g3si5"]
+resource_name = "enemy2player"
+length = 0.1
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1.035265),
+"update": 0,
+"values": [Vector2(-200, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Enemy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(200, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Player:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.045, 0.055),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.075),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Enemy:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.025, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
-[node name="BackgroundViewportContainer" type="SubViewportContainer" parent="root"]
+[sub_resource type="Animation" id="Animation_4lu35"]
+resource_name = "enemy_start"
+length = 0.001
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-200, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Enemy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Player:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Enemy:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ulkak"]
+resource_name = "leave"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1000)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_5f4kg"]
+resource_name = "player_start"
+length = 0.001
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1.035265),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Enemy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(200, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Player:z_index")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Enemy:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5f4kg"]
+_data = {
+&"RESET": SubResource("Animation_evvna"),
+&"enemy2player": SubResource("Animation_g3si5"),
+&"enemy_start": SubResource("Animation_4lu35"),
+&"leave": SubResource("Animation_ulkak"),
+&"player_start": SubResource("Animation_5f4kg")
+}
+
+[sub_resource type="Animation" id="Animation_ixknr"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.05, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_xyx0r"]
+resource_name = "loop"
+length = 8.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-0.05, -0.25, 0, 1, 0, 0.05, -1, 0, 1, 0, -0.05, -1, 0, 0, 0),
+"times": PackedFloat32Array(0, 4, 8)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_egg54"]
+_data = {
+&"RESET": SubResource("Animation_ixknr"),
+&"loop": SubResource("Animation_xyx0r")
+}
+
+[node name="scene" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="FrameArt" type="TextureRect" parent="."]
+z_index = -30
+layout_mode = 0
+offset_right = 3840.0
+offset_bottom = 2160.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("8_qs82m")
+
+[node name="Frame" type="TextureRect" parent="."]
+z_index = -30
+layout_mode = 0
+offset_left = 437.0
+offset_top = 17.0
+offset_right = 1483.0
+offset_bottom = 1063.0
+texture = ExtResource("2_iw7q2")
+
+[node name="GameAnchor" type="Control" parent="."]
+clip_contents = true
+anchors_preset = 0
+offset_left = 460.0
+offset_top = 40.0
+offset_right = 1460.0
+offset_bottom = 1040.0
+
+[node name="root" type="Node2D" parent="GameAnchor"]
+script = ExtResource("1_d1b21")
+
+[node name="BackgroundViewportContainer" type="SubViewportContainer" parent="GameAnchor/root"]
+z_index = -20
 custom_minimum_size = Vector2(1128, 1128)
+anchors_preset = -1
 offset_left = -64.0
 offset_top = -64.0
 offset_right = 1064.0
 offset_bottom = 1064.0
 stretch = true
 
-[node name="BackgroundViewport2" type="SubViewport" parent="root/BackgroundViewportContainer"]
+[node name="BackgroundViewport2" type="SubViewport" parent="GameAnchor/root/BackgroundViewportContainer"]
 own_world_3d = true
-world_3d = SubResource("World3D_rdfvj")
 handle_input_locally = false
 anisotropic_filtering_level = 0
 oversampling = false
 size = Vector2i(1128, 1128)
 render_target_update_mode = 4
 
-[node name="Node2D" type="Node2D" parent="root/BackgroundViewportContainer/BackgroundViewport2"]
-visible = false
+[node name="bg" parent="GameAnchor/root/BackgroundViewportContainer/BackgroundViewport2" instance=ExtResource("1_r6p7k")]
 
-[node name="Sky" type="Sprite2D" parent="root/BackgroundViewportContainer/BackgroundViewport2/Node2D"]
-scale = Vector2(1.128, 1.128)
-texture = ExtResource("1_d1b21")
-centered = false
-
-[node name="Floor" type="Sprite2D" parent="root/BackgroundViewportContainer/BackgroundViewport2/Node2D"]
-scale = Vector2(1.128, 1.128)
-texture = ExtResource("2_ilduj")
-centered = false
-
-[node name="PlayerLoader" parent="root" instance=ExtResource("8_30nhk")]
+[node name="PlayerLoader" parent="GameAnchor/root" instance=ExtResource("8_30nhk")]
 players = Array[PackedScene]([ExtResource("9_5p7c2")])
 
-[node name="Sprite2D" type="Sprite2D" parent="root"]
+[node name="Sprite2D" type="Sprite2D" parent="GameAnchor/root"]
 visible = false
 z_index = -50
 material = SubResource("ShaderMaterial_rc7cs")
@@ -431,12 +957,26 @@ position = Vector2(500, 500)
 scale = Vector2(1000, 1000)
 texture = ExtResource("9_c4vo5")
 
-[node name="testscript" type="Node2D" parent="root"]
+[node name="BossManager" type="Node2D" parent="GameAnchor/root"]
+script = ExtResource("5_rc7cs")
+health_bar_path = NodePath("../../../UI/MiddleUI/TopBar/Healthbar/ProgressBar")
+health_percent_path = NodePath("../../../UI/MiddleUI/TopBar/Healthbar/ProgressBar/Percent")
+
+[node name="Music" type="AudioStreamPlayer" parent="GameAnchor/root/BossManager"]
+stream = ExtResource("7_ilduj")
+bus = &"Music"
+
+[node name="DialogueMusic" type="AudioStreamPlayer" parent="GameAnchor/root/BossManager"]
+stream = ExtResource("8_rdfvj")
+volume_db = -1.0
+bus = &"Music"
+
+[node name="testscript" type="Node2D" parent="GameAnchor/root"]
 script = ExtResource("2_t2ehl")
 texture = ExtResource("6_q1uvj")
 mat = ExtResource("5_ivycn")
 
-[node name="ScreenWarp" type="Sprite2D" parent="root"]
+[node name="ScreenWarp" type="Sprite2D" parent="GameAnchor/root"]
 z_index = 100
 material = SubResource("ShaderMaterial_rdfvj")
 scale = Vector2(1000, 1000)
@@ -444,24 +984,32 @@ texture = ExtResource("9_c4vo5")
 centered = false
 script = ExtResource("11_ilduj")
 
-[node name="BossWarpAnimator" type="AnimationPlayer" parent="root/ScreenWarp"]
+[node name="BossWarpAnimator" type="AnimationPlayer" parent="GameAnchor/root/ScreenWarp"]
 libraries = {
 &"": SubResource("AnimationLibrary_iw7q2")
 }
 
-[node name="PlayerWarpAnimator" type="AnimationPlayer" parent="root/ScreenWarp"]
+[node name="PlayerWarpAnimator" type="AnimationPlayer" parent="GameAnchor/root/ScreenWarp"]
 libraries = {
 &"": SubResource("AnimationLibrary_nm833")
 }
 
-[node name="UI" type="Control" parent="."]
-z_index = 50
+[node name="PauseMenu" type="Control" parent="GameAnchor/root"]
+process_mode = 3
 layout_mode = 3
-anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("12_s2xbw")
+
+[node name="UI" type="Control" parent="."]
+z_index = 50
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("16_egg54")
 
 [node name="Label" type="Label" parent="UI"]
+visible = false
 z_index = 20
 layout_mode = 0
 offset_left = 22.0
@@ -472,81 +1020,491 @@ scale = Vector2(3, 3)
 text = "FPS"
 script = ExtResource("7_q1uvj")
 
-[node name="BG" type="TextureRect" parent="UI"]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-texture = ExtResource("8_qs82m")
-
-[node name="PowerBar" type="Node2D" parent="UI"]
-position = Vector2(1739, 781)
-script = ExtResource("9_cqdos")
-
-[node name="Refraction" type="Sprite2D" parent="UI/PowerBar"]
-material = SubResource("ShaderMaterial_cqdos")
-scale = Vector2(128, 512)
-texture = ExtResource("9_c4vo5")
-
-[node name="Shop" type="Control" parent="UI"]
-visible = false
+[node name="MiddleUI" type="Control" parent="UI"]
+z_index = 50
+clip_contents = true
 anchors_preset = 0
+offset_left = 460.0
+offset_top = 40.0
+offset_right = 1460.0
+offset_bottom = 1040.0
+
+[node name="TopBar" type="VBoxContainer" parent="UI/MiddleUI"]
+z_index = 50
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+offset_right = 1000.0
+offset_bottom = 1000.0
+theme_override_constants/separation = -12
+
+[node name="Healthbar" type="HBoxContainer" parent="UI/MiddleUI/TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Name" type="Label" parent="UI/MiddleUI/TopBar/Healthbar"]
+custom_minimum_size = Vector2(172, 72)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 42
+text = "Megumu"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/MiddleUI/TopBar/Healthbar"]
+material = SubResource("ShaderMaterial_f3qia")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_bg4i3")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ra0u3")
+max_value = 1.0
+step = 0.0
+value = 0.07499999999708962
+show_percentage = false
+
+[node name="Percent" type="Label" parent="UI/MiddleUI/TopBar/Healthbar/ProgressBar"]
+layout_mode = 0
+offset_left = -41.0
+offset_top = -1.0
+offset_right = 55.0
+offset_bottom = 41.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 36
+text = "0%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Buffer" type="Control" parent="UI/MiddleUI/TopBar/Healthbar"]
+layout_mode = 2
+
+[node name="SecondBar" type="HBoxContainer" parent="UI/MiddleUI/TopBar"]
+layout_mode = 2
+
+[node name="LeftMargin" type="Control" parent="UI/MiddleUI/TopBar/SecondBar"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Spells" type="HBoxContainer" parent="UI/MiddleUI/TopBar/SecondBar"]
+layout_mode = 2
+theme_override_constants/separation = -4
+
+[node name="0" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="1" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="2" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="3" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="4" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="5" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
+clip_contents = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+material = SubResource("CanvasItemMaterial_ra0u3")
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_bg4i3")
+
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+layout_mode = 0
+offset_left = -128.0
+offset_right = 640.0
+offset_bottom = 128.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_f3qia")
+
+[node name="MiddleMargin" type="Control" parent="UI/MiddleUI/TopBar/SecondBar"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+
+[node name="RightMargin" type="Control" parent="UI/MiddleUI/TopBar/SecondBar"]
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+
+[node name="Timer" type="Control" parent="UI/MiddleUI"]
+anchors_preset = 0
+offset_left = 500.0
+offset_right = 500.0
+
+[node name="Integer" type="Label" parent="UI/MiddleUI/Timer"]
+custom_minimum_size = Vector2(96, 48)
+layout_mode = 0
+offset_left = -100.0
+offset_top = 124.0
+offset_right = -4.0
+offset_bottom = 172.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 42
+text = "60"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Point" type="Label" parent="UI/MiddleUI/Timer"]
+custom_minimum_size = Vector2(7, 40)
+layout_mode = 0
+offset_left = -3.0
+offset_top = 128.0
+offset_right = 5.0
+offset_bottom = 168.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 24
+text = "."
+vertical_alignment = 2
+
+[node name="Decimal" type="Label" parent="UI/MiddleUI/Timer"]
+custom_minimum_size = Vector2(96, 40)
+layout_mode = 0
+offset_left = 5.0
+offset_top = 128.0
+offset_right = 101.0
+offset_bottom = 168.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 24
+text = "00"
+vertical_alignment = 2
+
+[node name="SpellName" type="Control" parent="UI/MiddleUI"]
+anchors_preset = 0
+offset_left = 488.0
+offset_top = 70.0
+offset_right = 982.0001
+offset_bottom = 114.00024
+pivot_offset = Vector2(494, 22)
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Text" type="Label" parent="UI/MiddleUI/SpellName"]
+layout_mode = 0
+offset_right = 494.0
+offset_bottom = 36.0
+pivot_offset = Vector2(494, 36)
+size_flags_vertical = 1
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("19_ra0u3")
+theme_override_font_sizes/font_size = 20
+text = "Gun Sign 「Super Epic Sniper Rifle」"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="Underline" type="TextureRect" parent="UI/MiddleUI/SpellName"]
+layout_mode = 0
+offset_top = 38.0
+offset_right = 494.0
+offset_bottom = 40.0
+pivot_offset = Vector2(494, 0)
+texture = SubResource("GradientTexture2D_iw7q2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/SpellName"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_180o4")
+}
+
+[node name="Dialogue" type="Control" parent="UI/MiddleUI"]
+anchors_preset = 0
+offset_top = 7750.0
+offset_right = 40.0
+offset_bottom = 7790.0
+
+[node name="Player" type="Control" parent="UI/MiddleUI/Dialogue"]
+anchors_preset = 0
+offset_left = 51.0
+offset_top = 343.0
+offset_right = 51.0
+offset_bottom = 343.0
+
+[node name="Yuumka" type="TextureRect" parent="UI/MiddleUI/Dialogue/Player"]
+layout_mode = 0
+offset_left = -16.0
+offset_top = 299.0
+offset_right = 638.0
+offset_bottom = 1002.0
+texture = ExtResource("20_evvna")
+
+[node name="Enemy" type="Control" parent="UI/MiddleUI/Dialogue"]
+anchors_preset = 0
+offset_left = 200.0
+offset_right = 240.0
+offset_bottom = 40.0
+
+[node name="Futo" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
+layout_mode = 0
+offset_left = 1026.0
+offset_top = 196.0
+offset_right = 2050.0
+offset_bottom = 1220.0
+scale = Vector2(-0.8, 0.8)
+texture = ExtResource("21_g3si5")
+
+[node name="Cirno" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
+layout_mode = 0
+offset_left = 248.0
+offset_top = 196.0
+offset_right = 1272.0
+offset_bottom = 1220.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("22_ulkak")
+
+[node name="Kogasa" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
+layout_mode = 0
+offset_left = 56.0
+offset_top = 155.0
+offset_right = 1080.0
+offset_bottom = 1179.0
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("23_5f4kg")
+
+[node name="Marisa" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Darken" type="ColorRect" parent="UI/Shop"]
+[node name="Sanae" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-color = Color(0, 0, 0, 0.66700006)
+offset_left = 150.0
+offset_top = 262.0
+offset_right = 1174.0
+offset_bottom = 1286.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("24_4lu35")
 
-[node name="Container" type="BoxContainer" parent="UI/Shop"]
+[node name="Megumu" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+visible = false
 layout_mode = 0
-offset_left = 460.0
-offset_top = 32.0
-offset_right = 1460.0
-offset_bottom = 1032.0
-alignment = 1
+offset_left = 111.000015
+offset_top = 224.0
+offset_right = 1135.0
+offset_bottom = 1248.0
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("25_2n3dp")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Shop/Container"]
-layout_mode = 2
-size_flags_vertical = 4
+[node name="Youmu" type="TextureRect" parent="UI/MiddleUI/Dialogue/Enemy"]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 133.0
+offset_right = 1117.0
+offset_bottom = 1157.0
+texture = ExtResource("26_0f54c")
 
-[node name="Items" type="VBoxContainer" parent="UI/Shop/Container/VBoxContainer"]
-custom_minimum_size = Vector2(0, 800)
-layout_mode = 2
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/Dialogue"]
+libraries = {
+&"": SubResource("AnimationLibrary_5f4kg")
+}
 
-[node name="Item0" type="HBoxContainer" parent="UI/Shop/Container/VBoxContainer/Items"]
-layout_mode = 2
+[node name="RightBar" type="Control" parent="UI"]
+anchors_preset = 0
+offset_left = 1700.0
+offset_top = 540.0
+offset_right = 1700.0
+offset_bottom = 540.0
 
-[node name="IconContainer" type="BoxContainer" parent="UI/Shop/Container/VBoxContainer/Items/Item0"]
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-alignment = 1
+[node name="DifficultyText" type="Control" parent="UI/RightBar"]
+anchors_preset = 0
+offset_top = -420.0
+offset_bottom = -420.0
 
-[node name="Icon" type="TextureRect" parent="UI/Shop/Container/VBoxContainer/Items/Item0/IconContainer"]
-layout_mode = 2
-texture = ExtResource("13_rc7cs")
+[node name="Label" type="Label" parent="UI/RightBar/DifficultyText"]
+layout_mode = 0
+offset_left = -128.0
+offset_top = -64.0
+offset_right = 128.0
+theme_override_colors/font_outline_color = Color(0.4, 0.10980392, 1, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("17_iw7q2")
+theme_override_font_sizes/font_size = 64
+text = "HARD"
+horizontal_alignment = 1
 
-[node name="Itm0" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Items/Item0"]
-custom_minimum_size = Vector2(650, 150)
-layout_mode = 2
-size_flags_horizontal = 4
+[node name="Underline" type="TextureRect" parent="UI/RightBar/DifficultyText"]
+layout_mode = 0
+offset_left = -210.0
+offset_right = 210.0
+offset_bottom = 4.0
+texture = SubResource("GradientTexture2D_iw7q2")
 
-[node name="HSeparator" type="HSeparator" parent="UI/Shop/Container/VBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
+[node name="Healthbar" type="Control" parent="UI/RightBar"]
+anchors_preset = 0
+offset_top = -320.0
+offset_right = 40.0
+offset_bottom = -280.0
 
-[node name="Rerolls" type="HBoxContainer" parent="UI/Shop/Container/VBoxContainer"]
-layout_mode = 2
-alignment = 1
+[node name="Name" type="Label" parent="UI/RightBar/Healthbar"]
+layout_mode = 0
+offset_left = -32.0
+offset_top = 20.0
+offset_right = 160.0
+offset_bottom = 68.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_fonts/font = ExtResource("18_xyx0r")
+theme_override_font_sizes/font_size = 42
+text = "Yuuma"
+vertical_alignment = 2
 
-[node name="Banish" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
-custom_minimum_size = Vector2(400, 128)
-layout_mode = 2
+[node name="ProgressBar" type="TextureProgressBar" parent="UI/RightBar/Healthbar"]
+layout_mode = 0
+offset_left = -216.0
+offset_right = 330.0
+offset_bottom = 165.0
+scale = Vector2(0.75, 0.75)
+max_value = 8.0
+value = 8.0
+texture_under = ExtResource("19_nm833")
+texture_over = ExtResource("20_xyx0r")
+texture_progress = ExtResource("21_nm833")
+texture_progress_offset = Vector2(191, 99)
+tint_progress = Color(0, 1, 0.4609375, 1)
 
-[node name="VSeparator" type="VSeparator" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
-layout_mode = 2
+[node name="Logo" type="TextureRect" parent="UI/RightBar"]
+layout_mode = 0
+offset_left = -500.0
+offset_top = 52.0
+offset_right = 524.0
+offset_bottom = 564.0
+rotation = -0.05
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(512, 256)
+texture = ExtResource("17_rdfvj")
 
-[node name="Reroll" type="ColorRect" parent="UI/Shop/Container/VBoxContainer/Rerolls"]
-custom_minimum_size = Vector2(400, 128)
-layout_mode = 2
+[node name="Logo2" type="TextureRect" parent="UI/RightBar/Logo"]
+modulate = Color(0, 0, 0, 0.1254902)
+z_index = -1
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1032.0
+offset_bottom = 520.0
+texture = ExtResource("17_rdfvj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/RightBar/Logo"]
+process_mode = 3
+deterministic = true
+libraries = {
+&"": SubResource("AnimationLibrary_egg54")
+}
+script = ExtResource("23_ixknr")

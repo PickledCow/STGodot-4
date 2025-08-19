@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://v0xoayjg3ab0"]
+
+[ext_resource type="Script" uid="uid://ct5o54bvf1x8j" path="res://prefab/boss/cirno.gd" id="1_i6o34"]
+[ext_resource type="Texture2D" uid="uid://1jv83bpqiiu5" path="res://prefab/boss/cirno.png" id="1_lap8f"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_i6o34")
+hitbox_radius = 96.0
+hurtbox_radius = 64.0
+star_damage_multiplier = 2.0
+max_health = 1600.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_lap8f")

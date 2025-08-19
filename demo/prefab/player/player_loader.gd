@@ -13,7 +13,7 @@ var current_player : Player
 func instantiate_player(id: int):
 	current_player = players[id].instantiate() as Player
 	
-	current_player.position = Vector2(1280 * 0.5, 600)
+	current_player.position = Vector2(500, 900)
 	
 	get_parent().add_child.call_deferred(current_player)
 

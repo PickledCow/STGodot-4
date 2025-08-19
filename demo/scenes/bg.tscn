@@ -1,0 +1,413 @@
+[gd_scene load_steps=22 format=3 uid="uid://c8rj1fgn6ae4q"]
+
+[ext_resource type="Material" uid="uid://cxln6bwtwkjdv" path="res://bg/materials/scrolling_stairs.tres" id="1_qd2e1"]
+[ext_resource type="Script" uid="uid://lf1qvv5selwx" path="res://scenes/bg.gd" id="1_r6ch1"]
+[ext_resource type="Texture2D" uid="uid://cbn2lumtilg0y" path="res://bg/waterbird.png" id="3_5vsr6"]
+[ext_resource type="Texture2D" uid="uid://dwwdwii5xugf0" path="res://bg/tree.png" id="4_5vsr6"]
+[ext_resource type="Texture2D" uid="uid://b5vc5u3oekx6b" path="res://bg/rail_normal.png" id="4_w68nc"]
+[ext_resource type="Script" uid="uid://choiilye8rggs" path="res://scenes/tree_multimesh.gd" id="5_w68nc"]
+[ext_resource type="Texture2D" uid="uid://ecv5ni3a3fkh" path="res://prefab/player/yuuma/pl.png" id="6_bf1jy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dpp0m"]
+
+[sub_resource type="Sky" id="Sky_qd2e1"]
+sky_material = SubResource("ProceduralSkyMaterial_dpp0m")
+
+[sub_resource type="Environment" id="Environment_qd2e1"]
+background_mode = 1
+background_color = Color(0.16015625, 0.03503418, 0.14418325, 1)
+sky = SubResource("Sky_qd2e1")
+ambient_light_source = 1
+reflected_light_source = 1
+glow_enabled = true
+glow_bloom = 0.35
+glow_blend_mode = 0
+fog_mode = 1
+fog_light_color = Color(0.7845926, 0.4577484, 0.89453125, 1)
+fog_density = 1.0
+fog_depth_end = 20.0
+
+[sub_resource type="Animation" id="Animation_r6ch1"]
+resource_name = "rise"
+length = 8.0
+step = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraRail:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-4, -0.25, 0, 0.21959443, 0.32462072, 5.64, -1.2519326, -0.6149001, 0, 0),
+"times": PackedFloat32Array(0, 8)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraRail:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 4, -0.33333334, 0, 0, 0),
+"times": PackedFloat32Array(0, 4)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraRail:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CameraRail/Camera3D:rotation:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0.07, -0.25, 0, 0.25, 0, 0.6, -0.33333334, 0.026179936, 0, 0),
+"times": PackedFloat32Array(0, 4)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraRail/Camera3D:rotation:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.5707964, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CameraRail/Camera3D:rotation:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_4la4c"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraRail:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-4, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraRail:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraRail:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CameraRail/Camera3D:rotation:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.07, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraRail/Camera3D:rotation:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.5707964, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CameraRail/Camera3D:rotation:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_j28yk"]
+_data = {
+&"RESET": SubResource("Animation_4la4c"),
+&"rise": SubResource("Animation_r6ch1")
+}
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_k20qa"]
+material = ExtResource("1_qd2e1")
+custom_aabb = AABB(-64, 0, -64, 128, 128, 128)
+size = Vector2(8, 4.5)
+subdivide_width = 40
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_r6ch1"]
+size = Vector2(1, 1)
+
+[sub_resource type="Shader" id="Shader_5vsr6"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.5.beta2's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
+
+uniform float time;
+
+uniform float time_scale : hint_range(0.0, 10.0) = 1.0;
+uniform float incline : hint_range(0.0, 1.0, 0.1);
+uniform float plane_length : hint_range(0.1, 32.0);
+uniform float plane_width : hint_range(0.0, 2.0) = 1.0;
+uniform float height : hint_range(0.1, 2.0) = 1.0;
+uniform float stairs_subdiv : hint_range(0.1, 128.0, 1.0);
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform ivec2 albedo_texture_size;
+uniform float point_size : hint_range(0.1, 128.0, 0.1);
+
+uniform float roughness : hint_range(0.0, 1.0);
+uniform sampler2D texture_metallic : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_linear_mipmap, repeat_enable;
+
+uniform float specular : hint_range(0.0, 1.0, 0.01);
+uniform float metallic : hint_range(0.0, 1.0, 0.01);
+
+uniform sampler2D texture_normal : hint_roughness_normal, filter_linear_mipmap, repeat_enable;
+uniform float normal_scale : hint_range(-16.0, 16.0);
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+void vertex() {
+	// Incline 
+	VERTEX.y += UV.x * incline * plane_length;
+	
+	// Sink stuff beyond the halway point
+	VERTEX.z -= step(0.75, UV.y) * plane_width * 0.5;
+	VERTEX.y -= step(0.75, UV.y) * height;
+	// Shade end dark
+	//COLOR.rgb *= 1.0 - step(0.75, UV.y);
+	COLOR.rgb *= 1.0 - UV.y;
+	// Fix UVs
+	if (UV.y < 0.5) {
+		UV.y *= plane_width / (plane_width + height) * 2.0;
+	} else {
+		UV.y = plane_width / (plane_width + height) + (UV.y - 0.5) * height / (plane_width + height);
+	}
+	
+	
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+	base_uv.x += mod((time * time_scale) / (stairs_subdiv * 0.5 + 0.5), 1.0);
+	base_uv = base_uv * uv1_scale.xy + uv1_offset.xy;
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	albedo_tex *= COLOR;
+	
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+	float metallic_tex = dot(texture(texture_metallic, base_uv), metallic_texture_channel);
+	METALLIC = metallic_tex * metallic;
+	SPECULAR = specular;
+
+	vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+	float roughness_tex = dot(texture(texture_roughness, base_uv), roughness_texture_channel);
+	ROUGHNESS = roughness_tex * roughness;
+
+	// Normal Map: Enabled
+	NORMAL_MAP = texture(texture_normal, base_uv).rgb;
+	NORMAL_MAP_DEPTH = normal_scale;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w68nc"]
+render_priority = 0
+shader = SubResource("Shader_5vsr6")
+shader_parameter/time = 0.0
+shader_parameter/time_scale = 1.0
+shader_parameter/incline = 0.80000001192096
+shader_parameter/plane_length = 8.00000037674012
+shader_parameter/plane_width = 1.0
+shader_parameter/height = 0.65000002761512
+shader_parameter/stairs_subdiv = 40.10000000149012
+shader_parameter/albedo = Color(0.71875, 0.71875, 0.71875, 1)
+shader_parameter/texture_albedo = ExtResource("3_5vsr6")
+shader_parameter/albedo_texture_size = Vector2i(675, 900)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.55
+shader_parameter/texture_metallic = ExtResource("3_5vsr6")
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.15
+shader_parameter/texture_normal = ExtResource("4_w68nc")
+shader_parameter/normal_scale = -16.0
+shader_parameter/uv1_scale = Vector3(16, 1.25, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_bf1jy"]
+material = SubResource("ShaderMaterial_w68nc")
+custom_aabb = AABB(-32, 0, -32, 64, 64, 64)
+size = Vector2(8, 1)
+subdivide_depth = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vsr6"]
+transparency = 1
+shading_mode = 2
+specular_mode = 2
+albedo_texture = ExtResource("4_5vsr6")
+emission_enabled = true
+emission_energy_multiplier = 0.5
+emission_texture = ExtResource("4_5vsr6")
+
+[sub_resource type="QuadMesh" id="QuadMesh_qd2e1"]
+material = SubResource("StandardMaterial3D_5vsr6")
+flip_faces = true
+size = Vector2(3, 2)
+orientation = 0
+
+[sub_resource type="MultiMesh" id="MultiMesh_5vsr6"]
+transform_format = 1
+custom_aabb = AABB(0, 0, 0, 8, 8, 8)
+instance_count = 96
+mesh = SubResource("QuadMesh_qd2e1")
+buffer = PackedFloat32Array(nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, 1.11105844e+30, nan, nan, nan, nan)
+
+[node name="bg" type="Node3D"]
+script = ExtResource("1_r6ch1")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_qd2e1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_j28yk")
+}
+
+[node name="CameraRail" type="Node3D" parent="."]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRail"]
+transform = Transform3D(-4.371139e-08, -0.06994285, -0.997551, 0, 0.997551, -0.06994285, 1, -3.0572989e-09, -4.360434e-08, -4, 4, 0)
+cull_mask = 7
+fov = 90.0
+
+[node name="Flashlight" type="OmniLight3D" parent="CameraRail/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
+light_color = Color(1, 0.50390625, 0.87597656, 1)
+light_specular = 1.0
+light_bake_mode = 0
+light_cull_mask = 4293918721
+shadow_caster_mask = 4293918721
+omni_range = 6.0
+
+[node name="ShadowCaster" type="DirectionalLight3D" parent="CameraRail/Camera3D"]
+light_color = Color(0.2784314, 0.22745098, 0.4392157, 1)
+light_energy = 1.5
+light_bake_mode = 0
+light_cull_mask = 4293918723
+shadow_enabled = true
+shadow_blur = 0.0
+shadow_caster_mask = 4293918724
+directional_shadow_mode = 0
+directional_shadow_max_distance = 10.0
+sky_mode = 1
+
+[node name="ScrollingStairs" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_k20qa")
+
+[node name="ShadowPlane" type="Node3D" parent="."]
+transform = Transform3D(5.072798, -0.6252426, 1.4210855e-14, 4.0640764, 0.78043044, -7.1054274e-15, 7.1054274e-15, -3.5527137e-15, 4.25, 1.6399994, 4.676, -2.125)
+
+[node name="Reference" type="MeshInstance3D" parent="ShadowPlane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
+visible = false
+mesh = SubResource("PlaneMesh_r6ch1")
+
+[node name="Sprite" type="Sprite3D" parent="ShadowPlane"]
+transform = Transform3D(-5.5950578e-09, 0.084, 4.371139e-08, 0, -3.6717567e-09, 1, 0.128, 3.6717567e-09, 1.9106855e-15, -0.25, 0, 0.5)
+layers = 4
+cast_shadow = 3
+pixel_size = 0.008
+alpha_cut = 2
+texture = ExtResource("6_bf1jy")
+hframes = 4
+vframes = 3
+
+[node name="BossSprite" type="Sprite3D" parent="ShadowPlane"]
+transform = Transform3D(-5.5950578e-09, 0.084, 4.371139e-08, 0, -3.6717567e-09, 1, 0.128, 3.6717567e-09, 1.9106855e-15, -0.25, 0, 0.5)
+layers = 4
+cast_shadow = 3
+pixel_size = 0.003
+alpha_cut = 2
+
+[node name="LeftRail" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -2.25)
+mesh = SubResource("PlaneMesh_bf1jy")
+
+[node name="RightRail" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.15, 2.25)
+mesh = SubResource("PlaneMesh_bf1jy")
+
+[node name="Tree" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 5, 2.8238456)
+visible = false
+mesh = SubResource("QuadMesh_qd2e1")
+
+[node name="Tree2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.99, 1.8, -3)
+visible = false
+mesh = SubResource("QuadMesh_qd2e1")
+
+[node name="Trees" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.5, 0)
+visible = false
+layers = 2
+multimesh = SubResource("MultiMesh_5vsr6")
+script = ExtResource("5_w68nc")
+length = 12.0
+clearance = 2.25
+time_scale = 0.5

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://b057nsclap5fd"]
+
+[ext_resource type="Script" uid="uid://dansmbmya7rw6" path="res://prefab/boss/marisa_star.gd" id="1_6t5ci"]
+[ext_resource type="Texture2D" uid="uid://7xiyxnwalqbr" path="res://prefab/player/yuuma/trail star.png" id="2_dnpp6"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_6t5ci")
+suck_only = true
+hurt_on_contact = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_dnpp6")

@@ -9,6 +9,9 @@ var lightning_data: PackedFloat64Array
 var red_butterfly: PackedFloat64Array
 var blue_butterfly: PackedFloat64Array
 
+
+var bubble: PackedFloat64Array
+
 var amulets : Array[PackedFloat64Array]
 
 var item_data: PackedFloat64Array
@@ -26,11 +29,12 @@ var debug_shoot := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Bullets.init(self)
 	
 	data = System.get_bullet_data(BulletConstructor.BULLET_TYPE.BALL, BulletConstructor.COLORS.BLUE)
 	#data = System.get_bullet_data(BulletConstructor.BULLET_TYPE.KNIFE, BulletConstructor.COLORS_LARGE.BLUE)
 	#data2 = System.get_bullet_data(BulletConstructor.BULLET_TYPE.KNIFE, BulletConstructor.COLORS_LARGE.RED)
+	
+	bubble = System.get_bullet_data(BulletConstructor.BULLET_TYPE.ICE_LARGE, BulletConstructor.COLORS_LARGE.CYAN)
 	
 	amulets.append(System.get_bullet_data(BulletConstructor.BULLET_TYPE.AMULET, BulletConstructor.COLORS.BLUE))
 	amulets.append(System.get_bullet_data(BulletConstructor.BULLET_TYPE.AMULET, BulletConstructor.COLORS.CYAN))
@@ -40,7 +44,7 @@ func _ready():
 	amulets.append(System.get_bullet_data(BulletConstructor.BULLET_TYPE.AMULET, BulletConstructor.COLORS.GREEN))
 	amulets.append(System.get_bullet_data(BulletConstructor.BULLET_TYPE.AMULET, BulletConstructor.COLORS.ORANGE))
 	
-	item_data = System.get_item_data(7)
+	item_data = System.get_item_data(0)
 	
 	laser_data = PackedFloat64Array()
 	laser_data.resize(16)
@@ -91,14 +95,20 @@ func _process(_delta):
 		debug_shoot = !debug_shoot
 	if !debug_shoot:
 		return
-	if true:
+	if false:
 		if t == 0:
-			for i in 1:
-				@warning_ignore("integer_division")
-				var lr = ((randi()) % 2) * 2 - 1
-				var b = Bullets.create_curve_laser(Vector2(500, 300), 5.0, PI * 0.5, 60, 48, 1, 1, laser_data, true)
-				Bullets.set_wvel(b, 0.01 * lr)
+			var n := 128
+			for i in n:
+				#@warning_ignore("integer_division")
+				var lr = 1.0
+				var a := TAU * i / n
+				var b = Bullets.create_curve_laser(Vector2(500, 300) + Vector2(64, 0).rotated(a), 5.0, a, 240, 48, 20, 20, laser_data, true)
+				Bullets.set_wvel(b, 0.0075 * lr)
 			
+	if false:
+		if t % 10 == 0:
+			Bullets.create_bullet_a1(Vector2(500, 200), 3.0, PI * 0.5, bubble, false)
+	
 	if false:
 		
 		for i in 0:
@@ -152,20 +162,22 @@ func _process(_delta):
 			for i in 10:
 				var a := TAU * i * 0.1
 				Bullets.create_straight_laser(Vector2(500, 500) + Vector2(128, 0).rotated(a), a, 500, 128, 0.075, 0.125, 60, 120, laser_data, true)
-				
-			#@warning_ignore("integer_division")
-			#var lr = ((t / p) % 2) * 2 - 1
-			#
-			#var new_enemy := enemy.instantiate()
-			#new_enemy.position = Vector2(500 + lr * randf_range(100, 400), -100)
-			#new_enemy.velocity = Vector2(0, 5)
-			#new_enemy.acceleration = Vector2(-0.05 * lr, 0.0)
+	if false:
+		var p := 20
+		if t % p == 0:
+			@warning_ignore("integer_division")
+			var lr = ((t / p) % 2) * 2 - 1
+			
+			var new_enemy := enemy.instantiate()
+			new_enemy.position = Vector2(500 + lr * randf_range(200, 200), -100)
+			new_enemy.velocity = Vector2(0, 4)
+			new_enemy.acceleration = Vector2(-0.02 * lr, 0.0)
 			#new_enemy.max_health = 20
-			#get_parent().add_child(new_enemy)
-		#
+			get_parent().add_child(new_enemy)
 		
-		#for i in 1:
-			#Bullets.create_item(Vector2(1000 * 0.5, -200), randf_range(2.0, 20.0), randf()*TAU, 60.0, item_data, false)
+	
+	#for i in 1:
+		#Bullets.create_item(Vector2(1000 * 0.5, -200), randf_range(2.0, 20.0), randf()*TAU, 60.0, item_data, false)
 		
 		
 	

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcdkm0u0fhub8"]
+
+[ext_resource type="Texture2D" uid="uid://cbywttb6ugyda" path="res://prefab/boss/futo.png" id="1_h3l2l"]
+[ext_resource type="Script" uid="uid://vmo27hndtv6y" path="res://prefab/boss/futo.gd" id="1_mqepj"]
+
+[node name="Futo" type="Node2D"]
+script = ExtResource("1_mqepj")
+hitbox_radius = 96.0
+hurtbox_radius = 64.0
+max_health = 1000.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_h3l2l")

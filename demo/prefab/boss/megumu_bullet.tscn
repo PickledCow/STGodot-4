@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3f6jr286iv3t"]
+
+[ext_resource type="Script" uid="uid://la1xl0pi7lmc" path="res://system/megumu_bullet.gd" id="1_x4ng3"]
+[ext_resource type="Texture2D" uid="uid://dsnnthvt4odwt" path="res://prefab/boss/bullet.png" id="2_x4ng3"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_x4ng3")
+hurtbox_radius = 8.0
+max_health = 10.0
+ability = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 20
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_x4ng3")

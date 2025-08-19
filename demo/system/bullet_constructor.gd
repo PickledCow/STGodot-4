@@ -29,10 +29,10 @@ enum BULLET_TYPE {
 const BULLET_SIZES := [ 
 	0.3, 0.3, 0.2, 0.2, 0.25, 0.25, 0.3, 0.2, 0.2, 0.2, 0.2, 0.2,
 	0.2, 0.15, 0.2, 0.3,
-	0.3, 0.4, 0.2, 0.1, 0.2,
-	0.25,
-	0.4, 0.05, 0.025, 0.4, 0.2,
-	0.25,
+	0.2, 0.25, 0.2, 0.1, 0.2,
+	0.15,
+	0.4, 0.05, 0.025, 0.2, 0.15,
+	0.15,
 	0.0,
 	0.0,
 	0.35,
@@ -118,6 +118,7 @@ const WHITE_RGB := Vector3(0.85, 0.85, 0.85) # White
 func generate_bullet_data() -> void:
 	# Small bullets
 	for i in BULLET_TYPE.POPCORN:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 16:
 			var data := PackedFloat64Array()
@@ -144,6 +145,7 @@ func generate_bullet_data() -> void:
 	# Tiny bullets
 	var tiny_offsets := [Vector2(0, 64 * 12), Vector2(32 * 8, 64 * 12), Vector2(0, 64 * 15)]
 	for i in range(BULLET_TYPE.POPCORN, BULLET_TYPE.COIN):
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 16:
 			var data := PackedFloat64Array()
@@ -170,6 +172,7 @@ func generate_bullet_data() -> void:
 
 	# Coin
 	if true: # Local scoping
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 8:
 			var data := PackedFloat64Array()
@@ -195,6 +198,7 @@ func generate_bullet_data() -> void:
 	
 	# Large bullets
 	for i in range(BULLET_TYPE.STAR_LARGE, BULLET_TYPE.BUBBLE):
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 8:
 			var data := PackedFloat64Array()
@@ -223,6 +227,7 @@ func generate_bullet_data() -> void:
 							Vector2(256*2, 64 * 16), Vector2(256*2, 64 * 16 + 256), Vector2(256*3, 64 * 16 + 256), Vector2(256*3, 64 * 16)
 	]
 	if true: # Local scoping
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 8:
 			var data := PackedFloat64Array()
@@ -248,6 +253,7 @@ func generate_bullet_data() -> void:
 
 	# Large bullets 2
 	for i in range(BULLET_TYPE.HEART, BULLET_TYPE.FIREBALL):
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 8:
 			var data := PackedFloat64Array()
@@ -275,6 +281,7 @@ func generate_bullet_data() -> void:
 	var fireball_offsets := [ Vector2(64 * 16 + 128 * 4, 128 * 15), Vector2(64 * 16, 128 * 12), Vector2(64 * 16 + 128 * 4, 128 * 12),  Vector2(64 * 16, 128 * 13), 
 							  Vector2(64 * 16, 128 * 14), Vector2(64 * 16 + 128 * 4, 128 * 14), Vector2(64 * 16, 128 * 15), Vector2(64 * 16 + 128*4, 128 * 13), ]
 	if true: # Local scoping
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 8:
 			var data := PackedFloat64Array()
@@ -306,6 +313,7 @@ func generate_bullet_data() -> void:
 							Vector2(0, 1536 + 256), Vector2(256, 1536 + 256), Vector2(0, 1536 + 256), 
 	]
 	if true: # Local scoping
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 16:
 			var data := PackedFloat64Array()
@@ -337,6 +345,7 @@ func generate_bullet_data() -> void:
 	# Gear
 	
 	if true:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		var data := PackedFloat64Array()
 		data.resize(15)
@@ -360,6 +369,7 @@ func generate_bullet_data() -> void:
 	
 	# Saw
 	if true:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for i in 3:
 			var data := PackedFloat64Array()
@@ -385,6 +395,7 @@ func generate_bullet_data() -> void:
 	
 	# Small gear
 	if true:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		var data := PackedFloat64Array()
 		data.resize(15)
@@ -408,6 +419,7 @@ func generate_bullet_data() -> void:
 	
 	# Small saw
 	if true:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for i in 3:
 			var data := PackedFloat64Array()
@@ -432,6 +444,7 @@ func generate_bullet_data() -> void:
 	
 	# Money
 	if true:
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		var data := PackedFloat64Array()
 		data.resize(15)
@@ -456,6 +469,7 @@ func generate_bullet_data() -> void:
 	# Note
 	var note_offsets := [ 	Vector2(0, 3584), Vector2(512, 3584), Vector2(0, 3712), Vector2(512, 3712) ]
 	if true: # Local scoping
+		@warning_ignore("confusable_local_declaration")
 		var array := []
 		for j in 4:
 			var data := PackedFloat64Array()
@@ -482,45 +496,63 @@ func generate_bullet_data() -> void:
 	
 	# Generate item data
 	
-	# Large items
-	for i in 6:
-		var array = PackedFloat64Array()
-		array.resize(11)
-		array[0] = 128 * i			# source x (integer) # (16+8*(c/4))
-		array[1] = 0		# source y (integer) # (24+2*(c%4))
-		array[2] = 128				# source width (integer)
-		array[3] = 128				# source height (integer)
-		array[4] = 96.0				# bullet size [0, inf)
-		array[5] = 1.0				# hitbox ratio [0, 1]
-		array[6] = 0					# Sprite offset y (integer)
-		array[7] = 0					# anim frame, 1 for no animation (integer)
-		array[8] = 0					# layer
-		array[9] = i					# type
-		array[10] = 0					# value
-		item_data.append(array)
-		
-	# Small items
-	for i in 3:
-		var array = PackedFloat64Array()
-		array.resize(11)
-		array[0] = 128 * 6 + 64 * i			# source x (integer) # (16+8*(c/4))
-		array[1] = 0		# source y (integer) # (24+2*(c%4))
-		array[2] = 64				# source width (integer)
-		array[3] = 64				# source height (integer)
-		array[4] = 32.0				# bullet size [0, inf)
-		array[5] = 1.0				# hitbox ratio [0, 1]
-		array[6] = 0					# Sprite offset y (integer)
-		array[7] = 0					# anim frame, 1 for no animation (integer)
-		array[8] = 0					# layer
-		array[9] = 6+i					# type
-		array[10] = 0					# value
-		item_data.append(array)
+	# Star
+	var array = PackedFloat64Array()
+	array.resize(11)
+	array[0] = 0			# source x (integer) # (16+8*(c/4))
+	array[1] = 0		# source y (integer) # (24+2*(c%4))
+	array[2] = 128				# source width (integer)
+	array[3] = 128				# source height (integer)
+	array[4] = 96.0				# bullet size [0, inf)
+	array[5] = 0.5				# hitbox ratio [0, 1]
+	array[6] = 0					# Sprite offset y (integer)
+	array[7] = 4					# anim frame, 1 for no animation (integer)
+	array[8] = 0					# layer
+	array[9] = 0					# type
+	array[10] = 0					# value
+	item_data.append(array)
+	
+	# old shit
+	## Large items
+	#for i in 6:
+		#var array = PackedFloat64Array()
+		#array.resize(11)
+		#array[0] = 128 * i			# source x (integer) # (16+8*(c/4))
+		#array[1] = 0		# source y (integer) # (24+2*(c%4))
+		#array[2] = 128				# source width (integer)
+		#array[3] = 128				# source height (integer)
+		#array[4] = 96.0				# bullet size [0, inf)
+		#array[5] = 1.0				# hitbox ratio [0, 1]
+		#array[6] = 0					# Sprite offset y (integer)
+		#array[7] = 0					# anim frame, 1 for no animation (integer)
+		#array[8] = 0					# layer
+		#array[9] = i					# type
+		#array[10] = 0					# value
+		#item_data.append(array)
+		#
+	## Small items
+	#for i in 3:
+		#var array = PackedFloat64Array()
+		#array.resize(11)
+		#array[0] = 128 * 6 + 64 * i			# source x (integer) # (16+8*(c/4))
+		#array[1] = 0		# source y (integer) # (24+2*(c%4))
+		#array[2] = 64				# source width (integer)
+		#array[3] = 64				# source height (integer)
+		#array[4] = 32.0				# bullet size [0, inf)
+		#array[5] = 1.0				# hitbox ratio [0, 1]
+		#array[6] = 0					# Sprite offset y (integer)
+		#array[7] = 0					# anim frame, 1 for no animation (integer)
+		#array[8] = 0					# layer
+		#array[9] = 6+i					# type
+		#array[10] = 0					# value
+		#item_data.append(array)
 
 func get_bullet_data(type: int, color: int) -> PackedFloat64Array:
-	return bullet_data[type][color]
+	var data : PackedFloat64Array = bullet_data[type][color]
+	return data.duplicate()
 
 func get_item_data(type: int) -> PackedFloat64Array:
-	return item_data[type]
+	return item_data[type].duplicate()
 
 
 func _ready() -> void:

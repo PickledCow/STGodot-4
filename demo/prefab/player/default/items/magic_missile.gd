@@ -1,6 +1,6 @@
 extends BaseItem
 
-var fire_rate := 5.0
+var fire_rate := 8.0
 var fire_timer := 0.0
 
 var data: PackedFloat64Array

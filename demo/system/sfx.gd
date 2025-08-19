@@ -17,6 +17,10 @@ var audio_volume_list := [] as Array[float]
 var sfx_index_map := {}
 var audio_stream_player_nodes_list := [] as Array[AudioStreamPlayer2D]
 
+var fade_out_sfx_indicies := [] as Array[int]
+var fade_out_duration := [] as Array[float]
+var fade_out_timer := [] as Array[float]
+
 @export_range(0, 1, 1, "or_greater", "exp") var sfx_count : int = 0:
 	set(sc):
 		sfx_count = sc
@@ -38,8 +42,23 @@ func play(sfx_name: String, pan: float = 0.0) -> void:
 	var index: int = sfx_index_map[StringName(sfx_name)]
 	var audio_node := audio_stream_player_nodes_list[index]
 	
+	_check_and_remove_fading_sound(index)
+	
 	audio_node.position = viewport_size * clamp(pan * 0.5, -0.5, 0.5)
 	audio_node.play()
+	
+## Stops a sound, fading out in the provided time in seconds. Necessary for looping sounds.
+func stop(sfx_name: String, fade_time: float = 0.0) -> void:
+	var index: int = sfx_index_map[StringName(sfx_name)]
+	var audio_node := audio_stream_player_nodes_list[index]
+	
+	if fade_time <= 0.0:
+		audio_node.stop()
+	else:
+		fade_out_sfx_indicies.append(index)
+		fade_out_duration.append(fade_time)
+		fade_out_timer.append(fade_time)
+		
 	
 # -----------------------------------------------------------------------------
 # Initialise audio stream players
@@ -83,6 +102,41 @@ func _validate_property(property: Dictionary):
 			var busName = AudioServer.get_bus_name(i)
 			options += busName
 		property.hint_string = options
+
+# -----------------------------------------------------------------------------
+# Fade out sfx
+# -----------------------------------------------------------------------------
+
+
+func _check_and_remove_fading_sound(audio_index: int) -> void:
+	for i in fade_out_sfx_indicies.size():
+		var index := fade_out_sfx_indicies[i]
+		if index == audio_index:
+			var audio_stream_player := audio_stream_player_nodes_list[index]
+			fade_out_sfx_indicies.remove_at(i)
+			fade_out_duration.remove_at(i)
+			fade_out_timer.remove_at(i)
+			audio_stream_player.volume_db = audio_volume_list[index]
+			audio_stream_player.stop()
+
+func _process(delta: float) -> void:
+	for i in range(fade_out_sfx_indicies.size() - 1, -1, -1):
+		var index := fade_out_sfx_indicies[i]
+		var duration := fade_out_duration[i]
+		fade_out_timer[i] -= delta
+		var timer := fade_out_timer[i]
+		var audio_stream_player := audio_stream_player_nodes_list[index]
+		var default_volume := audio_volume_list[index]
+		
+		if timer > 0.0:
+			audio_stream_player.volume_linear = db_to_linear(default_volume) * timer / duration
+		else:
+			fade_out_sfx_indicies.remove_at(i)
+			fade_out_duration.remove_at(i)
+			fade_out_timer.remove_at(i)
+			audio_stream_player.volume_db = default_volume
+			audio_stream_player.stop()
+			
 
 # -----------------------------------------------------------------------------
 # Add neatly structured sfx list to the editor.

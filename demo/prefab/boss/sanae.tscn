@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6x3hpt34al5l"]
+
+[ext_resource type="Script" uid="uid://b8kjfvv2muk31" path="res://prefab/boss/sanae.gd" id="1_ogw6g"]
+[ext_resource type="Texture2D" uid="uid://cxmt88irmyvkw" path="res://prefab/boss/sanae.png" id="2_erbhp"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ogw6g")
+hitbox_radius = 96.0
+hurtbox_radius = 64.0
+max_health = 800.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_erbhp")

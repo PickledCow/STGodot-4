@@ -1,0 +1,115 @@
+[gd_scene load_steps=18 format=3 uid="uid://cs24b67ekp5yt"]
+
+[ext_resource type="Script" uid="uid://bptk8v2pj7h4k" path="res://prefab/player/yuuma/bomb.gd" id="1_l6s5m"]
+[ext_resource type="Texture2D" uid="uid://bux2mj3owqwgk" path="res://prefab/player/yuuma/bomb.png" id="2_fmfms"]
+[ext_resource type="Texture2D" uid="uid://c0w1exaevk2hb" path="res://system/vfx/testfire.png" id="3_fmfms"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4npyd"]
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_4m4nh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5360825, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_msx2u"]
+curve = SubResource("Curve_4m4nh")
+
+[sub_resource type="Curve" id="Curve_a8y6a"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.19072166, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6e1fc"]
+curve = SubResource("Curve_a8y6a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_opjm7"]
+particle_flag_disable_z = true
+angle_min = 1.0728836e-05
+angle_max = 360.00003
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 420.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_6e1fc")
+color = Color(0.73828125, 0.73828125, 0.73828125, 1)
+alpha_curve = SubResource("CurveTexture_msx2u")
+anim_speed_min = 1.0
+anim_speed_max = 2.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r648x"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_5v0lu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.66494846, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_hpd2d"]
+curve = SubResource("Curve_5v0lu")
+
+[sub_resource type="Gradient" id="Gradient_ke1vr"]
+offsets = PackedFloat32Array(0, 0.14285715, 0.5535714, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.8770447, 0.07421875, 1, 1, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vdvpp"]
+gradient = SubResource("Gradient_ke1vr")
+
+[sub_resource type="Curve" id="Curve_83smc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.19072166, 1), 0.0, 0.0, 0, 0, Vector2(0.42783508, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_6uaf6"]
+curve = SubResource("Curve_83smc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bk0iw"]
+particle_flag_disable_z = true
+angle_min = 1.0728836e-05
+angle_max = 360.00003
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 360.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.39999998
+scale_max = 0.75
+scale_curve = SubResource("CurveTexture_6uaf6")
+color_ramp = SubResource("GradientTexture1D_vdvpp")
+alpha_curve = SubResource("CurveTexture_hpd2d")
+anim_speed_min = 1.0
+anim_speed_max = 2.0
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_l6s5m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_fmfms")
+
+[node name="Smoke" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_4npyd")
+emitting = false
+amount = 128
+texture = ExtResource("3_fmfms")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_opjm7")
+
+[node name="Flames" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_r648x")
+emitting = false
+amount = 128
+texture = ExtResource("3_fmfms")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_bk0iw")
+
+[connection signal="finished" from="Flames" to="." method="_on_flames_finished"]

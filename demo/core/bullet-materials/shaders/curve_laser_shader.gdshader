@@ -1,5 +1,5 @@
 shader_type canvas_item;
-render_mode blend_add;
+//render_mode blend_add;
 // advert your eyes pls
 
 
@@ -14,28 +14,28 @@ float fade(float x) {
 }
 
 void vertex() {
-	modulate = COLOR;
+	modulate = CUSTOM0;
 }
 
 void fragment() {
-	COLOR.rg = UV;
-	COLOR.ba = vec2(1.0);
+	//COLOR.rg = UV;
+	//COLOR.ba = vec2(1.0);
 	//
-	//vec2 texSize = vec2(textureSize(TEXTURE, 0));
-	//vec2 texPixel = vec2(1.0, 1.0 / texSize.y);
-//
-	//vec2 position = vec2(fract(modulate.r), floor(modulate.r));
-	//vec2 size = vec2(fract(modulate.g),floor(modulate.g));
-	//vec2 uv = texPixel * position + texPixel * size * UV;
-//
-	//float frame_count = max(1.0, floor(modulate.a));
-	//float frame = mod(floor(animation_speed * TIME + fract(modulate.a) * frame_count), frame_count);
-	//uv.x += size.x * frame;
-//
-	//vec4 tex = texture(TEXTURE, uv);
-//
-	//float alpha = 1.0 - fract(abs(modulate.b));
-	//tex.a *= alpha;
-//
-	//COLOR = tex;
+	vec2 texSize = vec2(textureSize(TEXTURE, 0));
+	vec2 texPixel = vec2(1.0, 1.0 / texSize.y);
+
+	vec2 position = vec2(fract(modulate.r), floor(modulate.r));
+	vec2 size = vec2(fract(modulate.g),floor(modulate.g));
+	vec2 uv = texPixel * position + texPixel * size * UV;
+
+	float frame_count = max(1.0, floor(modulate.a));
+	float frame = mod(floor(animation_speed * TIME + fract(modulate.a) * frame_count), frame_count);
+	uv.x += size.x * frame;
+
+	vec4 tex = texture(TEXTURE, uv);
+
+	float alpha = 1.0 - fract(abs(modulate.b));
+	tex.a *= alpha;
+
+	COLOR = tex;
 }

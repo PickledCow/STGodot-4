@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bus24a3mfmi1d"]
+
+[ext_resource type="Shader" uid="uid://bc675pl2msjqs" path="res://core/bullet-materials/shaders/curve_laser_add_shader.gdshader" id="1_gfbgd"]
+
+[resource]
+shader = ExtResource("1_gfbgd")
+shader_parameter/animation_speed = 8.0

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://6eparop51s1o"]
+
+[ext_resource type="Script" uid="uid://dwbya3axbr21c" path="res://prefab/boss/parasol.gd" id="1_nslpy"]
+[ext_resource type="Texture2D" uid="uid://us7p3dimibip" path="res://prefab/boss/kogasa_parasol.png" id="2_nslpy"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_nslpy")
+hitbox_radius = 48.0
+hurtbox_radius = 28.0
+max_health = 15.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_nslpy")

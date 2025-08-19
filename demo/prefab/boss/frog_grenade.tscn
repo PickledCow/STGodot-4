@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyp2g7ogbso1o"]
+
+[ext_resource type="Script" uid="uid://b4kl5gcgh0fgv" path="res://prefab/boss/frog_grenade.gd" id="1_da4oh"]
+[ext_resource type="Texture2D" uid="uid://b17oopnbp2ib5" path="res://prefab/boss/frog_grenade.png" id="2_da4oh"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_da4oh")
+hitbox_radius = 32.0
+max_health = 30.0
+ability = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_da4oh")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7kiywyf2uras"]
+
+[ext_resource type="Script" uid="uid://bavbunbhlj2sv" path="res://prefab/boss/plate.gd" id="1_y4a6t"]
+[ext_resource type="Texture2D" uid="uid://dp81x0cw7b871" path="res://prefab/boss/plate.png" id="2_ldjxs"]
+
+[node name="Plate" type="Node2D"]
+script = ExtResource("1_y4a6t")
+hitbox_radius = 40.0
+hurtbox_radius = 32.0
+star_damage_multiplier = 0.5
+max_health = 50.0
+ability = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_ldjxs")

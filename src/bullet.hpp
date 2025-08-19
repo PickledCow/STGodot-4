@@ -29,9 +29,10 @@ namespace godot {
 
 // Mode of process for BasicBullet. Higher number classes also run the process
 // of lower types. A types act with angles and B types act with x-y velocities.
-enum processMode { A1, A2, A3, B1, B2, B3 };
-enum bounceMode { BOUNCE, WARP };
-enum transformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
+enum ProcessMode { A1, A2, A3, B1, B2, B3 };
+enum BounceMode { BOUNCE, WARP };
+enum TransformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
+// enum EnemyHitboxType { CIRCLE_HITBOX, RECT_HITBOX };
 
 enum BULLET_ID_STRUCTURE {
     BULLET_ID_CYCLE,
@@ -71,11 +72,15 @@ struct Enemy : AbstractPoolItem {
     double hitbox_size = 16.0;
     // Size of the hurtbox (player gets hurt).
     double hurtbox_size = 8.0;
+    // If the bullet should delete non-piercing bullets
+    bool deletes_bullets = true;
     // Marked for deleting next frame.
     bool queue_delete = false;
-
+    
     // The list of bullets collided with.
     Array collided_bullets;
+    // List of bullets collided with in its lifetime to keep track of pierce.
+    Array lifetime_collided_bullets;
 };
 
 // A basic bullet struct. Holds onto information about the bullet that then a 
@@ -93,8 +98,8 @@ struct AbstractBullet : AbstractPoolItem {
     int draw_index = 0;
     // Transform of the bullet, also used for rendering
     Transform2D transform = Transform2D();
-    // Flag for tracking if the bullet is currently fading.
-    bool fading = false;
+    // // Flag for tracking if the bullet is currently fading.
+    // bool fading = false;
     // Flag for if using the additive material variant to skip changing materials if no need
     bool additive = false;
 
@@ -131,6 +136,8 @@ struct AbstractBullet : AbstractPoolItem {
     double fade_timer = 0.0;
     // How many frames of fade animation the bullet has in total.
     double fade_time = 0.0;
+    // // Flag for if the bullet is fading out, the bullet is not deleted until it fades out but does not have collision.
+    // bool fading_out = false;
     // Controls if the bullet fades out when it is destroyed.
     bool fade_delete = false;
     // If true, automatically deletes the bullet if outside the playfield bounds.
@@ -173,10 +180,12 @@ struct CollisionBullet : AbstractBullet {
 // Basic bullet for general purpose use
 struct Bullet : CollisionBullet {
     // Mode of operation for which movement procedure to use
-    processMode process_mode = A1;
+    ProcessMode process_mode = A1;
 
     // Internal Array for keeping track of bullet transforms.
     Array transforms;
+
+
 
     // ----------------------------------------
     // A2 movement type variables.
@@ -207,6 +216,14 @@ struct Bullet : CollisionBullet {
     // Rotation speed limit for gradual rotating bullets in radians per tick.
     double max_wvel = 0.0;
 
+    // ----------------------------------------
+    // B1 movement type variables.
+    // ----------------------------------------
+
+    Vector2 b_accel;
+    Vector2 b_max_velocity;
+    bool rotation_follows_movement;
+
 };
 
 // Lasers, behave similarly to bullets mostly but have different collision
@@ -227,10 +244,11 @@ struct Laser : Bullet {
     Transform2D spawn_transform;
 };
 
-// Curve lasers, behave too differently from regular lasers to extend off them
+// Curve lasers, behave too differently from regular lasers to extend off them. 
+// The item_rid of curve lasers are used for the spawn laser instead
 struct CurveLaser: Bullet {
-    // RID of the rendered mesh
-    RID mesh_rid;
+    // // RID of the rendered mesh
+    // RID mesh_rid;
     // Starting position for the spawn glow
     Vector2 start_position;
     // How long the laser is in frames
@@ -238,11 +256,13 @@ struct CurveLaser: Bullet {
     // The width of the laser
     double width;
     // The list of points on the laser.
-    PackedVector2Array points;
-    // // List of vertices of the laser mesh.
-    // PackedVector2Array vertices;
-    // // List of UVs of the laser mesh. If timescale is 1.0, these values do not need to change.
-    // PackedVector2Array uvs;
+    PackedVector2Array points = PackedVector2Array();
+    // List of vertices of the laser mesh.
+    PackedVector2Array vertices = PackedVector2Array();
+    // List of UVs of the laser mesh. If timescale is 1.0, these values do not need to change.
+    PackedVector2Array uvs = PackedVector2Array();
+    // List of CUSTOM0 data for shader use, doesn't ever change keep around.
+    PackedFloat32Array custom0s = PackedFloat32Array();
     // Used to keep track of what fraction of a frame we are off to adjust moving the UVs by to compensate.
     double timestep_fraction;
     // The first node that has collision.
@@ -253,11 +273,15 @@ struct CurveLaser: Bullet {
     int mesh_start_node_index;
     // The end of the texture mesh for when the laser is cut.
     int mesh_end_node_index;
+    // The start tip collision margin. used when resizing the laser from a cut
+    int start_margin;
+    // The end tip collision margin. used when resizing the laser from a cut
+    int end_margin;
 
     PackedFloat64Array laser_data_copy;
 
-    // Resource ID for the spawn sprite.
-    RID spawn_item_rid;
+    // // Resource ID for the spawn sprite.
+    // RID spawn_item_rid;
     // Transfomr for the spawn sprite.
     Transform2D spawn_transform;
 };

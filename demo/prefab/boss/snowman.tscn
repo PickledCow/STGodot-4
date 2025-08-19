@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://sffb8ju0ue62"]
+
+[ext_resource type="Script" uid="uid://bwmdm6vmemlls" path="res://prefab/boss/snowman.gd" id="1_ac2sv"]
+[ext_resource type="Texture2D" uid="uid://b2syuopxin6cq" path="res://prefab/boss/snowman.png" id="2_xnxax"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ac2sv")
+hitbox_radius = 64.0
+hurtbox_radius = 32.0
+max_health = 15.0
+ability = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_xnxax")

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://c63jtf6wdi1hn"]
+
+[ext_resource type="Script" uid="uid://b71nk1ve3jgbl" path="res://prefab/boss/marisa.gd" id="1_1ejk6"]
+[ext_resource type="Texture2D" uid="uid://b8u02krmiwmff" path="res://prefab/player/default/items/sprites/marisa_laser.png" id="2_ebafm"]
+[ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="2_un2fp"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iwwjq"]
+blend_mode = 1
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_1ejk6")
+hitbox_radius = 96.0
+hurtbox_radius = 64.0
+star_damage_multiplier = 1.25
+max_health = 1250.0
+
+[node name="aim" type="Sprite2D" parent="."]
+visible = false
+z_index = -2
+material = SubResource("CanvasItemMaterial_iwwjq")
+scale = Vector2(4, 1)
+texture = ExtResource("2_ebafm")
+centered = false
+offset = Vector2(0, -32)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_un2fp")
