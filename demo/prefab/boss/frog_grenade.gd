@@ -1,6 +1,6 @@
 extends Enemy
 
-var bounce_count := 1
+var bounce_count := 2
 var decay_factor := 1.0
 
 var spin_direction := 1.0

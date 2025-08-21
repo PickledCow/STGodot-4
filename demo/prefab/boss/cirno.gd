@@ -36,39 +36,42 @@ func shoot_ice(angle: float, data: PackedFloat64Array):
 
 
 func _post_process(_time_scale: float) -> void:
-	#Bullets.create_bullet_a1(position, 5, PI * 0.5, ice, false)
-	if t % ice_rate[difficulty] == 0:
-		var angle := cos(TAU * t / 900.0) * TAU / ice_sway[difficulty]
-		shoot_ice(angle, ice)
-		Bullets.create_bullet_a1(position + hand_offset, randf_range(7.0, 10.0), PI * randf_range(-0.6, -0.4), ice, false)
-	@warning_ignore("integer_division")
-	if t % ice_rate[difficulty] == ice_rate[difficulty] / 2:
-		var angle := sin(TAU * t / 900.0) * TAU / ice_sway[difficulty]
-		shoot_ice(angle, ice2)
-		Bullets.create_bullet_a1(position + hand_offset, randf_range(7.0, 10.0), PI * randf_range(-0.6, -0.4), ice2, false)
-	
-	if t % ice_rate[difficulty] == 0:
-		SFX.play("shoot1")
-	
-	if t % (snowman_spawn_rate[difficulty] * 2) == snowman_spawn_rate[difficulty]:
-		#SFX.play("warning")
+	if t >= 0:
+		#Bullets.create_bullet_a1(position, 5, PI * 0.5, ice, false)
+		if t % ice_rate[difficulty] == 0:
+			var angle := cos(TAU * t / 900.0) * TAU / ice_sway[difficulty]
+			shoot_ice(angle, ice)
+			Bullets.create_bullet_a1(position + hand_offset, randf_range(7.0, 10.0), PI * randf_range(-0.6, -0.4), ice, false)
+		@warning_ignore("integer_division")
+		if t % ice_rate[difficulty] == ice_rate[difficulty] / 2:
+			var angle := sin(TAU * t / 900.0) * TAU / ice_sway[difficulty]
+			shoot_ice(angle, ice2)
+			Bullets.create_bullet_a1(position + hand_offset, randf_range(7.0, 10.0), PI * randf_range(-0.6, -0.4), ice2, false)
 		
-		var x_min : float = max(200, min(position.x, System.player.position.x) - 100.0)
-		var x_max : float = min(800, max(position.x, System.player.position.x) + 100.0)
+		if t % ice_rate[difficulty] == 0:
+			SFX.play("shoot1")
 		
-		var snowman : Enemy = snowmen.instantiate()
-		snowman.position = Vector2(randf_range(x_min, x_max), -150)
-		snowman.velocity = Vector2(0.0, snowman_speeds[difficulty])
-		snowman.density = snowman_densities[difficulty]
-		snowman.fire_rate = snowman_spawn_rate[difficulty] / 2
-		if health <= 500:
+		if t % (snowman_spawn_rate[difficulty] * 2) == snowman_spawn_rate[difficulty]:
+			#SFX.play("warning")
+			
+			var x_min : float = max(200, min(position.x, System.player.position.x) - 100.0)
+			var x_max : float = min(800, max(position.x, System.player.position.x) + 100.0)
+			
+			var snowman : Enemy = snowmen.instantiate()
+			snowman.position = Vector2(randf_range(x_min, x_max), -150)
+			snowman.velocity = Vector2(0.0, snowman_speeds[difficulty])
+			snowman.density = snowman_densities[difficulty]
 			@warning_ignore("integer_division")
-			snowman.fire_rate = snowman_spawn_rate[difficulty] / 4
-			snowman.fire_time = 30
-		get_parent().add_child(snowman)
-	
-	if t > 0 and t % 600 == 0:
-		var min_x : float = max(300, position.x - 150)
-		var max_x : float = min(700, position.x + 150)
-		set_destination(Vector2(randf_range(min_x, max_x), 300), 60)
-	
+			snowman.fire_rate = snowman_spawn_rate[difficulty] / 2
+			if health <= 500:
+				@warning_ignore("integer_division")
+				snowman.fire_rate = snowman_spawn_rate[difficulty] / 3
+				@warning_ignore("integer_division")
+				snowman.fire_time = snowman_spawn_rate[difficulty] / 6
+			get_parent().add_child(snowman)
+		
+		if t > 0 and t % 600 == 0:
+			var min_x : float = max(300, position.x - 150)
+			var max_x : float = min(700, position.x + 150)
+			set_destination(Vector2(randf_range(min_x, max_x), 300), 60)
+		

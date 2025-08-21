@@ -7,8 +7,8 @@
 script = ExtResource("1_y4a6t")
 hitbox_radius = 40.0
 hurtbox_radius = 32.0
-star_damage_multiplier = 0.5
-max_health = 50.0
+star_damage_multiplier = 0.25
+max_health = 30.0
 ability = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -11,6 +11,8 @@ var large_shard : PackedFloat64Array
 
 var launch_direction := Vector2.ZERO
 
+var skip_shards := true
+
 func _post_ready() -> void:
 	shards = System.get_bullet_data(BulletConstructor.BULLET_TYPE.ICE, BulletConstructor.COLORS.WHITE)
 	dark_shards = System.get_bullet_data(BulletConstructor.BULLET_TYPE.ICE, BulletConstructor.COLORS.BLUE)
@@ -34,13 +36,12 @@ func _post_process(_time_scale: float) -> void:
 		velocity.y *= -decay_factor
 		hit_wall = true
 	if hit_wall:
-		how_i_died = DEATH_TYPE.DESPAWNED
-		
+		how_i_died = DEATH_TYPE.NORMAL
+		skip_shards = false
 		_on_death()
 
-
 func _post_death():
-	if how_i_died != DEATH_TYPE.SUCKED and position.y < 1000.0:
+	if how_i_died == DEATH_TYPE.NORMAL and not skip_shards and position.y < 1000.0:
 		SFX.play("warning")
 		Bullets.create_bullet_b1(
 			position,

@@ -24,8 +24,6 @@ var blue_ball : PackedFloat64Array
 func _post_ready() -> void:
 	blue_ball = System.get_bullet_data(BulletConstructor.BULLET_TYPE.BALL, BulletConstructor.COLORS.BLUE)
 	
-	t = -30
-	t_float = -30.0
 
 func _pre_process(_time_scale: float) -> void:
 	if t >= 0:

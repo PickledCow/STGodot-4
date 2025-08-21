@@ -6,6 +6,9 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_hpn5q")
+attack_type_list = Array[int]([1])
+attack_name_list = Array[String](["Gun Sign 「Super Epic Sniper Rifle」"])
+boss_name = "Megumu"
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
 max_health = 800.0

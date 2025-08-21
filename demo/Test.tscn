@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=76 format=3 uid="uid://18jtj8q2lok4"]
 
 [ext_resource type="Script" uid="uid://ktr6sx7sgup5" path="res://system/root.gd" id="1_d1b21"]
 [ext_resource type="PackedScene" uid="uid://c8rj1fgn6ae4q" path="res://scenes/bg.tscn" id="1_r6p7k"]
@@ -8,12 +8,12 @@
 [ext_resource type="Script" uid="uid://dexe7u0rk2ipi" path="res://system/boss_manager.gd" id="5_rc7cs"]
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="6_q1uvj"]
 [ext_resource type="AudioStream" uid="uid://b7sdnoonwurl5" path="res://bgm/boss_rush.ogg" id="7_ilduj"]
-[ext_resource type="Script" uid="uid://2lcdr4gn4bos" path="res://fps.gd" id="7_q1uvj"]
 [ext_resource type="PackedScene" uid="uid://dq8vf06ltkop6" path="res://prefab/player/player_loader.tscn" id="8_30nhk"]
 [ext_resource type="Texture2D" uid="uid://ce4a8eagwdg7c" path="res://system/ui/ui.png" id="8_qs82m"]
 [ext_resource type="AudioStream" uid="uid://ck6q3cmefabre" path="res://bgm/dialogue.ogg" id="8_rdfvj"]
 [ext_resource type="PackedScene" uid="uid://dww4gq24fvl8n" path="res://prefab/player/default/player.tscn" id="9_5p7c2"]
 [ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="9_c4vo5"]
+[ext_resource type="AudioStream" uid="uid://bee0whuhbjtii" path="res://bgm/under_my_control.ogg" id="11_g3si5"]
 [ext_resource type="Script" uid="uid://b3gknb1608v3o" path="res://system/vfx/screen_warp.gd" id="11_ilduj"]
 [ext_resource type="Script" uid="uid://qh1fl24dgpbt" path="res://system/pause_menu.gd" id="12_s2xbw"]
 [ext_resource type="Script" uid="uid://20cdp0rqp5gn" path="res://system/ui/ui.gd" id="16_egg54"]
@@ -22,6 +22,7 @@
 [ext_resource type="FontFile" uid="uid://bnlac8fhkrxqe" path="res://fonts/REVUE.ttf" id="17_iw7q2"]
 [ext_resource type="Texture2D" uid="uid://cv40m3thjywhq" path="res://system/ui/logo.png" id="17_rdfvj"]
 [ext_resource type="FontFile" uid="uid://b422bvlb7wrgm" path="res://fonts/BRLNSR.TTF" id="18_xyx0r"]
+[ext_resource type="Script" uid="uid://bsp5u5kb344dq" path="res://system/ui/spell_icon.gd" id="19_g3si5"]
 [ext_resource type="Texture2D" uid="uid://bedhsbqq7c32t" path="res://system/ui/health_under.png" id="19_nm833"]
 [ext_resource type="FontFile" uid="uid://3odse0tu2uxh" path="res://fonts/Inter-Medium.ttf" id="19_ra0u3"]
 [ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="20_evvna"]
@@ -31,9 +32,12 @@
 [ext_resource type="Texture2D" uid="uid://1jv83bpqiiu5" path="res://prefab/boss/cirno.png" id="22_ulkak"]
 [ext_resource type="Texture2D" uid="uid://uu33luiea5bn" path="res://prefab/boss/kogasa.png" id="23_5f4kg"]
 [ext_resource type="Script" uid="uid://jrapyku8x747" path="res://system/ui/logo_sway.gd" id="23_ixknr"]
+[ext_resource type="Script" uid="uid://coqoecq0xxkpm" path="res://system/ui/dialogue.gd" id="23_ulkak"]
 [ext_resource type="Texture2D" uid="uid://cxmt88irmyvkw" path="res://prefab/boss/sanae.png" id="24_4lu35"]
 [ext_resource type="Texture2D" uid="uid://6mv3uhwh0pyl" path="res://prefab/boss/megumu.png" id="25_2n3dp"]
 [ext_resource type="Texture2D" uid="uid://dbwp0uwx86qvh" path="res://prefab/boss/youmu.png" id="26_0f54c"]
+[ext_resource type="FontFile" uid="uid://0v15vcclfm4j" path="res://fonts/THBiolinum.otf" id="31_5f4kg"]
+[ext_resource type="AudioStream" uid="uid://bmcwuft8exfxu" path="res://system/sfx/pause.wav" id="38_4lu35"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rc7cs"]
 
@@ -49,6 +53,10 @@ uniform float boss_size;
 uniform vec2 player_center;
 uniform float player_force;
 uniform float player_size;
+
+uniform vec2 invert_center;
+uniform float invert_size;
+
 
 uniform float thickness;
 uniform float abberation = 0.01;
@@ -126,12 +134,27 @@ void fragment() {
 	vec2 player_dispb = normalize(UV - player_center) * player_force * player_mask.b;
 
 
-	COLOR.rgb = vec3(
+	vec3 c = vec3(
 		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispr - player_dispr).r,
 		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispg - player_dispg).g,
 		texture(SCREEN_TEXTURE, SCREEN_UV - boss_dispb - player_dispb).b
 	);
-
+	
+	// 5 sided invert
+	for (float i = 0.0; i < 1.0; i += 0.2) {
+		vec2 pos = invert_center + vec2(sin(i * TAU), cos(i * TAU)) * 0.05;
+		vec2 dist = UV - pos;
+		if (dist.x * dist.x + dist.y * dist.y < invert_size * invert_size) {
+			c.rgb = 1.0 - c.rgb;
+		}
+	}
+	// Middle un-invert
+	vec2 dist = UV - invert_center;
+	if (invert_size >= 1.5 && dist.x * dist.x + dist.y * dist.y < (invert_size - 1.5) * (invert_size - 1.5)) {
+		c.rgb = 1.0 - c.rgb;
+	}
+	
+	COLOR.rgb = c;
 
 }
 "
@@ -144,6 +167,8 @@ shader_parameter/boss_size = 0.0
 shader_parameter/player_center = Vector2(0.5, 0.5)
 shader_parameter/player_force = 0.0
 shader_parameter/player_size = 0.0
+shader_parameter/invert_center = Vector2(0, 0)
+shader_parameter/invert_size = 0.0
 shader_parameter/thickness = 0.25
 shader_parameter/abberation = 0.15000000000873115
 
@@ -271,6 +296,44 @@ _data = {
 &"warp": SubResource("Animation_q8vq6")
 }
 
+[sub_resource type="Animation" id="Animation_r51hy"]
+resource_name = "warp"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/invert_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 3.0]
+}
+
+[sub_resource type="Animation" id="Animation_nq4wj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/invert_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q080f"]
+_data = {
+&"RESET": SubResource("Animation_nq4wj"),
+&"warp": SubResource("Animation_r51hy")
+}
+
 [sub_resource type="Shader" id="Shader_egg54"]
 code = "shader_type canvas_item;
 
@@ -316,6 +379,129 @@ corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 corner_detail = 6
+
+[sub_resource type="Animation" id="Animation_2n3dp"]
+resource_name = "fade_out"
+length = 0.5
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(64, -0.25, 0, 0.25, 0, 0, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Glow:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(64, -0.25, 0, 0.25, 0, 0, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0f54c"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(64, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Glow:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(64, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ifirh"]
+resource_name = "fade_in"
+length = 0.5
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(128, -0.25, 0, 0, 0, 64, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Glow:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(128, -0.25, 0, 0, 0, 64, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ifirh"]
+resource_local_to_scene = true
+_data = {
+&"RESET": SubResource("Animation_0f54c"),
+&"fade_in": SubResource("Animation_ifirh"),
+&"fade_out": SubResource("Animation_2n3dp")
+}
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ra0u3"]
 blend_mode = 1
@@ -410,6 +596,18 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SpellName:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_ra0u3"]
 resource_name = "spawn"
@@ -467,7 +665,7 @@ tracks/4/path = NodePath("SpellName/Underline:scale:x")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"handle_modes": PackedInt32Array(0, 2),
+"handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0, 0),
 "times": PackedFloat32Array(0.5, 1)
 }
@@ -478,7 +676,7 @@ tracks/5/path = NodePath("SpellName/Underline:scale:y")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"handle_modes": PackedInt32Array(0, 2),
+"handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(2, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0, 0),
 "times": PackedFloat32Array(0.5, 1)
 }
@@ -494,12 +692,50 @@ tracks/6/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SpellName:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_180o4"]
 _data = {
 &"RESET": SubResource("Animation_185a3"),
 &"spawn": SubResource("Animation_ra0u3")
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lu35"]
+bg_color = Color(1, 0.93333334, 0.6666667, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+expand_margin_left = 16.0
+expand_margin_right = 16.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2n3dp"]
+bg_color = Color(1, 0.93333334, 0.6666667, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+expand_margin_left = 16.0
+expand_margin_right = 16.0
 
 [sub_resource type="Animation" id="Animation_evvna"]
 length = 0.001
@@ -961,6 +1197,7 @@ texture = ExtResource("9_c4vo5")
 script = ExtResource("5_rc7cs")
 health_bar_path = NodePath("../../../UI/MiddleUI/TopBar/Healthbar/ProgressBar")
 health_percent_path = NodePath("../../../UI/MiddleUI/TopBar/Healthbar/ProgressBar/Percent")
+dialogue_path = NodePath("../../../UI/MiddleUI/Dialogue")
 
 [node name="Music" type="AudioStreamPlayer" parent="GameAnchor/root/BossManager"]
 stream = ExtResource("7_ilduj")
@@ -968,7 +1205,11 @@ bus = &"Music"
 
 [node name="DialogueMusic" type="AudioStreamPlayer" parent="GameAnchor/root/BossManager"]
 stream = ExtResource("8_rdfvj")
-volume_db = -1.0
+volume_db = -1.5
+bus = &"Music"
+
+[node name="Mizuchi" type="AudioStreamPlayer" parent="GameAnchor/root/BossManager"]
+stream = ExtResource("11_g3si5")
 bus = &"Music"
 
 [node name="testscript" type="Node2D" parent="GameAnchor/root"]
@@ -994,12 +1235,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_nm833")
 }
 
-[node name="PauseMenu" type="Control" parent="GameAnchor/root"]
-process_mode = 3
-layout_mode = 3
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("12_s2xbw")
+[node name="InvertAnimator" type="AnimationPlayer" parent="GameAnchor/root/ScreenWarp"]
+libraries = {
+&"": SubResource("AnimationLibrary_q080f")
+}
 
 [node name="UI" type="Control" parent="."]
 z_index = 50
@@ -1007,18 +1246,6 @@ layout_mode = 1
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("16_egg54")
-
-[node name="Label" type="Label" parent="UI"]
-visible = false
-z_index = 20
-layout_mode = 0
-offset_left = 22.0
-offset_top = 425.0
-offset_right = 148.0
-offset_bottom = 455.0
-scale = Vector2(3, 3)
-text = "FPS"
-script = ExtResource("7_q1uvj")
 
 [node name="MiddleUI" type="Control" parent="UI"]
 z_index = 50
@@ -1095,134 +1322,261 @@ layout_mode = 2
 theme_override_constants/separation = -4
 
 [node name="0" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+wait_time = 0.1
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/0/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
 [node name="1" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+wait_time = 0.2
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/1/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
 [node name="2" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+wait_time = 0.3
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/2/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
 [node name="3" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+wait_time = 0.4
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/3/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
 [node name="4" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+wait_time = 0.5
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/4/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
 [node name="5" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells"]
-clip_contents = true
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+script = ExtResource("19_g3si5")
 
-[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+[node name="Timer" type="Timer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+wait_time = 0.6
+one_shot = true
+ignore_time_scale = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+root_node = NodePath("../Clip")
+libraries = {
+&"": SubResource("AnimationLibrary_ifirh")
+}
+
+[node name="Clip" type="Control" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+modulate = Color(1, 1, 1, 0)
+clip_contents = true
+anchors_preset = 0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 128.0
+
+[node name="Glow" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5/Clip"]
 material = SubResource("CanvasItemMaterial_ra0u3")
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bg4i3")
 
-[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5"]
+[node name="Icon" type="TextureRect" parent="UI/MiddleUI/TopBar/SecondBar/Spells/5/Clip"]
 layout_mode = 0
 offset_left = -128.0
+offset_top = 64.0
 offset_right = 640.0
-offset_bottom = 128.0
+offset_bottom = 192.00006
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_f3qia")
 
@@ -1283,11 +1637,12 @@ text = "00"
 vertical_alignment = 2
 
 [node name="SpellName" type="Control" parent="UI/MiddleUI"]
+visible = false
 anchors_preset = 0
 offset_left = 488.0
 offset_top = 70.0
 offset_right = 982.0001
-offset_bottom = 114.00024
+offset_bottom = 114.000374
 pivot_offset = Vector2(494, 22)
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -1325,6 +1680,7 @@ anchors_preset = 0
 offset_top = 7750.0
 offset_right = 40.0
 offset_bottom = 7790.0
+script = ExtResource("23_ulkak")
 
 [node name="Player" type="Control" parent="UI/MiddleUI/Dialogue"]
 anchors_preset = 0
@@ -1411,7 +1767,47 @@ offset_right = 1117.0
 offset_bottom = 1157.0
 texture = ExtResource("26_0f54c")
 
+[node name="PlayerBox" type="Label" parent="UI/MiddleUI/Dialogue"]
+z_index = 2
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 0
+offset_left = 182.0
+offset_top = 564.0
+offset_right = 222.0
+offset_bottom = 587.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("31_5f4kg")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_4lu35")
+text = "Die Maggots!"
+vertical_alignment = 1
+
+[node name="Control" type="BoxContainer" parent="UI/MiddleUI/Dialogue"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 520.0
+offset_right = 750.0
+offset_bottom = 584.0
+alignment = 2
+
+[node name="EnemyBox" type="Label" parent="UI/MiddleUI/Dialogue/Control"]
+z_index = 2
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("31_5f4kg")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2n3dp")
+text = "No U trasras"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/Dialogue"]
+libraries = {
+&"": SubResource("AnimationLibrary_5f4kg")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="UI/MiddleUI/Dialogue"]
 libraries = {
 &"": SubResource("AnimationLibrary_5f4kg")
 }
@@ -1508,3 +1904,21 @@ libraries = {
 &"": SubResource("AnimationLibrary_egg54")
 }
 script = ExtResource("23_ixknr")
+
+[node name="PauseMenu" type="Control" parent="UI"]
+process_mode = 3
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("12_s2xbw")
+
+[node name="Pause" type="AudioStreamPlayer" parent="UI/PauseMenu"]
+stream = ExtResource("38_4lu35")
+bus = &"SFX"
+
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/0/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/0" method="_on_timer_timeout"]
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/1/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/1" method="_on_timer_timeout"]
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/2/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/2" method="_on_timer_timeout"]
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/3/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/3" method="_on_timer_timeout"]
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/4/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/4" method="_on_timer_timeout"]
+[connection signal="timeout" from="UI/MiddleUI/TopBar/SecondBar/Spells/5/Timer" to="UI/MiddleUI/TopBar/SecondBar/Spells/5" method="_on_timer_timeout"]

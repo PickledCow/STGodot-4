@@ -71,8 +71,6 @@ func _post_ready() -> void:
 	exhausts[5] = System.get_bullet_data(BulletConstructor.BULLET_TYPE.ORB, BulletConstructor.COLORS_LARGE.BLUE)
 	exhausts[6] = System.get_bullet_data(BulletConstructor.BULLET_TYPE.ORB, BulletConstructor.COLORS_LARGE.PURPLE)	
 	
-	t = -30
-	t_float = -30.0
 		
 func _pre_process(_time_scale: float) -> void:
 	#if t % 10 == 0:
@@ -108,12 +106,12 @@ func _pre_process(_time_scale: float) -> void:
 					)
 					Bullets.set_spin(b, 0.1 if v.x > 0.0 else -0.1)
 					Bullets.set_rotation(b, randf()*TAU)
-				var a := randf()*TAU
+					
+				# Curve lasers
 				var lr := 1.0 if System.player.position.x > position.x else -1.0
 				
-				# Curve lasers
 				for i in curve_laser_count[difficulty]:
-					var b = Bullets.create_curve_laser(position, 12.0, a + i * TAU / curve_laser_count[difficulty], 45, 64, 8, 8, lightning_data, true)
+					var b = Bullets.create_curve_laser(position, 12.0, i * TAU / curve_laser_count[difficulty], 45, 64, 8, 8, lightning_data, true)
 					Bullets.set_wvel(b, lr * 0.02)
 				
 				# Pickupable stars

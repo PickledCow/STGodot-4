@@ -4,7 +4,7 @@ var snow : PackedFloat64Array
 
 var density := 90.0
 var fire_rate : int = 120
-var fire_time : int = 30
+var fire_time : int = 35
 
 func _post_ready() -> void:
 	snow = System.get_bullet_data(BulletConstructor.BULLET_TYPE.MENTOS, BulletConstructor.COLORS_LARGE.GREY)

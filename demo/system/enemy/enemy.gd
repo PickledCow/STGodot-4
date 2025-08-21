@@ -39,6 +39,8 @@ var travel_timer := -1.0
 enum MOVEMENT_INTERPOLATION_TYPE { LINEAR, SMOOTH_OUT }
 var movement_interpolation : MOVEMENT_INTERPOLATION_TYPE
 
+var death_explosion := preload("res://prefab/death_explosion.tscn")
+
 func set_destination(target: Vector2, time: float, interp: MOVEMENT_INTERPOLATION_TYPE = MOVEMENT_INTERPOLATION_TYPE.SMOOTH_OUT) -> void:
 	if time <= 0.0:
 		position = target
@@ -71,17 +73,7 @@ func _ready() -> void:
 	
 	_post_ready()
 	
-func _process(_delta) -> void:
-	var new_frame := false
-	t_float += System.time_scale
-	var new_t := int(t_float)
-	if new_t > t:
-		new_frame = true
-		t = new_t
-	
-	if new_frame:
-		_pre_process(System.time_scale)
-	
+func _movement() -> void:
 	if travel_time > 0.0:
 		travel_timer -= System.time_scale
 		if travel_timer > 0.0:
@@ -103,7 +95,23 @@ func _process(_delta) -> void:
 			if acceleration.y and velocity.y * sign(acceleration.y) > abs(max_velocity.y):
 				velocity.y = max_velocity.y
 	
-	if not is_boss and not System.enemy_active_rect.has_point(position):
+func _process(_delta) -> void:
+	
+	
+	var new_frame := false
+	
+	t_float += System.time_scale
+	var new_t := int(t_float)
+	if new_t > t:
+		new_frame = true
+		t = new_t
+	
+	if new_frame:
+		_pre_process(System.time_scale)
+	
+	_movement()
+	
+	if not is_boss and (not System.enemy_active_rect.has_point(position) or System.in_dialogue):
 		how_i_died = DEATH_TYPE.DESPAWNED
 		_on_death()
 		return
@@ -124,6 +132,7 @@ func _process(_delta) -> void:
 			System.DAMAGE_TYPE.NORMAL:
 				if not suck_only:
 					health -= damage
+					_boss_hit_sfx()
 			System.DAMAGE_TYPE.CANOPY:
 				if not suck_only and not is_boss:
 					health -= damage
@@ -132,10 +141,12 @@ func _process(_delta) -> void:
 					health -= damage * star_damage_multiplier
 					SFX.play("break")
 					SFX.play("enemy_hit")
+					_boss_hit_sfx()
 			System.DAMAGE_TYPE.STAR_STRONG:
 				if not suck_only:
 					health -= damage * star_damage_multiplier
 					SFX.play("enemy_hit")
+					_boss_hit_sfx()
 			System.DAMAGE_TYPE.SUCK:
 				if not is_boss:
 					health = 0
@@ -145,8 +156,15 @@ func _process(_delta) -> void:
 			System.DAMAGE_TYPE.CRIT:
 				if not suck_only:
 					health -= damage
+					_boss_hit_sfx()
 					if is_boss:
 						SFX.play("crit")
+			System.DAMAGE_TYPE.SHOCK:
+				if not suck_only:
+					health -= damage
+					_boss_hit_sfx()
+					if is_boss:
+						SFX.play("plasma_shock")
 		
 		if health <= 0.0:
 			died = true
@@ -157,6 +175,10 @@ func _process(_delta) -> void:
 	if new_frame:
 		_post_process(System.time_scale)
 
+func _boss_hit_sfx():
+	if is_boss:
+		SFX.play("boss_hurt_low" if health / max_health < 0.1 else "boss_hurt_high", 0.0, false)
+		
 func _post_ready() -> void:
 	pass
 
@@ -183,5 +205,12 @@ func _on_death() -> void:
 			var item : PackedInt64Array = Bullets.create_item(position, 0.0, 0.0, 1.0, star_data, false)
 			Bullets.set_item_magnet(item, System.player)
 			System.player.declare_eated()
+	
+	if how_i_died != DEATH_TYPE.SUCKED and how_i_died != DEATH_TYPE.DESPAWNED:
+		var de : GPUParticles2D = death_explosion.instantiate()
+		de.position = position
+		de.emitting = true
+		get_parent().add_child(de)
+	
 	
 	queue_free()

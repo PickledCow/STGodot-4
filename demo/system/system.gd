@@ -8,8 +8,10 @@ class_name GameSystem
 
 #enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, CLEAR, SIZE }
 enum ITEM_TYPE { STAR }
-enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY }
+enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY, SHOCK }
 enum DIFFICULTY { EASY, NORMAL, HARD, LUNATIC, OVERDRIVE }
+enum ATTACK_TYPE { NON, SPELL, TIMEOUT, SUPER, ULTRA }
+
 
 @onready var bullet_constructor : BulletConstructor = $BulletConstructor
 
@@ -34,9 +36,11 @@ var piv := 1000
 ## Current game score
 var score := 0
 ## Current game difficulty
-var difficulty := DIFFICULTY.NORMAL
+var difficulty := DIFFICULTY.LUNATIC
 
 var time_scale : float = 1.0
+
+var in_dialogue := true
 
 #region Registration Functions
 

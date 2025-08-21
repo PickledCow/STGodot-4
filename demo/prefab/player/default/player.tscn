@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dww4gq24fvl8n"]
+[gd_scene load_steps=39 format=3 uid="uid://dww4gq24fvl8n"]
 
 [ext_resource type="Script" uid="uid://b68vyanic5tkv" path="res://prefab/player/player.gd" id="1_m7gp6"]
 [ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://prefab/player/default/shooter_manager.tscn" id="3_7dfjt"]
@@ -6,11 +6,150 @@
 [ext_resource type="Script" uid="uid://g36an36o2y2x" path="res://prefab/player/default/player_sprite.gd" id="3_rs76e"]
 [ext_resource type="Texture2D" uid="uid://1ohynj7bm3d7" path="res://prefab/player/sprites/focus.png" id="4_b01gx"]
 [ext_resource type="Texture2D" uid="uid://c7qr0g27hhc7k" path="res://system/bullets/shot.png" id="4_nxpy2"]
+[ext_resource type="Texture2D" uid="uid://b6bqltclxiv4s" path="res://system/vfx/eff_deadcircle.png" id="4_xkb18"]
 [ext_resource type="Texture2D" uid="uid://7xiyxnwalqbr" path="res://prefab/player/yuuma/trail star.png" id="4_ymqh7"]
 [ext_resource type="Texture2D" uid="uid://bbylupkk3vjvg" path="res://prefab/player/yuuma/star_trail_power.png" id="5_rs76e"]
 [ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="7_pvpw6"]
 [ext_resource type="Texture2D" uid="uid://bdsirwf3ypfbw" path="res://prefab/player/yuuma/scope.png" id="10_8uj67"]
 [ext_resource type="Texture2D" uid="uid://cm55ksbkxqcl5" path="res://prefab/player/yuuma/parasol.png" id="11_1okbp"]
+[ext_resource type="Texture2D" uid="uid://dm4q6waryi5kg" path="res://prefab/player/yuuma/plasma_shield.png" id="13_effqb"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_effqb"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_6ai8q"]
+resource_name = "death"
+length = 0.5
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(4, 4)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OrangeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BlueContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OrangeContainer/Orange:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 3.141592653589793]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BlueContainer/Blue:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -2.356194490192345]
+}
+
+[sub_resource type="Animation" id="Animation_nfphy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OrangeContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BlueContainer:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("OrangeContainer/Orange:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BlueContainer/Blue:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b8l10"]
+_data = {
+&"RESET": SubResource("Animation_nfphy"),
+&"death": SubResource("Animation_6ai8q")
+}
 
 [sub_resource type="Animation" id="Animation_8uj67"]
 length = 0.001
@@ -652,6 +791,9 @@ _data = {
 &"holster": SubResource("Animation_illwk")
 }
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_illwk"]
+blend_mode = 1
+
 [node name="Player" type="Node2D"]
 script = ExtResource("1_m7gp6")
 shooter_manager_path = NodePath("ShooterManager")
@@ -683,6 +825,34 @@ texture = ExtResource("3_nyu76")
 hframes = 4
 vframes = 3
 script = ExtResource("3_rs76e")
+
+[node name="DeathRing" type="Node2D" parent="."]
+scale = Vector2(1e-05, 1e-05)
+
+[node name="OrangeContainer" type="Node2D" parent="DeathRing"]
+rotation = -3.4382987
+scale = Vector2(1, 0.2)
+
+[node name="Orange" type="Sprite2D" parent="DeathRing/OrangeContainer"]
+material = SubResource("CanvasItemMaterial_effqb")
+texture = ExtResource("4_xkb18")
+region_enabled = true
+region_rect = Rect2(0, 0, 512, 512)
+
+[node name="BlueContainer" type="Node2D" parent="DeathRing"]
+rotation = 1.0471976
+scale = Vector2(1, 0.25)
+
+[node name="Blue" type="Sprite2D" parent="DeathRing/BlueContainer"]
+material = SubResource("CanvasItemMaterial_effqb")
+texture = ExtResource("4_xkb18")
+region_enabled = true
+region_rect = Rect2(512, 0, 512, 512)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DeathRing"]
+libraries = {
+&"": SubResource("AnimationLibrary_b8l10")
+}
 
 [node name="TrailingStar" type="Node2D" parent="."]
 visible = false
@@ -842,3 +1012,22 @@ vframes = 2
 libraries = {
 &"": SubResource("AnimationLibrary_illwk")
 }
+
+[node name="Plasma" type="Node2D" parent="."]
+
+[node name="ShieldUnder" type="Sprite2D" parent="Plasma"]
+visible = false
+modulate = Color(1, 1, 1, 0.5)
+z_index = -6
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("13_effqb")
+hframes = 2
+
+[node name="ShieldOver" type="Sprite2D" parent="Plasma"]
+visible = false
+modulate = Color(1, 1, 1, 0.33)
+z_index = -5
+material = SubResource("CanvasItemMaterial_illwk")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("13_effqb")
+hframes = 2

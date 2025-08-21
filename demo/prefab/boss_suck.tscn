@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvkhyjbdjf4b2"]
+
+[ext_resource type="Texture2D" uid="uid://dxrppjyg4tne2" path="res://system/vfx/star.png" id="1_ibpda"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_x85o1"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_1rrg4"]
+colors = PackedColorArray(0.32, 0.6146667, 1, 0, 1, 0.5372549, 0.9372549, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_my66p"]
+gradient = SubResource("Gradient_1rrg4")
+
+[sub_resource type="Curve" id="Curve_jtsrm"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.53164554), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_f27d4"]
+curve = SubResource("Curve_jtsrm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1pwmm"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 512.0
+emission_ring_inner_radius = 512.0
+emission_ring_cone_angle = 90.0
+angle_min = 1.0728836e-05
+angle_max = 360.00003
+spread = 180.0
+angular_velocity_min = -180.00002
+angular_velocity_max = 179.99998
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -250.0
+radial_accel_max = -250.0
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_f27d4")
+color_ramp = SubResource("GradientTexture1D_my66p")
+hue_variation_min = -2.2351742e-08
+hue_variation_max = -2.2351742e-08
+
+[node name="Suck" type="GPUParticles2D"]
+material = SubResource("CanvasItemMaterial_x85o1")
+emitting = false
+amount = 128
+texture = ExtResource("1_ibpda")
+lifetime = 2.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_1pwmm")

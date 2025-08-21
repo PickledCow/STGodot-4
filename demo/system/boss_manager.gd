@@ -1,10 +1,15 @@
 extends Node2D
 class_name BossManager
 
+## The turbo jank pseudo root
+
 @export var health_bar_path : NodePath
 @onready var health_bar : ProgressBar = get_node(health_bar_path)
 @export var health_percent_path : NodePath
 @onready var health_percent : Label = get_node(health_percent_path)
+
+@export var dialogue_path : NodePath
+@onready var dialogue_manager : Node = get_node(dialogue_path)
 
 var current_boss := -1
 var next_boss := 0
@@ -140,19 +145,32 @@ var skip_destinations = [
 	]
 ]
 
+var panic_skips : Array = [
+	0.0,
+	0.0,
+	CIRNO_START,
+	KOGASA_START,
+	MARISA_START,
+	SANAE_START,
+	MEGUMU_START,
+	YOUMU_START
+]
+
 var prev_time : float = 0.0
 
 var music_fade : float = 1.0
 var fade_out : bool = false
 
 # -1 
-var debug_skip_boss := 3
+var debug_skip_boss := -1
 
 var debug_music_start_time : float = 0.0
 
 enum GAME_STATE { DIALOGUE, FIGHT }
 
-var game_state : GAME_STATE = GAME_STATE.FIGHT
+var game_state : GAME_STATE = GAME_STATE.DIALOGUE
+
+var current_boss_node : Boss
 
 func _ready() -> void:
 	System.boss_manager = self
@@ -167,20 +185,28 @@ func _ready() -> void:
 
 func increment_boss() -> void:
 	next_boss += 1
+	System.in_dialogue = true
+	dialogue_manager.left_dialogue = true
+	Bullets.clear_bullets(Vector2(500, 500), 1000)
 
 func _process(delta: float) -> void:
 	if debug_music_start_time > 0.0 and not $Music.playing:
 		$Music.play(debug_music_start_time)
-	if current_boss < next_boss and game_state == GAME_STATE.FIGHT:
+	if current_boss < next_boss:
 		if next_boss < bosses.size():
 			current_boss = next_boss
+			current_boss_node = bosses[current_boss].instantiate()
+			current_boss_node.position = Vector2(randf_range(300, 700), -500)
+			current_boss_node.set_destination(current_boss_node.starting_position, 90)
+			add_child(current_boss_node)
 			if current_boss == 0:
 				$Music.play()
-			var boss := bosses[current_boss].instantiate()
-			boss.position = Vector2(500, 300)
-			add_child(boss)
 		elif not fade_out:
 			fade_out = true
+	
+	if game_state == GAME_STATE.DIALOGUE:
+		if not System.in_dialogue:
+			game_state = GAME_STATE.FIGHT
 	
 	# Music
 	var current_time : float = $Music.get_playback_position() + AudioServer.get_time_since_last_mix()
@@ -206,15 +232,12 @@ func _process(delta: float) -> void:
 	if not skipped:
 		prev_time = current_time
 	
+	# Panic skip points
+	if current_time < panic_skips[current_boss]:
+		$Music.seek(panic_skips[current_boss + 1])
+	
 	# fade out music
 	if fade_out:
 		music_fade -= delta * 0.25
 		$Music.volume_linear = max(0.0, music_fade)
 	
-	
-	# Update UI
-	if System.current_boss:
-		health_bar.value = 0.075 + System.current_boss.health / System.current_boss.max_health * (1.0 - 0.075)
-		# 690.0 max-41.0 min
-		health_percent.text = str(int(System.current_boss.health / System.current_boss.max_health * 100.0)) + "%"
-		health_percent.position.x = -41.0 + (690.0 + 41.0) * System.current_boss.health / System.current_boss.max_health

@@ -382,7 +382,7 @@ var i_frame_animation_timer := 0.0
 
 #region Game Specific Behaviour
 
-#region Normal
+#region Normal and more
 var suction_collision : PackedFloat64Array
 var spit_attack : PackedFloat64Array
 var super_spit_attack : PackedFloat64Array
@@ -394,7 +394,7 @@ var forced_slowdown := false
 enum PLAYER_ABILITY { NORMAL, BOOMER, FREEZE, SPARK, BOMB, SNIPER, SWORD, GHOST, PARASOL } # lel I forgot parasol
 const ABILITY_STRINGS : Array[String] = ["Yuuma", "Boomer", "Freeze", "Spark", "Bomb", "Sniper", "Sword", "Ghost", "Parasol"]
 var ability_in_mouth : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL # Normal notates no ability, can't get Normal from an item
-var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.PARASOL
+var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.SPARK
 var player_attacking := false
 var forced_sucking := false
 var item_in_mouth := false
@@ -411,6 +411,17 @@ var swallow_time := 15
 var swallow_timer := 0
 
 var attack_power := 0
+
+#endregion
+
+
+#region Boomer
+
+var boomer_fire_timer := 0.0
+var boomer_fire_rate := 15.0
+
+var outgoing_boomerangs : Array[PackedInt64Array] = [] 
+var outgoing_timers : Array[float]
 
 #endregion
 
@@ -432,6 +443,36 @@ var parasol_state : PARASOL_STATE = PARASOL_STATE.HOLSTERED
 
 #endregion
 
+#region Spark
+
+var spark_input_buffer := 0
+var spark_input_buffer_max := 5
+var spark_transfer_rate := 6.0
+var spark_transfer_timer := 0.0
+
+var spark_transfer_buffer := 0
+
+var spark_charge_level := 0
+var spark_charge_level_thresholds : Array[int] = [6, 20]
+var spark_charge_sfx : Array[StringName] = [&"plasma_shot_s", &"plasma_shot_m", &"plasma_shot_l"]
+
+var spark_decay_rate := 20.0
+var spark_decay_timer := 0.0
+
+var spark_fire_rate := 12.0
+var spark_fire_timer := 0.0
+
+var spark_shoot_released := true
+
+var spark_bullets : Array[PackedFloat64Array] = []
+var spark_lifespans : Array[float] = [8, INF, INF]
+var spark_speeds : Array[float] = [45.0, 36.0, 30.0]
+var spark_pierce : Array[bool] = [false, true, true]
+
+var spark_animation_timer := 0.0
+var spark_shield_bullet : PackedFloat64Array
+
+#endregion
 
 #region Bomb
 
@@ -443,6 +484,8 @@ var last_bomb_released := false
 var bomb_cooldown_time := 40.0
 var bomb_cooldown_timer := 0.0
 
+enum BOMB_STATE { IDLE, CHARGING }
+var bomb_state : BOMB_STATE = BOMB_STATE.IDLE
 
 #endregion
 
@@ -517,6 +560,9 @@ func update_animation_state(dir: float) -> void:
 		animation_frame = 0
 	
 func hit():
+	$DeathRing/AnimationPlayer.play("death")
+	$DeathRing.rotation = randf()*TAU
+	System.warp_player(position)
 	current_lives -= 1
 	System.ui.set_health(current_lives)
 	if respawn_on_death:
@@ -849,6 +895,23 @@ func animation(delta) -> void:
 			if parasol_animation_frame >= 4.0:
 				parasol_animation_frame -= 4.0
 			$Parasol/Shield.frame = int(parasol_animation_frame)
+		PLAYER_ABILITY.SPARK:
+			var shield_visible := spark_charge_level >= spark_charge_level_thresholds[1]
+			$Plasma/ShieldUnder.visible = shield_visible
+			$Plasma/ShieldOver.visible = shield_visible
+			var last_frame := int(spark_animation_timer)
+			spark_animation_timer += delta * 10.0
+			while spark_animation_timer >= 2.0:
+				spark_animation_timer -= 2.0
+			var current_frame := int(spark_animation_timer)
+			if last_frame != current_frame:
+				var shield_angle := randf()*TAU
+				$Plasma/ShieldUnder.frame = current_frame
+				$Plasma/ShieldOver.frame = current_frame
+				$Plasma/ShieldUnder.rotation = shield_angle
+				$Plasma/ShieldOver.rotation = shield_angle
+				
+			
 func reset_sprite_modulation() -> void:
 	sprite.modulate = Color.WHITE
 
@@ -891,6 +954,11 @@ func collision(time_scale) -> void:
 
 ## Tells the associated [class ShooterManager] to shoot.
 func shooting(time_scale: float) -> void:
+	var shoot_pressed : bool = GameInput.is_action_pressed(&"player_shoot") and not System.in_dialogue
+	var bomb_pressed : bool = GameInput.is_action_pressed(&"player_bomb") and not System.in_dialogue
+	var shoot_just_pressed : bool = GameInput.is_action_just_pressed(&"player_shoot") and not System.in_dialogue
+	var bomb_just_pressed : bool = GameInput.is_action_just_pressed(&"player_bomb") and not System.in_dialogue
+	
 	match player_ability:
 		PLAYER_ABILITY.NORMAL:
 			if suck_endlag_timer > 0:
@@ -905,11 +973,11 @@ func shooting(time_scale: float) -> void:
 				var prev_player_attacking := player_attacking
 				
 				# Require the player to let go of shoot to spit or suck
-				if not GameInput.is_action_pressed(&"player_shoot"):
+				if not shoot_pressed:
 					fire_released_since_suck_or_spit = true
 				
 				# Check if we tried to swallow
-				if GameInput.is_action_pressed(&"player_bomb") and item_in_mouth and suck_endlag_timer <= 0:
+				if bomb_pressed and item_in_mouth and suck_endlag_timer <= 0:
 					item_in_mouth = false
 					SFX.play(&"gulp")
 					spit_endlag_timer = spit_endlag_time
@@ -918,7 +986,7 @@ func shooting(time_scale: float) -> void:
 					swallow_timer = swallow_time
 					$TrailingStarAnimation.play("remove")
 				# Then check if we tried to spit out
-				elif GameInput.is_action_pressed(&"player_shoot") and item_in_mouth and suck_endlag_timer <= 0 and fire_released_since_suck_or_spit:
+				elif shoot_pressed and item_in_mouth and suck_endlag_timer <= 0 and fire_released_since_suck_or_spit:
 					item_in_mouth = false
 					fire_released_since_suck_or_spit = false
 					var bullet_type := super_spit_attack if attack_power > 1 else spit_attack
@@ -936,13 +1004,13 @@ func shooting(time_scale: float) -> void:
 					$TrailingStarAnimation.play("remove")
 				# Then deal with sucking logic
 				else:
-					if GameInput.is_action_pressed(&"player_shoot") and not item_in_mouth and  not prev_player_attacking and spit_endlag_timer <= 0 and fire_released_since_suck_or_spit:
+					if shoot_pressed and not item_in_mouth and  not prev_player_attacking and spit_endlag_timer <= 0 and fire_released_since_suck_or_spit:
 						player_attacking = true
 						#forced_slowdown = true # I don't actually like how this feelns
 						minimum_suck_timer = minimum_suck_time
 						$tornado/AnimationPlayer.play(&"spawn")
 						SFX.play("suck")
-					elif (not GameInput.is_action_pressed(&"player_shoot") or item_in_mouth) and (
+					elif (not shoot_pressed or item_in_mouth) and (
 						prev_player_attacking and not forced_sucking and minimum_suck_timer <= 0):
 						player_attacking = false
 						forced_slowdown = false
@@ -969,6 +1037,13 @@ func shooting(time_scale: float) -> void:
 					ability_in_mouth = PLAYER_ABILITY.NORMAL
 					update_ability_text()
 		
+		PLAYER_ABILITY.BOOMER:
+			if boomer_fire_timer > 0.0:
+				boomer_fire_timer -= time_scale
+			
+			if GameInput.is_action_pressed("player_shoot") and boomer_fire_timer <= 0.0:
+				pass 
+		
 		PLAYER_ABILITY.PARASOL:
 			match parasol_state:
 				PARASOL_STATE.DEPLOYING:
@@ -984,7 +1059,7 @@ func shooting(time_scale: float) -> void:
 					
 				PARASOL_STATE.DEPLOYED:
 					parasol_timer += time_scale
-					if not GameInput.is_action_pressed("player_shoot"):
+					if not shoot_pressed:
 						parasol_state = PARASOL_STATE.HOLSTERING
 						$Parasol/ShieldAnimation.play("holster")
 						forced_slowdown = false
@@ -998,59 +1073,163 @@ func shooting(time_scale: float) -> void:
 						parasol_timer = 0.0
 				
 				PARASOL_STATE.HOLSTERED:
-					if GameInput.is_action_pressed("player_shoot"):
+					if shoot_pressed:
 						parasol_state = PARASOL_STATE.DEPLOYING
 						$Parasol/ShieldAnimation.play("deploy")
 						forced_slowdown = true
 						Bullets.clear_bullets(position, 64) # Instant clear around the player 
-						for i in 60:
+						for i in 15:
 							var pos_rand : float = randf_range(-1, 1)
 							#68, 23
 							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
 							var b = Bullets.create_shot_a1(
 								pos,
-								randf_range(5.0, 30.0),
+								randf_range(5.0, 20.0),
 								-PI * 0.5 + randf_range(-0.25, 0.25) * PI,
 								droplet,
 								false
 							)
 							Bullets.set_lifespan(b, randf_range(6, 10))
 							SFX.play("shotgun")
+						for i in 15:
+							var pos_rand : float = randf_range(-1, 1)
+							#68, 23
+							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
+							var b = Bullets.create_shot_a1(
+								pos,
+								randf_range(20.0, 40.0),
+								-PI * 0.5 + randf_range(-0.1, 0.1) * PI,
+								droplet,
+								false
+							)
+							Bullets.set_lifespan(b, randf_range(6, 10))
+							SFX.play("shotgun")
+						for i in 15:
+							var pos_rand : float = randf_range(-1, 1)
+							#68, 23
+							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
+							var b = Bullets.create_shot_a1(
+								pos,
+								randf_range(40.0, 50.0),
+								-PI * 0.5 + randf_range(-0.05, 0.05) * PI,
+								droplet,
+								false
+							)
+							Bullets.set_lifespan(b, randf_range(6, 10))
+							SFX.play("shotgun")
 			
-			
-		PLAYER_ABILITY.BOMB:
-			if bomb_cooldown_timer > 0.0:
-				bomb_cooldown_timer -= time_scale
-			if bomb_cooldown_timer <= 0.0:
-					
-				# Start charging bomb
-				if GameInput.is_action_pressed("player_shoot") and not last_bomb_released:
-					SFX.play("charge_bomb")
-					last_bomb_released = true
-					$Bomb/ChargeBar.show()
-				# Cook Bomb
-				if GameInput.is_action_pressed("player_shoot") and last_bomb_released:
-					bomb_charge_timer += time_scale
-					$Bomb/ChargeBar/Progress.value = bomb_charge_timer / bomb_charge_time
+		PLAYER_ABILITY.SPARK:
+			#print(spark_charge_level)?
+			if not System.in_dialogue:
+				# Buffer 1, limit how much we can mash to charge
+				var frame_increase := 0
+				if GameInput.is_action_just_pressed("player_left"):
+					frame_increase += 1
+				elif GameInput.is_action_just_pressed("player_right"):
+					frame_increase += 1
+				if GameInput.is_action_just_pressed("player_up"):
+					frame_increase += 1
+				elif GameInput.is_action_just_pressed("player_down"):
+					frame_increase += 1
+				if frame_increase > 0:
+					SFX.play("plasma_charge")
+					spark_input_buffer += frame_increase
 				
-				# Throw Bomb
-				if GameInput.is_action_just_released("player_shoot") or bomb_charge_timer > bomb_charge_time:
-					SFX.stop("charge_bomb")
-					SFX.play("donk")
-					$Bomb/ChargeBar.hide()
-					var bomb : Node2D = bomb_prefab.instantiate()
-					bomb.position = position
-					bomb.lifespan = 10.0 + 50.0 * (1.0 - bomb_charge_timer / bomb_charge_time)
-					if bomb_charge_timer > bomb_charge_time:
-						bomb.lifespan = 0.0
-					get_parent().add_child(bomb)
-					bomb_charge_timer = 0.0
-					last_bomb_released = false
-					bomb_cooldown_timer = bomb_cooldown_time
+				if spark_input_buffer > spark_input_buffer_max:
+					spark_input_buffer = spark_input_buffer_max
+				
+				if spark_transfer_timer > 0.0:
+					spark_transfer_timer -= System.time_scale
+				if spark_transfer_timer <= 0.0 and spark_input_buffer > 0:
+					spark_transfer_timer += spark_transfer_rate
+					spark_input_buffer -= 1
+					spark_transfer_buffer += 1
+				
+				# Buffer 3, we only transfer over charge on button press
+				if frame_increase > 0:
+					var prev_level := spark_charge_level
+					spark_charge_level += spark_transfer_buffer
+					spark_decay_timer = spark_decay_rate
+					spark_transfer_buffer = 0
+					if spark_charge_level >= spark_charge_level_thresholds[1] and prev_level < spark_charge_level_thresholds[1]:
+						spark_charge_level = spark_charge_level_thresholds[1] + 8
+					spark_charge_level = min(spark_charge_level, spark_charge_level_thresholds[1] + 8)
+				
+				# Decay
+				if spark_decay_timer > 0.0:
+					spark_decay_timer -= System.time_scale
+					
+				if spark_decay_timer <= 0.0:
+					spark_decay_timer += spark_decay_rate
+					if spark_charge_level > 0:
+						spark_charge_level -= 1
+				
+				# Shooting
+				if spark_fire_timer > 0.0:
+					spark_fire_timer -= System.time_scale
+					
+				if shoot_just_pressed and spark_fire_timer <= 0.0:
+					spark_fire_timer = spark_fire_rate
+					var i := 0
+					for threshold in spark_charge_level_thresholds:
+						if spark_charge_level >= threshold:
+							i += 1
+							continue
+						break
+					SFX.play(spark_charge_sfx[i])
+					var b = Bullets.create_shot_a1(
+						position,
+						spark_speeds[i],
+						PI * -0.5,
+						spark_bullets[i],
+						true
+					)
+					Bullets.set_lifespan(b, spark_lifespans[i])
+					Bullets.set_pierce(b, spark_pierce[i])
+					spark_charge_level = 0
+				
+				if spark_charge_level >= spark_charge_level_thresholds[1]:
+					var b = Bullets.create_shot_a1(position, 0.0, 0.0, spark_shield_bullet, 0.0)
+					Bullets.set_lifespan(b, 2)
+					Bullets.set_pierce(b, true)
+					
+		PLAYER_ABILITY.BOMB:
+			match bomb_state:
+				BOMB_STATE.IDLE:
+					if bomb_cooldown_timer > 0.0:
+						bomb_cooldown_timer -= time_scale
+					if bomb_cooldown_timer <= 0.0:
+						# Start charging bomb
+						if shoot_pressed and not last_bomb_released:
+							SFX.play("charge_bomb")
+							last_bomb_released = true
+							$Bomb/ChargeBar.show()
+							bomb_state = BOMB_STATE.CHARGING
+				BOMB_STATE.CHARGING:
+					# Cook Bomb
+					if shoot_pressed and last_bomb_released:
+						bomb_charge_timer += time_scale
+						$Bomb/ChargeBar/Progress.value = bomb_charge_timer / bomb_charge_time
+				
+					# Throw Bomb
+					if not shoot_pressed or bomb_charge_timer > bomb_charge_time:
+						SFX.stop("charge_bomb")
+						SFX.play("donk")
+						bomb_state = BOMB_STATE.IDLE
+						$Bomb/ChargeBar.hide()
+						var bomb : Node2D = bomb_prefab.instantiate()
+						bomb.position = position
+						bomb.lifespan = 10.0 + 50.0 * (1.0 - bomb_charge_timer / bomb_charge_time)
+						if bomb_charge_timer > bomb_charge_time:
+							bomb.lifespan = 0.0
+						get_parent().add_child(bomb)
+						bomb_charge_timer = 0.0
+						last_bomb_released = false
+						bomb_cooldown_timer = bomb_cooldown_time
 			
 		PLAYER_ABILITY.SNIPER:
 			# Moving scope around
-			var held : bool = GameInput.is_action_pressed("player_shoot") or GameInput.is_action_pressed("player_bomb")
+			var held : bool = shoot_pressed or bomb_pressed
 			if held and active_reload_timer == 0 and not active_reload_repress:
 				# First frame place scope
 				if scope_timer == 0:
@@ -1095,7 +1274,7 @@ func shooting(time_scale: float) -> void:
 					active_reload_attempted = false
 				
 			if active_reload_timer > 0: # Reloading
-				var pressed : bool = GameInput.is_action_just_pressed("player_shoot") or GameInput.is_action_just_pressed("player_bomb")
+				var pressed : bool = shoot_just_pressed or bomb_just_pressed
 				
 				if pressed and !active_reload_attempted:
 					active_reload_attempted = true
@@ -1262,6 +1441,80 @@ func _ready() -> void:
 	canopy_damage[13] = System.DAMAGE_TYPE.CANOPY				# damage type
 	canopy_damage[14] = 2				# damage amount
 	
+	spark_bullets.append(PackedFloat64Array())
+	spark_bullets[0].resize(15)
+	spark_bullets[0][0] = 256 # source x (integer)
+	spark_bullets[0][1] = 0 # source y (integer)
+	spark_bullets[0][2] = 128				# source width (integer)
+	spark_bullets[0][3] = 128				# source height (integer)
+	spark_bullets[0][4] = 96				# bullet size [0, inf)
+	spark_bullets[0][5] = 0.25 				# hitbox ratio [0, 1]
+	spark_bullets[0][6] = 0					# Sprite offset y (integer)
+	spark_bullets[0][7] = 1					# anim frame, 1 for no animation (integer)
+	spark_bullets[0][8] = 0					# spin
+	spark_bullets[0][9] = 1	# layer
+	spark_bullets[0][10] = 1	# rgb
+	spark_bullets[0][11] = 1
+	spark_bullets[0][12] = 1
+	spark_bullets[0][13] = System.DAMAGE_TYPE.SHOCK			# damage type
+	spark_bullets[0][14] = 15				# damage amount
+
+	spark_bullets.append(PackedFloat64Array())
+	spark_bullets[1].resize(15)
+	spark_bullets[1][0] = 0 # source x (integer)
+	spark_bullets[1][1] = 256 # source y (integer)
+	spark_bullets[1][2] = 128				# source width (integer)
+	spark_bullets[1][3] = 128				# source height (integer)
+	spark_bullets[1][4] = 96 * 2				# bullet size [0, inf)
+	spark_bullets[1][5] = 0.33 				# hitbox ratio [0, 1]
+	spark_bullets[1][6] = 0					# Sprite offset y (integer)
+	spark_bullets[1][7] = 2					# anim frame, 1 for no animation (integer)
+	spark_bullets[1][8] = 0					# spin
+	spark_bullets[1][9] = 1	# layer
+	spark_bullets[1][10] = 1	# rgb
+	spark_bullets[1][11] = 1
+	spark_bullets[1][12] = 1
+	spark_bullets[1][13] = System.DAMAGE_TYPE.SHOCK			# damage type
+	spark_bullets[1][14] = 35				# damage amount
+
+	spark_bullets.append(PackedFloat64Array())
+	spark_bullets[2].resize(15)
+	spark_bullets[2][0] = 256 # source x (integer)
+	spark_bullets[2][1] = 256 # source y (integer)
+	spark_bullets[2][2] = 128				# source width (integer)
+	spark_bullets[2][3] = 128				# source height (integer)
+	spark_bullets[2][4] = 256				# bullet size [0, inf)
+	spark_bullets[2][5] = 0.5 				# hitbox ratio [0, 1]
+	spark_bullets[2][6] = 0					# Sprite offset y (integer)
+	spark_bullets[2][7] = 2					# anim frame, 1 for no animation (integer)
+	spark_bullets[2][8] = 0				# spin
+	spark_bullets[2][9] = 1	# layer
+	spark_bullets[2][10] = 1	# rgb
+	spark_bullets[2][11] = 1
+	spark_bullets[2][12] = 1
+	spark_bullets[2][13] = System.DAMAGE_TYPE.SHOCK			# damage type
+	spark_bullets[2][14] = 70				# damage amount
+	
+		
+	spark_shield_bullet = PackedFloat64Array()
+	spark_shield_bullet.resize(15)
+	spark_shield_bullet[0] = 0 # source x (integer)
+	spark_shield_bullet[1] = 0 # source y (integer)
+	spark_shield_bullet[2] = 0				# source width (integer)
+	spark_shield_bullet[3] = 0				# source height (integer)
+	spark_shield_bullet[4] = 72				# bullet size [0, inf)
+	spark_shield_bullet[5] = 1 				# hitbox ratio [0, 1]
+	spark_shield_bullet[6] = 0					# Sprite offset y (integer)
+	spark_shield_bullet[7] = 1					# anim frame, 1 for no animation (integer)
+	spark_shield_bullet[8] = 0					# spin
+	spark_shield_bullet[9] = 1	# layer
+	spark_shield_bullet[10] = 1	# rgb
+	spark_shield_bullet[11] = 1
+	spark_shield_bullet[12] = 1
+	spark_shield_bullet[13] = System.DAMAGE_TYPE.SHOCK				# damage type
+	spark_shield_bullet[14] = 2				# damage amount
+	
+	
 	
 	update_ability_text()
 
@@ -1283,7 +1536,10 @@ func declare_eated():
 func update_ability_text():
 	System.ui.update_name(ABILITY_STRINGS[player_ability])
 
-
+func update_ability_visibility():
+	match player_ability:
+		PLAYER_ABILITY.NORMAL:
+			pass
 
 func parasol_block_bullets() -> void:
 	Bullets.clear_bullets(position + Vector2(0, -108.0), 24)

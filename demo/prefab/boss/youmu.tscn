@@ -1,12 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://caevr2wlq0ly7"]
+[gd_scene load_steps=4 format=3 uid="uid://caevr2wlq0ly7"]
 
 [ext_resource type="Script" uid="uid://qnalj052hlw4" path="res://system/youmu.gd" id="1_gx331"]
+[ext_resource type="PackedScene" uid="uid://bvkhyjbdjf4b2" path="res://prefab/boss_suck.tscn" id="2_hdyg4"]
 [ext_resource type="Texture2D" uid="uid://dbwp0uwx86qvh" path="res://prefab/boss/youmu.png" id="2_uxbra"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_gx331")
+attack_type_list = Array[int]([1])
+attack_name_list = Array[String](["Hellfire Sword 「Karmic Winds of Afterimages」"])
+boss_name = "Youmu"
 hitbox_radius = 96.0
-max_health = 600.0
+max_health = 800.0
+
+[node name="Suck" parent="." instance=ExtResource("2_hdyg4")]
+position = Vector2(731.9392, 333.36078)
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = -2

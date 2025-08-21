@@ -37,15 +37,16 @@ var fade_out_timer := [] as Array[float]
 # User-callable function for playing sfx
 # -----------------------------------------------------------------------------
 
-## Play the sfx given its name. Can optionally have panning.
-func play(sfx_name: String, pan: float = 0.0) -> void:
+## Play the sfx given its name. Can optionally have panning or prevent playing if the same sound is already playing.
+func play(sfx_name: String, pan: float = 0.0, interrupting: bool = true) -> void:
 	var index: int = sfx_index_map[StringName(sfx_name)]
 	var audio_node := audio_stream_player_nodes_list[index]
 	
 	_check_and_remove_fading_sound(index)
 	
-	audio_node.position = viewport_size * clamp(pan * 0.5, -0.5, 0.5)
-	audio_node.play()
+	if not audio_node.playing or interrupting:
+		audio_node.position = viewport_size * clamp(pan * 0.5, -0.5, 0.5)
+		audio_node.play()
 	
 ## Stops a sound, fading out in the provided time in seconds. Necessary for looping sounds.
 func stop(sfx_name: String, fade_time: float = 0.0) -> void:

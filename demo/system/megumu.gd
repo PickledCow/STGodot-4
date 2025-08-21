@@ -100,8 +100,6 @@ func _post_ready() -> void:
 		lasers[i][14] = 0				# damage type
 		lasers[i][15] = 0				# damage amount
 
-	t = -30
-	t_float = -30.0
 	
 	
 

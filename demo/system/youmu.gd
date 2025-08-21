@@ -68,18 +68,15 @@ func _post_ready() -> void:
 	purple_ball = 	System.get_bullet_data(BulletConstructor.BULLET_TYPE.BALL, BulletConstructor.COLORS.PURPLE)
 	purple_snow = 	System.get_bullet_data(BulletConstructor.BULLET_TYPE.SNOWBALL, BulletConstructor.COLORS.PURPLE)
 	purple_mentos = System.get_bullet_data(BulletConstructor.BULLET_TYPE.MENTOS, BulletConstructor.COLORS_LARGE.PURPLE)
-	
-	t = -30
-	t_float = -30.0
-	
-	difficulty = System.DIFFICULTY.LUNATIC
+
+
 
 
 func _pre_process(_time_scale: float) -> void:
 	if t >= 0:
 		
 		if t == 0:
-			set_destination(Vector2(100, 350), 60)
+			set_destination(Vector2(100, 500), 60)
 		
 		if t % bubble_cycle_time == 0:
 			lr *= -1.0
@@ -117,13 +114,15 @@ func _pre_process(_time_scale: float) -> void:
 			SFX.play("charge_long")
 			Bullets.set_time_scale(1.0 / 3.0)
 			System.time_scale = 1.0 / 3.0
+			$Suck.emitting = true
+			$Suck.position = Vector2()
 		
 		# Slash
 		if t % (bubble_cycle_time * 2) == slash_cycle_offset and t >= bubble_cycle_time * 2:
 			SFX.play("explode")
 			Bullets.set_time_scale(1.0)
 			System.time_scale = 1.0
-			position = Vector2(500 + lr2 * 400, 350)
+			position = Vector2(500 + lr2 * 400, 500)
 			lr2 *= -1.0
 			
 			# Slash lines
@@ -170,118 +169,3 @@ func _pre_process(_time_scale: float) -> void:
 func _post_death():
 	System.time_scale = 1.0
 	Bullets.set_time_scale(1.0)
-
-func old():
-	pass
-	#
-		#if t % cycle_time < 300 + 210:
-			#var u := t % cycle_time
-			#if u == 0:
-				#slash_x_positions.clear()
-			#
-			## Go offscreen
-			#if u % 300 == 0:
-				#ud *= -1.0
-				#set_destination(
-					#Vector2(position.x, 500 + ud * 625),
-					#90
-				#)
-			#
-			## Telegraph attack
-			#if u % 300 == 90:
-				#SFX.play("charge_short")
-				#position.x = System.player.position.x
-				#Bullets.create_straight_laser(
-					#position, 
-					#-ud * PI * 0.5,
-					#1250,
-					#48,
-					#0,
-					#0,
-					#60,
-					#cycle_time - u,
-					#lightning_data[randi()%4],
-					#true
-				#)
-			#
-			## Charge!
-			#if u % 300 == 150:
-				#SFX.play("explode")
-				#set_destination(
-					#Vector2(position.x, 500 - ud * 625),
-					#10,
-					#MOVEMENT_INTERPOLATION_TYPE.LINEAR
-				#)
-			#
-			## Add bullet spawners
-			#if u % 300 == 155:
-				#slash_x_positions.append(position.x)
-				#for y in 0:
-					#var p := Vector2(position.x, -100 + y * 1200.0 / 60)
-					#var a := p.angle_to_point(System.player.position)
-					#for i in 6:
-						#var s := 4.0 + i * 1.0
-						#Bullets.create_bullet_a1(p, s, a, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + 2 * TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - 2 * TAU / 16, blue_arrowheads, false)
-			#
-			## Move into positions
-			#if u % 300 == 210:
-				##if slash_x_positions.size() >= 2:
-					##slash_x_positions.remove_at(0)
-				#set_destination(
-					#Vector2(position.x, 500 - ud * 200),
-					#60
-				#)
-			#
-		#else:
-			#var u := t % cycle_time - 300 - 210
-			#
-			#if u == 0:
-				#slash_x_positions.remove_at(0)
-				#set_destination(Vector2(500, 300), 60)
-			#if u >= 60:
-				#var v := u - 60
-				#if v % 120 < 30 and v % 2 == 0:
-					#SFX.play("warning")
-					#var w := (v % 120) / 30.0
-					#var p := position + Vector2(-300, -200) + Vector2(600, 0) * w
-					#var a := p.angle_to_point(System.player.position)
-					#for i in 8:
-						#var s := 8.0 + i * 2.0
-						#Bullets.create_bullet_a1(p, s, a, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + 2 * TAU / 16, blue_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - 2 * TAU / 16, blue_arrowheads, false)
-#
-				#if v % 120 >= 60 and v % 120 < 90 and v % 2 == 0:
-					#SFX.play("warning")
-					#var w := ((v - 60) % 120) / 30.0
-					#var p := position + Vector2(300, -200) + Vector2(-600, 0) * w
-					#var a := p.angle_to_point(System.player.position)
-					#for i in 8:
-						#var s := 8.0 + i * 2.0
-						#Bullets.create_bullet_a1(p, s, a + TAU / 32, red_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - TAU / 32, red_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + 3 * TAU / 32, red_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - 3 * TAU / 32, red_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a + 5 * TAU / 32, red_arrowheads, false)
-						#Bullets.create_bullet_a1(p, s, a - 5 * TAU / 32, red_arrowheads, false)
-			#
-		## Shoot from slashes
-		#if t % 1 == 0:
-			#for x in slash_x_positions:
-				#var p := Vector2(x, randf_range(-125, 1125))
-				#var a := randf()*TAU
-				#var type : PackedFloat64Array = blue_rice if randf() > 0.5 else white_rice
-				#var s := randf_range(0.5, 2.0)
-				#Bullets.create_bullet_a1(p, s, a, type, false)
-		#
-		#if slash_x_positions.size() > 0 and t % 10 == 0:
-			#SFX.play("shoot1")
-	
-		
-	

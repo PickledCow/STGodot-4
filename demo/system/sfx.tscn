@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://c87ndgxn2vij"]
+[gd_scene load_steps=42 format=3 uid="uid://c87ndgxn2vij"]
 
 [ext_resource type="Script" uid="uid://b7ovgjuf7m81f" path="res://system/sfx.gd" id="1_hs46b"]
 [ext_resource type="AudioStream" uid="uid://dlcclmrp7y24m" path="res://system/sfx/death.wav" id="2_pg0su"]
@@ -33,11 +33,19 @@
 [ext_resource type="AudioStream" uid="uid://bggumn80cnn57" path="res://system/sfx/donk.wav" id="30_2rb37"]
 [ext_resource type="AudioStream" uid="uid://cp7m1qpdlqrj4" path="res://system/sfx/shotgun.wav" id="31_m8f8v"]
 [ext_resource type="AudioStream" uid="uid://cmjwu6yhje6l5" path="res://system/sfx/enemydead.wav" id="32_1ujdq"]
+[ext_resource type="AudioStream" uid="uid://vtlk2iodqdvi" path="res://system/sfx/boss_death.wav" id="33_e8e2r"]
+[ext_resource type="AudioStream" uid="uid://bdqfq0wtops4" path="res://system/sfx/boss_hurt_high.wav" id="34_d1j7k"]
+[ext_resource type="AudioStream" uid="uid://b3q2r7cdkyx3i" path="res://system/sfx/boss_hurt_low.wav" id="35_likhr"]
+[ext_resource type="AudioStream" uid="uid://0elamqrwoabo" path="res://system/sfx/plasma_charge.wav" id="36_likhr"]
+[ext_resource type="AudioStream" uid="uid://d0hf6xxek2gik" path="res://system/sfx/plasma_shot_1.wav" id="37_h8tdx"]
+[ext_resource type="AudioStream" uid="uid://borxqwfh850wy" path="res://system/sfx/plasma_shot_2.wav" id="38_qdjtp"]
+[ext_resource type="AudioStream" uid="uid://cqbettiu8yh7c" path="res://system/sfx/plasma_shot_3.wav" id="39_f04u3"]
+[ext_resource type="AudioStream" uid="uid://cu4l1opbu5wk0" path="res://system/sfx/plasma_shock.wav" id="40_qdjtp"]
 
 [node name="SFX" type="Node2D"]
 script = ExtResource("1_hs46b")
 sfx_bus = 2
-sfx_count = 31
+sfx_count = 39
 sfx_0/name = &"death"
 sfx_0/stream = ExtResource("2_pg0su")
 sfx_0/volume = -2.0
@@ -91,7 +99,7 @@ sfx_16/stream = ExtResource("18_pbpbp")
 sfx_16/volume = -15.0
 sfx_17/name = &"blast"
 sfx_17/stream = ExtResource("19_qvquo")
-sfx_17/volume = 0.0
+sfx_17/volume = -5.0
 sfx_18/name = &"charge_long"
 sfx_18/stream = ExtResource("20_8kv72")
 sfx_18/volume = -10.0
@@ -131,6 +139,30 @@ sfx_29/volume = -5.0
 sfx_30/name = &"enemy_death"
 sfx_30/stream = ExtResource("32_1ujdq")
 sfx_30/volume = -10.0
+sfx_31/name = &"boss_death"
+sfx_31/stream = ExtResource("33_e8e2r")
+sfx_31/volume = -20.0
+sfx_32/name = &"boss_hurt_high"
+sfx_32/stream = ExtResource("34_d1j7k")
+sfx_32/volume = -5.0
+sfx_33/name = &"boss_hurt_low"
+sfx_33/stream = ExtResource("35_likhr")
+sfx_33/volume = -5.0
+sfx_34/name = &"plasma_charge"
+sfx_34/stream = ExtResource("36_likhr")
+sfx_34/volume = 0.0
+sfx_35/name = &"plasma_shot_s"
+sfx_35/stream = ExtResource("37_h8tdx")
+sfx_35/volume = 0.0
+sfx_36/name = &"plasma_shot_m"
+sfx_36/stream = ExtResource("38_qdjtp")
+sfx_36/volume = 0.0
+sfx_37/name = &"plasma_shot_l"
+sfx_37/stream = ExtResource("39_f04u3")
+sfx_37/volume = 0.0
+sfx_38/name = &"plasma_shock"
+sfx_38/stream = ExtResource("40_qdjtp")
+sfx_38/volume = 5.0
 
 [node name="AudioTest" type="AudioStreamPlayer" parent="."]
 script = ExtResource("6_b0r30")

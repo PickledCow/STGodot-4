@@ -29,9 +29,16 @@ func warp_player(pos: Vector2) -> void:
 	player_clear_position = pos
 	player_clear_radius = 0.0
 	
-func warp_boss(pos: Vector2) -> void:
+func warp_boss(pos: Vector2, no_warp: bool = false) -> void:
 	var norm_pos : Vector2 = pos / System.playfield_size
 	material.set_shader_parameter("boss_center", norm_pos)
-	$BossWarpAnimator.play("warp")
+	if not no_warp:
+		$BossWarpAnimator.play("warp")
 	boss_clear_position = pos
 	boss_clear_radius = 0.0
+
+	
+func warp_invert(pos: Vector2) -> void:
+	var norm_pos : Vector2 = pos / System.playfield_size
+	material.set_shader_parameter("invert_center", norm_pos)
+	$InvertAnimator.play("warp")

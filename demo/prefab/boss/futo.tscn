@@ -5,6 +5,9 @@
 
 [node name="Futo" type="Node2D"]
 script = ExtResource("1_mqepj")
+attack_type_list = Array[int]([1])
+attack_name_list = Array[String](["Throwing Dishes 「Mononobe's Eighty Sake Dishes」"])
+boss_name = "Futo"
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
 max_health = 1000.0
