@@ -322,7 +322,7 @@ var is_focused := false
 ## Velocity of the player
 var velocity : Vector2
 ## Desired movement direction of the player, normalised
-var desired_direciton : Vector2
+var desired_direction : Vector2
 
 #endregion
 
@@ -394,7 +394,7 @@ var forced_slowdown := false
 enum PLAYER_ABILITY { NORMAL, BOOMER, FREEZE, SPARK, BOMB, SNIPER, SWORD, GHOST, PARASOL } # lel I forgot parasol
 const ABILITY_STRINGS : Array[String] = ["Yuuma", "Boomer", "Freeze", "Spark", "Bomb", "Sniper", "Sword", "Ghost", "Parasol"]
 var ability_in_mouth : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL # Normal notates no ability, can't get Normal from an item
-var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.SPARK
+var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL
 var player_attacking := false
 var forced_sucking := false
 var item_in_mouth := false
@@ -412,15 +412,25 @@ var swallow_timer := 0
 
 var attack_power := 0
 
+
 #endregion
 
 
 #region Boomer
 
 var boomer_fire_timer := 0.0
-var boomer_fire_rate := 15.0
+var boomer_fire_rate := 50.0
 
-var outgoing_boomerangs : Array[PackedInt64Array] = [] 
+var boomer_initial_velocity := 30.0
+var boomer_max_velocity := 36.0
+var boomer_travel_time := 24.0
+
+var boomer_angle := -PI * 0.5
+var boomer_bullet : PackedFloat64Array
+var boomer_return_bullet : PackedFloat64Array
+
+var outgoing_boomerang_positions : Array[Vector2] = [] 
+var outgoing_boomerang_angles : Array[float] = [] 
 var outgoing_timers : Array[float]
 
 #endregion
@@ -825,9 +835,9 @@ func movement(time_scale) -> void:
 	if (velocity.length_squared() > 0):
 		velocity = velocity.normalized() * movement_speed * time_scale
 	
-	desired_direciton = velocity.normalized()
+	desired_direction = velocity.normalized()
 	
-	# TODO 
+	# Prevents player from moving during snipng
 	if (
 		not (player_ability == PLAYER_ABILITY.SNIPER and scope_timer > 0) and
 		true
@@ -899,6 +909,8 @@ func animation(delta) -> void:
 			var shield_visible := spark_charge_level >= spark_charge_level_thresholds[1]
 			$Plasma/ShieldUnder.visible = shield_visible
 			$Plasma/ShieldOver.visible = shield_visible
+			var spark_visible := spark_charge_level >= spark_charge_level_thresholds[0] and not shield_visible
+			$Plasma/Spark.visible = spark_visible
 			var last_frame := int(spark_animation_timer)
 			spark_animation_timer += delta * 10.0
 			while spark_animation_timer >= 2.0:
@@ -908,9 +920,13 @@ func animation(delta) -> void:
 				var shield_angle := randf()*TAU
 				$Plasma/ShieldUnder.frame = current_frame
 				$Plasma/ShieldOver.frame = current_frame
+				$Plasma/Spark.frame = current_frame
 				$Plasma/ShieldUnder.rotation = shield_angle
 				$Plasma/ShieldOver.rotation = shield_angle
-				
+				$Plasma/Spark.rotation = shield_angle
+		PLAYER_ABILITY.BOOMER:
+			$Boomer/AimRotator/Front.rotate(delta * 1.5)
+			$Boomer/AimRotator/Back.rotate(delta * 1.5)
 			
 func reset_sprite_modulation() -> void:
 	sprite.modulate = Color.WHITE
@@ -1038,11 +1054,118 @@ func shooting(time_scale: float) -> void:
 					update_ability_text()
 		
 		PLAYER_ABILITY.BOOMER:
+			# Aiming
+			if not is_focused and not System.in_dialogue and desired_direction.length_squared() > 0.0:
+				# akdasreniotsnan
+				var sensitivity : float = 0.1
+				var max_angle_change : float = 0.15
+				
+				var desired_angle := desired_direction.angle() + PI
+				# A factor is applied based off how parallel the desired angle and the current angle are.
+				# This makes small adjustments snappier as their absolute dot product higher than if perpendicular.
+				# Doing this gives us a snappy feel for both smaller adjustments and for 180° turnarounds,
+				# while giving some feeling of weight for turn directions in-between.
+				# Factor is offset by 1.0 to make it possible to turn at all
+				var factor : float = sensitivity + abs(
+					Vector2.RIGHT.rotated(boomer_angle).dot(Vector2.RIGHT.rotated(desired_angle))
+				)
+				# The angle is determined by modelling a "trail" and "lead" that the options try to face towards.
+				# This approach is greatly inspired by IN Youmu's shottype which I consider to be the perfect implementation of it.
+				var trail_anchor : Vector2 = Vector2.LEFT.rotated(boomer_angle)
+				var lead_anchor : Vector2 = Vector2(factor, 0).rotated(desired_angle)
+				var target_angle := trail_anchor.angle_to_point(lead_anchor)
+				
+				var desired_target_angle_difference : float = target_angle - desired_angle
+				if desired_target_angle_difference < -PI:
+					desired_target_angle_difference += TAU
+				if desired_target_angle_difference > PI:
+					desired_target_angle_difference -= TAU
+				
+				
+				if abs(desired_target_angle_difference) <= max_angle_change * System.time_scale:
+					boomer_angle = target_angle
+				else:
+					var current_target_angle_difference : float = target_angle - boomer_angle
+					# Bound it first
+					if current_target_angle_difference < -PI:
+						current_target_angle_difference += TAU
+					if current_target_angle_difference > PI:
+						current_target_angle_difference -= TAU
+					# Check direction
+					if current_target_angle_difference > 0.0:
+						boomer_angle += max_angle_change
+					else:
+						boomer_angle -= max_angle_change
+					# Bring boomer angle back to [-PI, PI]
+					if boomer_angle < -PI:
+						boomer_angle += TAU
+					if boomer_angle > PI:
+						boomer_angle -= TAU
+				$Boomer/AimRotator.rotation = boomer_angle
+			
+			
+			# Firing
 			if boomer_fire_timer > 0.0:
 				boomer_fire_timer -= time_scale
 			
-			if GameInput.is_action_pressed("player_shoot") and boomer_fire_timer <= 0.0:
-				pass 
+			if not System.in_dialogue:
+				var shots_fired := false
+				var invert := 0.0
+				var fire_position := position
+				if shoot_pressed:
+					shots_fired = true
+					fire_position += Vector2(80, 0).rotated(boomer_angle)
+				elif bomb_pressed:
+					shots_fired = true
+					invert = PI
+					fire_position += Vector2(-80, 0).rotated(boomer_angle)
+				if shots_fired and boomer_fire_timer <= 0.0:
+					SFX.play("slash_air")
+					boomer_fire_timer = boomer_fire_rate
+					var b = Bullets.create_shot_a2(
+						fire_position,
+						boomer_initial_velocity,
+						boomer_angle + invert,
+						-boomer_initial_velocity / boomer_travel_time,
+						-boomer_max_velocity,
+						0.0,
+						boomer_bullet,
+						false
+					)
+					Bullets.set_pierce(b, true)
+					Bullets.set_lifespan(b, boomer_travel_time)
+					# s = ut + 0.5*at^2
+					# s = 
+					var rebound_position = fire_position + (
+						Vector2(boomer_initial_velocity - boomer_initial_velocity / boomer_travel_time * 0.5, 0.0).rotated(boomer_angle + invert) * boomer_travel_time + 
+						0.5 * Vector2(-boomer_initial_velocity / boomer_travel_time, 0.0).rotated(boomer_angle + invert) * boomer_travel_time * boomer_travel_time
+					)
+					outgoing_boomerang_positions.append(rebound_position)
+					outgoing_boomerang_angles.append(boomer_angle + invert)
+					outgoing_timers.append(boomer_travel_time)
+			
+			# Rebounding
+			var i := outgoing_boomerang_positions.size() - 1
+			while i >= 0:
+				outgoing_timers[i] -= System.time_scale
+				if outgoing_timers[i] <= 0.0:
+					SFX.play("slash_air")
+					var b = Bullets.create_shot_a2(
+						outgoing_boomerang_positions[i],
+						0.0,
+						outgoing_boomerang_angles[i],
+						-boomer_initial_velocity / boomer_travel_time,
+						-boomer_max_velocity,
+						0.0,
+						boomer_return_bullet,
+						false
+					)
+					Bullets.set_pierce(b, true)
+					
+					outgoing_boomerang_positions.remove_at(i)
+					outgoing_boomerang_angles.remove_at(i)
+					outgoing_timers.remove_at(i)
+				i -= 1
 		
 		PLAYER_ABILITY.PARASOL:
 			match parasol_state:
@@ -1139,7 +1262,7 @@ func shooting(time_scale: float) -> void:
 					spark_input_buffer = spark_input_buffer_max
 				
 				if spark_transfer_timer > 0.0:
-					spark_transfer_timer -= System.time_scale
+					spark_transfer_timer -= 1.0
 				if spark_transfer_timer <= 0.0 and spark_input_buffer > 0:
 					spark_transfer_timer += spark_transfer_rate
 					spark_input_buffer -= 1
@@ -1157,7 +1280,7 @@ func shooting(time_scale: float) -> void:
 				
 				# Decay
 				if spark_decay_timer > 0.0:
-					spark_decay_timer -= System.time_scale
+					spark_decay_timer -= 1.0
 					
 				if spark_decay_timer <= 0.0:
 					spark_decay_timer += spark_decay_rate
@@ -1166,7 +1289,7 @@ func shooting(time_scale: float) -> void:
 				
 				# Shooting
 				if spark_fire_timer > 0.0:
-					spark_fire_timer -= System.time_scale
+					spark_fire_timer -= 1.0
 					
 				if shoot_just_pressed and spark_fire_timer <= 0.0:
 					spark_fire_timer = spark_fire_rate
@@ -1187,6 +1310,8 @@ func shooting(time_scale: float) -> void:
 					Bullets.set_lifespan(b, spark_lifespans[i])
 					Bullets.set_pierce(b, spark_pierce[i])
 					spark_charge_level = 0
+					if spark_charge_level >= spark_charge_level_thresholds[1]:
+						Bullets.skip_fade(b)
 				
 				if spark_charge_level >= spark_charge_level_thresholds[1]:
 					var b = Bullets.create_shot_a1(position, 0.0, 0.0, spark_shield_bullet, 0.0)
@@ -1240,7 +1365,7 @@ func shooting(time_scale: float) -> void:
 				var scope_progress : float = clamp(float(scope_timer) / float(scope_time), 0.0, 1.0)
 				
 				var interpolated_scope_move_speed = noscope_move_speed * (1.0 - scope_progress) + scope_move_speed * scope_progress
-				scope_position += desired_direciton * interpolated_scope_move_speed
+				scope_position += desired_direction * interpolated_scope_move_speed
 				scope_position.x = clamp(scope_position.x, 24, 1000 - 24)
 				scope_position.y = clamp(scope_position.y, 24, 1000 - 24)
 				
@@ -1457,7 +1582,7 @@ func _ready() -> void:
 	spark_bullets[0][11] = 1
 	spark_bullets[0][12] = 1
 	spark_bullets[0][13] = System.DAMAGE_TYPE.SHOCK			# damage type
-	spark_bullets[0][14] = 15				# damage amount
+	spark_bullets[0][14] = 8				# damage amount
 
 	spark_bullets.append(PackedFloat64Array())
 	spark_bullets[1].resize(15)
@@ -1475,7 +1600,7 @@ func _ready() -> void:
 	spark_bullets[1][11] = 1
 	spark_bullets[1][12] = 1
 	spark_bullets[1][13] = System.DAMAGE_TYPE.SHOCK			# damage type
-	spark_bullets[1][14] = 35				# damage amount
+	spark_bullets[1][14] = 25				# damage amount
 
 	spark_bullets.append(PackedFloat64Array())
 	spark_bullets[2].resize(15)
@@ -1511,9 +1636,44 @@ func _ready() -> void:
 	spark_shield_bullet[10] = 1	# rgb
 	spark_shield_bullet[11] = 1
 	spark_shield_bullet[12] = 1
-	spark_shield_bullet[13] = System.DAMAGE_TYPE.SHOCK				# damage type
+	spark_shield_bullet[13] = System.DAMAGE_TYPE.SHOCK_SHIELD				# damage type
 	spark_shield_bullet[14] = 2				# damage amount
 	
+	boomer_bullet = PackedFloat64Array()
+	boomer_bullet.resize(15)
+	boomer_bullet[0] = 128*3 # source x (integer)
+	boomer_bullet[1] = 0 # source y (integer)
+	boomer_bullet[2] = 128				# source width (integer)
+	boomer_bullet[3] = 128				# source height (integer)
+	boomer_bullet[4] = 128				# bullet size [0, inf)
+	boomer_bullet[5] = 0.75 				# hitbox ratio [0, 1]
+	boomer_bullet[6] = 0					# Sprite offset y (integer)
+	boomer_bullet[7] = 1					# anim frame, 1 for no animation (integer)
+	boomer_bullet[8] = -TAU / boomer_travel_time					# spin
+	boomer_bullet[9] = 1	# layer
+	boomer_bullet[10] = 1	# rgb
+	boomer_bullet[11] = 1
+	boomer_bullet[12] = 1
+	boomer_bullet[13] = System.DAMAGE_TYPE.SHARP			# damage type
+	boomer_bullet[14] = 5				# damage amount	
+	
+	boomer_return_bullet = PackedFloat64Array()
+	boomer_return_bullet.resize(15)
+	boomer_return_bullet[0] = 128*3 # source x (integer)
+	boomer_return_bullet[1] = 0 # source y (integer)
+	boomer_return_bullet[2] = 128				# source width (integer)
+	boomer_return_bullet[3] = 128				# source height (integer)
+	boomer_return_bullet[4] = 128				# bullet size [0, inf)
+	boomer_return_bullet[5] = 0.75 				# hitbox ratio [0, 1]
+	boomer_return_bullet[6] = 0					# Sprite offset y (integer)
+	boomer_return_bullet[7] = 1					# anim frame, 1 for no animation (integer)
+	boomer_return_bullet[8] = -TAU / boomer_travel_time					# spin
+	boomer_return_bullet[9] = 1	# layer
+	boomer_return_bullet[10] = 1	# rgb
+	boomer_return_bullet[11] = 1
+	boomer_return_bullet[12] = 1
+	boomer_return_bullet[13] = System.DAMAGE_TYPE.SHARP			# damage type
+	boomer_return_bullet[14] = 25				# damage amount
 	
 	
 	update_ability_text()
@@ -1539,7 +1699,12 @@ func update_ability_text():
 func update_ability_visibility():
 	match player_ability:
 		PLAYER_ABILITY.NORMAL:
-			pass
+			$Boomer.hide()
+			$Parasol.hide()
+			$Plasma.hide()
+			$Bomb.hide()
+			$Sniper.hide()
+			
 
 func parasol_block_bullets() -> void:
 	Bullets.clear_bullets(position + Vector2(0, -108.0), 24)

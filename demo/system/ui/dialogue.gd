@@ -8,8 +8,9 @@ var dialogue_index := -1
 var dialogue_section := 0
 var last_side := '0'
 var mash_cooldown_timer := 120.0
-var mash_cooldown := 5.0
+var mash_cooldown := 10.0
 var left_dialogue := true
+var janky_lock := false
 
 func _ready() -> void:
 	var file := FileAccess.open("res://dialogue.txt", FileAccess.READ)
@@ -26,7 +27,7 @@ func _ready() -> void:
 	#print(dialogue[0][0][2])
 
 func _process(_delta: float) -> void:
-	if System.in_dialogue and dialogue_section < dialogue.size():
+	if System.in_dialogue and dialogue_section < dialogue.size() and not janky_lock:
 		if left_dialogue:
 			left_dialogue = false
 			$AnimationPlayer.play_backwards("leave")

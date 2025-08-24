@@ -8,7 +8,7 @@ class_name GameSystem
 
 #enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, CLEAR, SIZE }
 enum ITEM_TYPE { STAR }
-enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY, SHOCK }
+enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY, SHOCK, SHOCK_SHIELD, SHARP }
 enum DIFFICULTY { EASY, NORMAL, HARD, LUNATIC, OVERDRIVE }
 enum ATTACK_TYPE { NON, SPELL, TIMEOUT, SUPER, ULTRA }
 
@@ -27,7 +27,7 @@ var ui : UIManager
 var boss_manager : BossManager
 
 @export var playfield_size := Vector2(1000, 1000)
-@export var enemy_active_rect := Rect2(Vector2(-128, -128), Vector2(1256, 1256))
+@export var enemy_active_rect := Rect2(Vector2(-256, -256), Vector2(1512, 1512))
 
 ## Current graze count.
 var graze := 0
@@ -41,6 +41,7 @@ var difficulty := DIFFICULTY.LUNATIC
 var time_scale : float = 1.0
 
 var in_dialogue := true
+var clear_enemies := false
 
 #region Registration Functions
 

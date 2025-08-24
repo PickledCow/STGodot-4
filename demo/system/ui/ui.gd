@@ -22,6 +22,7 @@ func update_name(new_name: String) -> void:
 func update_boss_data(boss_name: String, boss_attacks: Array[System.ATTACK_TYPE], names : Array[String]) -> void:
 	$MiddleUI/TopBar/Healthbar/Name.text = boss_name
 	attack_index = boss_attacks.size() - 1
+	names.reverse()
 	attack_names = names
 	boss_attacks.reverse() # First in first out
 	for i in 6:
@@ -40,7 +41,8 @@ func update_boss_data(boss_name: String, boss_attacks: Array[System.ATTACK_TYPE]
 			icon_container.hide()
 
 func increment_attack():
-	get_node("MiddleUI/TopBar/SecondBar/Spells/" + str(attack_index) + "/AnimationPlayer").play("fade_out")
-	attack_index -= 1
-	$MiddleUI/SpellName/AnimationPlayer.play("spawn")
+	if attack_index >= 0:
+		get_node("MiddleUI/TopBar/SecondBar/Spells/" + str(attack_index) + "/AnimationPlayer").play("fade_out")
+		$MiddleUI/SpellName/AnimationPlayer.play("spawn")
 	$MiddleUI/SpellName/Text.text = attack_names[attack_index]
+	attack_index -= 1

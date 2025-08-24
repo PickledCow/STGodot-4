@@ -24,6 +24,8 @@ var bosses : Array[PackedScene] = [
 	preload("res://prefab/boss/youmu.tscn"),
 ]
 
+var mizuchi := preload("res://prefab/boss/mizuchi.tscn")
+
 const BEAT : float = 60.0 / 170.0
 const BAR : float = BEAT * 4
 const FUTO_INTRO : float = BEAT * 3 * 4 * 4
@@ -161,6 +163,22 @@ var prev_time : float = 0.0
 var music_fade : float = 1.0
 var fade_out : bool = false
 
+var music2_fade : float = 1.0
+var fade_out2 : bool = false
+
+var mizuch_timer := 120
+
+var dialogue_music_warp_value : float = 1.0
+var dialogue_music_is_warping : bool = false
+var warp_target := 1.0
+
+enum SECTIONS {BOSS_RUSH, PRE_DIALOUGE, DIALOGUE_1, MIZUCHI_ENTRY, DIALOGUE2, FIRST_FIGHT, DIALOGUE3, SECOND_FIGHT}
+var section : SECTIONS = SECTIONS.MIZUCHI_ENTRY
+
+var pre_dialogue_wait_timer := 180.0
+
+var mizuch_music_started := false
+
 # -1 
 var debug_skip_boss := -1
 
@@ -172,42 +190,142 @@ var game_state : GAME_STATE = GAME_STATE.DIALOGUE
 
 var current_boss_node : Boss
 
+var start_playing_mizuchi_music := false
+
 func _ready() -> void:
 	System.boss_manager = self
 	
-	var start_points : Array[float] = [0.0, CIRNO_START, KOGASA_START, MARISA_START, SANAE_START, MEGUMU_START, YOUMU_START]
-	if debug_skip_boss > 0:
-		get_tree().paused = true
-		debug_music_start_time = start_points[debug_skip_boss]
-		#$Music.play(start_points[debug_skip_boss])
-		current_boss = debug_skip_boss -1
-		next_boss = debug_skip_boss
+	match section:
+		SECTIONS.BOSS_RUSH:
+			var start_points : Array[float] = [0.0, CIRNO_START, KOGASA_START, MARISA_START, SANAE_START, MEGUMU_START, YOUMU_START]
+			if debug_skip_boss > 0:
+				get_tree().paused = true
+				debug_music_start_time = start_points[debug_skip_boss]
+				#$Music.play(start_points[debug_skip_boss])
+				current_boss = debug_skip_boss -1
+				next_boss = debug_skip_boss
+				dialogue_manager.dialogue_section = debug_skip_boss
+		SECTIONS.PRE_DIALOUGE:
+			game_state = GAME_STATE.FIGHT
+			System.in_dialogue = false
+			System.bg.next_section()
+			System.bg.stop_scroll()
+			pre_dialogue_wait_timer = 0.0
+			next_boss = 7
+		
+		SECTIONS.MIZUCHI_ENTRY:
+			game_state = GAME_STATE.FIGHT
+			System.in_dialogue = false
+			System.bg.next_section()
+			System.bg.stop_scroll()
+			mizuch_timer = 1
+			next_boss = 7
+			
 
 func increment_boss() -> void:
 	next_boss += 1
-	System.in_dialogue = true
-	dialogue_manager.left_dialogue = true
-	Bullets.clear_bullets(Vector2(500, 500), 1000)
+	if next_boss < bosses.size():
+		System.in_dialogue = true
+		dialogue_manager.left_dialogue = true
+		Bullets.clear_bullets(Vector2(500, 500), 1000)
+	elif next_boss == bosses.size():
+		section = SECTIONS.PRE_DIALOUGE
+		System.bg.next_section()
+		fade_out = true
+	else:
+		fade_out2 = true
+		section = SECTIONS.DIALOGUE3
+		System.in_dialogue = true
+		dialogue_manager.dialogue_section = 9
+		dialogue_manager.left_dialogue = true
+		dialogue_manager.dialogue_index = -1
+		dialogue_manager.mash_cooldown_timer = 120.0
+		dialogue_manager.janky_lock = false
+		dialogue_manager.mash_cooldown = 30.0
 
 func _process(delta: float) -> void:
-	if debug_music_start_time > 0.0 and not $Music.playing:
-		$Music.play(debug_music_start_time)
-	if current_boss < next_boss:
-		if next_boss < bosses.size():
-			current_boss = next_boss
-			current_boss_node = bosses[current_boss].instantiate()
-			current_boss_node.position = Vector2(randf_range(300, 700), -500)
-			current_boss_node.set_destination(current_boss_node.starting_position, 90)
-			add_child(current_boss_node)
-			if current_boss == 0:
-				$Music.play()
-		elif not fade_out:
-			fade_out = true
-	
+	match section:
+		SECTIONS.BOSS_RUSH:
+			if debug_music_start_time > 0.0 and not $Music.playing:
+				$Music.play(debug_music_start_time)
+			if current_boss < next_boss:
+				if next_boss < bosses.size():
+					current_boss = next_boss
+					current_boss_node = bosses[current_boss].instantiate()
+					current_boss_node.position = Vector2(randf_range(200, 800), -500)
+					current_boss_node.set_destination(current_boss_node.starting_position, 90)
+					add_child(current_boss_node)
+					if current_boss == 0:
+						$Music.play()
+					if current_boss == 6:
+						System.bg.stop_scroll()
+				elif not fade_out:
+					fade_out = true
+		
+		SECTIONS.PRE_DIALOUGE:
+			if not $DialogueMusic.playing and not $Music.playing:
+				$DialogueMusic.play()
+			pre_dialogue_wait_timer -= 1.0
+			if pre_dialogue_wait_timer <= 0.0:
+				section = SECTIONS.DIALOGUE_1
+				dialogue_manager.dialogue_section = 7
+				dialogue_manager.left_dialogue = true
+				dialogue_manager.dialogue_expire_time = 720
+				System.in_dialogue = true
+				game_state = GAME_STATE.DIALOGUE
+				dialogue_manager.dialogue_index = -1
+				dialogue_manager.mash_cooldown_timer = 120.0
+				dialogue_manager.mash_cooldown = 30.0
+				$FakeEntrance.play("entry")
+				var types : Array[System.ATTACK_TYPE] = []
+				var names : Array[String] = []
+				System.ui.update_boss_data("Yuyuko", types, names)
+						
+		SECTIONS.DIALOGUE_1:
+			if not $DialogueMusic.playing:
+				$DialogueMusic.play()
+			if not System.in_dialogue:
+				section = SECTIONS.MIZUCHI_ENTRY
+				#var mizu : Boss = mizuchi.instantiate()
+				#current_boss_node = mizu
+				#mizu.position = Vector2(800, -500)
+				#mizu.set_destination(mizu.starting_position, 90)
+				#add_child(mizu)
+				System.in_dialogue = true
+				dialogue_manager.janky_lock = true
+				$FakeEntrance.play("takeover")
+				dialogue_music_is_warping = true
+				warp_target = 0.9
+		
+		SECTIONS.MIZUCHI_ENTRY:
+			mizuch_timer -= 1
+			if mizuch_timer == 0:
+				var mizu : Boss = mizuchi.instantiate()
+				current_boss_node = mizu
+				mizu.position = Vector2(500, 300)
+				add_child(mizu)
+				dialogue_manager.dialogue_section = 8
+				dialogue_manager.left_dialogue = true
+				dialogue_manager.dialogue_index = -1
+				dialogue_manager.mash_cooldown_timer = 120.0
+				dialogue_manager.janky_lock = false
+				dialogue_manager.mash_cooldown = 30.0
+				start_playing_mizuchi_music = true
+				section = SECTIONS.DIALOGUE2
+		SECTIONS.DIALOGUE2:
+			if not System.in_dialogue:
+				section = SECTIONS.FIRST_FIGHT
+		
+		SECTIONS.FIRST_FIGHT:
+			pass
+		SECTIONS.DIALOGUE3:
+			if not $Yuuma.playing and not $Mizuchi.playing and dialogue_manager.dialogue_index >= 5:
+				$Yuuma.play()
 	if game_state == GAME_STATE.DIALOGUE:
 		if not System.in_dialogue:
 			game_state = GAME_STATE.FIGHT
-	
+			
+	# =============
 	# Music
 	var current_time : float = $Music.get_playback_position() + AudioServer.get_time_since_last_mix()
 	var loop_start : float = loop_points[current_boss][0]
@@ -240,4 +358,22 @@ func _process(delta: float) -> void:
 	if fade_out:
 		music_fade -= delta * 0.25
 		$Music.volume_linear = max(0.0, music_fade)
+		if music_fade <= 0.0:
+			$Music.stop()
+			
+	if fade_out2:
+		music2_fade -= delta * 0.25
+		$Mizuchi.volume_linear = max(0.0, music2_fade)
+		if music2_fade <= 0.0:
+			$Mizuchi.stop()
+	
+	if dialogue_music_is_warping:
+		dialogue_music_warp_value -= delta * 0.25
+		$DialogueMusic.volume_linear = max(0.0, dialogue_music_warp_value)
+		if dialogue_music_warp_value <= 0.0:
+			$DialogueMusic.stop()
+	
+	if not mizuch_music_started and not $DialogueMusic.playing and start_playing_mizuchi_music:
+		$Mizuchi.play()
+		mizuch_music_started = true
 	

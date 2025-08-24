@@ -3,6 +3,7 @@ extends Node2D
 
 @export var hitbox_radius := 16.0
 @export var hurtbox_radius := 16.0
+@export var invincible := false
 @export var suck_only := false
 @export var hurt_on_contact := true
 @export var star_damage_multiplier := 1.0
@@ -63,6 +64,7 @@ func get_damage_taken() -> Array[PackedInt64Array]:
 	return Bullets.get_enemy_collisions(enemy_hitbox)
 
 func _ready() -> void:
+	_pre_ready()
 	health = max_health
 	enemy_hitbox = Bullets.create_enemy(hitbox_radius, hurtbox_radius if hurt_on_contact else -1.0, not suck_only)
 	
@@ -86,7 +88,7 @@ func _movement() -> void:
 			position = target_position
 			travel_time = -1.0
 			travel_timer = -1.0
-	else:
+	elif velocity:
 		position += velocity * System.time_scale
 		velocity += acceleration * System.time_scale
 		if apply_max_velocity:
@@ -111,7 +113,7 @@ func _process(_delta) -> void:
 	
 	_movement()
 	
-	if not is_boss and (not System.enemy_active_rect.has_point(position) or System.in_dialogue):
+	if not is_boss and ((not invincible and not System.enemy_active_rect.has_point(position)) or System.in_dialogue or System.clear_enemies):
 		how_i_died = DEATH_TYPE.DESPAWNED
 		_on_death()
 		return
@@ -122,55 +124,65 @@ func _process(_delta) -> void:
 	
 	var collisions : Array = Bullets.get_enemy_collisions(enemy_hitbox)
 	
-	var died := false
+	if not invincible:
+		var died := false
+		for bullet in collisions:
+			var damage_type : int = Bullets.get_damage_type(bullet)
+			var damage : float = Bullets.get_damage(bullet)
+			
+			match damage_type:
+				System.DAMAGE_TYPE.NORMAL:
+					if not suck_only:
+						health -= damage
+						_boss_hit_sfx()
+				System.DAMAGE_TYPE.CANOPY:
+					if not suck_only and not is_boss:
+						health -= damage
+				System.DAMAGE_TYPE.STAR:
+					if not suck_only:
+						health -= damage * star_damage_multiplier
+						SFX.play("break")
+						SFX.play("enemy_hit")
+						_boss_hit_sfx()
+				System.DAMAGE_TYPE.STAR_STRONG:
+					if not suck_only:
+						health -= damage * star_damage_multiplier
+						SFX.play("enemy_hit")
+						_boss_hit_sfx()
+				System.DAMAGE_TYPE.SUCK:
+					if not is_boss:
+						health = 0
+						died = true
+						how_i_died = DEATH_TYPE.SUCKED
+						break
+				System.DAMAGE_TYPE.CRIT:
+					if not suck_only:
+						health -= damage
+						_boss_hit_sfx()
+						if is_boss:
+							SFX.play("crit")
+				System.DAMAGE_TYPE.SHOCK:
+					if not suck_only:
+						health -= damage
+						_boss_hit_sfx()
+						if is_boss:
+							SFX.play("plasma_shock")
+				System.DAMAGE_TYPE.SHOCK_SHIELD:
+					if not suck_only and not is_boss:
+						health -= damage
+				System.DAMAGE_TYPE.SHARP:
+					if not suck_only:
+						health -= damage
+						_boss_hit_sfx()
+						if is_boss:
+							SFX.play("slash_hit")
+			
+			if health <= 0.0:
+				died = true
+				break
 	
-	for bullet in collisions:
-		var damage_type : int = Bullets.get_damage_type(bullet)
-		var damage : float = Bullets.get_damage(bullet)
-		
-		match damage_type:
-			System.DAMAGE_TYPE.NORMAL:
-				if not suck_only:
-					health -= damage
-					_boss_hit_sfx()
-			System.DAMAGE_TYPE.CANOPY:
-				if not suck_only and not is_boss:
-					health -= damage
-			System.DAMAGE_TYPE.STAR:
-				if not suck_only:
-					health -= damage * star_damage_multiplier
-					SFX.play("break")
-					SFX.play("enemy_hit")
-					_boss_hit_sfx()
-			System.DAMAGE_TYPE.STAR_STRONG:
-				if not suck_only:
-					health -= damage * star_damage_multiplier
-					SFX.play("enemy_hit")
-					_boss_hit_sfx()
-			System.DAMAGE_TYPE.SUCK:
-				if not is_boss:
-					health = 0
-					died = true
-					how_i_died = DEATH_TYPE.SUCKED
-					break
-			System.DAMAGE_TYPE.CRIT:
-				if not suck_only:
-					health -= damage
-					_boss_hit_sfx()
-					if is_boss:
-						SFX.play("crit")
-			System.DAMAGE_TYPE.SHOCK:
-				if not suck_only:
-					health -= damage
-					_boss_hit_sfx()
-					if is_boss:
-						SFX.play("plasma_shock")
-		
-		if health <= 0.0:
-			died = true
-			break
-	if died:
-		_on_death()
+		if died:
+			_on_death()
 	
 	if new_frame:
 		_post_process(System.time_scale)
@@ -178,7 +190,10 @@ func _process(_delta) -> void:
 func _boss_hit_sfx():
 	if is_boss:
 		SFX.play("boss_hurt_low" if health / max_health < 0.1 else "boss_hurt_high", 0.0, false)
-		
+
+func _pre_ready() -> void:
+	pass
+
 func _post_ready() -> void:
 	pass
 
@@ -188,6 +203,9 @@ func _pre_process(time_scale: float) -> void:
 	
 @warning_ignore("unused_parameter")
 func _post_process(time_scale: float) -> void:
+	pass
+
+func _pre_death():
 	pass
 
 func _post_death():

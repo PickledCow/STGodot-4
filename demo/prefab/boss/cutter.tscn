@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2ipfr8mfroj8"]
+
+[ext_resource type="Script" uid="uid://wxyixm20skif" path="res://prefab/boss/cutter.gd" id="1_tqtgi"]
+[ext_resource type="Texture2D" uid="uid://mwowxteo674r" path="res://prefab/boss/cutter.png" id="2_2wbtb"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_tqtgi")
+hitbox_radius = 64.0
+hurtbox_radius = 32.0
+max_health = 15.0
+ability = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_2wbtb")

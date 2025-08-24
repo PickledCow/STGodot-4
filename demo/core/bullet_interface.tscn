@@ -13,7 +13,8 @@
 
 [node name="BulletInterface" type="BulletInterface"]
 "Field/Bounce Rect" = Rect2(0, 0, 1000, 1000)
-"Field/Active Rect" = Rect2(-128, -128, 1256, 1256)
+"Field/Bullet Active Rect" = Rect2(-128, -128, 1256, 1256)
+"Field/Shot Active Rect" = Rect2(-500, -500, 2000, 2000)
 "Bullets/Z Layer" = 20
 "Shots/Z Layer" = 0
 "Items/Z Layer" = 10

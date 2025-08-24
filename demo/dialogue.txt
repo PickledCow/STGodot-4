@@ -10,31 +10,90 @@
 1|1|I've been tasked with keeping the drinks cool!
 0|1|Drinks you've undoubtedly stole from everyone!
 1|1|If they've been stolen it wasn't me nor is it any of my concern.
-1|1|Now, prepare to freeze!
+1|1|Now,  prepare to freeze!
 
 1|2|Ta-da! Surprise delivery!  I bet you didn't expect an umbrella to be a courier,  right?
 0|2|So it's you who've been stealing the food!  Hand back that food this instant!
-1|2|Huh? N-no,  I'm just delivering these!  If I didn't surprise you before then I'll have to start a SURPRISE battle!
+1|2|Huh? N-no,  I'm just delivering these!
+1|2|If I didn't surprise you before then I'll have to start a SURPRISE battle!
 
-1|3|Banquet prep is sure busy work huh?  They've put me as a chef quite literally just because I had my hakkero.
+1|3|Banquet prep is sure busy work huh?  
+1|3|They've put me as a chef quite literally just because I had my hakkero.
 0|3|Drop the act,  I know you guys are all behind this.  Now return the stolen food!
 1|3|You can have all the food you want later,  but we're currently not open!
 1|3|Here,  I'll put it into terms you can understand!
 
 1|4|A festival isn't complete without fireworks!
-1|4|The Moriya Shrine is sponsoring this banquet and I've been tasked with setting up the fireworks displays.
+1|4|The Moriya Shrine is sponsoring this banquet.
+1|4|And 've been tasked with setting up the fireworks displays.
 1|4|Just gotta do a few more test explosions,  and...
 0|4|EXPLOSIONS?!  You guys definitely are hiding something back there.
-1|4|H-huh?  No,  I'm just working on fireworks.  Here,  you get to see the current prototype I'm working on!
+1|4|H-huh?  No,  I'm just working on fireworks.
+1|4|Here,  you get to see the current prototype I'm working on!
 
-1|5|Halt! As this festival is sponsored by the Moriya Administration,  it is under Tengu Juristriciton!
-1|5|It falls upon me to ensure order,  discipline...  and first dibs on the yummiest dishes.
+1|5|Halt trespasser!
+1|5| As festival is sponsored by the Moriya Administration, it is under Tengu Juristriciton!
+1|5|It falls upon me to ensure order,  discipline, and first dibs on the yummiest dishes.
 0|5|Surely you must be the one behind the stolen food.
-1|5|I see you've been up to no good back there,  seems like you need some disciplinary action!
+1|5|I see you've been up to no good back there.
+1|5|Seems like you need some disciplinary action!
 0|5|You aren't even listening to me are you.
 
-1|6|I have no time to deal with troublemakers like you.  I've got so much work left to do you know.
+1|6|I have no time to deal with troublemakers like you.
+1|6|I've got so much work left to do you know.
 0|6|Of course,  its Yuyuko who's behind all this.
 0|6|So here's the plan,  I beat you and Yuyuko returns all the stolen food.
-1|6|I will protect my master at any cost!  Also what are you talking about stolen food?
+1|6|I will protect my master at any cost!
+1|6|Also what are you talking about stolen food?
 0|6|Still feigning ignorance huh?  You're hubris will be your downfall!
+
+1|7|My my,  what noise you've been making over here!
+1|7|Yuuma,  stomping around here so early?  You've caused quite the scene on the way here.
+0|7|Stop playing dumb!  Everyone here so far have been hiding food for you.
+0|7|You're trying to distract me with all these plates and drinks.
+1|7|Heehee,  now why would I do such a thing?
+0|7|That's for you to explain you food thief!
+0|7|I saw you guys taking a bunch of food over here;  what exactly are you up to?
+1|7|Surely everyone's been trying to explain to you.
+1|7|I'm holding a festival soon so of course people are bringing food over.
+0|7|But I saw them take like all the food!
+1|7|You're a funny one,  and not a particularly bright one. 
+1|7|Almost the entirety of Gensokyo is going to be over here.
+1|7|And what's a festival without food?
+1|7|We've been saving up so that everyone can enjoy themselves this festival.
+0|7|So you're saying I've been fighting my way up here for no reason?
+1|7|Well...  I won't pretend that it wasn't pointless...
+1|7|But I'm sure we've all had fun doing so,  and isn't that the point of a festival?
+
+1|8|...Ahh,  how fitting.  A banquet with so many people here...  
+1|8|How long I've waited for this moment.
+0|8|...That doesn't sound like how you were just before.
+1|8|No,  no,  no it is not...
+1|8|And with her power over death,  nobody in Gensokyo can stop me now!
+1|8|Gensokyo's days of peace and order will end!
+1|8|Chaos will throw the entire land into disarray,  I will rule!
+0|8|Huh?!  Something's posessed the hostess!
+0|8|Look, whoever you are you are not going to take over Gensokyo.
+0|8|Not if I have something to say about it!
+1|8|You really think you can stop me?
+1|8|I guess you can be the first victim with her powers.
+1|8|Now prepare to die!!!
+
+1|2|Surpriiise!  Bet you didn't expect me this time,  right?
+0|2|Buzz off,  I'm kinda in the middle of something important here.
+1|2|But I helped out so much...
+0|8|Though,  after fighting for a bit I think I figured something out.
+1|8|Huh?  U-uh no you didn't!
+0|8|Yeah,  you don't actually know how to use her powers do you?
+1|8|T-that's not true!  You should be begging for mercy this instance!
+0|8|It became clear when you weren't fighting anything remotely like Yuyuko.
+0|8|So you tried to pretend you had her powers with your attack themes.
+1|8|Silence!  And why would I need her old tricks when raw strength is enough?
+0|8|You aren't her.  You don't belong here,  and you can't even fake it.
+0|8|You act like you're some grand threat to Gensokyo but you're nothing!
+0|8|The entirety of Gensokyo rejects your proposal.
+0|8|I have the entirety of Gensokyo backing me up here,  so here's the rundown:
+0|8|We beat you up,  you go home crying.  Is that clear?
+1|8|Enough of this nonsense!  This ends here,  one way or another!
+0|8|Sounds like we agree then!
+1|2|And I'll cheer you on from here!

@@ -51,8 +51,8 @@ func _process(delta) -> void:
 		else:
 			_movement()
 	
-	
 func _on_death() -> void:
+	_pre_death()
 	next_attack += 1
 	if next_attack >= attack_name_list.size():
 		if death_exploded:
@@ -63,3 +63,10 @@ func _on_death() -> void:
 			System.warp_rect.warp_boss(position, true)
 			death_explosion_timer = death_explosion_time
 			set_destination(position + Vector2(randf_range(32, 64), 0.0).rotated(randf()*TAU), 60)
+	else:
+		_post_death()
+		health = max_health
+		t = -1
+		t_float = -1
+		set_destination(starting_position, 60)
+		

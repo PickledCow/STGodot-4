@@ -101,9 +101,13 @@ void BulletInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_bounce_rect", "p_bounce_rect"), &BulletInterface::set_bounce_rect);
 	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Bounce Rect"), "set_bounce_rect", "get_bounce_rect");
 	
-    ClassDB::bind_method(D_METHOD("get_active_rect"), &BulletInterface::get_active_rect);
-	ClassDB::bind_method(D_METHOD("set_active_rect", "p_active_rect"), &BulletInterface::set_active_rect);
-	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Active Rect"), "set_active_rect", "get_active_rect");
+    ClassDB::bind_method(D_METHOD("get_bullet_active_rect"), &BulletInterface::get_bullet_active_rect);
+	ClassDB::bind_method(D_METHOD("set_bullet_active_rect", "p_bullet_active_rect"), &BulletInterface::set_bullet_active_rect);
+	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Bullet Active Rect"), "set_bullet_active_rect", "get_bullet_active_rect");
+	
+    ClassDB::bind_method(D_METHOD("get_shot_active_rect"), &BulletInterface::get_shot_active_rect);
+	ClassDB::bind_method(D_METHOD("set_shot_active_rect", "p_shot_active_rect"), &BulletInterface::set_shot_active_rect);
+	ADD_PROPERTY(PropertyInfo(Variant::RECT2, "Field/Shot Active Rect"), "set_shot_active_rect", "get_shot_active_rect");
 	
     ClassDB::bind_method(D_METHOD("get_time_scale"), &BulletInterface::get_time_scale);
 	ClassDB::bind_method(D_METHOD("set_time_scale", "p_time_scale"), &BulletInterface::set_time_scale);
@@ -947,11 +951,18 @@ void BulletInterface::set_bounce_rect(Rect2 rect) {
 	bounce_rect = rect;
 }
 
-Rect2 BulletInterface::get_active_rect() {
-	return active_rect;
+Rect2 BulletInterface::get_bullet_active_rect() {
+	return bullet_active_rect;
 }
-void BulletInterface::set_active_rect(Rect2 rect) {
-	active_rect = rect;
+void BulletInterface::set_bullet_active_rect(Rect2 rect) {
+	bullet_active_rect = rect;
+}
+
+Rect2 BulletInterface::get_shot_active_rect() {
+	return shot_active_rect;
+}
+void BulletInterface::set_shot_active_rect(Rect2 rect) {
+	shot_active_rect = rect;
 }
 
 double BulletInterface::get_time_scale() {
@@ -1193,10 +1204,14 @@ void BulletInterface::init(Node2D* root) {
 	}
 
 
-	if (active_rect.size.x <= 0.0 || active_rect.size.y <= 0.0) {
-		godot::UtilityFunctions::push_warning("Active rect has one or more bounds less than or equal to zero; bullets will instantly be despawned.");
+	if (bullet_active_rect.size.x <= 0.0 || bullet_active_rect.size.y <= 0.0) {
+		godot::UtilityFunctions::push_warning("Bullet active rect has one or more bounds less than or equal to zero; bullets will instantly be despawned.");
+	}
+	if (shot_active_rect.size.x <= 0.0 || shot_active_rect.size.y <= 0.0) {
+		godot::UtilityFunctions::push_warning("Shot active rect has one or more bounds less than or equal to zero; bullets will instantly be despawned.");
 	}
 	
+
 	if (bounce_rect.size.x <= 0.0 || bounce_rect.size.y <= 0.0) {
 		godot::UtilityFunctions::push_warning("Bounce rect has one or more bounds less than or equal to zero; bullets will not bounce properly.");
 	}
@@ -1560,7 +1575,7 @@ void BulletInterface::_process(double delta) {
 
 	for (int i = total_bullets - 1; i >= available_bullets; --i) {
 		Bullet* bullet = bullet_pool[i];
-		if (_process_bullet(bullet, time_scale, false, false)) {
+		if (_process_bullet(bullet, time_scale, false, false, bullet_active_rect)) {
 			_release_bullet(i);
 			i += 1;
 			continue;
@@ -1571,7 +1586,7 @@ void BulletInterface::_process(double delta) {
 	
 	for (int i = total_shots - 1; i >= available_shots; --i) {
 		Bullet* shot = shot_pool[i];
-		if (_process_bullet(shot, time_scale, false, false)) {
+		if (_process_bullet(shot, time_scale, false, false, shot_active_rect)) {
 			_release_shot(i);
 			i += 1;
 			continue;
@@ -1635,7 +1650,7 @@ void BulletInterface::_process(double delta) {
 
 }
 
-bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check) {
+bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check, Rect2 active_rect) {
 	Vector2 origin = bullet->position;
 
     int bounce_count = 0;
@@ -1893,7 +1908,7 @@ bool BulletInterface::_process_item(Item* item, double delta) {
 
     }
     
-    if(item->position.y > active_rect.get_end().y + item->scale * 0.5 || item->lifetime >= item->lifespan) {
+    if(item->position.y > bullet_active_rect.get_end().y + item->scale * 0.5 || item->lifetime >= item->lifespan) {
         return true;
     }
 
@@ -1953,11 +1968,11 @@ bool BulletInterface::_process_enemy(Enemy* enemy, double delta) {
 
 bool BulletInterface::_process_laser(Laser* laser, double delta) {
 	// Mostly can use bullet logic
-	bool to_return = _process_bullet(laser, delta, false, true);
+	bool to_return = _process_bullet(laser, delta, false, true, bullet_active_rect);
 
 	to_return = to_return || (
-		!active_rect.has_point(laser->position) &&
-		!active_rect.has_point(laser->position + laser->direction * laser->length) && 
+		!bullet_active_rect.has_point(laser->position) &&
+		!bullet_active_rect.has_point(laser->position + laser->direction * laser->length) && 
 		laser->auto_delete
 	);
 
@@ -1974,11 +1989,11 @@ bool BulletInterface::_process_laser(Laser* laser, double delta) {
 
 bool BulletInterface::_process_curve_laser(CurveLaser* laser, double delta) {
 	// Mostly can use bullet logic
-	bool to_return = _process_bullet(laser, delta, true, true);
+	bool to_return = _process_bullet(laser, delta, true, true, bullet_active_rect);
 	// Check if both first and last points are both offscreen, or if the laser's cut length is non-positive.
 	to_return = to_return || (
-		!active_rect.has_point(laser->position) &&
-		!active_rect.has_point(laser->points[laser->length-1]) &&
+		!bullet_active_rect.has_point(laser->position) &&
+		!bullet_active_rect.has_point(laser->points[laser->length-1]) &&
 		laser->auto_delete) || 
 	(laser->mesh_end_node_index <= laser->mesh_start_node_index) ||
 	(laser->collision_end_node_index <= laser->collision_start_node_index);

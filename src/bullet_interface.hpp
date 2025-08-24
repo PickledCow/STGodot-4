@@ -234,7 +234,8 @@ public:
 
 	// Field variables
 	Rect2 bounce_rect;
-	Rect2 active_rect;
+	Rect2 bullet_active_rect;
+	Rect2 shot_active_rect;
 	double time_scale = 1.0;
 
 	Node2D* parent;
@@ -268,7 +269,7 @@ public:
 	void _init_lasers();
 	void _init_curve_lasers();
 
-	bool _process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check);
+	bool _process_bullet(Bullet* bullet, double delta, bool skip_fade, bool skip_rect_check, Rect2 active_rect);
 	bool _process_item(Item* item, double delta);
 	bool _process_particle(Particle* particle, double delta);
 	bool _process_enemy(Enemy* enemy, double delta);
@@ -352,8 +353,11 @@ public:
 	Rect2 get_bounce_rect();
 	void set_bounce_rect(Rect2 rect);
 
-	Rect2 get_active_rect();
-	void set_active_rect(Rect2 rect);
+	Rect2 get_bullet_active_rect();
+	void set_bullet_active_rect(Rect2 rect);
+	
+	Rect2 get_shot_active_rect();
+	void set_shot_active_rect(Rect2 rect);
 
 	double get_time_scale();
 	void set_time_scale(double ts);

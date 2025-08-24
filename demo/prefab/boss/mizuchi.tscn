@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cctctq14h1e7l"]
+
+[ext_resource type="Script" uid="uid://cmtd5cl6ohqjb" path="res://prefab/boss/mizuchi.gd" id="1_qq5vq"]
+[ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="2_a3vvh"]
+
+[node name="Mizuchi" type="Node2D"]
+script = ExtResource("1_qq5vq")
+second_attack_type_list = Array[int]([1, 1])
+second_attack_name_list = Array[String](["DBDB", "arstv"])
+attack_type_list = [1, 1, 1]
+attack_name_list = Array[String](["Death Sign 「Death by a Thousand Cuts」", "Death Sign 「Killed in Action」", "Death Sign 「Exposure to the Elements」"])
+boss_name = "Mizuchi"
+hitbox_radius = 96.0
+hurtbox_radius = 64.0
+max_health = 800.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_a3vvh")

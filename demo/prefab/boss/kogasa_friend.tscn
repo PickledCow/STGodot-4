@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://jhd34d61528w"]
+
+[ext_resource type="Script" uid="uid://b4p64mrt5j610" path="res://prefab/boss/kogasa_friend.gd" id="1_vs1wn"]
+[ext_resource type="Texture2D" uid="uid://us7p3dimibip" path="res://prefab/boss/kogasa_parasol.png" id="2_10c5x"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_vs1wn")
+hitbox_radius = 48.0
+hurtbox_radius = 28.0
+invincible = true
+hurt_on_contact = false
+max_health = 1000.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+texture = ExtResource("2_10c5x")
