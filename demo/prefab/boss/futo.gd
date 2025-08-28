@@ -10,6 +10,7 @@ var lr2 := 1.0
 
 var arrow_a := 0.0
 var arrow_a2 := 0.0
+var arrow_lr := 1.0
 
 var red_fire : PackedFloat64Array
 var orange_fire : PackedFloat64Array
@@ -17,13 +18,13 @@ var arrow : PackedFloat64Array
 
 var rates := [4, 3, 2, 1]
 
-var shard_density : Array[int] = [3, 4, 6, 8, 10]
+var shard_density : Array[int] = [2, 3, 5, 6, 6]
 var plate_rate : Array[int] = [8, 6, 5, 4, 3]
 var plate_speed : Array[float] = [4.5, 5.0, 5.5, 6.0, 6.5]
 var plate_init_speed : Array[float] = [16.0, 16.0, 16.0, 16.0, 16.0]
 var plate_accel : Array[float] = [0.5, 0.5, 0.5, 0.5, 0.5]
-var arrow_density : Array[int] = [60, 85, 95, 120, 150]
-var arrow_accel : Array[float] = [0.002, 0.002, 0.0025, 0.003, 0.003]
+var arrow_density : Array[int] = [16, 24, 32, 40, 45]
+var arrow_accel : Array[float] = [0.001, 0.0015, 0.00175, 0.002, 0.0025]
 
 func _post_ready() -> void:
 	red_fire = System.get_bullet_data(BulletConstructor.BULLET_TYPE.FIREBALL, BulletConstructor.COLORS_LARGE.RED)
@@ -40,14 +41,20 @@ func _pre_process(_time_scale: float) -> void:
 			var min_x : float = max(300, position.x - 200)
 			var max_x : float = min(700, position.x + 200)
 			set_destination(Vector2(randf_range(min_x, max_x), 300), 60)
+			arrow_a2 = 0.0
+			arrow_lr *= -1.0
 			
 		# Arrows
-		if t < 120 and t % 12 == 0:
+		if t % 240 < 72 and t % 6 == 0:
 			arrow_a2 += arrow_accel[difficulty]
-			arrow_a += arrow_a2
+			arrow_a += arrow_a2 * arrow_lr
 			SFX.play("shoot1")
-			for i in arrow_density[difficulty]:
-				var ang := arrow_a + i * TAU / arrow_density[difficulty]
+			var density : int = arrow_density[difficulty]
+			if t < 240:
+				@warning_ignore("integer_division")
+				density = density * 3 / 2
+			for i in density:
+				var ang := arrow_a + i * TAU / density
 				Bullets.create_bullet_a2(position, 12.0, ang, -0.15, 3.0, 0.0, arrow, false)
 			
 		# Plates
@@ -68,5 +75,5 @@ func _pre_process(_time_scale: float) -> void:
 			get_parent().add_child(plate)
 			SFX.play("shoot1")
 		if t % 240 < 210 and t % 240 >= 120:
-			a += lr * TAU / 90.0 * 1.2
+			a -= lr * TAU / 90.0 * 1.2
 	

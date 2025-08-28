@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dww4gq24fvl8n"]
+[gd_scene load_steps=45 format=3 uid="uid://dww4gq24fvl8n"]
 
 [ext_resource type="Script" uid="uid://b68vyanic5tkv" path="res://prefab/player/player.gd" id="1_m7gp6"]
 [ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://prefab/player/default/shooter_manager.tscn" id="3_7dfjt"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dyhpi6pp3un0p" path="res://dummy.png" id="7_pvpw6"]
 [ext_resource type="Texture2D" uid="uid://bdsirwf3ypfbw" path="res://prefab/player/yuuma/scope.png" id="10_8uj67"]
 [ext_resource type="Texture2D" uid="uid://cm55ksbkxqcl5" path="res://prefab/player/yuuma/parasol.png" id="11_1okbp"]
+[ext_resource type="Texture2D" uid="uid://cw2wbauvaw5o7" path="res://prefab/player/yuuma/parry.png" id="12_nfphy"]
 [ext_resource type="Texture2D" uid="uid://dm4q6waryi5kg" path="res://prefab/player/yuuma/plasma_shield.png" id="13_effqb"]
 [ext_resource type="Texture2D" uid="uid://b538c27ibfnof" path="res://prefab/player/yuuma/plasma_static.png" id="14_6ai8q"]
 [ext_resource type="Texture2D" uid="uid://5s01wv54q8f8" path="res://prefab/player/yuuma/boomer_spawns.png" id="14_illwk"]
@@ -625,6 +626,112 @@ shader_parameter/wave_time_scale2 = 3.0
 shader_parameter/freq2 = 10.0
 shader_parameter/offset = 0.5
 
+[sub_resource type="Animation" id="Animation_slduu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Parry:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Parry:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Parry:scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Parry:scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_b8l10"]
+resource_name = "parry"
+length = 0.8
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Parry:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Parry:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Parry:scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.1, 0, 1, -0.20000002, 1, 0.050000004, -0.25, 1, -0.05, -0.25, 0, 0),
+"times": PackedFloat32Array(0, 0.3, 0.5)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Parry:scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.1, 0, 1, -0.20000002, 1, 0.05, -0.25, 1, -0.05, -0.25, 0, 0),
+"times": PackedFloat32Array(0, 0.3, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mbdlq"]
+_data = {
+&"RESET": SubResource("Animation_slduu"),
+&"parry": SubResource("Animation_b8l10")
+}
+
 [sub_resource type="Animation" id="Animation_effqb"]
 length = 0.001
 tracks/0/type = "bezier"
@@ -801,6 +908,7 @@ script = ExtResource("1_m7gp6")
 shooter_manager_path = NodePath("ShooterManager")
 starting_lives = 8
 max_lives = 8
+deathbomb_window = 15
 respawn_on_death = false
 spawn_with_invulnerability = false
 unfocus_speed = 10.0
@@ -942,7 +1050,6 @@ texture = ExtResource("10_8uj67")
 visible = false
 
 [node name="Back" type="ColorRect" parent="Sniper/ReloadBar"]
-anchors_preset = -1
 offset_left = -50.0
 offset_top = -74.0
 offset_right = 50.0
@@ -950,14 +1057,12 @@ offset_bottom = -62.0
 color = Color(0, 0, 0, 1)
 
 [node name="Active" type="ColorRect" parent="Sniper/ReloadBar"]
-anchors_preset = -1
 offset_top = -74.0
 offset_right = 25.0
 offset_bottom = -62.0
 color = Color(0.7529412, 0.10980392, 0.10980392, 1)
 
 [node name="Progress" type="TextureProgressBar" parent="Sniper/ReloadBar"]
-anchors_preset = -1
 offset_left = -48.0
 offset_top = -72.0
 offset_right = -47.0
@@ -973,7 +1078,6 @@ texture_progress = ExtResource("7_pvpw6")
 visible = false
 
 [node name="Back" type="ColorRect" parent="Bomb/ChargeBar"]
-anchors_preset = -1
 offset_left = -50.0
 offset_top = -74.0
 offset_right = 50.0
@@ -981,7 +1085,6 @@ offset_bottom = -62.0
 color = Color(0, 0, 0, 1)
 
 [node name="Active" type="ColorRect" parent="Bomb/ChargeBar"]
-anchors_preset = -1
 offset_left = 25.0
 offset_top = -74.0
 offset_right = 50.0
@@ -989,7 +1092,6 @@ offset_bottom = -62.0
 color = Color(0.7529412, 0.10980392, 0.10980392, 1)
 
 [node name="Progress" type="TextureProgressBar" parent="Bomb/ChargeBar"]
-anchors_preset = -1
 offset_left = -48.0
 offset_top = -72.0
 offset_right = -47.0
@@ -998,6 +1100,37 @@ scale = Vector2(96, 8)
 max_value = 1.0
 step = 0.0
 texture_progress = ExtResource("7_pvpw6")
+
+[node name="Sword" type="Node2D" parent="."]
+
+[node name="ChargeBar" type="Node2D" parent="Sword"]
+visible = false
+
+[node name="Back" type="ColorRect" parent="Sword/ChargeBar"]
+offset_left = -50.0
+offset_top = -74.0
+offset_right = 50.0
+offset_bottom = -62.0
+color = Color(0, 0, 0, 1)
+
+[node name="Progress" type="TextureProgressBar" parent="Sword/ChargeBar"]
+offset_left = -48.0
+offset_top = -72.0
+offset_right = -47.0
+offset_bottom = -71.0
+scale = Vector2(96, 8)
+max_value = 1.0
+step = 0.0
+texture_progress = ExtResource("7_pvpw6")
+
+[node name="ParryAnimator" type="AnimationPlayer" parent="Sword"]
+libraries = {
+&"": SubResource("AnimationLibrary_mbdlq")
+}
+
+[node name="Parry" type="Sprite2D" parent="Sword"]
+visible = false
+texture = ExtResource("12_nfphy")
 
 [node name="Parasol" type="Node2D" parent="."]
 
@@ -1044,6 +1177,7 @@ texture = ExtResource("14_6ai8q")
 hframes = 2
 
 [node name="Boomer" type="Node2D" parent="."]
+visible = false
 
 [node name="AimRotator" type="Node2D" parent="Boomer"]
 rotation = -1.5707964

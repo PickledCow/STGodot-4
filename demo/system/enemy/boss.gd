@@ -5,15 +5,20 @@ class_name Boss
 @export var attack_name_list : Array[String] = []
 @export var boss_name : String
 @export var starting_position : Vector2 = Vector2(500, 300)
+@export var tlb := false
 
 var current_attack := -1
 var next_attack := 0
 
-
+var fucking_jank_frame := false
 
 var death_explosion_time = 60.0
 var death_explosion_timer = 0.0
 var death_exploded := false
+
+var attack_timer := 60 * 60
+
+var fucking_shit_cunt_t := -1
 
 func _ready() -> void:
 	super()
@@ -25,48 +30,82 @@ func _ready() -> void:
 	# Remove once dialogue
 	t = -30
 	t_float = -30.0
+	invincibility_timer = -60.0
+	System.ui.fade_in_timer()
 
 func _process(delta) -> void:
+	if attack_timer <= 0:
+		health = 0
+	
 	if death_explosion_timer > 0.0:
-		death_explosion_timer -= 1.0
+		death_explosion_timer -= System.time_scale
 		if death_explosion_timer <= 0.0:
 			death_exploded = true
 			_on_death()
-			System.warp_rect.warp_invert(position)
 			SFX.play("boss_death")
+			if tlb:
+				System.time_scale = 1.0
+				Bullets.set_time_scale(1.0)
+				Engine.time_scale = 1.0
+			else:
+				System.warp_rect.warp_invert(position)
 		_movement()
 	
 	else:
 		if not System.in_dialogue:
 			super(delta)
-			System.ui.set_boss_health(max(0.0, health / max_health))
+			if invincibility_timer <= 0.0:
+				System.ui.set_boss_health(max(0.0, health / max_health))
 
-			if t == -1 and current_attack < next_attack:
+			if t >= -1 and current_attack < next_attack and not fucking_jank_frame:
 				current_attack = next_attack
 				t = -120
 				t_float = -120.0
+				invincibility_timer = 120.0
 				System.ui.increment_attack()
 				System.warp_rect.warp_boss(position)
 				SFX.play("blast")
 		else:
 			_movement()
+			
+	if fucking_shit_cunt_t < t:
+		attack_timer -= 1
+		fucking_shit_cunt_t = t
+		System.ui.set_timer(attack_timer / 60.0)
+	
+	if fucking_jank_frame:
+		fucking_jank_frame = false
 	
 func _on_death() -> void:
+	#print(current_attack)
 	_pre_death()
+	#print(current_attack)
 	next_attack += 1
-	if next_attack >= attack_name_list.size():
+	if System.in_dialogue:
+		System.boss_manager.increment_boss()
+		set_destination(starting_position, 60)
+	elif next_attack >= attack_name_list.size():
 		if death_exploded:
 			super()
-			System.boss_manager.increment_boss()
+			System.boss_manager.increment_boss(tlb)
 		else:
+			System.ui.slide_in_top_bar(true)
 			SFX.play("boss_death")
 			System.warp_rect.warp_boss(position, true)
 			death_explosion_timer = death_explosion_time
+			if tlb:
+				System.time_scale = 0.5
+				Bullets.set_time_scale(0.5)
+				Engine.time_scale = 0.5
+			
 			set_destination(position + Vector2(randf_range(32, 64), 0.0).rotated(randf()*TAU), 60)
 	else:
 		_post_death()
 		health = max_health
 		t = -1
 		t_float = -1
+		fucking_shit_cunt_t = -1
+		attack_timer = 60 * 60
+		System.ui.set_timer(60)
 		set_destination(starting_position, 60)
-		
+		System.ui.fill_healthbar()

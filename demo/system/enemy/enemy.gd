@@ -1,6 +1,8 @@
 class_name Enemy
 extends Node2D
 
+var ice_cube := preload("res://prefab/player/yuuma/ice_block.tscn")
+
 @export var hitbox_radius := 16.0
 @export var hurtbox_radius := 16.0
 @export var invincible := false
@@ -29,6 +31,8 @@ var enemy_hitbox : PackedInt64Array
 
 var t := 0
 var t_float := 0.0
+
+var invincibility_timer := 0.0
 
 enum DEATH_TYPE { NORMAL, DESPAWNED, SUCKED, FROZEN }
 var how_i_died : DEATH_TYPE = DEATH_TYPE.NORMAL
@@ -124,6 +128,7 @@ func _process(_delta) -> void:
 	
 	var collisions : Array = Bullets.get_enemy_collisions(enemy_hitbox)
 	
+	
 	if not invincible:
 		var died := false
 		for bullet in collisions:
@@ -133,20 +138,23 @@ func _process(_delta) -> void:
 			match damage_type:
 				System.DAMAGE_TYPE.NORMAL:
 					if not suck_only:
-						health -= damage
+						if invincibility_timer <= 0.0:
+							health -= damage
 						_boss_hit_sfx()
 				System.DAMAGE_TYPE.CANOPY:
-					if not suck_only and not is_boss:
+					if not suck_only and not is_boss and invincibility_timer <= 0.0:
 						health -= damage
 				System.DAMAGE_TYPE.STAR:
 					if not suck_only:
-						health -= damage * star_damage_multiplier
+						if invincibility_timer <= 0.0:
+							health -= damage * star_damage_multiplier
 						SFX.play("break")
 						SFX.play("enemy_hit")
 						_boss_hit_sfx()
 				System.DAMAGE_TYPE.STAR_STRONG:
 					if not suck_only:
-						health -= damage * star_damage_multiplier
+						if invincibility_timer <= 0.0:
+							health -= damage * star_damage_multiplier
 						SFX.play("enemy_hit")
 						_boss_hit_sfx()
 				System.DAMAGE_TYPE.SUCK:
@@ -157,13 +165,15 @@ func _process(_delta) -> void:
 						break
 				System.DAMAGE_TYPE.CRIT:
 					if not suck_only:
-						health -= damage
+						if invincibility_timer <= 0.0:
+							health -= damage
 						_boss_hit_sfx()
 						if is_boss:
 							SFX.play("crit")
 				System.DAMAGE_TYPE.SHOCK:
 					if not suck_only:
-						health -= damage
+						if invincibility_timer <= 0.0:
+							health -= damage
 						_boss_hit_sfx()
 						if is_boss:
 							SFX.play("plasma_shock")
@@ -172,17 +182,28 @@ func _process(_delta) -> void:
 						health -= damage
 				System.DAMAGE_TYPE.SHARP:
 					if not suck_only:
-						health -= damage
+						if invincibility_timer <= 0.0:
+							health -= damage
 						_boss_hit_sfx()
 						if is_boss:
 							SFX.play("slash_hit")
+				System.DAMAGE_TYPE.CHILL:
+					if invincibility_timer <= 0.0:
+						health -= damage * 0.25 if is_boss else damage
+						if health <= 0.0 and not is_boss:
+							how_i_died = DEATH_TYPE.FROZEN
+							SFX.play("freeze")
+								
+						_boss_hit_sfx()
+						#SFX.play("enemy_hit")
 			
-			if health <= 0.0:
-				died = true
-				break
+		if health <= 0.0:
+			died = true
 	
 		if died:
 			_on_death()
+	
+	invincibility_timer -= System.time_scale
 	
 	if new_frame:
 		_post_process(System.time_scale)
@@ -223,8 +244,12 @@ func _on_death() -> void:
 			var item : PackedInt64Array = Bullets.create_item(position, 0.0, 0.0, 1.0, star_data, false)
 			Bullets.set_item_magnet(item, System.player)
 			System.player.declare_eated()
+		DEATH_TYPE.FROZEN:
+			var cube := ice_cube.instantiate()
+			cube.position = position
+			get_parent().add_child(cube)
 	
-	if how_i_died != DEATH_TYPE.SUCKED and how_i_died != DEATH_TYPE.DESPAWNED:
+	if how_i_died != DEATH_TYPE.SUCKED and how_i_died != DEATH_TYPE.DESPAWNED and how_i_died != DEATH_TYPE.FROZEN:
 		var de : GPUParticles2D = death_explosion.instantiate()
 		de.position = position
 		de.emitting = true

@@ -68,7 +68,7 @@ func _process(_delta: float) -> void:
 					if side == '0':
 						$AnimationPlayer2.play("enemy2player")
 					else:
-						$AnimationPlayer2.play_backwards("enemy2player")
+						$AnimationPlayer2.play_backwards("enemy2player") # Am I stupid why
 					last_side = side
 			
 			else:

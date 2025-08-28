@@ -175,7 +175,7 @@ func _pre_process(_time_scale: float) -> void:
 				
 		
 		# Star shrapnel
-		if t == collision_time:
+		if t == collision_time and false:
 			SFX.play("warning")
 			collision_time = -1
 			# Stars

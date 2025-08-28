@@ -8,6 +8,7 @@ var test_skip := false
 
 func _ready() -> void:
 	System.bg = self
+	$Prev/Trees.multimesh.instance_count = 96
 	if test_skip:
 		stop_scroll()
 		next_section()

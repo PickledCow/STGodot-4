@@ -12,13 +12,13 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if player_clear_radius >= 0.0:
 		player_clear_radius += System.time_scale * 1000.0 / 1.2 / 60.0 * sqrt(2.0)
-		Bullets.collide_and_graze_player(player_clear_position, player_clear_radius, player_clear_radius)
-		if player_clear_radius >= 1000.0:
+		Bullets.clear_bullets(player_clear_position, player_clear_radius, true)
+		if player_clear_radius >= 250.0:
 			player_clear_radius = -1.0
 	
 	if boss_clear_radius >= 0.0:
 		boss_clear_radius += System.time_scale * 1000.0 / 1.8 / 60.0 * sqrt(2.0)
-		Bullets.collide_and_graze_player(boss_clear_position, boss_clear_radius, boss_clear_radius)
+		Bullets.clear_bullets(boss_clear_position, boss_clear_radius, true)
 		if boss_clear_radius >= 1000.0:
 			boss_clear_radius = -1.0
 

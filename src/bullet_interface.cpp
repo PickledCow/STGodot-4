@@ -85,8 +85,13 @@ void BulletInterface::_bind_methods() {
 	BIND_ENUM_CONSTANT(WALLS_ALL);
 	
 	BIND_ENUM_CONSTANT(TRIGGER_TIME);
-	BIND_ENUM_CONSTANT(TRIGGER_BOUNCE);
-	BIND_ENUM_CONSTANT(TRIGGER_GRAZE);
+	// BIND_ENUM_CONSTANT(TRIGGER_BOUNCE);
+	// BIND_ENUM_CONSTANT(TRIGGER_GRAZE);
+
+
+	BIND_ENUM_CONSTANT(TRANSFORM_ACCEL);
+	BIND_ENUM_CONSTANT(TRANSFORM_MAX_SPEED);
+	BIND_ENUM_CONSTANT(TRANSFORM_WVEL);
 	
 	// BIND_ENUM_CONSTANT(BULLET_ID_INDEX);
 	// BIND_ENUM_CONSTANT(BULLET_ID_POOL);
@@ -415,6 +420,11 @@ void BulletInterface::_bind_methods() {
 	);
 
 	ClassDB::bind_method(D_METHOD(
+		"unmount"), 
+		&BulletInterface::unmount
+	);
+
+	ClassDB::bind_method(D_METHOD(
 		"create_bullet_a1",
 		"position",
 		"speed",
@@ -644,6 +654,20 @@ void BulletInterface::_bind_methods() {
 		"wvel"), 
 		&BulletInterface::set_wvel
 	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"get_layer",
+		"bullet_id"), 
+		&BulletInterface::get_layer
+	);
+	// ---
+	ClassDB::bind_method(D_METHOD(
+		"set_layer",
+		"bullet_id",
+		"layer"), 
+		&BulletInterface::set_layer
+	);
+	// ---
 
 	/* #endregion */
 
@@ -666,7 +690,8 @@ void BulletInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD(
 		"clear_bullets",
 		"position",
-		"radius"), 
+		"radius",
+		"ignore_pierce"), 
 		&BulletInterface::clear_bullets
 	);
 
@@ -704,6 +729,25 @@ void BulletInterface::_bind_methods() {
 		&BulletInterface::skip_fade
 	);
 
+// ------------------------
+
+//add_bullet_transform_a2(PackedInt64Array bullet_id, TransformTrigger trigger, int trigger_value, double speed, double angle, double accel, double max_speed, double w_vel) {
+
+	ClassDB::bind_method(D_METHOD(
+		"add_bullet_transform_a2",
+		"bullet_id",
+		"trigger",
+		"trigger_value",
+		"speed",
+		"angle",
+		"accel",
+		"max_speed",
+		"w_vel"
+	), 
+		&BulletInterface::add_bullet_transform_a2
+	);
+	
+
 
 	/* #endregion */
 
@@ -713,6 +757,12 @@ void BulletInterface::_bind_methods() {
 		"position",
 		"radius"
 	), &BulletInterface::get_enemies_in_range
+	);
+
+	ClassDB::bind_method(D_METHOD(
+		"is_valid",
+		"id"
+	), &BulletInterface::is_valid
 	);
 
 	/* #endregion */
@@ -1084,84 +1134,110 @@ BulletInterface::~BulletInterface() {
 		return;
 	}
 
-	for (int i = 0; i < total_bullets; ++i) {
-		rendering_server->free_rid(bullet_pool[i]->item_rid);
-		memdelete(bullet_pool[i]);
-	}
-	for (int i = 0; i < total_shots; ++i) {
-		rendering_server->free_rid(shot_pool[i]->item_rid);
-		memdelete(shot_pool[i]);
-	}
-	for (int i = 0; i < total_items; ++i) {
-		rendering_server->free_rid(item_pool[i]->item_rid);
-		memdelete(item_pool[i]);
-	}
-	for (int i = 0; i < total_particles; ++i) {
-		rendering_server->free_rid(particle_pool[i]->item_rid);
-		memdelete(particle_pool[i]);
-	}
-	for (int i = 0; i < total_enemies; ++i) {
-		memdelete(enemy_pool[i]);
-	}
+	unmount();
+}
 
-	for (int i = 0; i < total_lasers; ++i) {
-		rendering_server->free_rid(laser_pool[i]->item_rid);
-		rendering_server->free_rid(laser_pool[i]->spawn_item_rid);
-		memdelete(laser_pool[i]);
-	}
-	
-	for (int i = 0; i < total_curve_lasers; ++i) {
-		rendering_server->free_rid(curve_laser_pool[i]->item_rid);
-		// rendering_server->free_rid(curve_laser_pool[i]->spawn_item_rid);
-		// rendering_server->free_rid(curve_laser_pool[i]->mesh_rid);
-		memdelete(curve_laser_pool[i]);
-	}
+// Currently bugged, crashes when run
+void BulletInterface::unmount() {
+	mounted = false;
 
+	// UtilityFunctions::print("Bullets delete start");
 	if (bullets_created) {
-		memdelete_arr(bullet_pool);
+		for (int i = total_bullets-1; i >= 0; --i) {
+			rendering_server->free_rid(bullet_pool[i]->item_rid);
+			memdelete(bullet_pool[i]);
+		}
+		// memdelete_arr(bullet_pool);
 		memdelete_arr(persistent_bullet_index);
+		if (bullets_canvas_item.is_valid()) rendering_server->free_rid(bullets_canvas_item);
+		bullets_created = false;
 	}
+	// UtilityFunctions::print("Bullets delete end");
 
+	// UtilityFunctions::print("Shots delete start");
 	if (shots_created) {
+		for (int i = total_shots-1; i >= 0; --i) {
+			rendering_server->free_rid(shot_pool[i]->item_rid);
+			memdelete(shot_pool[i]);
+		}
 		memdelete_arr(shot_pool);
 		memdelete_arr(persistent_shot_index);
+		if (shots_canvas_item.is_valid()) rendering_server->free_rid(shots_canvas_item);
+		shots_created = false;
 	}
+	// UtilityFunctions::print("Shots delete end");
 
+	// UtilityFunctions::print("Items delete start");
 	if (items_created) {
+		for (int i = total_items-1; i >= 0; --i) {
+			rendering_server->free_rid(item_pool[i]->item_rid);
+			memdelete(item_pool[i]);
+		}
 		memdelete_arr(item_pool);
 		memdelete_arr(persistent_item_index);
+		if (items_canvas_item.is_valid()) rendering_server->free_rid(items_canvas_item);
+		items_created = false;
 	}
+	// UtilityFunctions::print("Items delete end");
 
+	// UtilityFunctions::print("Particles delete start");
 	if (particles_created) {
+		for (int i = total_particles-1; i >= 0; --i) {
+			rendering_server->free_rid(particle_pool[i]->item_rid);
+			memdelete(particle_pool[i]);
+		}
 		memdelete_arr(particle_pool);
 		memdelete_arr(persistent_particle_index);
+		if (particles_canvas_item.is_valid()) rendering_server->free_rid(particles_canvas_item);
+		particles_created = false;
 	}
+	// UtilityFunctions::print("Particles delete end");
 
 	if (enemies_created) {
+		for (int i = total_enemies-1; i >= 0; --i) {
+			memdelete(enemy_pool[i]);
+		}
+
 		memdelete_arr(enemy_pool);
 		memdelete_arr(persistent_enemy_index);
+		enemies_created = false;
 	}
 
+	// UtilityFunctions::print("Lasers delete start");
 	if (lasers_created) {
+		for (int i = total_lasers-1; i >= 0; --i) {
+			rendering_server->free_rid(laser_pool[i]->item_rid);
+			rendering_server->free_rid(laser_pool[i]->spawn_item_rid);
+			memdelete(laser_pool[i]);
+		}
+
 		memdelete_arr(laser_pool);
 		memdelete_arr(persistent_laser_index);
+		if (lasers_canvas_item.is_valid()) rendering_server->free_rid(lasers_canvas_item);
+		lasers_created = false;
 	}
+	// UtilityFunctions::print("Lasers delete end");
 	
+	// UtilityFunctions::print("Curve delete start");
 	if (curve_lasers_created) {
+		for (int i = total_curve_lasers-1; i >= 0; --i) {
+			rendering_server->free_rid(curve_laser_pool[i]->item_rid);
+			// rendering_server->free_rid(curve_laser_pool[i]->spawn_item_rid);
+			// rendering_server->free_rid(curve_laser_pool[i]->mesh_rid);
+			memdelete(curve_laser_pool[i]);
+		}
 		memdelete_arr(curve_laser_pool);
 		memdelete_arr(persistent_curve_laser_index);
-		// rendering_server->free_rid(curve_lasers_canvas_item);
+		if (curve_lasers_canvas_item.is_valid()) rendering_server->free_rid(curve_lasers_canvas_item);
+		curve_lasers_created = false;
 	}
+	// UtilityFunctions::print("Curve delete end");
 
-	if (bullets_canvas_item.is_valid()) rendering_server->free_rid(bullets_canvas_item);
-	if (shots_canvas_item.is_valid()) rendering_server->free_rid(shots_canvas_item);
-	if (items_canvas_item.is_valid()) rendering_server->free_rid(items_canvas_item);
-	if (particles_canvas_item.is_valid()) rendering_server->free_rid(particles_canvas_item);
-	if (lasers_canvas_item.is_valid()) rendering_server->free_rid(lasers_canvas_item);
 }
 
 
 void BulletInterface::init(Node2D* root) {
+	mounted = true;
 	rendering_server = RenderingServer::get_singleton();
 	canvas_parent = root->get_canvas_item();
 
@@ -1215,6 +1291,8 @@ void BulletInterface::init(Node2D* root) {
 	if (bounce_rect.size.x <= 0.0 || bounce_rect.size.y <= 0.0) {
 		godot::UtilityFunctions::push_warning("Bounce rect has one or more bounds less than or equal to zero; bullets will not bounce properly.");
 	}
+
+	// --------------------
 
 	if (bullets_texture.is_null()) {
 		godot::UtilityFunctions::push_error("Bullet texture is missing; bullets will be disabled until fixed.");
@@ -1563,6 +1641,10 @@ void BulletInterface::_process(double delta) {
 		return;
 	}
 	
+	if (!mounted) {
+		return;
+	}
+
 	if (!canvas_parent.is_valid()) {
 		return;
 	}
@@ -1683,29 +1765,18 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fa
     bool transform_applied = false;
     int j = 0;
     for (int i = 0; i < bullet->transforms.size(); i++) {
-        Array xform = bullet->transforms[i]; // trigger, type, time, properties
+        Array xform = bullet->transforms[i];
         bool should_apply = false;
-        int trigger = xform[0];
+        TransformTrigger trigger = (TransformTrigger)(int)xform[TRANSFORM_STRUCTURE_TRIGGER_METHOD];
         
-        // Check if the conditions are met
+        // Check if the conditions are met and flag if so.
         switch (trigger) {
-            case 0: // Time
-                xform[2] = (double)xform[2] - delta;
-                if ((double)xform[2] <= 0.0) {
+            case TRIGGER_TIME: // Time
+                xform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] = (double)xform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] - delta;
+                if ((double)xform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] <= 0.0) {
                     should_apply = true;
                     transform_applied = true;
-                    xform[2] = 0.0;
-                } else {
-                    bullet->transforms[j] = xform;
-                    j++;
-                }
-                break;
-            case 1: // Bounce
-                xform[2] = (int)xform[2] - bounce_count;
-                if ((int)xform[2] <= 0) {
-                    should_apply = true;
-                    transform_applied = true;
-                    xform[2] = 0;
+                    xform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] = 0.0;
                 } else {
                     bullet->transforms[j] = xform;
                     j++;
@@ -1714,7 +1785,25 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fa
         }
 
         if (should_apply) {
-            // TODO
+			TransformProperty property = (TransformProperty)(int)xform[TRANSFORM_STRUCTURE_PROPERTY];
+
+			switch (property) {
+				case TRANSFORM_ACCEL: {
+					double accel = (double)xform[TRANSFORM_STRUCTURE_VALUE];
+					bullet->accel = accel;
+					break;
+				}
+				case TRANSFORM_MAX_SPEED: {
+					double max_speed = (double)xform[TRANSFORM_STRUCTURE_VALUE];
+					bullet->max_speed = max_speed;
+					break;
+				}
+				case TRANSFORM_WVEL: {
+					double wvel = (double)xform[TRANSFORM_STRUCTURE_VALUE];
+					bullet->wvel = wvel;
+					break;
+				}
+			}
         }
     }
 
@@ -1723,12 +1812,12 @@ bool BulletInterface::_process_bullet(Bullet* bullet, double delta, bool skip_fa
         
         bullet->transforms.resize(j);
 
-        bullet->direction = Vector2(1.0, 0.0).rotated(bullet->angle);
-        bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0, 1.0)).rotated(
-			bullet->angle - bullet->transform.get_rotation() + bullet_rotation_offset + bullet->rotation
-		);
-        // bullet->transform.set_origin(bullet->position);
-        rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
+        // bullet->direction = Vector2(1.0, 0.0).rotated(bullet->angle);
+        // bullet->transform = bullet->transform.scaled((bullet->scale / bullet->transform.get_scale().x) * Vector2(1.0, 1.0)).rotated(
+		// 	bullet->angle - bullet->transform.get_rotation() + bullet_rotation_offset + bullet->rotation
+		// );
+        // // bullet->transform.set_origin(bullet->position);
+        // rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
     }
 	bullet->transform.set_origin(bullet->position);
 
@@ -2536,7 +2625,6 @@ PackedInt64Array BulletInterface::create_bullet_a2(Vector2 pos, double speed, do
 	return id;
 }
 
-
 PackedInt64Array BulletInterface::create_bullet_b1(Vector2 pos, Vector2 velocity, Vector2 accel, Vector2 max_velocity, bool rotation_follows_movement, PackedFloat64Array bullet_data, bool glow) {
 	if(available_bullets > 0) {
 		available_bullets -= 1;
@@ -2619,6 +2707,69 @@ PackedInt64Array BulletInterface::create_bullet_b1(Vector2 pos, Vector2 velocity
 	}
 	return invalid_id;
 }
+
+
+void BulletInterface::add_bullet_transform_a2(PackedInt64Array bullet_id, int trigger, int trigger_value, double speed, double angle, double accel, double max_speed, double w_vel) {
+	// Check validity of bullet
+	Bullet* bullet;
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle != bullet_id[BULLET_ID_CYCLE]) {
+			return;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle != bullet_id[BULLET_ID_CYCLE]) {
+			return;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == LASERS_POOL) {
+		bullet = laser_pool[persistent_laser_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle != bullet_id[BULLET_ID_CYCLE]) {
+			return;
+		}
+	}
+
+	// TODO: Do it for the rest
+	
+
+	if (accel != NO_CHANGE) {
+		Array transform = Array();
+		transform.resize(TRANSFORM_STRUCTURE_MAX);
+		transform[TRANSFORM_STRUCTURE_TYPE] = 0;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_METHOD] = trigger;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] = trigger_value;
+		transform[TRANSFORM_STRUCTURE_PROPERTY] = TRANSFORM_ACCEL;
+		transform[TRANSFORM_STRUCTURE_VALUE] = accel;
+		bullet->transforms.append(transform);
+	}
+	
+	if (max_speed != NO_CHANGE) {
+		Array transform = Array();
+		transform.resize(TRANSFORM_STRUCTURE_MAX);
+		transform[TRANSFORM_STRUCTURE_TYPE] = 0;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_METHOD] = trigger;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] = trigger_value;
+		transform[TRANSFORM_STRUCTURE_PROPERTY] = TRANSFORM_MAX_SPEED;
+		transform[TRANSFORM_STRUCTURE_VALUE] = max_speed;
+		bullet->transforms.append(transform);
+	}
+
+	if (w_vel != NO_CHANGE) {
+		Array transform = Array();
+		transform.resize(TRANSFORM_STRUCTURE_MAX);
+		transform[TRANSFORM_STRUCTURE_TYPE] = 0;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_METHOD] = trigger;
+		transform[TRANSFORM_STRUCTURE_TRIGGER_VALUE] = trigger_value;
+		transform[TRANSFORM_STRUCTURE_PROPERTY] = TRANSFORM_WVEL;
+		transform[TRANSFORM_STRUCTURE_VALUE] = w_vel;
+		bullet->transforms.append(transform);
+	}
+	
+
+
+}
+
+
 
 PackedInt64Array BulletInterface::create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow) {
 	if (available_items > 0) {
@@ -2891,7 +3042,7 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 }
 
 
-Array BulletInterface::clear_bullets(Vector2 pos, double radius) {
+Array BulletInterface::clear_bullets(Vector2 pos, double radius, bool ignore_pierce) {
 	Array to_return = Array();
 
 	// Bullets
@@ -2909,7 +3060,27 @@ Array BulletInterface::clear_bullets(Vector2 pos, double radius) {
 			bullet_id.set(BULLET_ID_POOL, BULLETS_POOL);
 			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
 			
-			if (!bullet->pierce) bullet->lifespan = -INFINITY;
+			if (!bullet->pierce || ignore_pierce) bullet->lifespan = -INFINITY;
+			((Array)(to_return)).append(bullet_id);
+		}
+	}
+
+	// Lasers TODO proper
+	for (int i = total_lasers - 1; i >= available_lasers; --i) {
+		Bullet* bullet = laser_pool[i];
+		
+		double b = bullet->scale * bullet->hitbox_scale;
+		double b2 = b * b;
+		double dist_sq = (bullet->position - pos).length_squared();
+
+		if (dist_sq <= radius * radius + 2.0 * radius * b + b2) {
+			PackedInt64Array bullet_id = PackedInt64Array();
+			bullet_id.resize(3);
+			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
+			bullet_id.set(BULLET_ID_POOL, LASERS_POOL);
+			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
+			
+			if (!bullet->pierce || ignore_pierce) bullet->lifespan = -INFINITY;
 			((Array)(to_return)).append(bullet_id);
 		}
 	}
@@ -3023,6 +3194,42 @@ Array BulletInterface::get_enemies_in_range(Vector2 pos, float radius) {
 }
 
 
+bool BulletInterface::is_valid(PackedInt64Array id) {
+	AbstractPoolItem **pool;
+	int *persistent_index;
+	switch (id[BULLET_ID_POOL]) {
+		case BULLETS_POOL:
+			pool = (AbstractPoolItem**)bullet_pool;
+			persistent_index = persistent_bullet_index;
+			break;
+		case SHOTS_POOL:
+			pool = (AbstractPoolItem**)shot_pool;
+			persistent_index = persistent_shot_index;
+			break;
+		case ITEMS_POOL:
+			pool = (AbstractPoolItem**)item_pool;
+			persistent_index = persistent_item_index;
+			break;
+		case LASERS_POOL:
+			pool = (AbstractPoolItem**)laser_pool;
+			persistent_index = persistent_laser_index;
+			break;
+		case CURVE_LASERS_POOL:
+			pool = (AbstractPoolItem**)curve_laser_pool;
+			persistent_index = persistent_curve_laser_index;
+			break;
+		case ENEMIES_POOL:
+			pool = (AbstractPoolItem**)enemy_pool;
+			persistent_index = persistent_enemy_index;
+			break;
+		default:
+			return false;
+	}
+	int index = id[BULLET_ID_INDEX];
+	int cycle = id[BULLET_ID_CYCLE];
+	
+	return (pool[persistent_index[index]]->cycle == cycle);
+}
 
 // --------------------
 
@@ -3591,6 +3798,39 @@ void BulletInterface::set_pierce(PackedInt64Array bullet_id, bool pierce) {
 }
 
 
+int BulletInterface::get_layer(PackedInt64Array bullet_id) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->layer;
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			return bullet->layer;
+		}
+	}
+	return -1;
+
+}
+void BulletInterface::set_layer(PackedInt64Array bullet_id, int layer) {
+	if (bullet_id[BULLET_ID_POOL] == BULLETS_POOL) {
+		Bullet* bullet = bullet_pool[persistent_bullet_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->layer = layer;
+			rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
+		}
+	} else if (bullet_id[BULLET_ID_POOL] == SHOTS_POOL) {
+		Bullet* bullet = shot_pool[persistent_shot_index[bullet_id[BULLET_ID_INDEX]]];
+		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+			bullet->layer = layer;
+			rendering_server->canvas_item_set_draw_index(bullet->item_rid, (bullet->layer << 24) + bullet->draw_index);
+		}
+	}
+
+}
+
+
 int BulletInterface::get_item_type(PackedInt64Array item_id) {
 	if (item_id[BULLET_ID_POOL] != ITEMS_POOL) return - 1;
 	Item* item = item_pool[persistent_item_index[item_id[BULLET_ID_INDEX]]];
@@ -3608,6 +3848,8 @@ void BulletInterface::set_item_magnet(PackedInt64Array item_id, Node2D* target) 
 		item->is_magneted = true;
 	}
 }
+
+
 
 
 void BulletInterface::skip_fade(PackedInt64Array bullet_id) {
@@ -3664,7 +3906,6 @@ void BulletInterface::set_spin(PackedInt64Array bullet_id, double spin) {
 		}
 	}
 }
-
 
 
 double BulletInterface::get_rotation(PackedInt64Array bullet_id) {	

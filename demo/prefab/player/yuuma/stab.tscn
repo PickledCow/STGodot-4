@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddhtn1gbhiv8a"]
+
+[ext_resource type="Script" uid="uid://dy6ib2nflm6pn" path="res://prefab/player/yuuma/slash.gd" id="1_7uu2l"]
+[ext_resource type="Texture2D" uid="uid://b1mtk4femnw7e" path="res://prefab/player/yuuma/stab.png" id="2_m37wo"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_7uu2l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -1.5707964
+texture = ExtResource("2_m37wo")
+hframes = 2
+vframes = 4

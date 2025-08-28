@@ -114,6 +114,7 @@ func _pre_process(_time_scale: float) -> void:
 			SFX.play("charge_long")
 			Bullets.set_time_scale(1.0 / 3.0)
 			System.time_scale = 1.0 / 3.0
+			#Engine.time_scale = 1.0 / 3.0
 			$Suck.emitting = true
 			$Suck.position = Vector2()
 		
@@ -122,6 +123,7 @@ func _pre_process(_time_scale: float) -> void:
 			SFX.play("explode")
 			Bullets.set_time_scale(1.0)
 			System.time_scale = 1.0
+			#Engine.time_scale = 1.0
 			position = Vector2(500 + lr2 * 400, 500)
 			lr2 *= -1.0
 			
@@ -136,6 +138,7 @@ func _pre_process(_time_scale: float) -> void:
 				var star : Enemy = impact_star.instantiate()
 				star.position = Vector2(500 - lr2 * 400, y)
 				star.lifespan = 180
+				star.ability = Player.PLAYER_ABILITY.SWORD
 				get_parent().add_child(star)
 
 		# Pop
@@ -169,3 +172,4 @@ func _pre_process(_time_scale: float) -> void:
 func _post_death():
 	System.time_scale = 1.0
 	Bullets.set_time_scale(1.0)
+	#Engine.time_scale = 1.0

@@ -7,11 +7,11 @@ var ice2 : PackedFloat64Array
 
 var hand_offset := Vector2(-32, -128)
 
-var ice_rate : Array[int] = [12, 9, 5, 4, 3]
+var ice_rate : Array[int] = [12, 9, 7, 6, 3]
 var ice_speeds : Array[float] = [5.0, 6.0, 7.0, 8.0, 8.5]
 var ice_sway : Array[float] = [24.0, 16.0, 14.0, 12.0, 12.0]
 var snowman_densities : Array[float] = [45.0, 60.0, 70.0, 80.0, 100.0]
-var snowman_spawn_rate : Array[int] = [180, 160, 140, 120, 95]
+var snowman_spawn_rate : Array[int] = [150, 140, 130, 120, 95]
 var snowman_speeds : Array[float] = [2.25, 2.5, 2.75, 3.0, 3.25]
 
 func _post_ready() -> void:
@@ -54,11 +54,11 @@ func _post_process(_time_scale: float) -> void:
 		if t % (snowman_spawn_rate[difficulty] * 2) == snowman_spawn_rate[difficulty]:
 			#SFX.play("warning")
 			
-			var x_min : float = max(200, min(position.x, System.player.position.x) - 100.0)
-			var x_max : float = min(800, max(position.x, System.player.position.x) + 100.0)
+			
+			var srl : float = 1.0 if randf() > 0.5 else -1.0
 			
 			var snowman : Enemy = snowmen.instantiate()
-			snowman.position = Vector2(randf_range(x_min, x_max), -150)
+			snowman.position = Vector2(position.x + srl * randf_range(100, 150), -150)
 			snowman.velocity = Vector2(0.0, snowman_speeds[difficulty])
 			snowman.density = snowman_densities[difficulty]
 			@warning_ignore("integer_division")
@@ -71,7 +71,7 @@ func _post_process(_time_scale: float) -> void:
 			get_parent().add_child(snowman)
 		
 		if t > 0 and t % 600 == 0:
-			var min_x : float = max(300, position.x - 150)
-			var max_x : float = min(700, position.x + 150)
+			var min_x : float = max(350, position.x - 150)
+			var max_x : float = min(750, position.x + 150)
 			set_destination(Vector2(randf_range(min_x, max_x), 300), 60)
 		

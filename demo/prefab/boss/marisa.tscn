@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b71nk1ve3jgbl" path="res://prefab/boss/marisa.gd" id="1_1ejk6"]
 [ext_resource type="Texture2D" uid="uid://b8u02krmiwmff" path="res://prefab/player/default/items/sprites/marisa_laser.png" id="2_ebafm"]
-[ext_resource type="Texture2D" uid="uid://ca4ohsw8yf6ve" path="res://icon.svg" id="2_un2fp"]
+[ext_resource type="Texture2D" uid="uid://dmq3c1fxvll4b" path="res://prefab/boss/marisa.png" id="3_un2fp"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iwwjq"]
 blend_mode = 1
@@ -14,8 +14,7 @@ attack_name_list = Array[String](["Love Sign 「Electrifying Spark」"])
 boss_name = "Marisa"
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
-star_damage_multiplier = 1.25
-max_health = 1250.0
+max_health = 1000.0
 
 [node name="aim" type="Sprite2D" parent="."]
 visible = false
@@ -28,4 +27,5 @@ offset = Vector2(0, -32)
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = -2
-texture = ExtResource("2_un2fp")
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_un2fp")

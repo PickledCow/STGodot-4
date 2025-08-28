@@ -23,6 +23,6 @@ func _post_process(_time_scale: float) -> void:
 		position_trail[0] = targ_position
 		
 		position = position_trail[4]
-	Bullets.clear_bullets(position, hitbox_radius * 2.0)
+	Bullets.clear_bullets(position, hitbox_radius * 2.0, false)
 	
 	rotation += 0.05

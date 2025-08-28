@@ -1,0 +1,547 @@
+[gd_scene load_steps=13 format=3 uid="uid://clnim2rkdromb"]
+
+[ext_resource type="Theme" uid="uid://c21stjg82tnn7" path="res://scenes/mainmenu.tres" id="1_2iy26"]
+[ext_resource type="Script" uid="uid://blrxooiwlvj1n" path="res://scenes/options.gd" id="1_kv8mn"]
+[ext_resource type="Texture2D" uid="uid://7xiyxnwalqbr" path="res://prefab/player/yuuma/trail star.png" id="2_kv8mn"]
+[ext_resource type="FontFile" uid="uid://b422bvlb7wrgm" path="res://fonts/BRLNSR.TTF" id="3_1sggn"]
+
+[sub_resource type="Shader" id="Shader_kv8mn"]
+code = "shader_type canvas_item;
+
+uniform vec4 left_color : source_color;
+uniform vec4 right_color : source_color; 
+
+uniform float progress = 0.0;
+
+void fragment() {
+	vec4 c = COLOR;
+	if (c.r > 0.9) {
+		c.rgb = left_color.rgb + (right_color.rgb - left_color.rgb) * UV.x * progress;
+	}
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kv8mn"]
+shader = SubResource("Shader_kv8mn")
+shader_parameter/left_color = Color(0, 0.41414165, 1, 1)
+shader_parameter/right_color = Color(0.49609375, 0.92011225, 1, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uui5l"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.4492039, 0.4492039, 0.4492039, 0.35000002)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hago"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+corner_detail = 6
+
+[sub_resource type="Shader" id="Shader_egg54"]
+code = "shader_type canvas_item;
+
+uniform vec4 left_color : source_color;
+uniform vec4 right_color : source_color; 
+
+uniform float progress = 0.0;
+
+void fragment() {
+	vec4 c = COLOR;
+	if (c.r > 0.9) {
+		c.rgb = left_color.rgb + (right_color.rgb - left_color.rgb) * UV.x * progress;
+	}
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1sggn"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0, 1, 0.5078125, 1)
+shader_parameter/right_color = Color(0.4980392, 1, 0.7058823, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e6vpq"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0.59375, 0, 1, 1)
+shader_parameter/right_color = Color(1, 0.4980392, 0.9098039, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o7i7e"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(1, 0.1875, 0, 1)
+shader_parameter/right_color = Color(1, 0.90686035, 0.1484375, 1)
+shader_parameter/progress = 1.0
+
+[node name="Options" type="MarginContainer"]
+custom_minimum_size = Vector2(1000, 1080)
+offset_right = 1000.0
+offset_bottom = 1080.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_kv8mn")
+star_paths = Array[NodePath]([NodePath("VBoxContainer/Master/SelectionContainer/Selection"), NodePath("VBoxContainer/Music/SelectionContainer/Selection"), NodePath("VBoxContainer/SFX/SelectionContainer/Selection"), NodePath("VBoxContainer/Windows/Windowed/SelectionContainer/Selection"), NodePath("VBoxContainer/Windows/Borderless/SelectionContainer/Selection"), NodePath("VBoxContainer/Windows/Fullscreen/SelectionContainer/Selection"), NodePath("VBoxContainer/Scale/SelectionContainer/Selection"), NodePath("VBoxContainer/Exit/SelectionContainer/Selection")])
+meter_paths = Array[NodePath]([NodePath("VBoxContainer/Master/HBoxContainer/ProgressBar"), NodePath("VBoxContainer/Music/HBoxContainer/ProgressBar"), NodePath("VBoxContainer/SFX/HBoxContainer/ProgressBar"), NodePath("VBoxContainer/Scale/HBoxContainer/ProgressBar")])
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Heading" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 72
+text = "Options"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VolumeHeading" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+text = "Volume"
+
+[node name="Master" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Master"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Master/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Master/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Master"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="VBoxContainer/Master/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 56
+text = "Master"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Master/HBoxContainer"]
+material = SubResource("ShaderMaterial_kv8mn")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_uui5l")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4hago")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Percent" type="Label" parent="VBoxContainer/Master/HBoxContainer/ProgressBar"]
+layout_mode = 0
+offset_left = 620.0
+offset_top = -1.0
+offset_right = 715.99994
+offset_bottom = 41.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_1sggn")
+theme_override_font_sizes/font_size = 36
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Music" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Music"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Music/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Music/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Music"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="VBoxContainer/Music/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 56
+text = "Music"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Music/HBoxContainer"]
+material = SubResource("ShaderMaterial_1sggn")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_uui5l")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4hago")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Percent" type="Label" parent="VBoxContainer/Music/HBoxContainer/ProgressBar"]
+layout_mode = 0
+offset_left = 620.0
+offset_top = -1.0
+offset_right = 715.99994
+offset_bottom = 41.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_1sggn")
+theme_override_font_sizes/font_size = 36
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SFX" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/SFX"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/SFX/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/SFX/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SFX"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="VBoxContainer/SFX/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 56
+text = "SFX"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/SFX/HBoxContainer"]
+material = SubResource("ShaderMaterial_e6vpq")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_uui5l")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4hago")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Percent" type="Label" parent="VBoxContainer/SFX/HBoxContainer/ProgressBar"]
+layout_mode = 0
+offset_left = 620.0
+offset_top = -1.0
+offset_right = 715.99994
+offset_bottom = 41.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_1sggn")
+theme_override_font_sizes/font_size = 36
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="WindowsHeading" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+text = "Window Mode"
+
+[node name="Windows" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="Windowed" type="HBoxContainer" parent="VBoxContainer/Windows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Windows/Windowed"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Windows/Windowed/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Windows/Windowed/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="VBoxContainer/Windows/Windowed"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 52
+text = "Windowed"
+
+[node name="Borderless" type="HBoxContainer" parent="VBoxContainer/Windows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Windows/Borderless"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Windows/Borderless/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Windows/Borderless/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="VBoxContainer/Windows/Borderless"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 52
+text = "Borderless"
+
+[node name="Fullscreen" type="HBoxContainer" parent="VBoxContainer/Windows"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Windows/Fullscreen"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Windows/Fullscreen/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Windows/Fullscreen/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="VBoxContainer/Windows/Fullscreen"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 52
+text = "Fullscreen"
+
+[node name="HSeparator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BGHeading" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+text = "Background Performance"
+
+[node name="Scale" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Scale"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Scale/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Scale/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Scale"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="VBoxContainer/Scale/HBoxContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+theme_override_font_sizes/font_size = 56
+text = "Scale"
+
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/Scale/HBoxContainer"]
+material = SubResource("ShaderMaterial_o7i7e")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_uui5l")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4hago")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Percent" type="Label" parent="VBoxContainer/Scale/HBoxContainer/ProgressBar"]
+layout_mode = 0
+offset_left = 620.0
+offset_top = -1.0
+offset_right = 715.99994
+offset_bottom = 41.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("3_1sggn")
+theme_override_font_sizes/font_size = 36
+text = "1 / 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Exit" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SelectionContainer" type="Control" parent="VBoxContainer/Exit"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="VBoxContainer/Exit/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="VBoxContainer/Exit/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("2_kv8mn")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Exit"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme = ExtResource("1_2iy26")
+text = "Exit"

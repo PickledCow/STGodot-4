@@ -1,0 +1,2271 @@
+[gd_scene load_steps=57 format=3 uid="uid://dq1spnjfg1phn"]
+
+[ext_resource type="Texture2D" uid="uid://ce4a8eagwdg7c" path="res://system/ui/ui.png" id="1_3vvtq"]
+[ext_resource type="Texture2D" uid="uid://cv40m3thjywhq" path="res://system/ui/logo.png" id="1_5mbse"]
+[ext_resource type="Script" uid="uid://4lomat75jns" path="res://scenes/mainmenu.gd" id="1_7yvfd"]
+[ext_resource type="Theme" uid="uid://c21stjg82tnn7" path="res://scenes/mainmenu.tres" id="2_natt5"]
+[ext_resource type="Texture2D" uid="uid://7xiyxnwalqbr" path="res://prefab/player/yuuma/trail star.png" id="3_s5g8n"]
+[ext_resource type="Texture2D" uid="uid://cxmt88irmyvkw" path="res://prefab/boss/sanae.png" id="5_s5g8n"]
+[ext_resource type="AudioStream" uid="uid://bh2e06y6gky64" path="res://bgm/Yuuma.ogg" id="7_dfy5j"]
+[ext_resource type="FontFile" uid="uid://bnlac8fhkrxqe" path="res://fonts/REVUE.ttf" id="8_85riq"]
+[ext_resource type="PackedScene" uid="uid://clnim2rkdromb" path="res://scenes/options.tscn" id="8_wf3n4"]
+[ext_resource type="Texture2D" uid="uid://d4ir4kmrsvk2e" path="res://system/vfx/cherry.png" id="10_h73c4"]
+[ext_resource type="Texture2D" uid="uid://odofre74l528" path="res://system/vfx/abilityicons.png" id="11_uui5l"]
+
+[sub_resource type="Animation" id="Animation_dfy5j"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitContainer/Character:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1000, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Splash/Darken:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.33)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Splash/LogoSpin:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(448, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Splash/LogoSpin:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Splash/LogoSpin:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Splash/LogoSpin:scale:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Splash/LogoSpin:scale:y")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(1.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Splash/Disclaimer:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("MainMenu:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("MainMenu:position:x")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Splash/LogoSpin/Shadow:self_modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Splash/LogoSpin:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/12/type = "bezier"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("PortraitContainer:position:x")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(964, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("PortraitContainer:modulate")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Difficulty/Row:visible")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("Difficulty/Row:modulate")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/16/type = "bezier"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("Difficulty:position:x")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("Options:modulate")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("Cherry:emitting")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("PortraitContainer/Character:z_index")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-5]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("Difficulty:modulate")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("Ability:modulate")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/22/type = "bezier"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("Difficulty:position:y")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.2, 0, 0.2, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/23/type = "bezier"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("Ability:position:y")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.2, 0, 0.2, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("Difficulty/MarginContainer:modulate")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("Music:volume_db")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("Music:playing")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_prb5i"]
+resource_name = "ability2start"
+length = 0.5
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ability:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.15, 0, 256, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ability:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Music:volume_db")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -80.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Music:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"change_to_game"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_uui5l"]
+resource_name = "difficulty2ability"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Difficulty:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ability:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.15, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Difficulty:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.2, 0, 0.1, 0, 128, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.25)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Ability:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-128, -0.2, 0, 0, 0, 0, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0.15, 0.4)
+}
+
+[sub_resource type="Animation" id="Animation_7yvfd"]
+resource_name = "intro"
+length = 2.0
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitContainer/Character:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(1000, -0.25, 0, 0, 0, 0, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(1, 2)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Splash/Darken:color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0.33), Color(0, 0, 0, 0)]
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Splash/LogoSpin:position:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(448, -0.25, 0, 0.25, 0, -9, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Splash/LogoSpin:position:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(128, -0.25, 0, 0.25, 0, 52, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Splash/LogoSpin:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, -6.346, -0.19999999, 0.48513985, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Splash/LogoSpin:scale:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1.5, -0.25, 0, 0.25, 0, 1, -0.16666667, 0.25, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/6/type = "bezier"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Splash/LogoSpin:scale:y")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(1.5, -0.25, 0, 0.25, 0, 1, -0.16666667, 0.25, 0, 0),
+"times": PackedFloat32Array(0, 1)
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Splash/Disclaimer:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("MainMenu:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/9/type = "bezier"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("MainMenu:position:x")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-128, -0.25, 0, 0, 0, 0, -0.29999995, -1.0449249, 0, 0),
+"times": PackedFloat32Array(1.0056692, 1.5)
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Splash/LogoSpin/Shadow:self_modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0.8, 1.0016303),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/11/type = "method"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath(".")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"start_sway"
+}]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Difficulty/Row:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Cherry:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("PortraitContainer/Character:z_index")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-5]
+}
+
+[sub_resource type="Animation" id="Animation_4hago"]
+resource_name = "main2difficulty"
+length = 0.35
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitContainer/Character:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Splash/LogoSpin:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-9, -0.25, 0, 0.1, 0, -256, 0, -1.5, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainMenu:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainMenu:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.29999995, -1.0449249, 0.1, 0, -128, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Splash/LogoSpin:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PortraitContainer:position:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(964, -0.25, 0, 0.1, 0, 1476, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PortraitContainer:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Splash/Darken:color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0.32941177)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Difficulty/Row:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Difficulty/Row:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/10/type = "bezier"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Difficulty:position:x")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(128, -0.25, 0, 0, 0, 0, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0.15, 0.35)
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Difficulty/MarginContainer:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_h73c4"]
+resource_name = "main2options"
+length = 0.25
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PortraitContainer/Character:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.5, 0, 0, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Splash/LogoSpin:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-9, -0.25, 0, 0.1, 0, -256, 0, -1.5, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MainMenu:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainMenu:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(0, -0.29999995, -1.0449249, 0.1, 0, -128, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Splash/LogoSpin:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("PortraitContainer:position:x")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(964, -0.25, 0, 0.1, 0, 1476, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2)
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("PortraitContainer:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Splash/Darken:color")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0.32941177)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Options:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0.1, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_85riq"]
+_data = {
+&"RESET": SubResource("Animation_dfy5j"),
+&"ability2start": SubResource("Animation_prb5i"),
+&"difficulty2ability": SubResource("Animation_uui5l"),
+&"intro": SubResource("Animation_7yvfd"),
+&"main2difficulty": SubResource("Animation_4hago"),
+&"main2options": SubResource("Animation_h73c4")
+}
+
+[sub_resource type="Animation" id="Animation_wf3n4"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Splash/LogoSpin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-6.283, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_85riq"]
+resource_name = "sway"
+length = 2.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Splash/LogoSpin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 2),
+"points": PackedFloat32Array(-6.346, -0.25, 0, 0.25, 0, -6.22, -0.25, 0, 0.25, 0, -6.346, -0.25, 0, 0, 0),
+"times": PackedFloat32Array(0, 1, 2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wf3n4"]
+_data = {
+&"RESET": SubResource("Animation_wf3n4"),
+&"sway": SubResource("Animation_85riq")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_uui5l"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4hago"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(960, -128, 0)
+emission_shape = 3
+emission_box_extents = Vector3(960, 1, 1)
+angle_min = 1.0728864e-05
+angle_max = 360.00003
+direction = Vector3(0, 1, 0)
+spread = 12.0
+initial_velocity_min = 128.0
+initial_velocity_max = 256.0
+radial_velocity_min = -60.000023
+radial_velocity_max = 59.999977
+gravity = Vector3(0, 0, 0)
+scale_min = 0.14999999
+scale_max = 0.29999998
+color = Color(1, 1, 1, 0.7529412)
+
+[sub_resource type="Animation" id="Animation_kait0"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-576, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Easy:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Normal:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Hard:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Lunatic:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Overdrive:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_gjjcl"]
+resource_name = "e2n"
+length = 0.3
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(448, -0.25, 0, 0.1, 0, -576, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Easy:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Normal:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nkpmc"]
+resource_name = "h2l"
+length = 0.3
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-1600, -0.25, 0, 0.1, 0, -2624, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hard:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Lunatic:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fsdjo"]
+resource_name = "l2o"
+length = 0.3
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-2624, -0.25, 0, 0.1, 0, -3648, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Lunatic:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Overdrive:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6pj40"]
+resource_name = "n2h"
+length = 0.3
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-576, -0.25, 0, 0.1, 0, -1600, -0.1, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.3)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Normal:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.5, 0.5, 0.5, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hard:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.5, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6pj40"]
+_data = {
+&"RESET": SubResource("Animation_kait0"),
+&"e2n": SubResource("Animation_gjjcl"),
+&"h2l": SubResource("Animation_nkpmc"),
+&"l2o": SubResource("Animation_fsdjo"),
+&"n2h": SubResource("Animation_6pj40")
+}
+
+[sub_resource type="Gradient" id="Gradient_4hago"]
+offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gjjcl"]
+gradient = SubResource("Gradient_4hago")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kait0"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pj40"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nkpmc"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fsdjo"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prb5i"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwyuh"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6huh"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hn6ym"]
+atlas = ExtResource("11_uui5l")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="Shader" id="Shader_egg54"]
+code = "shader_type canvas_item;
+
+uniform vec4 left_color : source_color;
+uniform vec4 right_color : source_color; 
+
+uniform float progress = 0.0;
+
+void fragment() {
+	vec4 c = COLOR;
+	if (c.r > 0.9) {
+		c.rgb = left_color.rgb + (right_color.rgb - left_color.rgb) * UV.x * progress;
+	}
+	COLOR = c;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uui5l"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(1, 0.1882353, 0, 1)
+shader_parameter/right_color = Color(1, 0.90588236, 0.14901961, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4hago"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.4492039, 0.4492039, 0.4492039, 0.35000002)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gjjcl"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+corner_detail = 6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kait0"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0, 0.41568628, 1, 1)
+shader_parameter/right_color = Color(0.49803922, 0.92156863, 1, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6pj40"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0, 1, 0.5058824, 1)
+shader_parameter/right_color = Color(0.49803922, 1, 0.7058824, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkpmc"]
+shader = SubResource("Shader_egg54")
+shader_parameter/left_color = Color(0.5921569, 0, 1, 1)
+shader_parameter/right_color = Color(1, 0.49803922, 0.9098039, 1)
+shader_parameter/progress = 1.0
+
+[sub_resource type="Animation" id="Animation_18cd8"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-198, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_a5e1i"]
+resource_name = "bomb2sniper"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-2178, -0.25, 0, 0.05, 0, -2574, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_6643n"]
+resource_name = "cutter2freeze"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-594, -0.25, 0, 0.05, 0, -990, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_5diu1"]
+resource_name = "freeze2parasol"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-990, -0.25, 0, 0.05, 0, -1386, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_gj5y3"]
+resource_name = "normal2cutter"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-198, -0.25, 0, 0.05, 0, -594, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_c50wd"]
+resource_name = "parasol2spark"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-1386, -0.25, 0, 0.05, 0, -1782, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_f107f"]
+resource_name = "sniper2sword"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-2574, -0.25, 0, 0.05, 0, -2970, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_kcrt3"]
+resource_name = "spark2bomb"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-1782, -0.25, 0, 0.05, 0, -2178, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="Animation" id="Animation_gr43c"]
+resource_name = "sword2normal"
+length = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-2970, -0.25, 0, 0.05, 0, -3366, -0.05, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.1)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jqs8n"]
+_data = {
+&"RESET": SubResource("Animation_18cd8"),
+&"bomb2sniper": SubResource("Animation_a5e1i"),
+&"cutter2freeze": SubResource("Animation_6643n"),
+&"freeze2parasol": SubResource("Animation_5diu1"),
+&"normal2cutter": SubResource("Animation_gj5y3"),
+&"parasol2spark": SubResource("Animation_c50wd"),
+&"sniper2sword": SubResource("Animation_f107f"),
+&"spark2bomb": SubResource("Animation_kcrt3"),
+&"sword2normal": SubResource("Animation_gr43c")
+}
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1924.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_7yvfd")
+star_paths = Array[NodePath]([NodePath("MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Start/SelectionContainer/Selection"), NodePath("MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Options/SelectionContainer/Selection"), NodePath("MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Exit/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Master/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Music/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/SFX/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Windows/Windowed/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Windows/Borderless/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Windows/Fullscreen/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Scale/SelectionContainer/Selection"), NodePath("Options/VBoxContainer/Exit/SelectionContainer/Selection")])
+
+[node name="MenuAnimator" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_85riq")
+}
+
+[node name="LogoSwayAnimator" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wf3n4")
+}
+speed_scale = 0.25
+
+[node name="Background" type="TextureRect" parent="."]
+z_index = -10
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_3vvtq")
+expand_mode = 3
+
+[node name="Cherry" type="GPUParticles2D" parent="."]
+visible = false
+z_index = -4
+material = SubResource("CanvasItemMaterial_uui5l")
+emitting = false
+amount = 96
+texture = ExtResource("10_h73c4")
+lifetime = 10.0
+process_material = SubResource("ParticleProcessMaterial_4hago")
+
+[node name="Splash" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Darken" type="ColorRect" parent="Splash"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.33)
+
+[node name="LogoSpin" type="TextureRect" parent="Splash"]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 128.0
+offset_right = 1472.0
+offset_bottom = 640.0
+rotation = -6.283
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(512, 256)
+texture = ExtResource("1_5mbse")
+
+[node name="Shadow" type="TextureRect" parent="Splash/LogoSpin"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 1040.0
+offset_bottom = 528.0
+pivot_offset = Vector2(512, 256)
+texture = ExtResource("1_5mbse")
+
+[node name="Disclaimer" type="Label" parent="Splash"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 800.0
+offset_right = 1660.0
+offset_bottom = 1000.0
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 36
+text = "This is a non-official fanwork based on the Touhou Project by ZUN/Team Shanghai Alice.
+All events in this game are non-canon to the series and should not be confused with reality.
+
+Girls are now preparing, please wait warmly..."
+horizontal_alignment = 1
+
+[node name="MainMenu" type="MarginContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 960.0
+offset_bottom = 1080.0
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+custom_minimum_size = Vector2(960, 0)
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="MainMenu/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+z_index = -5
+layout_mode = 2
+texture = ExtResource("1_5mbse")
+expand_mode = 5
+
+[node name="OptionsMargin" type="MarginContainer" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 128
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="OptionsContainer" type="VBoxContainer" parent="MainMenu/VBoxContainer/OptionsMargin"]
+layout_mode = 2
+alignment = 1
+
+[node name="Start" type="HBoxContainer" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SelectionContainer" type="Control" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Start"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Start/SelectionContainer"]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Start/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Start"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Start"
+
+[node name="Options" type="HBoxContainer" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SelectionContainer" type="Control" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Options"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Options/SelectionContainer"]
+visible = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Options/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Options"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Options"
+
+[node name="Exit" type="HBoxContainer" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SelectionContainer" type="Control" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Exit"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+
+[node name="Selection" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Exit/SelectionContainer"]
+visible = false
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 72.0
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Shadow" type="TextureRect" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Exit/SelectionContainer/Selection"]
+modulate = Color(0, 0, 0, 0.25)
+show_behind_parent = true
+layout_mode = 0
+offset_top = 1.1444092e-05
+offset_right = 72.0
+offset_bottom = 72.000015
+scale = Vector2(1.1, 1.1)
+pivot_offset = Vector2(36, 38)
+texture = ExtResource("3_s5g8n")
+expand_mode = 2
+
+[node name="Text" type="Label" parent="MainMenu/VBoxContainer/OptionsMargin/OptionsContainer/Exit"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Exit"
+
+[node name="PortraitContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 964.0
+offset_right = 964.0
+offset_bottom = 1080.0
+
+[node name="Character" type="TextureRect" parent="PortraitContainer"]
+z_index = -5
+layout_mode = 0
+offset_left = 1000.0
+offset_top = 60.0
+offset_right = 1960.006
+offset_bottom = 1020.006
+texture = ExtResource("5_s5g8n")
+expand_mode = 5
+
+[node name="Shadow" type="TextureRect" parent="PortraitContainer/Character"]
+modulate = Color(0, 0, 0, 0.2)
+show_behind_parent = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 976.0
+offset_bottom = 976.0
+texture = ExtResource("5_s5g8n")
+expand_mode = 5
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_dfy5j")
+autoplay = true
+bus = &"Music"
+
+[node name="Options" parent="." instance=ExtResource("8_wf3n4")]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 460.0
+offset_right = 1460.0
+
+[node name="Difficulty" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 128.0
+offset_right = 128.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Difficulty"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Label" type="Label" parent="Difficulty/MarginContainer"]
+custom_minimum_size = Vector2(1920, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 72
+text = "Choose your difficulty"
+horizontal_alignment = 1
+
+[node name="Row" type="HBoxContainer" parent="Difficulty"]
+visible = false
+custom_minimum_size = Vector2(5120, 512)
+layout_mode = 0
+offset_left = -576.0
+offset_top = 284.0
+offset_right = 4544.0
+offset_bottom = 796.0
+theme_override_constants/separation = 0
+
+[node name="Easy" type="VBoxContainer" parent="Difficulty/Row"]
+modulate = Color(0.5, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Difficulty/Row/Easy"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+theme_override_colors/font_outline_color = Color(0, 0.5647059, 0.17254902, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 64
+theme_override_constants/shadow_outline_size = 72
+theme_override_fonts/font = ExtResource("8_85riq")
+theme_override_font_sizes/font_size = 192
+text = "EASY"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Difficulty/Row/Easy"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 42
+text = "A difficulty where you can relax and have fun.
+Great for beginners to get the grasp of the genre."
+horizontal_alignment = 1
+
+[node name="Normal" type="VBoxContainer" parent="Difficulty/Row"]
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Difficulty/Row/Normal"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+theme_override_colors/font_outline_color = Color(0, 0.32941177, 0.69803923, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 64
+theme_override_constants/shadow_outline_size = 72
+theme_override_fonts/font = ExtResource("8_85riq")
+theme_override_font_sizes/font_size = 192
+text = "NORMAL"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Difficulty/Row/Normal"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 42
+text = "A difficulty a bit of resistance.
+Recommended for those who's played these games before."
+horizontal_alignment = 1
+
+[node name="Hard" type="VBoxContainer" parent="Difficulty/Row"]
+modulate = Color(0.5, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Difficulty/Row/Hard"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+theme_override_colors/font_outline_color = Color(0, 0.03529412, 0.77254903, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 64
+theme_override_constants/shadow_outline_size = 72
+theme_override_fonts/font = ExtResource("8_85riq")
+theme_override_font_sizes/font_size = 192
+text = "HARD"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Difficulty/Row/Hard"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 42
+text = "A difficulty with some challenge.
+For those who want that extra bit of spice."
+horizontal_alignment = 1
+
+[node name="Lunatic" type="VBoxContainer" parent="Difficulty/Row"]
+modulate = Color(0.5, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Difficulty/Row/Lunatic"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+theme_override_colors/font_outline_color = Color(0.5921569, 0, 0.627451, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 64
+theme_override_constants/shadow_outline_size = 72
+theme_override_fonts/font = ExtResource("8_85riq")
+theme_override_font_sizes/font_size = 192
+text = "LUNATIC"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Difficulty/Row/Lunatic"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 42
+text = "A difficulty that pushes the game to the extreme.
+Only play if you like to suffer."
+horizontal_alignment = 1
+
+[node name="Overdrive" type="VBoxContainer" parent="Difficulty/Row"]
+modulate = Color(0.5, 0.5, 0.5, 1)
+custom_minimum_size = Vector2(1024, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Difficulty" type="Label" parent="Difficulty/Row/Overdrive"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+theme_override_colors/font_outline_color = Color(0.7411765, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_offset_y = 6
+theme_override_constants/outline_size = 64
+theme_override_constants/shadow_outline_size = 72
+theme_override_fonts/font = ExtResource("8_85riq")
+theme_override_font_sizes/font_size = 192
+text = "OVERDRIVE"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="Difficulty/Row/Overdrive"]
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 42
+text = "A difficulty for nobody.
+Do not play."
+horizontal_alignment = 1
+
+[node name="DifficultyChangeAnimator" type="AnimationPlayer" parent="Difficulty"]
+root_node = NodePath("../Row")
+libraries = {
+&"": SubResource("AnimationLibrary_6pj40")
+}
+
+[node name="Ability" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="PortraitContainer" type="Control" parent="Ability"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_left = 1476.0
+offset_right = 1476.0
+offset_bottom = 1080.0
+
+[node name="Character" type="TextureRect" parent="Ability/PortraitContainer"]
+layout_mode = 0
+offset_top = 60.0
+offset_right = 960.0048
+offset_bottom = 1020.0049
+texture = ExtResource("5_s5g8n")
+expand_mode = 5
+
+[node name="Shadow" type="TextureRect" parent="Ability/PortraitContainer/Character"]
+modulate = Color(0, 0, 0, 0.2)
+show_behind_parent = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 976.0
+offset_bottom = 976.0
+texture = ExtResource("5_s5g8n")
+expand_mode = 5
+
+[node name="BoxContainer" type="VBoxContainer" parent="Ability"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1101.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="Ability/BoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer2"]
+custom_minimum_size = Vector2(1920, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 72
+text = "Choose your starting ability"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Ability/BoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="AbilityMask" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+clip_children = 1
+custom_minimum_size = Vector2(768, 128)
+layout_mode = 2
+texture = SubResource("GradientTexture1D_gjjcl")
+
+[node name="Abilities" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 0
+offset_left = -198.0
+offset_right = 4126.0
+offset_bottom = 96.0
+theme_override_constants/separation = 32
+
+[node name="Sword2" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sword2"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_kait0")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sword2"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Sword"
+
+[node name="Normal" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Normal"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_6pj40")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Normal"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Normal"
+
+[node name="Cutter" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Cutter"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_nkpmc")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Cutter"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Cutter"
+
+[node name="Freeze" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Freeze"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_fsdjo")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Freeze"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Freeze"
+
+[node name="Parasol" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Parasol"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_prb5i")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Parasol"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Parasol"
+
+[node name="Spark" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Spark"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_xwyuh")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Spark"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Spark"
+
+[node name="Bomb" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Bomb"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_c6huh")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Bomb"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Bomb"
+
+[node name="Sniper" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sniper"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_hn6ym")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sniper"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Sniper"
+
+[node name="Sword" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sword"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_kait0")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Sword"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Sword"
+
+[node name="Normal2" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Normal2"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_6pj40")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Normal2"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Normal"
+
+[node name="Cutter2" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Cutter2"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_nkpmc")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AbilityMask/Abilities/Cutter2"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+text = "Cutter"
+
+[node name="DescriptionBoxMargin" type="MarginContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 16
+
+[node name="DescriptionBox" type="VBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Stats" type="VBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox"]
+layout_mode = 2
+
+[node name="Power" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Power"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 52
+text = "Power"
+
+[node name="ProgressBar" type="ProgressBar" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Power"]
+material = SubResource("ShaderMaterial_uui5l")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_4hago")
+theme_override_styles/fill = SubResource("StyleBoxFlat_gjjcl")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Range" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Range"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 52
+text = "Range"
+
+[node name="ProgressBar" type="ProgressBar" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Range"]
+material = SubResource("ShaderMaterial_kait0")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_4hago")
+theme_override_styles/fill = SubResource("StyleBoxFlat_gjjcl")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Firerate" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Firerate"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 52
+text = "Firerate"
+
+[node name="ProgressBar" type="ProgressBar" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Firerate"]
+material = SubResource("ShaderMaterial_6pj40")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_4hago")
+theme_override_styles/fill = SubResource("StyleBoxFlat_gjjcl")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="Difficulty" type="HBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Label" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Difficulty"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_font_sizes/font_size = 52
+text = "Ease"
+
+[node name="ProgressBar" type="ProgressBar" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/Stats/Difficulty"]
+material = SubResource("ShaderMaterial_nkpmc")
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_4hago")
+theme_override_styles/fill = SubResource("StyleBoxFlat_gjjcl")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false
+
+[node name="HSeparator" type="HSeparator" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Description" type="Label" parent="Ability/BoxContainer/MarginContainer/HBoxContainer/VBoxContainer/DescriptionBoxMargin/DescriptionBox/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+theme = ExtResource("2_natt5")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "Suck in enemies with [Z] and spit them back at the enemy with [Z].
+With something in your mouth, press [X] to swallow and take on their powers!
+When you have a different ability, press [C] to discard the ability.
+Recommended for a first playthrough."
+autowrap_mode = 3
+
+[node name="AbilitySwapAnimator" type="AnimationPlayer" parent="Ability"]
+libraries = {
+&"": SubResource("AnimationLibrary_jqs8n")
+}
+
+[connection signal="animation_finished" from="MenuAnimator" to="." method="_on_menu_animator_animation_finished"]
+[connection signal="animation_finished" from="Difficulty/DifficultyChangeAnimator" to="." method="_on_difficulty_change_animator_animation_finished"]

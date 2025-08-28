@@ -8,10 +8,15 @@ class_name GameSystem
 
 #enum ITEM_TYPE { LARGE_POWER, LIFE_FRAGMENT, LIFE, BOMB_FRAGMENT, BOMB, FULL_POWER, POWER, POINT, CLEAR, SIZE }
 enum ITEM_TYPE { STAR }
-enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY, SHOCK, SHOCK_SHIELD, SHARP }
+enum DAMAGE_TYPE { STAR, STAR_STRONG, SUCK, NORMAL, CRIT, CANOPY, SHOCK, SHOCK_SHIELD, SHARP, CHILL }
 enum DIFFICULTY { EASY, NORMAL, HARD, LUNATIC, OVERDRIVE }
 enum ATTACK_TYPE { NON, SPELL, TIMEOUT, SUPER, ULTRA }
 
+var player_starting_ability : Player.PLAYER_ABILITY
+
+var master_volume := 1.0
+var music_volume := 1.0
+var sfx_volume := 0.8
 
 @onready var bullet_constructor : BulletConstructor = $BulletConstructor
 
@@ -29,6 +34,12 @@ var boss_manager : BossManager
 @export var playfield_size := Vector2(1000, 1000)
 @export var enemy_active_rect := Rect2(Vector2(-256, -256), Vector2(1512, 1512))
 
+var game_scene = preload("res://Test.tscn")
+var main_menu_scene := preload("res://scenes/mainmenu.tscn")
+var credits_scene := preload("res://scenes/credits.tscn")
+
+var just_booted := true
+
 ## Current graze count.
 var graze := 0
 ## Current value of the point item.
@@ -40,8 +51,16 @@ var difficulty := DIFFICULTY.LUNATIC
 
 var time_scale : float = 1.0
 
+var bg_scale := 1.0
 var in_dialogue := true
 var clear_enemies := false
+
+var fade_quit := false
+
+func _ready() -> void:
+	set_master_volume(master_volume)
+	set_music_volume(music_volume)
+	set_sfx_volume(sfx_volume)
 
 #region Registration Functions
 
@@ -92,6 +111,20 @@ func shake_screen(intensity: float, duration: float):
 		root.shake_screen(intensity, duration)
 
 #endregion
+
+
+func set_master_volume(volume: float) -> void:
+	master_volume = volume
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Master"), volume)
+	
+func set_music_volume(volume: float) -> void:
+	music_volume = volume
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("Music"), volume)
+	
+func set_sfx_volume(volume: float) -> void:
+	sfx_volume = volume
+	AudioServer.set_bus_volume_linear(AudioServer.get_bus_index("SFX"), volume)
+
 
 
 #region Garbage

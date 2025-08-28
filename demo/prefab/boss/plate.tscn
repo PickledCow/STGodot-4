@@ -5,8 +5,8 @@
 
 [node name="Plate" type="Node2D"]
 script = ExtResource("1_y4a6t")
-hitbox_radius = 40.0
-hurtbox_radius = 32.0
+hitbox_radius = 32.0
+hurtbox_radius = 24.0
 star_damage_multiplier = 0.25
 max_health = 30.0
 ability = 1

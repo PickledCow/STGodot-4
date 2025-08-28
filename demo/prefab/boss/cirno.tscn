@@ -6,12 +6,12 @@
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_i6o34")
 attack_type_list = Array[int]([1])
-attack_name_list = Array[String](["Ice Sign 「Snowy Day In」 "])
+attack_name_list = Array[String](["Ice Sign 「Snowy Day Out」 "])
 boss_name = "Cirno"
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
-star_damage_multiplier = 1.5
-max_health = 1200.0
+star_damage_multiplier = 1.25
+max_health = 1000.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = -2

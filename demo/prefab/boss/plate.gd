@@ -41,7 +41,7 @@ func _post_process(_time_scale: float) -> void:
 		_on_death()
 
 func _post_death():
-	if (how_i_died != DEATH_TYPE.DESPAWNED and how_i_died != DEATH_TYPE.SUCKED) and not skip_shards and position.y < 1000.0:
+	if (how_i_died != DEATH_TYPE.DESPAWNED and how_i_died != DEATH_TYPE.SUCKED and how_i_died != DEATH_TYPE.FROZEN) and not skip_shards and position.y < 1000.0:
 		SFX.play("warning")
 		Bullets.create_bullet_b1(
 			position,

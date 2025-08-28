@@ -12,6 +12,8 @@ func shake_screen(intensity: float, duration: float):
 func _ready() -> void:
 	Bullets.init(self)
 	System.root = self
+	Engine.max_fps = 60
+	$BackgroundViewportContainer.stretch_shrink = System.bg_scale
 
 func _process(_delta: float) -> void:
 	if shake_time > 0.0:

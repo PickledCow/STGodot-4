@@ -11,9 +11,9 @@ config_version=5
 [application]
 
 config/name="STGodot-4"
-run/main_scene="res://Test.tscn"
+run/main_scene="uid://dq1spnjfg1phn"
 config/features=PackedStringArray("4.5", "Forward Plus")
-run/max_fps=60
+boot_splash/image="uid://c2yqalt44r1ww"
 config/icon="res://icon.svg"
 
 [autoload]
@@ -28,6 +28,8 @@ RNG="*res://system/rng.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
 

@@ -85,6 +85,28 @@ public:
 		WALLS_ALL 
 	};
 
+	enum TransformTrigger {
+		TRIGGER_TIME
+	};
+
+	enum TransformProperty {
+		TRANSFORM_SPEED,
+		TRANSFORM_ANGLE,
+		TRANSFORM_ACCEL,
+		TRANSFORM_MAX_SPEED,
+		TRANSFORM_WVEL,
+	};
+
+	enum TransformStructure {
+		TRANSFORM_STRUCTURE_TYPE,
+		TRANSFORM_STRUCTURE_TRIGGER_METHOD,
+		TRANSFORM_STRUCTURE_TRIGGER_VALUE,
+		TRANSFORM_STRUCTURE_PROPERTY,
+		TRANSFORM_STRUCTURE_VALUE,
+		TRANSFORM_STRUCTURE_MAX
+	};
+
+
 	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
 
 	enum POOLS { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL, LASERS_POOL, CURVE_LASERS_POOL };
@@ -93,6 +115,7 @@ public:
 	// enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 
 
+	bool mounted = false;
 
 	// Pools. The pools are accessed in reverse.
 	Bullet** bullet_pool;
@@ -258,6 +281,8 @@ public:
 	RID curve_lasers_add_canvas_item;
 	RID curve_lasers_mesh_item;
 	RID curve_lasers_add_mesh_item;
+
+	void unmount();
 
 	void _clear_rids();
 
@@ -486,11 +511,13 @@ public:
 	PackedInt64Array create_loose_laser(Vector2 pos, double speed, double angle, double length, double width, double start_margin, double end_margin, PackedFloat64Array laser_data, bool glow);
 	PackedInt64Array create_curve_laser(Vector2 pos, double speed, double angle, int length, double width, int start_margin, int end_margin, PackedFloat64Array laser_data, bool glow);
 
+	void add_bullet_transform_a2(PackedInt64Array bullet_id, int trigger, int trigger_value, double speed, double angle, double accel, double max_speed, double w_vel);
+
 	// bool spawn_bullet(Ref<BulletKit> kit, Dictionary properties);
 	// Variant obtain_bullet(Ref<BulletKit> kit);
 	// bool release_bullet(Variant id);
 
-	// bool is_bullet_valid(Variant id);
+	bool is_valid(PackedInt64Array id);
 	// bool is_kit_valid(Ref<BulletKit> kit);
 
 	// int get_available_bullets(Ref<BulletKit> kit);
@@ -514,7 +541,7 @@ public:
 	void magnet_all_items(Node2D* target);
 	// void magnet_all_kit(Ref<BasicItemKit> kit, Node2D* target);
 
-	Array clear_bullets(Vector2 pos, double radius);
+	Array clear_bullets(Vector2 pos, double radius, bool ignore_pierce);
 
 	PackedInt64Array create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow);
 	
@@ -532,6 +559,9 @@ public:
 	
 	int get_damage_type(PackedInt64Array bullet_id);
 	void set_damage_type(PackedInt64Array bullet_id, int damage_type);
+
+	int get_layer(PackedInt64Array bullet_id);
+	void set_layer(PackedInt64Array bullet_i, int layer);
 
 	void skip_fade(PackedInt64Array bullet_id);
 
@@ -656,7 +686,9 @@ VARIANT_ENUM_CAST(BulletInterface::BulletDataStructure);
 VARIANT_ENUM_CAST(BulletInterface::ItemDataStructure);
 VARIANT_ENUM_CAST(BulletInterface::LaserDataStructure);
 VARIANT_ENUM_CAST(BulletInterface::WallSides);
-VARIANT_ENUM_CAST(godot::TransformTriggers);
+// VARIANT_ENUM_CAST(godot::TransformTriggers);
 VARIANT_ENUM_CAST(BulletInterface::SheetOrientation);
+VARIANT_ENUM_CAST(BulletInterface::TransformProperty);
+VARIANT_ENUM_CAST(BulletInterface::TransformTrigger);
 
 #endif

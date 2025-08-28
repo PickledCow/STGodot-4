@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c87ndgxn2vij"]
+[gd_scene load_steps=51 format=3 uid="uid://c87ndgxn2vij"]
 
 [ext_resource type="Script" uid="uid://b7ovgjuf7m81f" path="res://system/sfx.gd" id="1_hs46b"]
 [ext_resource type="AudioStream" uid="uid://dlcclmrp7y24m" path="res://system/sfx/death.wav" id="2_pg0su"]
@@ -42,11 +42,20 @@
 [ext_resource type="AudioStream" uid="uid://cqbettiu8yh7c" path="res://system/sfx/plasma_shot_3.wav" id="39_f04u3"]
 [ext_resource type="AudioStream" uid="uid://cu4l1opbu5wk0" path="res://system/sfx/plasma_shock.wav" id="40_qdjtp"]
 [ext_resource type="AudioStream" uid="uid://cqvcpmhe8yfi" path="res://system/sfx/cutter.wav" id="41_f04u3"]
+[ext_resource type="AudioStream" uid="uid://b4q6pqowuwxcl" path="res://system/sfx/menu_select.wav" id="42_o0efl"]
+[ext_resource type="AudioStream" uid="uid://u17kd8nmgqin" path="res://system/sfx/menu_ok.wav" id="43_vy10f"]
+[ext_resource type="AudioStream" uid="uid://di0rahvw3bwco" path="res://system/sfx/menu_cancel.wav" id="44_q50q0"]
+[ext_resource type="AudioStream" uid="uid://dc418kp0rd1v1" path="res://system/sfx/parry.wav" id="45_vy10f"]
+[ext_resource type="AudioStream" uid="uid://c36giw5veyxcn" path="res://system/sfx/parry_success.wav" id="46_q50q0"]
+[ext_resource type="AudioStream" uid="uid://baynui234s5et" path="res://system/sfx/freeze.wav" id="47_vpwnb"]
+[ext_resource type="AudioStream" uid="uid://33y6mwxktqqn" path="res://system/sfx/ice_kick.wav" id="48_vr55b"]
+[ext_resource type="AudioStream" uid="uid://di3sy2pbj53ap" path="res://system/sfx/discard.wav" id="49_8f33b"]
 
 [node name="SFX" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_hs46b")
 sfx_bus = 2
-sfx_count = 40
+sfx_count = 48
 sfx_0/name = &"death"
 sfx_0/stream = ExtResource("2_pg0su")
 sfx_0/volume = -2.0
@@ -55,7 +64,7 @@ sfx_1/stream = ExtResource("3_ut8fh")
 sfx_1/volume = -10.0
 sfx_2/name = &"shoot1"
 sfx_2/stream = ExtResource("5_fycwg")
-sfx_2/volume = -12.0
+sfx_2/volume = -9.0
 sfx_3/name = &"item"
 sfx_3/stream = ExtResource("4_jk043")
 sfx_3/volume = 0.0
@@ -94,7 +103,7 @@ sfx_14/stream = ExtResource("16_b3s1o")
 sfx_14/volume = -5.0
 sfx_15/name = &"break"
 sfx_15/stream = ExtResource("17_28bx6")
-sfx_15/volume = -5.0
+sfx_15/volume = 0.0
 sfx_16/name = &"warning"
 sfx_16/stream = ExtResource("18_pbpbp")
 sfx_16/volume = -15.0
@@ -167,6 +176,30 @@ sfx_38/volume = 5.0
 sfx_39/name = &"cutter"
 sfx_39/stream = ExtResource("41_f04u3")
 sfx_39/volume = 5.0
+sfx_40/name = &"menu_select"
+sfx_40/stream = ExtResource("42_o0efl")
+sfx_40/volume = -10.0
+sfx_41/name = &"menu_ok"
+sfx_41/stream = ExtResource("43_vy10f")
+sfx_41/volume = -10.0
+sfx_42/name = &"menu_cancel"
+sfx_42/stream = ExtResource("44_q50q0")
+sfx_42/volume = -10.0
+sfx_43/name = &"parry"
+sfx_43/stream = ExtResource("45_vy10f")
+sfx_43/volume = 0.0
+sfx_44/name = &"parry_success"
+sfx_44/stream = ExtResource("46_q50q0")
+sfx_44/volume = -5.0
+sfx_45/name = &"freeze"
+sfx_45/stream = ExtResource("47_vpwnb")
+sfx_45/volume = 5.0
+sfx_46/name = &"ice_kick"
+sfx_46/stream = ExtResource("48_vr55b")
+sfx_46/volume = 0.0
+sfx_47/name = &"discard"
+sfx_47/stream = ExtResource("49_8f33b")
+sfx_47/volume = -5.0
 
 [node name="AudioTest" type="AudioStreamPlayer" parent="."]
 bus = &"SFX"

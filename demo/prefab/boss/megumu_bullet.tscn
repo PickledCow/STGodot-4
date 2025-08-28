@@ -7,7 +7,7 @@
 script = ExtResource("1_x4ng3")
 hurtbox_radius = 8.0
 max_health = 10.0
-ability = 5
+ability = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 20

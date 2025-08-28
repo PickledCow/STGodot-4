@@ -1,0 +1,716 @@
+[gd_scene load_steps=14 format=3 uid="uid://b46p6bp4byrhl"]
+
+[ext_resource type="Texture2D" uid="uid://ce4a8eagwdg7c" path="res://system/ui/ui.png" id="1_0bpdh"]
+[ext_resource type="Script" uid="uid://ddxm16uortqwi" path="res://scenes/credits.gd" id="1_mah5v"]
+[ext_resource type="AudioStream" uid="uid://buqcfxbokemwu" path="res://bgm/credits_yuma.ogg" id="2_2fbfq"]
+[ext_resource type="Texture2D" uid="uid://cv40m3thjywhq" path="res://system/ui/logo.png" id="3_8gwij"]
+[ext_resource type="Theme" uid="uid://c21stjg82tnn7" path="res://scenes/mainmenu.tres" id="4_mah5v"]
+[ext_resource type="Texture2D" uid="uid://bqfchb3m2csso" path="res://godot_logo.svg" id="5_8gwij"]
+
+[sub_resource type="Animation" id="Animation_8gwij"]
+resource_name = "fade"
+length = 4.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Music:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -80.0]
+}
+
+[sub_resource type="Animation" id="Animation_mah5v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Music:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kyhnv"]
+_data = {
+&"RESET": SubResource("Animation_mah5v"),
+&"fade": SubResource("Animation_8gwij")
+}
+
+[sub_resource type="Animation" id="Animation_ooihk"]
+resource_name = "credits"
+length = 45.0
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Credits:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 2, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0, 0, -1200, -2, 0, 0, 0, -1200, 0, 0, 2, 0, -7035, -2, 0, 0, 0),
+"times": PackedFloat32Array(0, 5.030556, 6, 40)
+}
+
+[sub_resource type="Animation" id="Animation_ih6pn"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Credits:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_kyhnv"]
+resource_name = "off"
+length = 3.0
+step = 1.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Credits:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-7035, -0.25, 0, 2, 0, -8115, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 3)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7lgdl"]
+_data = {
+&"RESET": SubResource("Animation_ih6pn"),
+&"credits": SubResource("Animation_ooihk"),
+&"off": SubResource("Animation_kyhnv")
+}
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mah5v")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kyhnv")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7lgdl")
+}
+speed_scale = 0.5
+
+[node name="Background" type="TextureRect" parent="."]
+z_index = -10
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("1_0bpdh")
+expand_mode = 3
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_2fbfq")
+autoplay = true
+bus = &"Music"
+
+[node name="Credits" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 7884.0
+theme_override_constants/separation = 64
+
+[node name="StartMargin" type="Control" parent="Credits"]
+custom_minimum_size = Vector2(0, 1080)
+layout_mode = 2
+
+[node name="Logo" type="MarginContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/margin_left = 256
+theme_override_constants/margin_top = 256
+theme_override_constants/margin_right = 256
+theme_override_constants/margin_bottom = 256
+
+[node name="TextureRect" type="TextureRect" parent="Credits/Logo"]
+layout_mode = 2
+texture = ExtResource("3_8gwij")
+expand_mode = 5
+
+[node name="StartMargin2" type="Control" parent="Credits"]
+custom_minimum_size = Vector2(0, 540)
+layout_mode = 2
+
+[node name="Programmer" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Programmer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Programmer"
+horizontal_alignment = 1
+
+[node name="Person" type="Label" parent="Credits/Programmer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Pickled Cow"
+horizontal_alignment = 1
+
+[node name="Primary Artist" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Primary Artist"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Artist"
+horizontal_alignment = 1
+
+[node name="Person" type="Label" parent="Credits/Primary Artist"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Pickled Cow"
+horizontal_alignment = 1
+
+[node name="Primary Music" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Primary Music"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Music"
+horizontal_alignment = 1
+
+[node name="Person" type="Label" parent="Credits/Primary Music"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Pickled Cow"
+horizontal_alignment = 1
+
+[node name="Guest Artist" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Guest Artist"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Guest Artist"
+horizontal_alignment = 1
+
+[node name="Person" type="Label" parent="Credits/Guest Artist"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Marisa Sprite - The Good Bee"
+horizontal_alignment = 1
+
+[node name="Original Composers" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Original Composers"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Original Compositions"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Credits/Original Composers"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/Original Composers/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Memento of All Organisms ~ Memory of Fossil Energy"
+horizontal_alignment = 2
+
+[node name="Person3" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Legend of the Great Gods"
+horizontal_alignment = 2
+
+[node name="Person4" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Tomboyish Girl in Love"
+horizontal_alignment = 2
+
+[node name="Person5" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Cirno's Perfect Math Class"
+horizontal_alignment = 2
+
+[node name="Person6" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Beware the Umbrella Left There Forever"
+horizontal_alignment = 2
+
+[node name="Person7" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Love Colored Magic Spark"
+horizontal_alignment = 2
+
+[node name="Person8" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Faith Is for the Transient People"
+horizontal_alignment = 2
+
+[node name="Person9" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Starry Mountain of Tenma"
+horizontal_alignment = 2
+
+[node name="Person10" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Hiroari Shoots a Strange Bird ~ Till When?"
+horizontal_alignment = 2
+
+[node name="Person11" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Hiroari Shoots a Strange Bird ~ Till When?"
+horizontal_alignment = 2
+
+[node name="Person12" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Ultimate Truth"
+horizontal_alignment = 2
+
+[node name="Person2" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Welcome Your New Overlord"
+horizontal_alignment = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Credits/Original Composers/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person2" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person3" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person4" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person5" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person6" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person7" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person8" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person9" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person10" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person11" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person12" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Credits/Original Composers/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person3" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person4" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person5" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "IOSYS"
+
+[node name="Person6" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person7" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person8" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person9" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person10" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person11" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "U2 Akiyama"
+
+[node name="Person12" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "ZUN"
+
+[node name="Person2" type="Label" parent="Credits/Original Composers/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Jun Ishikawa"
+
+[node name="Stock Assets" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Stock Assets"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Stock Images, Sounds, etc."
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/Stock Assets"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Stock Assets/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 80
+text = "pixabay.com"
+horizontal_alignment = 1
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "freesound_community"
+horizontal_alignment = 1
+
+[node name="Person3" type="Label" parent="Credits/Stock Assets/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Jurij"
+horizontal_alignment = 1
+
+[node name="Person4" type="Label" parent="Credits/Stock Assets/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Aman Kumar"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Credits/Stock Assets"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Stock Assets/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 80
+text = "deviantart.com"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Credits/Stock Assets/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person3" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Marble Texture"
+horizontal_alignment = 2
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Trees	"
+horizontal_alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person3" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 1
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person3" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "hugolj"
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer2/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "bupaje"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Credits/Stock Assets"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Stock Assets/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 80
+text = "freepik.com"
+horizontal_alignment = 1
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Metal Texture - freepik"
+horizontal_alignment = 1
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="Credits/Stock Assets"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Stock Assets/VBoxContainer4"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 80
+text = "polyhaven.com"
+horizontal_alignment = 1
+
+[node name="Person2" type="Label" parent="Credits/Stock Assets/VBoxContainer4"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Tree Model - Rick Cilliers and Rob Tuytle"
+horizontal_alignment = 1
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="Credits/Stock Assets"]
+layout_mode = 2
+
+[node name="Special Thanks" type="VBoxContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Credits/Special Thanks"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+theme_override_font_sizes/font_size = 96
+text = "Special Thanks"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Credits/Special Thanks"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/Special Thanks/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Welcome Your New Overlord Transcription"
+horizontal_alignment = 2
+
+[node name="Person2" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Original Framework for Bullet Management"
+horizontal_alignment = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Credits/Special Thanks/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="Person2" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "-"
+horizontal_alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Credits/Special Thanks/HBoxContainer"]
+layout_mode = 2
+
+[node name="Person" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "kujiratr @ youtube.com"
+
+[node name="Person2" type="Label" parent="Credits/Special Thanks/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "samdze @ github.com"
+
+[node name="Middle" type="Control" parent="Credits"]
+custom_minimum_size = Vector2(0, 540)
+layout_mode = 2
+
+[node name="Logo2" type="MarginContainer" parent="Credits"]
+layout_mode = 2
+theme_override_constants/margin_left = 128
+theme_override_constants/margin_right = 128
+
+[node name="TextureRect" type="TextureRect" parent="Credits/Logo2"]
+layout_mode = 2
+texture = ExtResource("5_8gwij")
+expand_mode = 5
+
+[node name="Skip" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -517.0
+offset_top = -93.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 6
+
+[node name="Label" type="Label" parent="Skip"]
+layout_mode = 2
+theme = ExtResource("4_mah5v")
+text = "Hold [Esc] to Skip."
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 0)
+
+[connection signal="animation_finished" from="AnimationPlayer2" to="." method="_on_animation_player_2_animation_finished"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

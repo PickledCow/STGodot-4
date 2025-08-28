@@ -31,7 +31,7 @@ namespace godot {
 // of lower types. A types act with angles and B types act with x-y velocities.
 enum ProcessMode { A1, A2, A3, B1, B2, B3 };
 enum BounceMode { BOUNCE, WARP };
-enum TransformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
+// enum TransformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 // enum EnemyHitboxType { CIRCLE_HITBOX, RECT_HITBOX };
 
 enum BULLET_ID_STRUCTURE {
