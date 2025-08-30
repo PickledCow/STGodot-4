@@ -9,6 +9,7 @@ script = ExtResource("1_gx331")
 attack_type_list = Array[int]([1])
 attack_name_list = Array[String](["Hellfire Sword 「Karmic Winds of Afterimages」"])
 boss_name = "Youmu"
+item_drop = 10
 hitbox_radius = 96.0
 max_health = 800.0
 

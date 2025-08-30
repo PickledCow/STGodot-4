@@ -38,13 +38,6 @@ var blue_bubble : PackedFloat64Array
 var bullet_timer := 0.0
 var bullet_speeds : Array[float] = [6.0, 7.0, 8.0, 12.0, 14.0]
 var bullet_rates : Array[float] = [0.2, 0.3, 0.5, 0.75, 1.0]
-
-var bomb_speed : Array[float] = 		[15.0, 17.0, 18.0, 19.0, 21.0]
-var bomb_strength : Array[float] = 		[5.0, 8.0, 10.0,  12.0, 14.0]
-var bomb_travel_time : Array[float] =   [120.0, 100.0, 95.0, 90.0, 85.0]
-var bomb_bonus_time : Array[float] =    [30.0, 24.0, 18.0, 15.0, 12.0]
-var bomb_fire_rate : Array[int] = [40, 36, 33, 30, 24]
-
 var finale_phase = 0
 
 var death_timer := 0.0
@@ -570,6 +563,13 @@ func cuts(_time_scale: float) -> void:
 		a2 += lr1 * PI / 30.0 * 2.0
 
 func wars(_time_scale: float) -> void:
+
+	var bomb_speed : Array[float] = 		[15.0, 17.0, 18.0, 19.0, 21.0]
+	var bomb_strength : Array[float] = 		[4.5, 5.0, 5.5, 6.0, 7.0]
+	var bomb_travel_time : Array[float] =   [112.0, 100.0, 92.5, 90.0, 85.0]
+	var bomb_bonus_time : Array[float] =    [30.0, 24.0, 18.0, 15.0, 12.0]
+	var bomb_fire_rate : Array[int] = [40, 36, 33, 30, 24]
+
 	if t == 0:
 		a = PI * 0.2
 	var angle : float
@@ -606,7 +606,7 @@ func wars(_time_scale: float) -> void:
 		grenade.acceleration = -direction * bomb_speed[difficulty] / bomb_travel_time[difficulty]
 		grenade.explode_timer = bomb_travel_time[difficulty] + bomb_bonus_time[difficulty]
 		grenade.spin_direction = sign(direction.x)
-		grenade.strength = 6.0
+		grenade.strength = bomb_strength[difficulty]
 		get_parent().add_child(grenade)
 	
 	if t % 240 == 0 and t > 0:

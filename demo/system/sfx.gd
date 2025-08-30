@@ -60,7 +60,11 @@ func stop(sfx_name: String, fade_time: float = 0.0) -> void:
 		fade_out_duration.append(fade_time)
 		fade_out_timer.append(fade_time)
 		
-	
+## Stops all sounds
+func stop_all() -> void:
+	for stream in audio_stream_player_nodes_list:
+		stream.stop()
+
 # -----------------------------------------------------------------------------
 # Initialise audio stream players
 # -----------------------------------------------------------------------------

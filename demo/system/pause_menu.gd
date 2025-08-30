@@ -4,6 +4,7 @@ class_name PauseMenu
 @export_node_path("SubViewportContainer") var bg_viewport_path
 @onready var bg_viewport : SubViewportContainer = get_node(bg_viewport_path)
 
+var paused_from_game_over := false
 
 enum MENUS { MAIN, RESTART, OPTIONS, QUIT }
 enum MAIN_MENU_SELECTIONS { RESUME, RESTART, OPTIONS, QUIT }
@@ -12,10 +13,19 @@ var current_menu : MENUS = MENUS.MAIN
 
 var main_menu_selection : MAIN_MENU_SELECTIONS = MAIN_MENU_SELECTIONS.RESUME
 
+var pause_min_timer := 0.0
+
 var ui_lock := false
+
+@export var star_paths : Array[NodePath] = []
+var stars : Array[TextureRect] = []
+
 
 # SO lazy this is also just any persistent shit
 func _ready():
+	for path in star_paths:
+		stars.append(get_node(path))
+		
 	get_viewport().focus_exited.connect(_on_window_focus_out)
 	#get_tree().paused = true
 
@@ -46,6 +56,15 @@ func main_menu() -> void:
 			MAIN_MENU_SELECTIONS.RESUME:
 				unpause()
 				#ui_lock = true
+			MAIN_MENU_SELECTIONS.RESTART:
+				unpause()
+				SFX.play("menu_ok")
+				Bullets.unmount()
+				System.warp_rect.reset_warps()
+				SFX.stop_all()
+				System.in_dialogue = true
+				System.clear_enemies = false
+				get_tree().reload_current_scene()
 			MAIN_MENU_SELECTIONS.OPTIONS:
 				current_menu = MENUS.OPTIONS
 				$Panel/Options.show()
@@ -54,8 +73,9 @@ func main_menu() -> void:
 				#ui_lock = true
 			MAIN_MENU_SELECTIONS.QUIT:
 				SFX.play("menu_ok")
-				#Callable
 				Bullets.unmount()
+				System.warp_rect.reset_warps()
+				SFX.stop_all()
 				get_tree().change_scene_to_packed(System.main_menu_scene)
 				#get_tree().quit()
 	
@@ -63,12 +83,31 @@ func main_menu() -> void:
 		var selection_icon : TextureRect = $Panel/VBoxContainer/Bottom/OptionsContainer.get_child(i).get_node("SelectionContainer/Selection")
 		selection_icon.visible = i == main_menu_selection
 func pause():
+	SFX.stop_all()
 	get_tree().paused = true
-	$Pause.play()
+	if not paused_from_game_over:
+		$Pause.play()
+		pause_min_timer = 0.2
+	else:
+		$GameOver.play()
+		pause_min_timer = 1.0
 	show()
 	
 
 func unpause():
+	if paused_from_game_over:
+		paused_from_game_over = false
+		System.player.current_lives = 8
+		System.ui.set_health(8)
+		System.ui.show_halo()
+		System.player.show()
+		System.player.get_node("halo").show()
+		System.player.position = Vector2(500, 900)
+		$GameOver.stop()
+	$Panel/VBoxContainer/Top/VBoxContainer/Paused.show()
+	$Panel/VBoxContainer/Top/VBoxContainer/GameOver.hide()
+	$Panel/VBoxContainer/Bottom/OptionsContainer/Resume/ResumeText.show()
+	$Panel/VBoxContainer/Bottom/OptionsContainer/Resume/ContinueText.hide()
 	SFX.play("menu_cancel")
 	hide()
 	get_tree().paused = false
@@ -79,15 +118,21 @@ func unpause():
 	
 
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("pause"):
-		if get_tree().paused:
+func _process(delta: float) -> void:
+	if pause_min_timer > 0.0:
+		pause_min_timer -= delta
+		
+	for star in stars:
+		star.rotation += TAU * delta * 0.3
+		
+	if Input.is_action_just_pressed("pause") and not (paused_from_game_over and pause_min_timer > 0.0):
+		if get_tree().paused and not paused_from_game_over:
 			unpause()
 		else:
 			pause()
 	
 	if get_tree().paused:
-		if not ui_lock:
+		if not ui_lock and pause_min_timer <= 0.0:
 			match current_menu:
 				MENUS.MAIN:
 					main_menu()
@@ -105,3 +150,11 @@ func _process(_delta: float) -> void:
 
 func _on_options_bg_scale_changed(stretch_shrink: int) -> void:
 	bg_viewport.stretch_shrink = stretch_shrink
+
+func game_over():
+	paused_from_game_over = true
+	$Panel/VBoxContainer/Top/VBoxContainer/Paused.hide()
+	$Panel/VBoxContainer/Top/VBoxContainer/GameOver.show()
+	$Panel/VBoxContainer/Bottom/OptionsContainer/Resume/ResumeText.hide()
+	$Panel/VBoxContainer/Bottom/OptionsContainer/Resume/ContinueText.show()
+	pause()

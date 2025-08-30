@@ -1693,7 +1693,7 @@ void BulletInterface::_process(double delta) {
 			i += 1;
 			continue;
 		}
-		rendering_server->canvas_item_set_transform(particle->item_rid, particle->transform);
+		// rendering_server->canvas_item_set_transform(particle->item_rid, particle->transform);
 	}
 
 	for (int i = total_enemies - 1; i >= available_enemies; --i) {
@@ -2009,8 +2009,17 @@ bool BulletInterface::_process_item(Item* item, double delta) {
 
 // TODO
 bool BulletInterface::_process_particle(Particle* particle, double delta) {
-	return false;
+    // Particle is still alive, increase its lifetime.
+    particle->lifetime += delta * 0.25;
+
+	Color color = particle->bullet_data;
+	color.a = particle->lifetime / particle->lifespan;
+
+	rendering_server->canvas_item_set_modulate(particle->item_rid, color);
+    // Return false if the particle should not be deleted yet.
+    return (particle->lifetime >= particle->lifespan);
 }
+
 
 bool BulletInterface::_process_enemy(Enemy* enemy, double delta) {
 	if (enemy->queue_delete) return true;
@@ -2594,7 +2603,7 @@ PackedInt64Array BulletInterface::create_bullet_a1(Vector2 pos, double speed, do
 
 		// Bullet clear colour
 
-		Color fade_color = Color(bullet_data[DATA_CLEAR_R], bullet_data[DATA_CLEAR_G], bullet_data[DATA_CLEAR_B]);
+		Color fade_color = Color(bullet_data[DATA_CLEAR_R], bullet_data[DATA_CLEAR_G], bullet_data[DATA_CLEAR_B], 0.0);
 		bullet->fade_color = fade_color;
 
 		// ID return
@@ -2769,8 +2778,6 @@ void BulletInterface::add_bullet_transform_a2(PackedInt64Array bullet_id, int tr
 
 }
 
-
-
 PackedInt64Array BulletInterface::create_item(Vector2 pos, double speed, double angle, double spin, PackedFloat64Array item_data, bool glow) {
 	if (available_items > 0) {
 		available_items -= 1;
@@ -2851,6 +2858,78 @@ PackedInt64Array BulletInterface::create_item(Vector2 pos, double speed, double 
 	return invalid_id;
 }
 
+
+// TODO: Complete rewrite
+PackedInt64Array BulletInterface::create_particle(Vector2 pos, double speed, double angle, double size, Color color, bool glow) {
+	if(available_particles > 0) {
+		available_particles -= 1;
+		active_particles += 1;
+
+
+		Particle* particle = (Particle*)particle_pool[available_particles];
+		RID rid = particle->item_rid;
+		particle->lifetime = 0.0;
+		particle->lifespan = 8.0;
+		// enable_bullet(bullet);
+		particle->layer = 0;// glow ? 0 : particle_data[DATA_LAYER];
+
+		// Set layering to be above last bullet
+		rendering_server->canvas_item_set_draw_index(rid, (particle->layer << 24) + particles_draw_index);
+		particle->draw_index = bullets_draw_index++;
+		if (particles_draw_index > 16777215) particles_draw_index = 0; // 2^24 - 1
+
+		rendering_server->canvas_item_add_texture_rect(particle->item_rid, Rect2(-0.5, -0.5, 1.0, 1.0), particles_texture_rid);
+		// if (particle->additive != glow) {
+		// 	rendering_server->canvas_item_set_material(particle->item_rid, glow ? particles_material_rid : particles_material_rid);
+		// 	particle->additive = glow;
+		// }
+
+		Transform2D xform = Transform2D(0.0, Vector2(0.0, 0.0)).scaled(size * Vector2(1.0, 1.0)).rotated(angle + particle_rotation_offset);
+		xform.set_origin(pos);
+		particle->transform = xform;
+		particle->position = pos;
+		// particle->scale = particle_data[DATA_SIZE];
+		particle->rotation = angle;
+		particle->direction = Vector2(1.0, 0.0).rotated(angle);
+
+		rendering_server->canvas_item_set_transform(rid, xform);
+		
+		// Misc data
+
+		// particle->spin = particle_data[DATA_SPIN];
+		// particle->texture_offset = particle_data[DATA_SPRITE_OFFSET];
+
+		// Shader data
+
+		// Color compressed_data = Color();
+		// compressed_data.r = particle_data[DATA_SRC_Y] + particle_data[DATA_SRC_X] / particles_texture_width;
+		// compressed_data.g = particle_data[DATA_SRC_H] + particle_data[DATA_SRC_W] / particles_texture_width;
+		// compressed_data.b = particle_data[DATA_SPRITE_OFFSET] + 0.999; 
+		// compressed_data.a = particle_data[DATA_ANIM_FRAMES] + animation_random;
+
+		particle->bullet_data = color;
+
+		rendering_server->canvas_item_set_modulate(rid, color);
+
+		// ID return
+
+		PackedInt64Array to_return = invalid_id;
+		to_return.set(BULLET_ID_CYCLE, particle->cycle);
+		to_return.set(BULLET_ID_POOL, PARTICLES_POOL);
+		to_return.set(BULLET_ID_INDEX, particle->persistent_index);
+		
+
+		return to_return;
+	}
+	return invalid_id;
+}
+
+
+void BulletInterface::create_bullet_clear(Vector2 pos, double size, Color clear_color) {
+	create_particle(pos, 0.0, double(rand()) / double(RAND_MAX), size, clear_color, true);
+}
+
+
 Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius) {
 	Array to_return = Array();
 	to_return.append(Array());
@@ -2865,7 +2944,7 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 		double b2 = b * b;
 		double dist_sq = (bullet->position - pos).length_squared();
 
-		if (bullet->fade_timer <= 0.0 && dist_sq <= graze_radius * graze_radius + 2.0 * graze_radius * b + b2) {
+		if (bullet->lifespan > 0.0 && bullet->fade_timer <= 0.0 && dist_sq <= graze_radius * graze_radius + 2.0 * graze_radius * b + b2) {
 			PackedInt64Array bullet_id = PackedInt64Array();
 			bullet_id.resize(3);
 			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
@@ -2878,7 +2957,10 @@ Array BulletInterface::collide_and_graze_player(Vector2 pos, double hitbox_radiu
 			}
 			
 			if (dist_sq < hitbox_radius * hitbox_radius + 2.0 * hitbox_radius * b + b2) {
-				if (!bullet->pierce) bullet->lifespan = -INFINITY;
+				if (!bullet->pierce) {
+					bullet->lifespan = -INFINITY;
+					create_bullet_clear(bullet->position, bullet->scale, bullet->fade_color);
+				}
 				((Array)(to_return[0])).append(bullet_id);
 			}
 
@@ -3053,14 +3135,17 @@ Array BulletInterface::clear_bullets(Vector2 pos, double radius, bool ignore_pie
 		double b2 = b * b;
 		double dist_sq = (bullet->position - pos).length_squared();
 
-		if (dist_sq <= radius * radius + 2.0 * radius * b + b2) {
+		if (bullet->lifespan > 0.0 && dist_sq <= radius * radius + 2.0 * radius * b + b2) {
 			PackedInt64Array bullet_id = PackedInt64Array();
 			bullet_id.resize(3);
 			bullet_id.set(BULLET_ID_CYCLE, bullet->cycle);
 			bullet_id.set(BULLET_ID_POOL, BULLETS_POOL);
 			bullet_id.set(BULLET_ID_INDEX, bullet->persistent_index);
 			
-			if (!bullet->pierce || ignore_pierce) bullet->lifespan = -INFINITY;
+			if (!bullet->pierce || ignore_pierce) {
+				bullet->lifespan = -INFINITY;
+				create_bullet_clear(bullet->position, bullet->scale, bullet->fade_color);
+			}
 			((Array)(to_return)).append(bullet_id);
 		}
 	}
@@ -3868,11 +3953,11 @@ void BulletInterface::skip_fade(PackedInt64Array bullet_id) {
 		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
 			bullet->fade_timer = 0.0;
 		}
-	} else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
-		Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
-		if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
-			bullet->fade_timer = 0.0;
-		}
+	// } else if (bullet_id[BULLET_ID_POOL] == PARTICLES_POOL) {
+	// 	Particle* bullet = particle_pool[persistent_particle_index[bullet_id[BULLET_ID_INDEX]]];
+	// 	if (bullet->cycle == bullet_id[BULLET_ID_CYCLE]) {
+	// 		bullet->fade_timer = 0.0;
+	// 	}
 	}
 	
 }

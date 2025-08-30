@@ -6,6 +6,7 @@ class_name Boss
 @export var boss_name : String
 @export var starting_position : Vector2 = Vector2(500, 300)
 @export var tlb := false
+@export var item_drop : System.ITEM_TYPE
 
 var current_attack := -1
 var next_attack := 0
@@ -80,6 +81,7 @@ func _on_death() -> void:
 	#print(current_attack)
 	_pre_death()
 	#print(current_attack)
+	
 	next_attack += 1
 	if System.in_dialogue:
 		System.boss_manager.increment_boss()
@@ -89,6 +91,12 @@ func _on_death() -> void:
 			super()
 			System.boss_manager.increment_boss(tlb)
 		else:
+			var type : System.ITEM_TYPE = item_drop
+			if type == System.ITEM_TYPE.RANDOM:
+				@warning_ignore("int_as_enum_without_cast")
+				type = randi_range(System.ITEM_TYPE.DUBIOUS, System.ITEM_TYPE.TEA)
+			var item_data = System.get_item_data(type)
+			Bullets.create_item(position, 8.0, PI * -0.5, 1.0, item_data, false)
 			System.ui.slide_in_top_bar(true)
 			SFX.play("boss_death")
 			System.warp_rect.warp_boss(position, true)
@@ -100,6 +108,15 @@ func _on_death() -> void:
 			
 			set_destination(position + Vector2(randf_range(32, 64), 0.0).rotated(randf()*TAU), 60)
 	else:
+		
+		var type : System.ITEM_TYPE = item_drop
+		if type == System.ITEM_TYPE.RANDOM:
+			@warning_ignore("int_as_enum_without_cast")
+			type = randi_range(System.ITEM_TYPE.DUBIOUS, System.ITEM_TYPE.TEA)
+		var item_data = System.get_item_data(type)
+		Bullets.create_item(position, 0.0, 0.0, 0.0, item_data, false)
+		
+		
 		_post_death()
 		health = max_health
 		t = -1

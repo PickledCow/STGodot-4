@@ -18,7 +18,7 @@ var arrow : PackedFloat64Array
 
 var rates := [4, 3, 2, 1]
 
-var shard_density : Array[int] = [2, 3, 5, 6, 6]
+var shard_density : Array[int] = [2, 3, 4, 5, 6]
 var plate_rate : Array[int] = [8, 6, 5, 4, 3]
 var plate_speed : Array[float] = [4.5, 5.0, 5.5, 6.0, 6.5]
 var plate_init_speed : Array[float] = [16.0, 16.0, 16.0, 16.0, 16.0]

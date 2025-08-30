@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://c87ndgxn2vij"]
+[gd_scene load_steps=56 format=3 uid="uid://c87ndgxn2vij"]
 
 [ext_resource type="Script" uid="uid://b7ovgjuf7m81f" path="res://system/sfx.gd" id="1_hs46b"]
 [ext_resource type="AudioStream" uid="uid://dlcclmrp7y24m" path="res://system/sfx/death.wav" id="2_pg0su"]
@@ -50,12 +50,17 @@
 [ext_resource type="AudioStream" uid="uid://baynui234s5et" path="res://system/sfx/freeze.wav" id="47_vpwnb"]
 [ext_resource type="AudioStream" uid="uid://33y6mwxktqqn" path="res://system/sfx/ice_kick.wav" id="48_vr55b"]
 [ext_resource type="AudioStream" uid="uid://di3sy2pbj53ap" path="res://system/sfx/discard.wav" id="49_8f33b"]
+[ext_resource type="AudioStream" uid="uid://ccu3b0krvuduj" path="res://system/sfx/icebreath.wav" id="50_t7w6x"]
+[ext_resource type="AudioStream" uid="uid://doftr1gv3140m" path="res://system/sfx/bar_fill.wav" id="51_6jgm2"]
+[ext_resource type="AudioStream" uid="uid://c0xxb20ymx7ut" path="res://system/sfx/timer1.wav" id="52_1f6pf"]
+[ext_resource type="AudioStream" uid="uid://t1v1u0ssg3bg" path="res://system/sfx/timer2.wav" id="53_7phvm"]
+[ext_resource type="AudioStream" uid="uid://dpyeh1wynanxp" path="res://system/sfx/life.wav" id="54_1f6pf"]
 
 [node name="SFX" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_hs46b")
 sfx_bus = 2
-sfx_count = 48
+sfx_count = 53
 sfx_0/name = &"death"
 sfx_0/stream = ExtResource("2_pg0su")
 sfx_0/volume = -2.0
@@ -103,7 +108,7 @@ sfx_14/stream = ExtResource("16_b3s1o")
 sfx_14/volume = -5.0
 sfx_15/name = &"break"
 sfx_15/stream = ExtResource("17_28bx6")
-sfx_15/volume = 0.0
+sfx_15/volume = 5.0
 sfx_16/name = &"warning"
 sfx_16/stream = ExtResource("18_pbpbp")
 sfx_16/volume = -15.0
@@ -200,6 +205,21 @@ sfx_46/volume = 0.0
 sfx_47/name = &"discard"
 sfx_47/stream = ExtResource("49_8f33b")
 sfx_47/volume = -5.0
+sfx_48/name = &"ice_breath"
+sfx_48/stream = ExtResource("50_t7w6x")
+sfx_48/volume = -10.0
+sfx_49/name = &"bar_fill"
+sfx_49/stream = ExtResource("51_6jgm2")
+sfx_49/volume = 0.0
+sfx_50/name = &"timer1"
+sfx_50/stream = ExtResource("52_1f6pf")
+sfx_50/volume = 0.0
+sfx_51/name = &"timer2"
+sfx_51/stream = ExtResource("53_7phvm")
+sfx_51/volume = 0.0
+sfx_52/name = &"extend"
+sfx_52/stream = ExtResource("54_1f6pf")
+sfx_52/volume = -5.0
 
 [node name="AudioTest" type="AudioStreamPlayer" parent="."]
 bus = &"SFX"

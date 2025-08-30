@@ -16,7 +16,7 @@ var blue_fire_density : Array[int] = 	[9,   11,   12,    14,   15]
 var blue_speed: Array[float] = 			[2.5,  3.75,  4.5,  5.25,  5.4]
 var blue_length : Array[float] = 		[1.0, 1.2, 1.5,   1.6, 1.8]
 var frog_strength : Array[float] = 		[6.0, 9.0, 10.0,  12.0, 14.0]
-var frog_travel_time : Array[float] =   [120.0, 100.0, 95.0, 90.0, 85.0]
+var frog_travel_time : Array[float] =   [130.0, 100.0, 95.0, 90.0, 85.0]
 var frog_bonus_time : Array[float] =    [30.0, 24.0, 18.0, 15.0, 12.0]
 
 var blue_ball : PackedFloat64Array

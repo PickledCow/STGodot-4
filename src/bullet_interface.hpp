@@ -4,6 +4,13 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+// Man really
+#ifndef M_PI_2
+    #define M_PI_2 3.14159265358979323846264338327950288 * 2.0
+#endif
+
+
+
 #include <bullet.hpp>
 
 #include <godot_cpp/classes/rendering_server.hpp>
@@ -510,6 +517,8 @@ public:
 	PackedInt64Array create_straight_laser(Vector2 pos, double angle, double length, double width, double start_margin, double end_margin, double delay, double duration, PackedFloat64Array laser_data, bool glow);
 	PackedInt64Array create_loose_laser(Vector2 pos, double speed, double angle, double length, double width, double start_margin, double end_margin, PackedFloat64Array laser_data, bool glow);
 	PackedInt64Array create_curve_laser(Vector2 pos, double speed, double angle, int length, double width, int start_margin, int end_margin, PackedFloat64Array laser_data, bool glow);
+	PackedInt64Array create_particle(Vector2 pos, double speed, double angle, double size, Color color, bool glow);
+
 
 	void add_bullet_transform_a2(PackedInt64Array bullet_id, int trigger, int trigger_value, double speed, double angle, double accel, double max_speed, double w_vel);
 
@@ -531,6 +540,8 @@ public:
 	// bool is_bullet_existing(RID area_rid, int shape_index);
 	// Ref<BulletKit> get_kit_from_bullet(Variant id);
 
+
+	void create_bullet_clear(Vector2 pos, double size, Color clear_color);
 
 	// Array collide_and_graze_kit(Ref<BasicBulletKit> kit, Vector2 pos, double hitbox_radius, double graze_radius);
 	Array collide_and_graze_player(Vector2 pos, double hitbox_radius, double graze_radius);

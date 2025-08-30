@@ -178,7 +178,9 @@ func options_menu() -> bool:
 	
 	return false	
 	
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	for star in stars:
+		star.rotation += TAU * delta * 0.3
 	for i in OPTIONS_MENU_SELECTIONS.size():
 		var selection_icon : TextureRect = stars[i]
 		selection_icon.visible = i == options_menu_selection

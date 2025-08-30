@@ -308,7 +308,7 @@ func _process(delta: float) -> void:
 				game_state = GAME_STATE.DIALOGUE
 				dialogue_manager.dialogue_index = -1
 				dialogue_manager.mash_cooldown_timer = 120.0
-				dialogue_manager.mash_cooldown = 30.0
+				#dialogue_manager.mash_cooldown = 30.0
 				$FakeEntrance.play("entry")
 				var types : Array[System.ATTACK_TYPE] = []
 				var names : Array[String] = []
@@ -343,7 +343,7 @@ func _process(delta: float) -> void:
 				dialogue_manager.dialogue_index = -1
 				dialogue_manager.mash_cooldown_timer = 120.0
 				dialogue_manager.janky_lock = false
-				dialogue_manager.mash_cooldown = 30.0
+				#dialogue_manager.mash_cooldown = 30.0
 				start_playing_mizuchi_music = true
 				section = SECTIONS.DIALOGUE2
 		SECTIONS.DIALOGUE2:
@@ -369,6 +369,7 @@ func _process(delta: float) -> void:
 					fade_quit_timer -= System.time_scale / (60 * 5.0)
 					if fade_quit_timer < 0.0:
 						Bullets.unmount()
+						System.warp_rect.reset_warps()
 						get_tree().change_scene_to_packed(System.credits_scene)
 	if game_state == GAME_STATE.DIALOGUE:
 		if not System.in_dialogue:

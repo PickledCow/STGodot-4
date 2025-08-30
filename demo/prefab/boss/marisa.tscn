@@ -12,6 +12,7 @@ script = ExtResource("1_1ejk6")
 attack_type_list = Array[int]([1])
 attack_name_list = Array[String](["Love Sign 「Electrifying Spark」"])
 boss_name = "Marisa"
+item_drop = 7
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
 max_health = 1000.0

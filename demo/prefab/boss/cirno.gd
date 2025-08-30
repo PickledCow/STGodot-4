@@ -10,7 +10,7 @@ var hand_offset := Vector2(-32, -128)
 var ice_rate : Array[int] = [12, 9, 7, 6, 3]
 var ice_speeds : Array[float] = [5.0, 6.0, 7.0, 8.0, 8.5]
 var ice_sway : Array[float] = [24.0, 16.0, 14.0, 12.0, 12.0]
-var snowman_densities : Array[float] = [45.0, 60.0, 70.0, 80.0, 100.0]
+var snowman_densities : Array[float] = [45.0, 52.0, 60.0, 72.0, 90.0]
 var snowman_spawn_rate : Array[int] = [150, 140, 130, 120, 95]
 var snowman_speeds : Array[float] = [2.25, 2.5, 2.75, 3.0, 3.25]
 

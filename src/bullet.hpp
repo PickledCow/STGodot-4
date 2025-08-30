@@ -83,11 +83,8 @@ struct Enemy : AbstractPoolItem {
     Array lifetime_collided_bullets;
 };
 
-// A basic bullet struct. Holds onto information about the bullet that then a 
-// corresponding BulletKit is able to act upon.
-// The base bullet is able to keep track of general rendering properties along 
-// with other critical behaviour.
-struct AbstractBullet : AbstractPoolItem {
+// A basic pool item with graphical capabilities
+struct GraphicalPoolItem : AbstractPoolItem {
     // ----------------------------------------
     // Critical internal varaibles.  No setter/getter is provided for these.
     // ----------------------------------------
@@ -96,13 +93,42 @@ struct AbstractBullet : AbstractPoolItem {
     RID item_rid;
     // Order at which the bullet is drawn in among bullets with the same layer, lowest to highest.
     int draw_index = 0;
-    // Transform of the bullet, also used for rendering
-    Transform2D transform = Transform2D();
-    // // Flag for tracking if the bullet is currently fading.
-    // bool fading = false;
     // Flag for if using the additive material variant to skip changing materials if no need
     bool additive = false;
+    // Transform of the bullet used for rendering
+    Transform2D transform = Transform2D();
 
+    // Internal data that is sent to the rendering shader.
+    Color bullet_data;
+
+    
+    // ----------------------------------------
+    // Regular variables. These can be freely set.
+    // ----------------------------------------
+    
+    // The vertical offset of the bullet in texture pixels (positive moves sprite upwards).
+    // Horizontal offset is unsupported and should be aligned within the spritesheet as there is no space left in the shader data structure.
+    double texture_offset = 0.0;
+    // The center-to-edge length in in-game units to draw at,
+    double scale = 16.0;
+    // Layer at which to draw bullets in. Useful for example having larger bullets be drawn under smaller bullets by default.
+    int layer = 0;
+
+    // How many ticks the bullet has existed for in its current life.
+    double lifetime = 0.0;
+    // How many ticks the bullet can exist for before being deleted. By default infinite.
+    double lifespan = INFINITY;
+
+};
+
+// A basic bullet struct. Holds onto information about the bullet that then a 
+// corresponding BulletKit is able to act upon.
+// The base bullet is able to keep track of general rendering properties along 
+// with other critical behaviour.
+struct AbstractBullet : GraphicalPoolItem {
+
+    // // Flag for tracking if the bullet is currently fading.
+    // bool fading = false;
     // ----------------------------------------
     // Regular variables. These can be freely set.
     // ----------------------------------------
@@ -111,21 +137,7 @@ struct AbstractBullet : AbstractPoolItem {
     Vector2 direction = Vector2();
     // The position of the bullet in the playfield.
     Vector2 position = Vector2();
-    // The center-to-edge length in in-game units to draw at,
-    double scale = 16.0;
-    // Layer at which to draw bullets in. Useful for example having larger bullets be drawn under smaller bullets by default.
-    int layer = 0;
-    // How many ticks the bullet has existed for in its current life.
-    double lifetime = 0.0;
-    // How many ticks the bullet can exist for before being deleted. By default infinite.
-    double lifespan = INFINITY;
 
-    // Internal data that is sent to the rendering shader.
-    Color bullet_data;
-
-    // The vertical offset of the bullet in texture pixels (positive moves sprite upwards).
-    // Horizontal offset is unsupported and should be aligned within the spritesheet as there is no space left in the shader data structure.
-    double texture_offset = 0.0;
     // Variable for holding color data. Intended to be used for creating bullet clear effects but can be used in other ways.
     Color fade_color = Color();
     // The sprite rotation offset compared to angle of travel, measured in radians.
@@ -163,8 +175,15 @@ struct AbstractBullet : AbstractPoolItem {
     Variant custom_data;
 };
 
-struct Particle : AbstractBullet {
+struct Particle : GraphicalPoolItem {
+    // Normalised direction vector for faster computation.
+    Vector2 direction = Vector2();
 
+    // The sprite rotation offset compared to angle of travel, measured in radians.
+    double rotation = 0.0;
+    
+    // Rate at which the bullet sprite should spin at, measured in radians per tick.
+    double spin = 0.0;
 };
 
 // Abstract struct that bullets with collision inherit from

@@ -5,9 +5,10 @@
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_i6o34")
-attack_type_list = Array[int]([1])
+attack_type_list = [1]
 attack_name_list = Array[String](["Ice Sign 「Snowy Day Out」 "])
 boss_name = "Cirno"
+item_drop = 5
 hitbox_radius = 96.0
 hurtbox_radius = 64.0
 star_damage_multiplier = 1.25

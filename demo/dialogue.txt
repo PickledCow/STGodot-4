@@ -32,7 +32,7 @@
 1|4|Here,  you get to see the current prototype I'm working on!
 
 1|5|Halt trespasser!
-1|5| As festival is sponsored by the Moriya Administration, it is under Tengu Juristriciton!
+1|5|As festival is sponsored by the Moriya Administration, it is under Tengu Juristriciton!
 1|5|It falls upon me to ensure order,  discipline, and first dibs on the yummiest dishes.
 0|5|Surely you must be the one behind the stolen food.
 1|5|I see you've been up to no good back there.
@@ -73,10 +73,10 @@
 1|8|Gensokyo's days of peace and order will end!
 1|8|Chaos will throw the entire land into disarray,  I will rule!
 0|8|Huh?!  Something's posessed the hostess!
-0|8|Look, whoever you are you are not going to take over Gensokyo.
+0|8|Look,  whoever you are,  you are not going to take over Gensokyo.
 0|8|Not if I have something to say about it!
 1|8|You really think you can stop me?
-1|8|I guess you can be the first victim with her powers.
+1|8|I guess you can be the first victim to face her power in my hands.
 1|8|Now prepare to die!!!
 
 1|2|Surpriiise!  Bet you didn't expect me this time,  right?
@@ -86,14 +86,14 @@
 1|8|W-what?!
 0|8|Yeah,  you don't actually know how to use her powers do you?
 1|8|L-lies!  Untruths!  You should be begging for mercy this very moment!
-0|8|It became clear after you used some of your spells.
+0|8|It all became clear after you used some of your spells.
 0|8|They weren't anything like the ones that Yuyuko would use.
 1|8|Silence!  And why would I need her old tricks when raw strength is enough?
-0|8|You aren't her,  and you can't even fake it.
+0|8|You aren't her,  not even close,  and you can't even fake it.
 0|8|You act like you're some grand threat to Gensokyo but you're nothing!
-0|8|I have the entirety of Gensokyo backing me up here.
-0|8|And you?  You have nothing.  So here's whats' going to happen:
+0|8|So here's whats' going to happen:
 0|8|We beat you up,  you run away crying.  Are we clear?
 1|8|Enough of this nonsense!  This ends here,  one way or another!
+1|8|(Wait a minute, these weren't the spells I just had before...)
 0|8|Sounds like we agree then!
 1|2|And I'll cheer you on from here!

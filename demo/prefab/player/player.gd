@@ -388,12 +388,14 @@ var suction_collision : PackedFloat64Array
 var spit_attack : PackedFloat64Array
 var super_spit_attack : PackedFloat64Array
 
+var discard_animation := preload("res://prefab/player/yuuma/discard.tscn")
+
 var double_star_animation_timer := 0.0
 
 var forced_slowdown := false
 
 enum PLAYER_ABILITY { NORMAL, BOOMER, FREEZE, PARASOL, SPARK, BOMB, SNIPER, SWORD, GHOST, STARROD }
-const ABILITY_STRINGS : Array[String] = ["Yuuma", "Boomer", "Freeze", "Parasol", "Spark", "Bomb", "Sniper", "Sword", "Ghost", "Hyper"]
+const ABILITY_STRINGS : Array[String] = ["Yuuma", "Cutter", "Freeze", "Parasol", "Spark", "Bomb", "Sniper", "Sword", "Ghost", "Hyper"]
 var ability_in_mouth : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL # Normal notates no ability, can't get Normal from an item
 var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL
 var player_attacking := false
@@ -558,7 +560,7 @@ var freeze_cooldown := 3.0
 #region Star rod
 
 var star_rod_timer := 0.0
-var star_rod_fire_rate := 10.0
+var star_rod_fire_rate := 15.0
 
 #endregion
 
@@ -621,6 +623,10 @@ func die():
 	System.warp_player(position)
 	current_lives -= 1
 	System.ui.set_health(current_lives)
+	if current_lives < 0:
+		death_timer = death_time
+		hide()
+	
 	if respawn_on_death:
 		pass
 	else:
@@ -682,7 +688,10 @@ func collect_items(items: Array) -> void:
 		#categorized_items[System.ITEM_TYPE.LIFE_FRAGMENT], 
 		#categorized_items[System.ITEM_TYPE.LIFE]
 	#)
-
+	if categorized_items[1].size() > 0:
+		current_lives = min(max_lives, current_lives + categorized_items[1].size())
+		System.ui.set_health(current_lives)
+		SFX.play("extend")
 ## Subroutine to process collected power items.
 func process_collected_power(small_power_items: Array, large_power_items: Array, full_power_items: Array) -> void:
 	current_power += len(small_power_items) + len(large_power_items) * large_power_item_value
@@ -901,6 +910,11 @@ func movement(time_scale) -> void:
 	# Update sprite direction with direction moved.
 	# ------------------------------
 	update_animation_state(sign(velocity.x))
+	
+	if position.y < 250:
+		System.ui.proximity_fade()
+	elif position.y > 350:
+		System.ui.proximity_fade(true)
 		
 
 ## Updates the player sprite according to elapsed real tiem.
@@ -1034,6 +1048,10 @@ func collision(time_scale) -> void:
 func shooting(time_scale: float) -> void:
 	if GameInput.is_action_pressed(&"player_custom_0") and not System.in_dialogue and player_ability != PLAYER_ABILITY.NORMAL and player_ability != PLAYER_ABILITY.STARROD:
 		SFX.play("discard")
+		var discard_node := discard_animation.instantiate()
+		discard_node.position = position
+		discard_node.scale.x = 1.0 if position.x < 500.0 else -1.0
+		get_parent().add_child(discard_node)
 		change_ability(PLAYER_ABILITY.NORMAL)
 		return
 	
@@ -1123,6 +1141,7 @@ func shooting(time_scale: float) -> void:
 			if freeze_timer > 0.0:
 				freeze_timer -= System.time_scale
 			if freeze_timer <= 0.0 and shoot_pressed:
+				SFX.play("ice_breath")
 				freeze_timer = freeze_cooldown
 				var b = Bullets.create_shot_a2(position, randf_range(16, 20), PI * randf_range(-0.55, -0.45), -0.25, 6.0, 0.0, frost_breath, true)
 				Bullets.set_rotation(b, randf()*TAU)
@@ -1198,7 +1217,7 @@ func shooting(time_scale: float) -> void:
 					invert = PI
 					fire_position += Vector2(-80, 0).rotated(boomer_angle)
 				
-				var aim_assist_threshold := TAU / 16.0
+				var aim_assist_threshold := TAU / 32.0
 				
 				var angle_to_boss : float = boomer_angle
 				if System.current_boss:
@@ -1206,8 +1225,11 @@ func shooting(time_scale: float) -> void:
 				
 				var shoot_angle := boomer_angle + invert
 				
-				if abs(angle_difference(angle_to_boss, (boomer_angle + invert))) < aim_assist_threshold or abs(angle_difference(angle_to_boss, boomer_angle)) < aim_assist_threshold:
+				if abs(angle_difference(angle_to_boss, (boomer_angle + invert))) < aim_assist_threshold:
+					shoot_angle = angle_to_boss
+				elif abs(angle_difference(angle_to_boss, boomer_angle)) < aim_assist_threshold:
 					shoot_angle = angle_to_boss + invert
+					
 				
 				
 
@@ -1306,7 +1328,7 @@ func shooting(time_scale: float) -> void:
 							)
 							Bullets.set_lifespan(b, randf_range(6, 10))
 							SFX.play("shotgun")
-						for i in 15:
+						for i in 20:
 							var pos_rand : float = randf_range(-1, 1)
 							#68, 23
 							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
@@ -1566,16 +1588,15 @@ func shooting(time_scale: float) -> void:
 						$Sword/ParryAnimator.play("parry")
 						SFX.play("parry")
 						parry_success = false
-			
-			
-			
+					
 		PLAYER_ABILITY.STARROD:
 			if star_rod_timer > 0.0:
 				star_rod_timer -= System.time_scale
 			if shoot_pressed and star_rod_timer <= 0.0:
+				SFX.play("spit")
 				star_rod_timer = star_rod_fire_rate
 				var b = Bullets.create_shot_a1(position, 16.0, PI * -0.5, spit_attack, false)
-				Bullets.set_damage(b, 10)
+				Bullets.set_damage(b, 15)
 				#SFX.play(&"spit") # Too annoynig
 					
 		
@@ -1605,6 +1626,7 @@ func _ready() -> void:
 	#
 	#player_ability = System.player_starting_ability
 	change_ability(System.player_starting_ability)
+	#change_ability(PLAYER_ABILITY.STARROD)
 	
 	if spawn_with_invulnerability:
 		current_i_frames = respawn_i_frames
@@ -1835,7 +1857,7 @@ func _ready() -> void:
 	boomer_bullet[11] = 1
 	boomer_bullet[12] = 1
 	boomer_bullet[13] = System.DAMAGE_TYPE.SHARP			# damage type
-	boomer_bullet[14] = 5				# damage amount	
+	boomer_bullet[14] = 10				# damage amount	
 	
 	boomer_return_bullet = PackedFloat64Array()
 	boomer_return_bullet.resize(15)
@@ -1853,19 +1875,26 @@ func _ready() -> void:
 	boomer_return_bullet[11] = 1
 	boomer_return_bullet[12] = 1
 	boomer_return_bullet[13] = System.DAMAGE_TYPE.SHARP			# damage type
-	boomer_return_bullet[14] = 25				# damage amount
+	boomer_return_bullet[14] = 35				# damage amount
 	
 	
 	update_ability_text()
 
 ## Main logic goes in _process, do not use _physics_process
 func _process(delta: float) -> void:
-	animation(delta)
 	var time_scale : float = System.time_scale
-	movement(time_scale)
-	collision(time_scale)
-	shooting(time_scale)
-	dying(time_scale)
+	if death_timer > 0.0:
+		death_timer -= time_scale
+		if death_timer <= 0.0:
+			death_timer = 0.0
+			System.ui.game_over()
+			#show()
+	if death_timer <= 0.0:
+		animation(delta)
+		movement(time_scale)
+		collision(time_scale)
+		shooting(time_scale)
+		dying(time_scale)
 	
 #endregion
 

@@ -4,8 +4,12 @@ class_name UIManager
 var attack_index := 0
 var attack_names : Array[String]
 
+var prev_timer := 0
+
 const DIFFICULTY_TEXTS : PackedStringArray = ["EASY", "NORMAL", "HARD", "LUNATIC", "OVERDRIVE"]
 const DIFFICULTY_COLOURS : PackedColorArray = [Color("00902c"), Color("0054b2"), Color("0009c5"), Color("9700a0"), Color("bd0000")]
+
+var player_close := false
 
 func _ready() -> void:
 	System.ui = self
@@ -14,7 +18,7 @@ func _ready() -> void:
 	$RightBar/DifficultyText/Label.add_theme_color_override("font_outline_color", DIFFICULTY_COLOURS[System.difficulty])
 
 func set_health(health: float) -> void:
-	$RightBar/Healthbar/ProgressBar.value = health
+	$RightBar/Healthbar/ProgressBar.value = health + 0.5
 
 	
 func set_boss_health(norm_health: float) -> void:
@@ -63,18 +67,31 @@ func slide_in_top_bar(reversed := false):
 		$MiddleUI/Timer/TimerFader.play("exit")
 
 func proximity_fade(reversed := false):
-	if not reversed:
+	if not reversed and not player_close:
+		player_close = true
 		$MiddleUI/TopBar/ProximityFade.play("fade_out")
-	else:
+	elif reversed and player_close:
+		player_close = false
 		$MiddleUI/TopBar/ProximityFade.play_backwards("fade_out")
 
 func fade_in_timer():
 	set_timer(60)
 	$MiddleUI/Timer/TimerFader.play("entry")
-	
+
+func show_halo():
+	$RightBar/Healthbar/Halo.show()
+	$RightBar/Healthbar/ProgressBar/HaloShadow.show()
 
 func set_timer(time: float) -> void:
-	var whole : String = str(int(floor(time)))
+	var whole_int : int = int(floor(time))
+	if whole_int < prev_timer:
+		if whole_int < 3:
+			SFX.play("timer2")
+		elif whole_int < 10:
+			SFX.play("timer1")
+	prev_timer = whole_int
+	 
+	var whole : String = str(whole_int)
 	var dec : String = str(int(floor((time - floor(time)) * 100)))
 	while dec.length() < 2:
 		dec += '0'
@@ -84,3 +101,7 @@ func set_timer(time: float) -> void:
 	
 func fill_healthbar():
 	$MiddleUI/TopBar/BarFill.play("fill")
+	SFX.play("bar_fill")
+
+func game_over():
+	$PauseMenu.game_over()

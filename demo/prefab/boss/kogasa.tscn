@@ -9,6 +9,7 @@ script = ExtResource("1_kv1pe")
 attack_type_list = Array[int]([1])
 attack_name_list = Array[String](["Umbrella Sign 「Shelter From the Rain」 "])
 boss_name = "Kogasa"
+item_drop = 6
 hitbox_radius = 96.0
 hurtbox_radius = 94.0
 star_damage_multiplier = 0.8000000000029104

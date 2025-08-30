@@ -38,7 +38,8 @@ func _process(_delta: float) -> void:
 		if (
 			(
 				GameInput.is_action_just_pressed("player_shoot") or
-				GameInput.is_action_just_pressed("player_bomb")
+				GameInput.is_action_just_pressed("player_bomb") or
+				GameInput.is_action_pressed("player_dialogue_skip")
 			) and 
 			mash_cooldown_timer <= 0.0
 		):

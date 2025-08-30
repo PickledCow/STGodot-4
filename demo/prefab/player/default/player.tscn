@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dww4gq24fvl8n"]
+[gd_scene load_steps=46 format=3 uid="uid://dww4gq24fvl8n"]
 
 [ext_resource type="Script" uid="uid://b68vyanic5tkv" path="res://prefab/player/player.gd" id="1_m7gp6"]
 [ext_resource type="PackedScene" uid="uid://baadrovpq85ya" path="res://prefab/player/default/shooter_manager.tscn" id="3_7dfjt"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://dm4q6waryi5kg" path="res://prefab/player/yuuma/plasma_shield.png" id="13_effqb"]
 [ext_resource type="Texture2D" uid="uid://b538c27ibfnof" path="res://prefab/player/yuuma/plasma_static.png" id="14_6ai8q"]
 [ext_resource type="Texture2D" uid="uid://5s01wv54q8f8" path="res://prefab/player/yuuma/boomer_spawns.png" id="14_illwk"]
+[ext_resource type="Texture2D" uid="uid://crnkb81kg3xqh" path="res://system/vfx/halo.png" id="17_b8l10"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_effqb"]
 blend_mode = 1
@@ -490,7 +491,7 @@ _data = {
 &"spawn": SubResource("Animation_pvpw6")
 }
 
-[sub_resource type="Shader" id="Shader_nyu76"]
+[sub_resource type="Shader" id="Shader_nfphy"]
 code = "shader_type canvas_item;
 
 uniform sampler2D noise;
@@ -549,13 +550,13 @@ noise_type = 0
 seed = 360
 fractal_octaves = 2
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pvpw6"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b8l10"]
 noise = SubResource("FastNoiseLite_nyu76")
 seamless = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pvpw6"]
-shader = SubResource("Shader_nyu76")
-shader_parameter/noise = SubResource("NoiseTexture2D_pvpw6")
+shader = SubResource("Shader_nfphy")
+shader_parameter/noise = SubResource("NoiseTexture2D_b8l10")
 shader_parameter/colour = Color(0.64705884, 0.7610294, 0.88235295, 0)
 shader_parameter/fade = 0.0
 shader_parameter/scroll_time_scale = 0.25
@@ -572,7 +573,7 @@ shader_parameter/depth = 0.5
 shader_parameter/x_margin = 1.5
 shader_parameter/glow = 0.2
 
-[sub_resource type="Shader" id="Shader_pvpw6"]
+[sub_resource type="Shader" id="Shader_slduu"]
 code = "shader_type canvas_item;
 render_mode blend_add;
 
@@ -614,8 +615,8 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ymqh7"]
-shader = SubResource("Shader_pvpw6")
-shader_parameter/noise = SubResource("NoiseTexture2D_pvpw6")
+shader = SubResource("Shader_slduu")
+shader_parameter/noise = SubResource("NoiseTexture2D_b8l10")
 shader_parameter/thickness = 0.04000000000814907
 shader_parameter/fade = 48.0
 shader_parameter/scroll_time_scale = -16.0
@@ -971,6 +972,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="Single" type="Sprite2D" parent="TrailingStar"]
 texture = ExtResource("4_ymqh7")
+offset = Vector2(0, -3)
 
 [node name="Double" type="Sprite2D" parent="TrailingStar"]
 visible = false
@@ -1194,3 +1196,15 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("14_illwk")
 hframes = 2
 frame = 1
+
+[node name="halo" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -51)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("17_b8l10")
+
+[node name="halo shadow" type="Sprite2D" parent="halo"]
+modulate = Color(0, 0, 0, 0.2509804)
+show_behind_parent = true
+position = Vector2(0, 4)
+texture = ExtResource("17_b8l10")

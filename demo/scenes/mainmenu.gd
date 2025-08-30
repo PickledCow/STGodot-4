@@ -3,6 +3,16 @@ extends Control
 @export var star_paths : Array[NodePath] = []
 var stars : Array[TextureRect] = []
 
+var sprites : Array[CompressedTexture2D] = [
+	preload("res://prefab/boss/futo.png"),
+	preload("res://prefab/boss/cirno.png"),
+	preload("res://prefab/boss/kogasa.png"),
+	preload("res://prefab/boss/marisa.png"),
+	preload("res://prefab/boss/sanae.png"),
+	preload("res://prefab/boss/megumu.png"),
+	preload("res://prefab/boss/youmu.png")
+]
+
 var ABILITY_DESCRIPTIONS : PackedStringArray = PackedStringArray([
 '''Suck in enemies with [Z] and spit them back at the enemy with [Z].
 With something in your mouth, press [X] to swallow and take on their powers!
@@ -85,7 +95,10 @@ func _ready() -> void:
 	get_tree().paused = false
 	$MenuAnimator.play("intro")
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
+	
+	var sprite_id := randi()%7
+	$PortraitContainer/Character.texture = sprites[sprite_id]
+	$PortraitContainer/Character/Shadow.texture = sprites[sprite_id]
 	
 	if System.just_booted:
 		System.just_booted = false
@@ -341,4 +354,6 @@ func _on_difficulty_change_animator_animation_finished(_anim_name: StringName) -
 func change_to_game() -> void:
 	System.player_starting_ability = ability_selection as Player.PLAYER_ABILITY
 	System.difficulty = difficulty_selection as System.DIFFICULTY
+	System.in_dialogue = true
+	System.clear_enemies = false
 	get_tree().change_scene_to_packed(System.game_scene)

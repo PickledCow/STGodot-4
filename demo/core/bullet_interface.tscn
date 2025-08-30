@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d2xypy5bclc2x"]
+[gd_scene load_steps=14 format=3 uid="uid://d2xypy5bclc2x"]
 
 [ext_resource type="Texture2D" uid="uid://7fob8pcgvg27" path="res://system/bullets/bullet.png" id="1_cq3ma"]
 [ext_resource type="Material" uid="uid://qhhiosclph22" path="res://core/bullet-materials/bullet_material.tres" id="2_qmjl8"]
@@ -6,10 +6,15 @@
 [ext_resource type="Texture2D" uid="uid://bjb8eyqx8mopd" path="res://system/bullets/item.png" id="3_v2tnc"]
 [ext_resource type="Material" uid="uid://ku81ykgfi06g" path="res://core/bullet-materials/item_material.tres" id="4_6n1ug"]
 [ext_resource type="Texture2D" uid="uid://c7qr0g27hhc7k" path="res://system/bullets/shot.png" id="4_myhv6"]
+[ext_resource type="Texture2D" uid="uid://d4kp6r3ueaiej" path="res://system/bullets/particles.png" id="7_jj8bt"]
+[ext_resource type="Shader" uid="uid://ptrsbfjyr52v" path="res://system/bullets/testshader.gdshader" id="8_aylrp"]
 [ext_resource type="Material" uid="uid://cfyh5fdt3ikdo" path="res://core/bullet-materials/laser_material.tres" id="8_umuv3"]
 [ext_resource type="Material" uid="uid://1ubo4ldiefft" path="res://core/bullet-materials/laser_add_material.tres" id="9_58qg1"]
 [ext_resource type="Material" uid="uid://cd0ek3sma1jnc" path="res://core/bullet-materials/curve_laser_material.tres" id="9_umuv3"]
 [ext_resource type="Material" uid="uid://bus24a3mfmi1d" path="res://core/bullet-materials/curve_laser_add_material.tres" id="10_58qg1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c1qgs"]
+shader = ExtResource("8_aylrp")
 
 [node name="BulletInterface" type="BulletInterface"]
 "Field/Bounce Rect" = Rect2(0, 0, 1000, 1000)
@@ -20,13 +25,13 @@
 "Items/Z Layer" = 10
 "Particles/Z Layer" = 5
 "Lasers/Z Layer" = 9
-"Bullets/Pool Size" = 8192
-"Shots/Pool Size" = 1024
-"Items/Pool Size" = 4096
-"Particles/Pool Size" = 10
-"Enemies/Pool Size" = 500
-"Lasers/Pool Size (Regular)" = 256
-"Lasers/Pool Size (Curve)" = 256
+"Bullets/Pool Size" = 2048
+"Shots/Pool Size" = 256
+"Items/Pool Size" = 128
+"Particles/Pool Size" = 2048
+"Enemies/Pool Size" = 64
+"Lasers/Pool Size (Regular)" = 64
+"Lasers/Pool Size (Curve)" = 32
 Bullets/Texture = ExtResource("1_cq3ma")
 Bullets/Material = ExtResource("2_qmjl8")
 "Bullets/Material (Add)" = ExtResource("3_6n1ug")
@@ -36,8 +41,8 @@ Shots/Material = ExtResource("2_qmjl8")
 Items/Texture = ExtResource("3_v2tnc")
 Items/Material = ExtResource("4_6n1ug")
 "Items/Material (Add)" = ExtResource("4_6n1ug")
-Particles/Texture = ExtResource("1_cq3ma")
-Particles/Material = ExtResource("2_qmjl8")
+Particles/Texture = ExtResource("7_jj8bt")
+Particles/Material = SubResource("ShaderMaterial_c1qgs")
 "Particles/Material (Add)" = ExtResource("2_qmjl8")
 Lasers/Texture = ExtResource("1_cq3ma")
 Lasers/Material = ExtResource("8_umuv3")
@@ -47,4 +52,3 @@ Lasers/Material = ExtResource("8_umuv3")
 "Lasers/Spawn Texture" = ExtResource("1_cq3ma")
 "Lasers/Spawn Material (Add)" = ExtResource("3_6n1ug")
 "Shots/Fade-in Time" = 1.0
-Items/Gravity = Vector2(0, 1)

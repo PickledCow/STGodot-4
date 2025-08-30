@@ -497,20 +497,41 @@ func generate_bullet_data() -> void:
 	# Generate item data
 	
 	# Star
-	var array = PackedFloat64Array()
-	array.resize(11)
-	array[0] = 0			# source x (integer) # (16+8*(c/4))
-	array[1] = 0		# source y (integer) # (24+2*(c%4))
-	array[2] = 128				# source width (integer)
-	array[3] = 128				# source height (integer)
-	array[4] = 96.0				# bullet size [0, inf)
-	array[5] = 0.5				# hitbox ratio [0, 1]
-	array[6] = 0					# Sprite offset y (integer)
-	array[7] = 4					# anim frame, 1 for no animation (integer)
-	array[8] = 0					# layer
-	array[9] = 0					# type
-	array[10] = 0					# value
-	item_data.append(array)
+	if true:
+		var array = PackedFloat64Array()
+		array.resize(11)
+		array[0] = 0			# source x (integer) # (16+8*(c/4))
+		array[1] = 0		# source y (integer) # (24+2*(c%4))
+		array[2] = 128				# source width (integer)
+		array[3] = 128				# source height (integer)
+		array[4] = 96.0				# bullet size [0, inf)
+		array[5] = 0.5				# hitbox ratio [0, 1]
+		array[6] = 0					# Sprite offset y (integer)
+		array[7] = 4					# anim frame, 1 for no animation (integer)
+		array[8] = 0					# layer
+		array[9] = 0					# type
+		array[10] = 0					# value
+		item_data.append(array)
+		item_data.append(array)
+		item_data.append(array)
+		item_data.append(array)
+	for i in range(System.ITEM_TYPE.DUBIOUS, System.ITEM_TYPE.TEA + 1):
+		var array = PackedFloat64Array()
+		array.resize(11)
+		array[0] = 128*i			# source x (integer) # (16+8*(c/4))
+		array[1] = 0		# source y (integer) # (24+2*(c%4))
+		array[2] = 128				# source width (integer)
+		array[3] = 128				# source height (integer)
+		array[4] = 96.0				# bullet size [0, inf)
+		array[5] = 0.5				# hitbox ratio [0, 1]
+		array[6] = 0					# Sprite offset y (integer)
+		array[7] = 1					# anim frame, 1 for no animation (integer)
+		array[8] = 0					# layer
+		array[9] = 1					# type
+		array[10] = 0					# value
+		item_data.append(array)
+	
+	
 	
 	# old shit
 	## Large items
