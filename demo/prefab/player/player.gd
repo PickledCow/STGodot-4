@@ -394,7 +394,7 @@ var double_star_animation_timer := 0.0
 
 var forced_slowdown := false
 
-enum PLAYER_ABILITY { NORMAL, BOOMER, FREEZE, PARASOL, SPARK, BOMB, SNIPER, SWORD, GHOST, STARROD }
+enum PLAYER_ABILITY { NORMAL, BOOMER, FREEZE, PARASOL, SPARK, BOMB, SNIPER, SWORD, GHOST, STARROD}
 const ABILITY_STRINGS : Array[String] = ["Yuuma", "Cutter", "Freeze", "Parasol", "Spark", "Bomb", "Sniper", "Sword", "Ghost", "Hyper"]
 var ability_in_mouth : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL # Normal notates no ability, can't get Normal from an item
 var player_ability : PLAYER_ABILITY = PLAYER_ABILITY.NORMAL
@@ -415,6 +415,16 @@ var swallow_timer := 0
 
 var attack_power := 0
 
+
+#endregion
+
+#region Ghost
+
+@onready var ghost_bar : Node2D = $Ghost/ReloadBar
+@onready var ghost_bar_progress : TextureProgressBar = $Ghost/ReloadBar/Progress
+
+var ghost_timer := 0.0
+var ghost_duration := 300.0
 
 #endregion
 
@@ -504,7 +514,6 @@ enum BOMB_STATE { IDLE, CHARGING }
 var bomb_state : BOMB_STATE = BOMB_STATE.IDLE
 
 #endregion
-
 
 #region Sniper
 var active_reload_timer := 0
@@ -634,9 +643,9 @@ func die():
 		i_frame_animation_timer = 0.0
 		#System.warp_player(position)
 
-## Goes through the list of items we've collected and performs the appropriate
-## actions for them. 
+## Goes through the list of items we've collected and performs the appropriate actions for them. 
 func collect_items(items: Array) -> void:
+	
 	if len(items) > 0:
 		#SFX.play("item")
 		pass
@@ -1709,7 +1718,7 @@ func _ready() -> void:
 	snipe_bullet[10] = 1	# rgb
 	snipe_bullet[11] = 1
 	snipe_bullet[12] = 1
-	snipe_bullet[13] = System.DAMAGE_TYPE.CRIT				# damage type
+	snipe_bullet[13] = System.DAMAGE_TYPE.SNIPE				# damage type
 	snipe_bullet[14] = 80				# damage amount
 	
 	frost_breath = PackedFloat64Array()
@@ -1970,6 +1979,7 @@ func update_ability_visibility():
 			$Parasol.hide()
 			$Plasma.hide()
 			$Boomer.hide()
+			$TrailingStar.hide()
 
 func cleanup_ability(ability: PLAYER_ABILITY):
 	match ability:

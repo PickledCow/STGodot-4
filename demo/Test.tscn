@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=3 uid="uid://18jtj8q2lok4"]
+[gd_scene load_steps=109 format=3 uid="uid://18jtj8q2lok4"]
 
 [ext_resource type="Script" uid="uid://ktr6sx7sgup5" path="res://system/root.gd" id="1_d1b21"]
 [ext_resource type="PackedScene" uid="uid://c8rj1fgn6ae4q" path="res://scenes/bg.tscn" id="1_r6p7k"]
@@ -603,6 +603,66 @@ tracks/0/keys = {
 _data = {
 &"RESET": SubResource("Animation_nq4wj"),
 &"warp": SubResource("Animation_r51hy")
+}
+
+[sub_resource type="Animation" id="Animation_0hqhr"]
+resource_name = "song"
+length = 5.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 4.5, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0),
+"points": PackedFloat32Array(1000, 0, 0, 0, 0, 928, -0.25, 0, 0.25, 0, 928, 0, 0, 0.125, 0, 1000, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.49, 4.5, 5)
+}
+
+[sub_resource type="Animation" id="Animation_jpv2s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(928, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2l8bj"]
+_data = {
+&"RESET": SubResource("Animation_jpv2s"),
+&"song": SubResource("Animation_0hqhr")
 }
 
 [sub_resource type="Animation" id="Animation_pcmbp"]
@@ -1993,6 +2053,47 @@ offset_top = 40.0
 offset_right = 1460.0
 offset_bottom = 1040.0
 
+[node name="NowPlaying" type="MarginContainer" parent="UI/MiddleUI"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -72.0
+offset_bottom = 0.00048828125
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_right = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MiddleUI/NowPlaying"]
+z_index = 10
+layout_mode = 2
+alignment = 2
+
+[node name="note" type="Label" parent="UI/MiddleUI/NowPlaying/HBoxContainer"]
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme = ExtResource("43_hkh1m")
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 48
+text = "♫"
+vertical_alignment = 2
+
+[node name="SongName" type="Label" parent="UI/MiddleUI/NowPlaying/HBoxContainer"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme = ExtResource("43_hkh1m")
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 32
+text = "BGM: The Fate of Gensokyo in Our Hands ~ Memento of All Organisms"
+vertical_alignment = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/MiddleUI/NowPlaying"]
+libraries = {
+&"": SubResource("AnimationLibrary_2l8bj")
+}
+
 [node name="TopBar" type="VBoxContainer" parent="UI/MiddleUI"]
 z_index = 50
 clip_contents = true
@@ -2608,9 +2709,10 @@ offset_bottom = -420.0
 
 [node name="Label" type="Label" parent="UI/RightBar/DifficultyText"]
 layout_mode = 0
-offset_left = -128.0
+offset_left = -192.0
 offset_top = -64.0
-offset_right = 128.0
+offset_right = 192.0
+offset_bottom = 3.0
 theme_override_colors/font_outline_color = Color(0.4, 0.10980392, 1, 1)
 theme_override_constants/outline_size = 16
 theme_override_fonts/font = ExtResource("17_iw7q2")

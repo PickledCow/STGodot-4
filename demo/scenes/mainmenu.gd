@@ -40,7 +40,8 @@ Release [Z] to shoot at where you're aiming for massive amounts of damage.
 After shooting, time your [Z] press to the red area for an "Active Reload" to be able to shoot again earlier.''',
 '''Press [Z] to swing your sword and slice up your enemies.  The type of swing changes depending on if you're either focused or unfocused.
 
-Press [X] just before you're about to get hit to parry the attack.'''
+Press [X] just before you're about to get hit to parry the attack.''',
+'''Spooky'''
 ])
 
 var stats = [
@@ -51,7 +52,8 @@ var stats = [
 	[5, 4, 5, 7], # Spark	21
 	[7, 4, 5, 5], # Bomb	21
 	[8, 9, 5, 1], # Sniper	23
-	[3, 1, 9, 6]  # Sword	20
+	[3, 1, 9, 6], # Sword	20
+	[1, 1, 1, 1]  # Ghost	
 ]
 
 enum MENUS { MAIN, DIFFICULTY, ABILITY, OPTIONS }

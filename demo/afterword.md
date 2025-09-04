@@ -1,4 +1,5 @@
 # Afterword
+> WARNING: Wall of text
 ## A Kirby Shmup, huh?
 
 Yep a Kirby shmup.
@@ -11,14 +12,14 @@ However, my ideas were very clearly too grandiose to be made and the core gamepl
 
 Around the time BHA 10 was starting, after playing some Vampire Survivors on a friend's computer, something about the absolute chaos managed to enchant me and I had a desire to make something of that sort where I could let go of conventional sensibilities for gameplay and just go absolutely wild.  
 
-Development of the game was pretty slow with as I started thinking about it more and the idea just not really coming together.  I could not figure out how to balance the gameplay curve to not be unreasonably snowbally in either direction but still have your item choices and gameplay execution matter.  This ideation phase and prototyping continued a bit into the start of BHA 10, where the theme was announced to be "no theme".
+Development of the game was very slow with as I started thinking about it more and the idea just not really coming together.  I could not figure out how to balance the gameplay curve to not be unreasonably snowbally in either direction but still have your item choices and gameplay execution matter.  The ideation phase and prototyping continued a bit into the start of BHA 10, where the theme was announced to be "no theme".
 
 Great, no theme huh.  I personally struggle a ton when given absolute freedom to do anything I want so I just continued to try to figure out a way to make this Vampire Survivors idea thing work for about half a month before giving up on the idea.  I needed a new idea for BHA 10 quick.  
 So I dug through past ideas and there it was, the Kirby shmup.  
 It was perfect, the theme was "do anything" and what can Kirby do? 
 
 ## Initiation
-I've tried to participate in most BHAs (Bullet Hell Artistry, a bi-yearly Touhou style shmup game jam) since BHA4, only missing out on BHA7 and BHA9, both of which were themed around having interesting alterations to the gameplay.  
+I've participated in most BHAs (Bullet Hell Artistry, a bi-yearly Touhou style shmup game jam) since BHA4, only missing out on BHA7 and BHA9, both of which were themed around having interesting alterations to the gameplay.  
 BHA9 in particular was themed around having unique shot-types where I did get a bit into development before other commitments got in the way and I had to drop out.  
 Putting these together, I had something I finally had an idea I had some confidence in and started the mad dash.
 
@@ -47,15 +48,27 @@ The main crunch came with both the music and the art.
 
 With the Mizuchi fight, I had originally wanted to write an original piece that was inspired by Magolor's first theme from Kirby as I was very attached to that "shit hit the ceiling" feeling the song had but I just could not get it out of my head while trying to make either a new song or some twisted remix of either of Yuyuko's themes.  So the decision was made to just have Magolor's theme.  At this point though I was just completely running out of time and as much as it shames me, I had to submit defeat and go grab someone's hard work at transcribing to figure out how the instruments were being used to greatly assist in the production of this song.  Major shout out to [kujiratr](https://www.youtube.com/watch?v=08eJ5iXSwDQ) for the transcription as it is unlikely I would have gotten this out without their prior work.
 
-Art wise, while I was having an absolute blast until making the boss rush sprites + Yuyuko (minus Marisa which was done by a friend as a guest artist), the pressure and burnout was really beginning to set in when I had to make my final two portraits with the possessed Yuyuko + Mizuchi and the Yuuma player portrait.  Though I did get something out the door, you can definitely see the lower effort put into them and I definitely am not as happy with how those turned out.
+Art wise, while I was having an absolute blast until making the boss rush sprites + Yuyuko (minus Marisa which was done by a friend as a guest artist), the pressure and burnout was really beginning to set in when I had to make my final two portraits with the possessed Yuyuko + Mizuchi and the Yuuma player portrait.  Though I did get something out the door, you can definitely see the lower effort put into them, especially the Mizuchi one, and I definitely am not as happy with how those turned out.
 
 ## Version 1.1?
 
 No.  At least there's no real desire to.
 
-I find it really hard to go back to a "finished" project and work on it more.  Espeically without some deadline to meet, I find it difficult to find any motivation to work on it as really something like this is finished when you call it finished and there's just always something more you can add or change.
+I find it really hard to go back to a "finished" project and work on it more and would rather just move on to newer stuff.  Especially without some deadline to meet, I find it difficult to find any motivation to work on it as something like this is finished only when you call it finished and there's just always something more you can add or change.
 
-But in an hypothetical world where I had more development time, these are what I would definitely work on first.
-- Redo the Mizuchi and Yuuma portraits
-- 
+But even in an hypothetical world where I had more development time I don't see myself adding too much more content from what I have and would probably just have had some more polish and attention to detail put in.  Main stuff that would have been different are:
+- Redo the Mizuchi  portrait, I really rushed that one out too much
+- Perhaps more sound effects and/or make more myself instead of resuing ZUN ones.
+- Different player character outfits like how Kirby gets hats would be cool to have.
+- bla
+
+## The Future
+
+idk man
+
+I think I've had my fill with the Kirby shmup concept for now and won't really be doing this again for a while if even.  I have recently been finding myself being drawn back to Touhou, especially with the release of Touhou 20 that perhaps will be able to reignite that lost love I had with the series and I can come up with some ideas for what to make.
+
+I definitely do want to make more Touhou fangames in the future; the core gameplay style just resonates with me in ways other genres don't quite do ~~and also this is easier to make~~.  Currently on my agenda is doing some major cleaning up with my Godot bullet hell plug-in to bring it to a state where theoretically others could use it for their own Touhou style games which will definitely take a lot of work to do.  With that in mind I think my next project I want to return to basics again as a pseudo-demo to showcase the capabilities of the plug-in for use in Touhou.
+
+Though all of this is for a future date, for now I return to eternal slumber.
 

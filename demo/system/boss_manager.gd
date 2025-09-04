@@ -279,6 +279,7 @@ func _process(delta: float) -> void:
 		SECTIONS.BOSS_RUSH:
 			if debug_music_start_time > 0.0 and not $Music.playing:
 				$Music.play(debug_music_start_time)
+				System.ui.now_playing("BGM: Power Gathering ~ Gensokyo All Stars")
 			if current_boss < next_boss:
 				if next_boss < bosses.size():
 					current_boss = next_boss
@@ -290,6 +291,7 @@ func _process(delta: float) -> void:
 					System.ui.fill_healthbar()
 					if current_boss == 0:
 						$Music.play()
+						System.ui.now_playing("BGM: Power Gathering ~ Gensokyo All Stars")
 					if current_boss == 6:
 						System.bg.stop_scroll()
 				elif not fade_out:
@@ -318,6 +320,7 @@ func _process(delta: float) -> void:
 		SECTIONS.DIALOGUE_1:
 			if not $DialogueMusic.playing:
 				$DialogueMusic.play()
+				System.ui.now_playing("BGM: Fateful Encounter ~ The Ultimate Truth")
 			if not System.in_dialogue:
 				section = SECTIONS.MIZUCHI_ENTRY
 				#var mizu : Boss = mizuchi.instantiate()
@@ -354,6 +357,7 @@ func _process(delta: float) -> void:
 		SECTIONS.DIALOGUE3:
 			if not $Yuuma.playing and not $Mizuchi.playing and dialogue_manager.dialogue_index >= 5:
 				$Yuuma.play()
+				System.ui.now_playing("BGM: The Fate of Gensokyo in Our Hands ~ Memento of All Organisms")
 				System.ui.slide_in_top_bar()
 				System.ui.fade_in_timer()
 			if not System.in_dialogue:
@@ -431,5 +435,6 @@ func _process(delta: float) -> void:
 	
 	if not mizuch_music_started and not $DialogueMusic.playing and start_playing_mizuchi_music:
 		$Mizuchi.play()
+		System.ui.now_playing("BGM: Nightmare in Gensokyo ~ Under My Control")
 		mizuch_music_started = true
 	

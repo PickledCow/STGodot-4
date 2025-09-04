@@ -34,8 +34,18 @@ var t_float := 0.0
 
 var invincibility_timer := 0.0
 
+var in_timeout := false
+
 enum DEATH_TYPE { NORMAL, DESPAWNED, SUCKED, FROZEN }
 var how_i_died : DEATH_TYPE = DEATH_TYPE.NORMAL
+
+var spark_effect : Sprite2D
+
+var hurt_timer := 0.0
+var hurt_flicker_timer := 0.0
+var hurt_flicker_cycle := 10.0
+
+var hit_bullet : PackedFloat64Array
 
 var start_position : Vector2
 var target_position : Vector2
@@ -45,6 +55,7 @@ enum MOVEMENT_INTERPOLATION_TYPE { LINEAR, SMOOTH_OUT }
 var movement_interpolation : MOVEMENT_INTERPOLATION_TYPE
 
 var death_explosion := preload("res://prefab/death_explosion.tscn")
+var spark_prefab := preload("res://prefab/boss/shock.tscn")
 
 func set_destination(target: Vector2, time: float, interp: MOVEMENT_INTERPOLATION_TYPE = MOVEMENT_INTERPOLATION_TYPE.SMOOTH_OUT) -> void:
 	if time <= 0.0:
@@ -76,6 +87,24 @@ func _ready() -> void:
 	star_data[Bullets.ITEM_DATA_DAMAGE_AMOUNT] = float(ability)
 	
 	difficulty = System.difficulty
+	
+	hit_bullet = PackedFloat64Array()
+	hit_bullet.resize(15)
+	hit_bullet[0] = 0 # source x (integer)
+	hit_bullet[1] = 0 # source y (integer)
+	hit_bullet[2] = 128				# source width (integer)
+	hit_bullet[3] = 128				# source height (integer)
+	hit_bullet[4] = 32				# bullet size [0, inf)
+	hit_bullet[5] = 0 				# hitbox ratio [0, 1]
+	hit_bullet[6] = 0					# Sprite offset y (integer)
+	hit_bullet[7] = 1					# anim frame, 1 for no animation (integer)
+	hit_bullet[8] = 0.25					# spin
+	hit_bullet[9] = 1	# layer
+	hit_bullet[10] = 1	# rgb
+	hit_bullet[11] = 1
+	hit_bullet[12] = 1
+	hit_bullet[13] = System.DAMAGE_TYPE.NO_COLLISION			# damage type
+	hit_bullet[14] = 0				# damage amount
 	
 	_post_ready()
 	
@@ -126,14 +155,17 @@ func _process(_delta) -> void:
 	Bullets.set_position(enemy_hitbox, position + Vector2(0, -16))
 	
 	
-	var collisions : Array = Bullets.get_enemy_collisions(enemy_hitbox)
+	var collisions : Array
 	
+	if not in_timeout:
+		collisions = Bullets.get_enemy_collisions(enemy_hitbox)
 	
 	if not invincible:
 		var died := false
 		for bullet in collisions:
 			var damage_type : int = Bullets.get_damage_type(bullet)
 			var damage : float = Bullets.get_damage(bullet)
+			var bullet_position : Vector2 = Bullets.get_position(bullet)
 			
 			match damage_type:
 				System.DAMAGE_TYPE.NORMAL:
@@ -141,6 +173,7 @@ func _process(_delta) -> void:
 						if invincibility_timer <= 0.0:
 							health -= damage
 						_boss_hit_sfx()
+						create_stars(bullet_position, 4)
 				System.DAMAGE_TYPE.CANOPY:
 					if not suck_only and not is_boss and invincibility_timer <= 0.0:
 						health -= damage
@@ -150,12 +183,15 @@ func _process(_delta) -> void:
 							health -= damage * star_damage_multiplier
 						SFX.play("break")
 						SFX.play("enemy_hit")
+						create_stars(bullet_position, 8)
 						_boss_hit_sfx()
+					
 				System.DAMAGE_TYPE.STAR_STRONG:
 					if not suck_only:
 						if invincibility_timer <= 0.0:
 							health -= damage * star_damage_multiplier
 						SFX.play("enemy_hit")
+						create_stars(bullet_position, 12)
 						_boss_hit_sfx()
 				System.DAMAGE_TYPE.SUCK:
 					if not is_boss:
@@ -168,6 +204,15 @@ func _process(_delta) -> void:
 						if invincibility_timer <= 0.0:
 							health -= damage
 						_boss_hit_sfx()
+						create_stars(bullet_position, 16)
+						if is_boss:
+							SFX.play("crit")
+				System.DAMAGE_TYPE.SNIPE:
+					if not suck_only:
+						if invincibility_timer <= 0.0:
+							health -= damage
+						_boss_hit_sfx()
+						create_stars(System.player.position, 20)
 						if is_boss:
 							SFX.play("crit")
 				System.DAMAGE_TYPE.SHOCK:
@@ -176,6 +221,8 @@ func _process(_delta) -> void:
 							health -= damage
 						_boss_hit_sfx()
 						if is_boss:
+							spark_effect.show()
+							spark_effect.shock_timer = 30.0
 							SFX.play("plasma_shock")
 				System.DAMAGE_TYPE.SHOCK_SHIELD:
 					if not suck_only and not is_boss:
@@ -185,6 +232,7 @@ func _process(_delta) -> void:
 						if invincibility_timer <= 0.0:
 							health -= damage
 						_boss_hit_sfx()
+						create_stars(bullet_position, 6)
 						if is_boss:
 							SFX.play("slash_hit")
 				System.DAMAGE_TYPE.CHILL:
@@ -210,6 +258,7 @@ func _process(_delta) -> void:
 
 func _boss_hit_sfx():
 	if is_boss:
+		hurt_timer = max(hurt_timer, 30.0)
 		SFX.play("boss_hurt_low" if health / max_health < 0.1 else "boss_hurt_high", 0.0, false)
 
 func _pre_ready() -> void:
@@ -231,6 +280,17 @@ func _pre_death():
 
 func _post_death():
 	pass
+
+
+func create_stars(bullet_position: Vector2, count := 8) -> void:
+	var ref_pos := position + Vector2(0.0, -16.0)
+	var angle: float = ref_pos.angle_to_point(bullet_position)
+	for i in count:
+		var a := angle + randf_range(-0.4, 0.4) * PI
+		var b = Bullets.create_shot_a1(position + Vector2(hurtbox_radius, 0.0).rotated(a), randf_range(2.0, 10.0), a, hit_bullet, false)
+		Bullets.set_lifespan(b, randf_range(10, 15))
+		Bullets.set_pierce(b, true)
+		Bullets.set_spin(b, randf_range(0.25, 0.5) * (1.0 if randf() > 0.5 else -1.0))
 
 func _on_death() -> void:
 	_post_death()

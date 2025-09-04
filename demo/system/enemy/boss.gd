@@ -19,11 +19,16 @@ var death_exploded := false
 
 var attack_timer := 60 * 60
 
+
 var fucking_shit_cunt_t := -1
 
 func _ready() -> void:
 	super()
 	is_boss = true
+	
+	spark_effect = spark_prefab.instantiate()
+	add_child(spark_effect)
+	
 	System.current_boss = self
 	System.bg.set_boss_texture($Sprite.texture)
 	System.ui.update_boss_data(boss_name, attack_type_list, attack_name_list)
@@ -35,6 +40,19 @@ func _ready() -> void:
 	System.ui.fade_in_timer()
 
 func _process(delta) -> void:
+	if hurt_timer > 0.0:
+		hurt_timer -= System.time_scale
+		if hurt_timer <= 0.0:
+			hurt_timer = 0.0
+			hurt_flicker_timer = 0.0
+			$Sprite.modulate = Color.WHITE
+		else:
+			hurt_flicker_timer -= System.time_scale
+			while hurt_flicker_timer < 0.0:
+				hurt_flicker_timer += hurt_flicker_cycle
+			$Sprite.modulate = Color.WHITE if hurt_flicker_timer < hurt_flicker_cycle * 0.5 else Color(0.1, 0.1, 1.0)
+			
+			
 	if attack_timer <= 0:
 		health = 0
 	

@@ -925,7 +925,7 @@ hitbox_radius = 0.0
 graze_radius = 64.0
 unfocus_item_magnet_radius = 128.0
 focus_item_magnet_radius = 128.0
-autocollect_height = 0.0
+autocollect_height = 350.0
 spritesheet_format = 1
 i_frame_flash_cycle_duration = 0.5
 
@@ -1208,3 +1208,32 @@ modulate = Color(0, 0, 0, 0.2509804)
 show_behind_parent = true
 position = Vector2(0, 4)
 texture = ExtResource("17_b8l10")
+
+[node name="Ghost" type="Node2D" parent="."]
+visible = false
+
+[node name="ReloadBar" type="Node2D" parent="Ghost"]
+
+[node name="Back" type="ColorRect" parent="Ghost/ReloadBar"]
+offset_left = -50.0
+offset_top = -74.0
+offset_right = 50.0
+offset_bottom = -62.0
+color = Color(0, 0, 0, 1)
+
+[node name="Active" type="ColorRect" parent="Ghost/ReloadBar"]
+offset_left = -50.0
+offset_top = -74.0
+offset_right = -25.0
+offset_bottom = -62.0
+color = Color(0.7529412, 0.10980392, 0.10980392, 1)
+
+[node name="Progress" type="TextureProgressBar" parent="Ghost/ReloadBar"]
+offset_left = -48.0
+offset_top = -72.0
+offset_right = -47.0
+offset_bottom = -71.0
+scale = Vector2(96, 8)
+max_value = 300.0
+value = 48.0
+texture_progress = ExtResource("7_pvpw6")

@@ -105,3 +105,7 @@ func fill_healthbar():
 
 func game_over():
 	$PauseMenu.game_over()
+
+func now_playing(song_name: String):
+	$MiddleUI/NowPlaying/HBoxContainer/SongName.text = song_name
+	$MiddleUI/NowPlaying/AnimationPlayer.play("song")

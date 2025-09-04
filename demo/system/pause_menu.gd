@@ -51,6 +51,23 @@ func main_menu() -> void:
 		main_menu_selection = MAIN_MENU_SELECTIONS.QUIT
 		unpause()
 
+	if Input.is_action_just_pressed("quick_restart"):
+		unpause()
+		SFX.play("menu_ok")
+		Bullets.unmount()
+		System.warp_rect.reset_warps()
+		SFX.stop_all()
+		System.in_dialogue = true
+		System.clear_enemies = false
+		get_tree().reload_current_scene()
+	
+	if Input.is_action_just_pressed("quick_quit"):
+		SFX.play("menu_ok")
+		Bullets.unmount()
+		System.warp_rect.reset_warps()
+		SFX.stop_all()
+		get_tree().change_scene_to_packed(System.main_menu_scene)
+
 	if Input.is_action_just_pressed("player_shoot"):
 		match main_menu_selection:
 			MAIN_MENU_SELECTIONS.RESUME:

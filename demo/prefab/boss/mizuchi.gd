@@ -25,8 +25,8 @@ var impact_star := preload("res://prefab/boss/marisa_star.tscn")
 var kogasa := preload("res://prefab/boss/kogasa_friend.tscn")
 
 var knife_speeds : Array[float] = [5.0, 6.0, 8.0, 9.0, 10.0]
-var knife_densities : Array[int] = [2, 1, 4, 2, 3]
-var knife_rates : Array[int] = [3, 1, 3, 1, 1]
+var knife_densities : Array[int] = [2, 1, 4, 3, 2]
+var knife_rates : Array[int] = [3, 1, 3, 2, 1]
 var knife_sound_rate : Array[int] = [2, 2, 1, 1, 1]
 
 var red_butterfly : PackedFloat64Array
@@ -36,8 +36,8 @@ var pink_butterfly : PackedFloat64Array
 var blue_bubble : PackedFloat64Array
 
 var bullet_timer := 0.0
-var bullet_speeds : Array[float] = [6.0, 7.0, 8.0, 12.0, 14.0]
-var bullet_rates : Array[float] = [0.2, 0.3, 0.5, 0.75, 1.0]
+var bullet_speeds : Array[float] = [6.0, 7.0, 8.0, 10.0, 12.0]
+var bullet_rates : Array[float] = [0.2, 0.3, 0.5, 0.65, 0.75]
 var finale_phase = 0
 
 var death_timer := 0.0
@@ -738,6 +738,7 @@ func shore_height(x: float, right_height: float) -> float:
 	return tan(PI * 0.925) * (x - 1000.0) + right_height
 
 func _pre_death():
+	star_damage_multiplier = 1.0
 	if phase == 0 and next_attack + 1 >= attack_name_list.size():
 		difficulty = System.difficulty # so janky
 		System.ui.slide_in_top_bar(true)
@@ -769,6 +770,8 @@ func _pre_death():
 		health = max_health
 
 func _post_death():
+	in_timeout = false
+	modulate = Color.WHITE
 	if phase == 0 and next_attack == 2 and not debug_low_health:
 		max_health = 1200
 	if phase == 1 and not debug_low_health:
@@ -778,6 +781,8 @@ func _post_death():
 			max_health = 60 * 45
 			attack_timer = 60 * 45
 			invincibility_timer = 60 * 45
+			in_timeout = true
+			modulate = Color(0.25, 0.25, 0.25, 1.0)
 		if next_attack == 2:
 			max_health = 3600
 	System.clear_enemies = true
