@@ -13,6 +13,8 @@
 
 #include <bullet.hpp>
 
+#include <graphical_unit_pool.hpp>
+
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/shape2d.hpp>
@@ -113,10 +115,7 @@ public:
 		TRANSFORM_STRUCTURE_MAX
 	};
 
-
-	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
-
-	enum POOLS { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL, LASERS_POOL, CURVE_LASERS_POOL };
+	enum UnitPools { BULLETS_POOL, SHOTS_POOL, ITEMS_POOL, PARTICLES_POOL, ENEMIES_POOL, LASERS_POOL, CURVE_LASERS_POOL };
 
 	// VERY BAD COPY PASTE BUT I CAN'T GET IT TO WORK OTHERWISE BECAUSE I'M BAD
 	// enum TRIGGERS {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};

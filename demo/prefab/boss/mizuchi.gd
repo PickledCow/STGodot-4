@@ -281,13 +281,15 @@ func dance():
 							Bullets.set_layer(b2, Bullets.get_layer(b2) + 1)
 
 func dream_butterfly():
-	var bubble_density : Array[float] = [9, 11, 12, 13, 14]
-	var butterfly_speed = [3, 3.5, 3.8, 4, 4.25]
+	var bubble_density : Array[int] = [9, 11, 12, 13, 14]
+	var butterfly_speed = [3, 3.5, 3.8, 4.0, 4.25]
 	var main_density = [16, 20, 26, 30, 36]
 	var criss_cross_density = [24, 32, 36, 40, 48]
 	var trail_length = [0.0175, 0.02, 0.0225, 0.025, 0.0275]
 	var main_rate = [30, 27, 24, 20, 16]
 	var bubble_rate = [360, 300, 270, 240, 210]
+	
+	var what_the_fuck := false
 	
 	# Main Barrage Phase 1
 	if t % main_rate[difficulty] == 0:
@@ -375,17 +377,26 @@ func dream_butterfly():
 		if finale_phase == 2:
 			finale_phase = 3
 			Bullets.clear_bullets(Vector2(500, 500), 1000, true)
+			if difficulty == System.DIFFICULTY.OVERDRIVE:
+				what_the_fuck = true
+				difficulty = System.DIFFICULTY.LUNATIC
 		
+		var br := 210
+		var bd := 14
 		
-		if t % bubble_rate[difficulty] == 150:
+		if not what_the_fuck:
+			br = bubble_rate[difficulty]
+			bd = bubble_density[difficulty]
+		
+		if t % br == 150:
 			SFX.play("warning")
 			var offset = position.angle_to_point(System.player.position)
-			for i in bubble_density[difficulty]:
-				var angle : float = offset + i * PI / (bubble_density[difficulty] - 1) - PI * 0.5
+			for i in bd:
+				var angle : float = offset + i * PI / (bd - 1) - PI * 0.5
 				for j in 16:
 					Bullets.create_bullet_a1(
 						position, 
-						6 - j * 4.0 / 16,
+						6 - j * 4.0 / 16.0,
 						angle,
 						blue_bubble,
 						true
@@ -778,9 +789,9 @@ func _post_death():
 		if next_attack == 0:
 			max_health = 1200
 		if next_attack == 1:
-			max_health = 60 * 45
-			attack_timer = 60 * 45
-			invincibility_timer = 60 * 45
+			max_health = 60 * 36
+			attack_timer = 60 * 36
+			invincibility_timer = 60 * 36
 			in_timeout = true
 			modulate = Color(0.25, 0.25, 0.25, 1.0)
 		if next_attack == 2:

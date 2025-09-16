@@ -4082,7 +4082,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 /* #endregion */
 
-/* #region Old stuff */
+/* #region Old stuff 
 
 // // DO NOT USE
 // bool BulletInterface::spawn_bullet(Ref<BulletKit> kit, Dictionary properties) {
@@ -4111,7 +4111,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // 			available_bullets -= 1;
 // 			active_bullets += 1;
 
-// 			BulletID bullet_id = pool->obtain_bullet();
+// 			UnitID bullet_id = pool->obtain_bullet();
 // 			PackedInt64Array to_return = invalid_id;
 // 			to_return.set(0, bullet_id.cycle);
 // 			to_return.set(1, bullet_id.set);
@@ -4128,7 +4128,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // 	int pool_index = bullet_id[1];
 // 	if (pool_index >= 0) {
-// 		result = pools[pool_index].pool->release_bullet(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+// 		result = pools[pool_index].pool->release_bullet(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 		if(result) {
 // 			available_bullets += 1;
 // 			active_bullets -= 1;
@@ -4142,7 +4142,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // 	int pool_index = bullet_id[1];
 // 	if(pool_index >= 0) {
-// 		return pools[pool_index].pool->is_bullet_valid(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+// 		return pools[pool_index].pool->is_bullet_valid(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return false;
 // }
@@ -4209,7 +4209,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // 	PackedInt64Array bullet_id = id.operator PackedInt64Array();
 
 // 	int pool_index = bullet_id[1];
-// 	if (pool_index >= 0 && pools[pool_index].pool->is_bullet_valid(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]))) {
+// 	if (pool_index >= 0 && pools[pool_index].pool->is_bullet_valid(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]))) {
 // 		return pools[pool_index].bullet_kit;
 // 	}
 // 	return Ref<BulletKit>();
@@ -4220,7 +4220,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // 	int pool_index = bullet_id[1];
 // 	if (pool_index >= 0) {
-// 		pools[pool_index].pool->set_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), property, value);
+// 		pools[pool_index].pool->set_bullet_property(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]), property, value);
 // 	}
 // }
 
@@ -4230,7 +4230,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // 	int pool_index = bullet_id[1];
 // 	if(pool_index >= 0) {
-// 		return pools[pool_index].pool->get_bullet_property(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), property);
+// 		return pools[pool_index].pool->get_bullet_property(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]), property);
 // 	}
 // 	return Variant();
 // }
@@ -4258,7 +4258,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // 		active_bullets += 1;
 
 // 		// Base init
-// 		BulletID bullet_id = pool->_create_shot_a1(pos, speed, angle, bullet_data, fade_in);
+// 		UnitID bullet_id = pool->_create_shot_a1(pos, speed, angle, bullet_data, fade_in);
 // 		PackedInt64Array to_return = invalid_id;
 // 		// to_return.resize(3);
 // 		to_return.set(0, bullet_id.cycle);
@@ -4281,7 +4281,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // 		active_bullets += 1;
 
 // 		// Base init
-// 		BulletID bullet_id = pool->_create_shot_a2(pos, speed, angle, accel, max_speed, bullet_data, fade_in);
+// 		UnitID bullet_id = pool->_create_shot_a2(pos, speed, angle, accel, max_speed, bullet_data, fade_in);
 // 		PackedInt64Array to_return = invalid_id;
 // 		// to_return.resize(3);
 // 		to_return.set(0, bullet_id.cycle);
@@ -4312,7 +4312,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // 		available_bullets -= 1;
 // 		active_bullets += 1;
 
-// 		BulletID bullet_id = pool->_create_particle(pos, drift, rotation, size, color);
+// 		UnitID bullet_id = pool->_create_particle(pos, drift, rotation, size, color);
 // 		PackedInt64Array to_return = PackedInt64Array();
 // 		to_return.resize(3);
 // 		to_return.set(0, bullet_id.cycle);
@@ -4330,7 +4330,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // double BulletInterface::get_damage(PackedInt64Array bullet_id) {
 // 	if (bullet_id[1] >= 0) {
-// 		return pools[bullet_id[1]].pool->get_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+// 		return pools[bullet_id[1]].pool->get_damage(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return 0.0;
 
@@ -4338,14 +4338,14 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // void BulletInterface::set_damage(PackedInt64Array bullet_id, double damage) {
 // 	if (bullet_id[1] >= 0) {
-// 		pools[bullet_id[1]].pool->set_damage(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage);
+// 		pools[bullet_id[1]].pool->set_damage(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]), damage);
 // 	}
 
 // }
 
 // int BulletInterface::get_damage_type(PackedInt64Array bullet_id) {
 // 	if (bullet_id[1] >= 0) {
-// 		return pools[bullet_id[1]].pool->get_damage_type(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+// 		return pools[bullet_id[1]].pool->get_damage_type(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return 0.0;
 
@@ -4353,7 +4353,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 
 // void BulletInterface::set_damage_type(PackedInt64Array bullet_id, int damage_type) {
 // 	if (bullet_id[1] >= 0) {
-// 		pools[bullet_id[1]].pool->set_damage_type(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]), damage_type);
+// 		pools[bullet_id[1]].pool->set_damage_type(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]), damage_type);
 // 	}
 
 // }
@@ -4362,7 +4362,7 @@ void BulletInterface::set_wvel(PackedInt64Array bullet_id, double wvel) {
 // bool BulletInterface::get_is_auto_collected(PackedInt64Array bullet_id) {
 // 	BasicItemPool* pool = (BasicItemPool*)pools[bullet_id[1]].pool.get();
 // 	if (bullet_id[1] >= 0) {
-// 		return pool->_get_is_auto_collected(BulletID(bullet_id[0], bullet_id[1], bullet_id[2]));
+// 		return pool->_get_is_auto_collected(UnitID(bullet_id[0], bullet_id[1], bullet_id[2]));
 // 	}
 // 	return false;
 

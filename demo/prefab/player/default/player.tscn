@@ -921,7 +921,6 @@ starting_power = 100
 decimal_power_subdivision = 100
 large_power_item_value = 100
 power_loss_on_death = 50
-hitbox_radius = 0.0
 graze_radius = 64.0
 unfocus_item_magnet_radius = 128.0
 focus_item_magnet_radius = 128.0
@@ -1237,3 +1236,30 @@ scale = Vector2(96, 8)
 max_value = 300.0
 value = 48.0
 texture_progress = ExtResource("7_pvpw6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+z_index = 50
+offset_left = 64.0
+offset_top = -1000.0
+offset_right = 1064.0
+offset_bottom = 500.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+z_index = 50
+offset_left = -1064.0
+offset_top = -1000.0
+offset_right = -64.0
+offset_bottom = 500.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+visible = false
+z_index = 50
+offset_left = -500.0
+offset_top = -1724.0
+offset_right = 500.0
+offset_bottom = -224.0
+color = Color(0, 0, 0, 1)

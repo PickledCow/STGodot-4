@@ -9,6 +9,7 @@ var ice_cube := preload("res://prefab/player/yuuma/ice_block.tscn")
 @export var suck_only := false
 @export var hurt_on_contact := true
 @export var star_damage_multiplier := 1.0
+@export var parasol_damage_multiplier := 1.0
 
 @export var max_health := 100.0
 
@@ -174,6 +175,13 @@ func _process(_delta) -> void:
 							health -= damage
 						_boss_hit_sfx()
 						create_stars(bullet_position, 4)
+				System.DAMAGE_TYPE.WATER:
+					if not suck_only:
+						if invincibility_timer <= 0.0:
+							health -= damage * parasol_damage_multiplier
+						_boss_hit_sfx()
+						if randf() > 0.6:
+							create_stars(bullet_position, 1)
 				System.DAMAGE_TYPE.CANOPY:
 					if not suck_only and not is_boss and invincibility_timer <= 0.0:
 						health -= damage

@@ -79,7 +79,7 @@ func _ready() -> void:
 	impact_damage[1] = 0 # source y (integer)
 	impact_damage[2] = 0 				# source width (integer)
 	impact_damage[3] = 0				# source height (integer)
-	impact_damage[4] = radius				# bullet size [0, inf)
+	impact_damage[4] = radius*1.5				# bullet size [0, inf)
 	impact_damage[5] = 1 				# hitbox ratio [0, 1]
 	impact_damage[6] = 0					# Sprite offset y (integer)
 	impact_damage[7] = 1					# anim frame, 1 for no animation (integer)

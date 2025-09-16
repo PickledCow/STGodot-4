@@ -2,6 +2,7 @@ extends Control
 
 var skip_timer := 0.0
 var skip_requirement := 3.0
+var skip_fake_timer := skip_requirement
 
 var skipped := false
 
@@ -12,12 +13,16 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if not skipped:
+		if skip_fake_timer > 0.0:
+			skip_fake_timer -= delta
+			if skip_fake_timer < 0.0:
+				skip_fake_timer = 0.0
 		if Input.is_action_pressed("pause"):
 			skip_timer += delta
 		else:
 			skip_timer = max(skip_timer - delta * 2.0, 0.0)
 		
-		$Skip.modulate.a = skip_timer / skip_requirement
+		$Skip.modulate.a = max(skip_timer, skip_fake_timer) / skip_requirement
 	
 		if skip_timer >= skip_requirement:
 			skipped = true

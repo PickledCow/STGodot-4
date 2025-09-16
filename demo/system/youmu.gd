@@ -73,6 +73,8 @@ func _post_ready() -> void:
 
 
 func _pre_process(_time_scale: float) -> void:
+	if t == 0:
+		invincibility_timer = 60*5
 	if t >= 0:
 		
 		if t == 0:

@@ -274,7 +274,21 @@ func increment_boss(i_hate_everything := false) -> void:
 	else:
 		pass
 
+var t := 0
+
 func _process(delta: float) -> void:
+	#if t % 3 == 0:
+		#var rain = System.get_bullet_data(BulletConstructor.BULLET_TYPE.DROPLET, BulletConstructor.COLORS.CYAN)
+		#
+		#var speed := 8.5
+		#
+		#Bullets.create_bullet_a1(Vector2(randf_range(-50, 1050.0), -64), speed, PI * 0.5, rain, false)
+	#t += 1
+	#
+	#return
+	#
+	
+	
 	match section:
 		SECTIONS.BOSS_RUSH:
 			if debug_music_start_time > 0.0 and not $Music.playing:

@@ -11,7 +11,7 @@ attack_name_list = Array[String](["Hellfire Sword 「Karmic Winds of Afterimages
 boss_name = "Youmu"
 item_drop = 10
 hitbox_radius = 96.0
-max_health = 800.0
+max_health = 500.0
 
 [node name="Suck" parent="." instance=ExtResource("2_hdyg4")]
 position = Vector2(731.9392, 333.36078)

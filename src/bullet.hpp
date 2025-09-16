@@ -34,7 +34,7 @@ enum BounceMode { BOUNCE, WARP };
 // enum TransformTriggers {TRIGGER_TIME, TRIGGER_BOUNCE, TRIGGER_GRAZE};
 // enum EnemyHitboxType { CIRCLE_HITBOX, RECT_HITBOX };
 
-enum BULLET_ID_STRUCTURE {
+enum BulletIDStructure {
     BULLET_ID_CYCLE,
     BULLET_ID_POOL,
     BULLET_ID_INDEX
@@ -44,12 +44,12 @@ enum BULLET_ID_STRUCTURE {
 const int NO_CHANGE = -256*256*256;
 
 // A stripped down reference to a Bullet mainly for use within Godot.
-struct BulletID {
+struct UnitID {
 	int cycle;
 	int set;
     int index;
 
-	BulletID(int cycle, int set, int index): 
+	UnitID(int cycle, int set, int index): 
 		cycle(cycle), set(set), index(index) {}
 };
 

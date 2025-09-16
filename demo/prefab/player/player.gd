@@ -804,6 +804,8 @@ func update_bomb_count(fragment_count: int, whole_count: int) -> void:
 
 #endregion
 
+#var actual_velocity:
+
 #region Main Routines
 ## Base movement code. Calls [method Player.update_animation_state] by default 
 ## and will need to call it if overriding this function.
@@ -925,6 +927,8 @@ func movement(time_scale) -> void:
 	elif position.y > 350:
 		System.ui.proximity_fade(true)
 		
+
+
 
 ## Updates the player sprite according to elapsed real tiem.
 func animation(delta) -> void:
@@ -1324,7 +1328,7 @@ func shooting(time_scale: float) -> void:
 						$Parasol/ShieldAnimation.play("deploy")
 						forced_slowdown = true
 						Bullets.clear_bullets(position, 64, false) # Instant clear around the player 
-						for i in 15:
+						for i in 0:
 							var pos_rand : float = randf_range(-1, 1)
 							#68, 23
 							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
@@ -1337,7 +1341,7 @@ func shooting(time_scale: float) -> void:
 							)
 							Bullets.set_lifespan(b, randf_range(6, 10))
 							SFX.play("shotgun")
-						for i in 20:
+						for i in 10:
 							var pos_rand : float = randf_range(-1, 1)
 							#68, 23
 							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
@@ -1350,18 +1354,18 @@ func shooting(time_scale: float) -> void:
 							)
 							Bullets.set_lifespan(b, randf_range(6, 10))
 							SFX.play("shotgun")
-						for i in 15:
+						for i in 35:
 							var pos_rand : float = randf_range(-1, 1)
 							#68, 23
 							var pos : Vector2 = position + Vector2(0, -108) + Vector2(48 * pos_rand, 24 * abs(pos_rand))
 							var b = Bullets.create_shot_a1(
 								pos,
-								randf_range(40.0, 50.0),
+								randf_range(40.0, 60.0),
 								-PI * 0.5 + randf_range(-0.05, 0.05) * PI,
 								droplet,
 								false
 							)
-							Bullets.set_lifespan(b, randf_range(6, 10))
+							Bullets.set_lifespan(b, 12)
 							SFX.play("shotgun")
 			
 		PLAYER_ABILITY.SPARK:
@@ -1755,7 +1759,7 @@ func _ready() -> void:
 	droplet[10] = 1	# rgb
 	droplet[11] = 1
 	droplet[12] = 1
-	droplet[13] = System.DAMAGE_TYPE.NORMAL			# damage type
+	droplet[13] = System.DAMAGE_TYPE.WATER			# damage type
 	droplet[14] = 1			# damage amount
 	
 	

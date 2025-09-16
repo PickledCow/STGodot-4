@@ -76,6 +76,9 @@ func main_menu() -> void:
 			MAIN_MENU_SELECTIONS.RESTART:
 				unpause()
 				SFX.play("menu_ok")
+				Engine.time_scale = 1.0
+				System.time_scale = 1.0
+				Bullets.set_time_scale(1.0)
 				Bullets.unmount()
 				System.warp_rect.reset_warps()
 				SFX.stop_all()
@@ -90,6 +93,9 @@ func main_menu() -> void:
 				#ui_lock = true
 			MAIN_MENU_SELECTIONS.QUIT:
 				SFX.play("menu_ok")
+				Engine.time_scale = 1.0
+				System.time_scale = 1.0
+				Bullets.set_time_scale(1.0)
 				Bullets.unmount()
 				System.warp_rect.reset_warps()
 				SFX.stop_all()
