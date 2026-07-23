@@ -11,16 +11,14 @@
 
 
 
-#include <bullet.hpp>
-
-#include <graphical_unit_pool.hpp>
-
-#include <godot_cpp/classes/rendering_server.hpp>
-#include <godot_cpp/variant/utility_functions.hpp>
-#include <godot_cpp/classes/shape2d.hpp>
-#include <godot_cpp/classes/texture2d.hpp>
-#include <godot_cpp/classes/material.hpp>		
-#include <godot_cpp/classes/node2d.hpp>
+#include "bullet.hpp"
+// #include "graphical_unit_pool.hpp"
+#include "godot_cpp/classes/rendering_server.hpp"
+#include "godot_cpp/variant/utility_functions.hpp"
+#include "godot_cpp/classes/shape2d.hpp"
+#include "godot_cpp/classes/texture2d.hpp"
+#include "godot_cpp/classes/material.hpp"
+#include "godot_cpp/classes/node2d.hpp"
 
 using namespace godot;
 
@@ -29,6 +27,9 @@ class BulletInterface : public Node2D {
 	GDCLASS(BulletInterface, Node2D)
 	
 public:
+
+	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
+    enum MaterialTypes { MATERIAL_TYPE_MIX = 1, MATERIAL_TYPE_ADD = 2, MATERIAL_TYPE_SUB = 4, MATERIAL_TYPE_ALL = 7, MATERIAL_TYPES_SIZE = 8 };
 
 	enum BulletDataStructure {
 		DATA_SRC_X, 

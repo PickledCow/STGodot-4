@@ -23,7 +23,7 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include <godot_cpp/classes/node2d.hpp>
+#include "godot_cpp/classes/node2d.hpp"
 
 namespace godot {
 

@@ -1,6 +1,8 @@
 # Godot 4+ specific ignores
 .godot/
 
+.touhou---nightmare-in-gensokyo-(4.5)/
+
 # Ignore library files but not the gdextension file
 demo/bin/*
 !demo/bin/android

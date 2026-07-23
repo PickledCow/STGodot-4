@@ -1,14 +1,19 @@
 #ifndef GRAPHICAL_UNIT_POOL_H
 #define GRAPHICAL_UNIT_POOL_H
 
-#include <abstract_unit_pool.hpp>
-#include <godot_cpp/classes/texture2d.hpp>
-#include <godot_cpp/classes/material.hpp>		
+#include "abstract_unit_pool.hpp"
+#include "godot_cpp/classes/texture2d.hpp"
+#include "godot_cpp/classes/material.hpp"
 
 using namespace godot;
 
 template <typename UnitType>
 class GraphicalUnitPool : AbstractUnitPool {
+
+public:
+	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
+    enum MaterialTypes { MATERIAL_TYPE_MIX = 1, MATERIAL_TYPE_ADD = 2, MATERIAL_TYPE_SUB = 4, MATERIAL_TYPE_ALL = 7, MATERIAL_TYPES_SIZE = 8 };
+
 private:
     int z_index = 0;
     int draw_index = 0;
@@ -30,9 +35,6 @@ private:
     double fade_out_time = 8.0;
 
 public:
-	enum SheetOrientation { SHEET_UP, SHEET_RIGHT, SHEET_DOWN, SHEET_LEFT };
-    enum MaterialTypes { MATERIAL_TYPE_MIX = 1, MATERIAL_TYPE_ADD = 2, MATERIAL_TYPE_SUB = 4, MATERIAL_TYPE_ALL = 7, MATERIAL_TYPES_SIZE = 8 };
-
     void set_z_index(int idx);
     int get_z_index();
     
